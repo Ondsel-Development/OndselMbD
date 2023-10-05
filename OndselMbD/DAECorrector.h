@@ -1,0 +1,38 @@
+/***************************************************************************
+ *   Copyright (c) 2023 Ondsel, Inc.                                       *
+ *                                                                         *
+ *   This file is part of OndselMbD.                                       *
+ *                                                                         *
+ *   See LICENSE file for details about copyright.                         *
+ ***************************************************************************/
+
+#pragma once
+
+#include "VectorNewtonRaphson.h"
+#include "SparseMatrix.h"
+
+namespace MbD {
+    class BasicDAEIntegrator;
+
+    class DAECorrector : public VectorNewtonRaphson
+    {
+        //
+    public:
+        void fillPyPx() override;
+        void fillY() override;
+        void passRootToSystem() override;
+        void basicSolveEquations() override;
+        void initializeGlobally() override;
+        void calcdxNorm() override;
+        void handleSingularMatrix() override;
+        void run() override;
+        void preRun() override;
+        void askSystemToUpdate() override;
+        bool isConverged() override;
+        void postRun() override;
+        void setSystem(Solver* sys) override;
+
+        SpMatDsptr pypx;
+        BasicDAEIntegrator* daeSystem;
+    };
+}

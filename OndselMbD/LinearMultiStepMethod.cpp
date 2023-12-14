@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -28,6 +28,18 @@ FColDsptr MbD::LinearMultiStepMethod::derivativeatpresentpast(int n, double t, F
 		}
 	}
 	return answer;
+}
+
+FColDsptr MbD::LinearMultiStepMethod::derivativepresentpast(int order, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast)
+{
+	assert(false);
+	return FColDsptr();
+}
+
+double MbD::LinearMultiStepMethod::pvdotpv()
+{
+	assert(false);
+	return 0.0;
 }
 
 double MbD::LinearMultiStepMethod::firstPastTimeNode()

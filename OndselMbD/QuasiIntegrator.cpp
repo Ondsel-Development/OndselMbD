@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -25,6 +25,11 @@ using namespace MbD;
 void MbD::QuasiIntegrator::preFirstStep()
 {
 	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->preDynFirstStep(); });
+}
+
+void MbD::QuasiIntegrator::postFirstStep()
+{
+	assert(false);
 }
 
 void QuasiIntegrator::preRun()
@@ -184,6 +189,11 @@ void QuasiIntegrator::interpolateAt(double tArg)
 	//"Interpolate for system state at tArg and leave system in that state."
 	system->time(tArg);
 	this->runInitialConditionTypeSolution();
+}
+
+void MbD::QuasiIntegrator::postStep()
+{
+	assert(false);
 }
 
 void QuasiIntegrator::postRun()

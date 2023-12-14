@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -13,10 +13,11 @@
 namespace MbD {
 	class InLineJoint : public Joint
 	{
-		//
+		//Abstract class. Create subclasses only.
 	public:
 		InLineJoint();
 		InLineJoint(const char* str);
+		virtual void initializeGlobally();	//To prevent instantiation of this class
 
 		void createInLineConstraints();
 

@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -70,6 +70,18 @@ void MbD::AtPointConstraintIJ::postDynCorrectorIteration()
 {
 	riIeJeO->postDynCorrectorIteration();
 	ConstraintIJ::postDynCorrectorIteration();
+}
+
+void MbD::AtPointConstraintIJ::preDynOutput()
+{
+	riIeJeO->preDynOutput();
+	ConstraintIJ::preDynOutput();
+}
+
+void MbD::AtPointConstraintIJ::postDynOutput()
+{
+	riIeJeO->postDynOutput();
+	ConstraintIJ::postDynOutput();
 }
 
 void AtPointConstraintIJ::postPosICIteration()

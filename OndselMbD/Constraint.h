@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -51,12 +51,13 @@ namespace MbD {
 		virtual ConstraintType type();
 		void setpqsumu(FColDsptr col) override;
 		void setpqsumudot(FColDsptr col) override;
+		void setpqsumuddot(FColDsptr col) override;
 		void fillDynError(FColDsptr col) override;
 
 		int iG = -1;
 		double aG = 0.0;		//Constraint function
 		double lam = 0.0;		//Lambda is Lagrange Multiplier
-		double mu = 0, lamDeriv = 0;
+		double mu = 0.0, lamDeriv = 0.0;
 	};
 }
 

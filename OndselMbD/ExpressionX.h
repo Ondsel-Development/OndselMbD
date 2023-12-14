@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -17,6 +17,7 @@ namespace MbD {
     public:
 
         void xexpression(Symsptr arg, Symsptr func);
+        Symsptr differentiateWRTx() override;
         Symsptr differentiateWRT(Symsptr var) override;
         double getValue() override;
 

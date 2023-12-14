@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -34,7 +34,7 @@ namespace MbD {
 		void setPartFrame(PartFrame* partFrm);
 		PartFrame* getPartFrame();
 		void setrpmp(FColDsptr x);
-		void setaApm(FMatDsptr x);
+		void setaApm(FMatDsptr mat);
 		void addEndFrame(EndFrmsptr x);
 		void initializeLocally() override;
 		void initializeGlobally() override;
@@ -77,13 +77,14 @@ namespace MbD {
 		FMatDsptr aBOp();
 		void setpqsumu(FColDsptr col) override;
 		void setpqsumudot(FColDsptr col) override;
+		void setpqsumuddot(FColDsptr col) override;
 		void fillDynError(FColDsptr col) override;
 
 		PartFrame* partFrame; //Use raw pointer when pointing backwards.
 		FColDsptr rpmp = std::make_shared<FullColumn<double>>(3);
-		FMatDsptr aApm = std::make_shared<FullMatrix<double>>(3, 3);
+		FMatDsptr aApm = FullMatrix<double>::identitysptr(3);
 		FColDsptr rOmO = std::make_shared<FullColumn<double>>(3);
-		FMatDsptr aAOm = std::make_shared<FullMatrix<double>>(3, 3);
+		FMatDsptr aAOm = FullMatrix<double>::identitysptr(3);
 		FMatDsptr prOmOpE;
 		FColFMatDsptr pAOmpE;
 		FMatFColDsptr pprOmOpEpE;

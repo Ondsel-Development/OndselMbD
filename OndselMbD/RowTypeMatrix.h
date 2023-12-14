@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -21,7 +21,7 @@ namespace MbD {
 		RowTypeMatrix(int m) : Array<T>(m) {}
 		RowTypeMatrix(std::initializer_list<T> list) : Array<T>{ list } {}
 		void copyFrom(std::shared_ptr<RowTypeMatrix<T>> x);
-		virtual void zeroSelf() = 0;
+		virtual void zeroSelf();
 		//double maxMagnitude() override;
 		int numberOfElements() override;
 
@@ -40,13 +40,19 @@ namespace MbD {
 			this->at(i)->copyFrom(x->at(i));
 		}
 	}
+	template<typename T>
+	inline void RowTypeMatrix<T>::zeroSelf()
+	{
+		assert(false);
+
+	}
 	//template<typename T>
 	//inline double RowTypeMatrix<T>::maxMagnitude()
 	//{
-	//	auto max = 0.0;
+	//	double max = 0.0;
 	//	for (int i = 0; i < this->size(); i++)
 	//	{
-	//		auto element = this->at(i)->maxMagnitude();
+	//		double element = this->at(i)->maxMagnitude();
 	//		if (max < element) max = element;
 	//	}
 	//	return max;

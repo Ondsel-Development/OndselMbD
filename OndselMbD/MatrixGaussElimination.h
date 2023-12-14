@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -16,7 +16,7 @@ namespace MbD {
     {
         //
     public:
-        virtual void forwardEliminateWithPivot(int p) = 0;
+        virtual void forwardEliminateWithPivot(int p);
     };
 }
 

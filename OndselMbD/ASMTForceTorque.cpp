@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -16,6 +16,11 @@ void MbD::ASMTForceTorque::updateFromMbD()
 }
 
 void MbD::ASMTForceTorque::compareResults(AnalysisType type)
+{
+	assert(false);
+}
+
+void MbD::ASMTForceTorque::outputResults(AnalysisType type)
 {
 	assert(false);
 }

@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -59,6 +59,10 @@ void Part::setqX(FColDsptr x) {
 
 FColDsptr Part::getqX() {
 	return partFrame->getqX();
+}
+
+void Part::setaAap(FMatDsptr mat) {
+	partFrame->setaAap(mat);
 }
 
 void Part::setqE(FColDsptr x) {
@@ -263,8 +267,8 @@ void Part::fillqsuWeights(DiagMatDsptr diagMat)
 
 	auto mMax = this->root()->maximumMass();
 	auto aJiMax = this->root()->maximumMomentOfInertia();
-	auto minw = 1.0e3;
-	auto maxw = 1.0e6;
+	double minw = 1.0e3;
+	double maxw = 1.0e6;
 	auto wqX = std::make_shared<DiagonalMatrix<double>>(3);
 	auto wqE = std::make_shared<DiagonalMatrix<double>>(4);
 	if (mMax == 0) { mMax = 1.0; }
@@ -323,10 +327,10 @@ void Part::fillqsudotWeights(DiagMatDsptr diagMat)
 		//| mMax aJiMax maxInertia minw maxw aJi wqXdot wqEdot |
 	auto mMax = this->root()->maximumMass();
 	auto aJiMax = this->root()->maximumMomentOfInertia();
-	auto maxInertia = std::max(mMax, aJiMax);
+	double maxInertia = std::max(mMax, aJiMax);
 	if (maxInertia == 0) maxInertia = 1.0;
-	auto minw = 1.0e-12 * maxInertia;
-	auto maxw = maxInertia;
+	double minw = 1.0e-12 * maxInertia;
+	double maxw = maxInertia;
 	auto wqXdot = std::make_shared<DiagonalMatrix<double>>(3);
 	auto wqEdot = std::make_shared<DiagonalMatrix<double>>(4);
 	for (int i = 0; i < 3; i++)
@@ -599,16 +603,21 @@ void MbD::Part::postAccIC()
 
 void MbD::Part::setpqsumu(FColDsptr col)
 {
-	pX->equalFullColumnat(col, ipX);
-	pE->equalFullColumnat(col, ipE);
+	pX->equalFullColumnAt(col, ipX);
+	pE->equalFullColumnAt(col, ipE);
 	partFrame->setpqsumu(col);
 }
 
 void MbD::Part::setpqsumudot(FColDsptr col)
 {
-	pXdot->equalFullColumnat(col, ipX);
-	pEdot->equalFullColumnat(col, ipE);
+	pXdot->equalFullColumnAt(col, ipX);
+	pEdot->equalFullColumnAt(col, ipE);
 	partFrame->setpqsumudot(col);
+}
+
+void MbD::Part::setpqsumuddot(FColDsptr col)
+{
+	partFrame->setpqsumuddot(col);
 }
 
 void MbD::Part::postDynPredictor()
@@ -652,4 +661,16 @@ void MbD::Part::postDynCorrectorIteration()
 {
 	partFrame->postDynCorrectorIteration();
 	Item::postDynCorrectorIteration();
+}
+
+void MbD::Part::preDynOutput()
+{
+	partFrame->preDynOutput();
+	Item::preDynOutput();
+}
+
+void MbD::Part::postDynOutput()
+{
+	partFrame->postDynOutput();
+	Item::postDynOutput();
 }

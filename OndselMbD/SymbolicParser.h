@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -21,6 +21,7 @@ namespace MbD {
 	{
 		//
 	public:
+		SymbolicParser();
 		void initialize();
 		void parseUserFunction(Symsptr userFunc);
 		void parseString(std::string expr);

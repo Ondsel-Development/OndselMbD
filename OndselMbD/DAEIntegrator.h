@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -41,6 +41,8 @@ namespace MbD {
         FColDsptr correctorAbsoluteTolerance();
         void y(FColDsptr col) override;
         void ydot(FColDsptr col) override;
+        virtual void preDAEOutput();
+        virtual void postDAEOutput();
 
         int neqn, ncon;
 

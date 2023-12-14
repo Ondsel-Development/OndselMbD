@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -201,7 +201,8 @@ void MarkerFrame::preAccIC()
 
 void MbD::MarkerFrame::preDynOutput()
 {
-	assert(false);
+	CartesianFrame::preDynOutput();
+	endFramesDo([](EndFrmsptr endFrame) { endFrame->preDynOutput(); });
 }
 
 FColDsptr MarkerFrame::qXdot()
@@ -254,6 +255,11 @@ void MbD::MarkerFrame::setpqsumudot(FColDsptr col)
 	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->setpqsumudot(col); });
 }
 
+void MbD::MarkerFrame::setpqsumuddot(FColDsptr col)
+{
+	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->setpqsumuddot(col); });
+}
+
 void MbD::MarkerFrame::postDynPredictor()
 {
 	CartesianFrame::postDynPredictor();
@@ -262,7 +268,8 @@ void MbD::MarkerFrame::postDynPredictor()
 
 void MbD::MarkerFrame::postDynOutput()
 {
-	assert(false);
+	CartesianFrame::postDynOutput();
+	endFramesDo([](EndFrmsptr endFrame) { endFrame->postDynOutput(); });
 }
 
 void MbD::MarkerFrame::postDynCorrectorIteration()
@@ -290,9 +297,9 @@ void MarkerFrame::setrpmp(FColDsptr x)
 	rpmp->copyFrom(x);
 }
 
-void MarkerFrame::setaApm(FMatDsptr x)
+void MarkerFrame::setaApm(FMatDsptr mat)
 {
-	aApm->copyFrom(x);
+	aApm->copyFrom(mat);
 }
 void MarkerFrame::addEndFrame(EndFrmsptr endFrm)
 {

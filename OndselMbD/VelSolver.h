@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -23,7 +23,7 @@ namespace MbD {
 		//system n x errorVector jacobian matrixSolver 
 	public:
 		void basicSolveEquations();
-		void handleSingularMatrix();
+		void handleSingularMatrix() override;
 		void logSingularMatrixMessage();
 		std::shared_ptr<MatrixSolver> matrixSolverClassNew();
 		void solveEquations();

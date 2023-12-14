@@ -1,11 +1,11 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include <string>
 #include <cassert>
 #include <fstream>	
@@ -19,7 +19,7 @@
 #include "ASMTRotationalMotion.h"
 #include "ASMTTranslationalMotion.h"
 #include "ASMTMarker.h"
-#include "Part.h"
+#include "ASMTPart.h"
 #include "ASMTTranslationalJoint.h"
 #include "ASMTSphericalJoint.h"
 #include "ASMTFixedJoint.h"
@@ -27,33 +27,444 @@
 #include "ASMTUniversalJoint.h"
 #include "ExternalSystem.h"
 #include "ASMTPointInPlaneJoint.h"
+#include "ASMTPrincipalMassMarker.h"
+#include "ASMTForceTorque.h"
+#include "ASMTConstantGravity.h"
+#include "ASMTSimulationParameters.h"
+#include "ASMTAnimationParameters.h"
+#include "Part.h"
+#include "ASMTRefPoint.h"
+#include "ASMTRefCurve.h"
+#include "ASMTRefSurface.h"
+#include "ASMTTime.h"
+#include "SystemSolver.h"
+#include "ASMTItemIJ.h"
+#include "ASMTKinematicIJ.h"
+#include <iomanip>
 
 using namespace MbD;
 
-void MbD::ASMTAssembly::runFile(const char* chars)
+MbD::ASMTAssembly::ASMTAssembly() : ASMTSpatialContainer()
 {
-	std::ifstream stream(chars);
+	times = std::make_shared<FullRow<double>>();
+}
+
+void MbD::ASMTAssembly::runSinglePendulumSuperSimplified()
+{
+	//In this version we skip declaration of variables that don't need as they use default values.
+	auto assembly = CREATE<ASMTAssembly>::With();
+
+	assembly->setName("Assembly1");
+
+	auto mkr = CREATE<ASMTMarker>::With();
+	mkr->setName("Marker1");
+	assembly->addMarker(mkr);
+
+	auto part = CREATE<ASMTPart>::With();
+	part->setName("Part1");
+	part->setPosition3D(-0.1, -0.1, -0.1);
+	assembly->addPart(part);
+
+	mkr = CREATE<ASMTMarker>::With();
+	mkr->setName("Marker1");
+	mkr->setPosition3D(0.1, 0.1, 0.1);
+	part->addMarker(mkr);
+
+	auto joint = CREATE<ASMTFixedJoint>::With();
+	joint->setName("Joint1");
+	joint->setMarkerI("/Assembly1/Marker1");
+	joint->setMarkerJ("/Assembly1/Part1/Marker1");
+	assembly->addJoint(joint);
+
+	auto simulationParameters = CREATE<ASMTSimulationParameters>::With();
+	simulationParameters->settstart(0.0);
+	simulationParameters->settend(0.0);	//tstart == tend Initial Conditions only.
+	simulationParameters->sethmin(1.0e-9);
+	simulationParameters->sethmax(1.0);
+	simulationParameters->sethout(0.04);
+	simulationParameters->seterrorTol(1.0e-6);
+	assembly->setSimulationParameters(simulationParameters);
+
+	assembly->runKINEMATIC();
+}
+
+void MbD::ASMTAssembly::runSinglePendulumSuperSimplified2()
+{
+	//In this version we skip declaration of variables that don't need as they use default values.
+	auto assembly = CREATE<ASMTAssembly>::With();
+	assembly->setName("OndselAssembly");
+
+	auto mkr = CREATE<ASMTMarker>::With();
+	mkr->setName("marker1");
+	assembly->addMarker(mkr);
+
+	auto part = CREATE<ASMTPart>::With();
+	part->setName("part1");
+	assembly->addPart(part);
+
+	auto marker1 = CREATE<ASMTMarker>::With();
+	marker1->setName("FixingMarker");
+	part->addMarker(marker1);
+
+	auto marker2 = CREATE<ASMTMarker>::With();
+	marker2->setName("marker2");
+	marker2->setPosition3D(20.0, 10.0, 0.0);
+	part->addMarker(marker2);
+
+	auto part2 = CREATE<ASMTPart>::With();
+	part2->setName("part2");
+	part2->setPosition3D(20.0, 10.0, 0.0);
+	assembly->addPart(part2);
+
+	auto marker3 = CREATE<ASMTMarker>::With();
+	marker3->setName("marker2");
+	marker3->setPosition3D(50.0, 10.0, 0.0);
+	part2->addMarker(marker3);
+
+	/*Ground joint*/
+	auto joint = CREATE<ASMTFixedJoint>::With();
+	joint->setName("Joint1");
+	joint->setMarkerI("/OndselAssembly/marker1");
+	joint->setMarkerJ("/OndselAssembly/part1/FixingMarker");
+	assembly->addJoint(joint);
+
+	auto joint2 = CREATE<ASMTRevoluteJoint>::With();
+	joint2->setName("Joint2");
+	joint2->setMarkerI("/OndselAssembly/part1/marker2");
+	joint2->setMarkerJ("/OndselAssembly/part2/marker2");
+	assembly->addJoint(joint2);
+
+	auto simulationParameters = CREATE<ASMTSimulationParameters>::With();
+	simulationParameters->settstart(0.0);
+	simulationParameters->settend(0.0);	//tstart == tend Initial Conditions only.
+	simulationParameters->sethmin(1.0e-9);
+	simulationParameters->sethmax(1.0);
+	simulationParameters->sethout(0.04);
+	simulationParameters->seterrorTol(1.0e-6);
+	assembly->setSimulationParameters(simulationParameters);
+
+	assembly->runKINEMATIC();
+}
+
+void MbD::ASMTAssembly::runSinglePendulumSimplified()
+{
+	auto assembly = CREATE<ASMTAssembly>::With();
+
+	assembly->setNotes("");
+	assembly->setName("Assembly1");
+	assembly->setPosition3D(0, 0, 0);
+	assembly->setRotationMatrix(
+		1, 0, 0,
+		0, 1, 0,
+		0, 0, 1);
+	assembly->setVelocity3D(0, 0, 0);
+	assembly->setOmega3D(0, 0, 0);
+
+	auto massMarker = std::make_shared<ASMTPrincipalMassMarker>();
+	massMarker->setMass(0.0);
+	massMarker->setDensity(0.0);
+	massMarker->setMomentOfInertias(0, 0, 0);
+	massMarker->setPosition3D(0, 0, 0);
+	massMarker->setRotationMatrix(
+		1, 0, 0,
+		0, 1, 0,
+		0, 0, 1);
+	assembly->setPrincipalMassMarker(massMarker);
+
+	auto mkr = CREATE<ASMTMarker>::With();
+	mkr->setName("Marker1");
+	mkr->setPosition3D(0, 0, 0);
+	mkr->setRotationMatrix(
+		1, 0, 0,
+		0, 1, 0,
+		0, 0, 1);
+	assembly->addMarker(mkr);
+
+	auto part = CREATE<ASMTPart>::With();
+	part->setName("Part1");
+	part->setPosition3D(-0.1, -0.1, -0.1);
+	part->setRotationMatrix(
+		1, 0, 0,
+		0, 1, 0,
+		0, 0, 1);
+	part->setVelocity3D(0, 0, 0);
+	part->setOmega3D(0, 0, 0);
+	assembly->addPart(part);
+
+	massMarker = std::make_shared<ASMTPrincipalMassMarker>();
+	massMarker->setMass(0.2);
+	massMarker->setDensity(10.0);
+	massMarker->setMomentOfInertias(8.3333333333333e-4, 0.016833333333333, 0.017333333333333);
+	massMarker->setPosition3D(0.5, 0.1, 0.05);
+	massMarker->setRotationMatrix(
+		1, 0, 0,
+		0, 1, 0,
+		0, 0, 1);
+	part->setPrincipalMassMarker(massMarker);
+
+	mkr = CREATE<ASMTMarker>::With();
+	mkr->setName("Marker1");
+	mkr->setPosition3D(0.1, 0.1, 0.1);
+	mkr->setRotationMatrix(
+		1, 0, 0,
+		0, 1, 0,
+		0, 0, 1);
+	part->addMarker(mkr);
+
+	auto joint = CREATE<ASMTRevoluteJoint>::With();
+	joint->setName("Joint1");
+	joint->setMarkerI("/Assembly1/Marker1");
+	joint->setMarkerJ("/Assembly1/Part1/Marker1");
+	assembly->addJoint(joint);
+
+	auto motion = CREATE<ASMTRotationalMotion>::With();
+	motion->setName("Motion1");
+	motion->setMotionJoint("/Assembly1/Joint1");
+	motion->setRotationZ("0.0");
+	assembly->addMotion(motion);
+
+	auto constantGravity = CREATE<ASMTConstantGravity>::With();
+	constantGravity->setg(0.0, 0.0, 0.0);
+	assembly->setConstantGravity(constantGravity);
+
+	auto simulationParameters = CREATE<ASMTSimulationParameters>::With();
+	simulationParameters->settstart(0.0);
+	simulationParameters->settend(0.0);	//tstart == tend Initial Conditions only.
+	simulationParameters->sethmin(1.0e-9);
+	simulationParameters->sethmax(1.0);
+	simulationParameters->sethout(0.04);
+	simulationParameters->seterrorTol(1.0e-6);
+	assembly->setSimulationParameters(simulationParameters);
+
+	assembly->runKINEMATIC();
+}
+
+void MbD::ASMTAssembly::runSinglePendulum()
+{
+	auto assembly = CREATE<ASMTAssembly>::With();
+	std::string str = "";
+	assembly->setNotes(str);
+	str = "Assembly1";
+	assembly->setName(str);
+	auto pos3D = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
+	assembly->setPosition3D(pos3D);
+	auto rotMat = std::make_shared<FullMatrix<double>>(ListListD{
+		{ 1, 0, 0 },
+		{ 0, 1, 0 },
+		{ 0, 0, 1 }
+		});
+	assembly->setRotationMatrix(rotMat);
+	auto vel3D = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
+	assembly->setVelocity3D(vel3D);
+	auto ome3D = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
+	assembly->setOmega3D(ome3D);
+	//
+	auto massMarker = std::make_shared<ASMTPrincipalMassMarker>();
+	massMarker->setMass(0.0);
+	massMarker->setDensity(0.0);
+	auto aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 0, 0, 0 });
+	massMarker->setMomentOfInertias(aJ);
+	pos3D = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
+	massMarker->setPosition3D(pos3D);
+	rotMat = std::make_shared<FullMatrix<double>>(ListListD{
+		{ 1, 0, 0 },
+		{ 0, 1, 0 },
+		{ 0, 0, 1 }
+		});
+	massMarker->setRotationMatrix(rotMat);
+	assembly->setPrincipalMassMarker(massMarker);
+	//
+	auto mkr = CREATE<ASMTMarker>::With();
+	str = "Marker1";
+	mkr->setName(str);
+	pos3D = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
+	mkr->setPosition3D(pos3D);
+	rotMat = std::make_shared<FullMatrix<double>>(ListListD{
+		{ 1, 0, 0 },
+		{ 0, 1, 0 },
+		{ 0, 0, 1 }
+		});
+	mkr->setRotationMatrix(rotMat);
+	assembly->addMarker(mkr);
+	//
+	auto part = CREATE<ASMTPart>::With();
+	str = "Part1";
+	part->setName(str);
+	pos3D = std::make_shared<FullColumn<double>>(ListD{ -0.1, -0.1, -0.1 });
+	part->setPosition3D(pos3D);
+	rotMat = std::make_shared<FullMatrix<double>>(ListListD{
+		{ 1, 0, 0 },
+		{ 0, 1, 0 },
+		{ 0, 0, 1 }
+		});
+	part->setRotationMatrix(rotMat);
+	vel3D = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
+	part->setVelocity3D(vel3D);
+	ome3D = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
+	part->setOmega3D(ome3D);
+	assembly->addPart(part);
+	//
+	massMarker = std::make_shared<ASMTPrincipalMassMarker>();
+	massMarker->setMass(0.2);
+	massMarker->setDensity(10.0);
+	aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 8.3333333333333e-4, 0.016833333333333, 0.017333333333333 });
+	massMarker->setMomentOfInertias(aJ);
+	pos3D = std::make_shared<FullColumn<double>>(ListD{ 0.5, 0.1, 0.05 });
+	massMarker->setPosition3D(pos3D);
+	rotMat = std::make_shared<FullMatrix<double>>(ListListD{
+		{ 1, 0, 0 },
+		{ 0, 1, 0 },
+		{ 0, 0, 1 }
+		});
+	massMarker->setRotationMatrix(rotMat);
+	part->setPrincipalMassMarker(massMarker);
+	//
+	mkr = CREATE<ASMTMarker>::With();
+	str = "Marker1";
+	mkr->setName(str);
+	pos3D = std::make_shared<FullColumn<double>>(ListD{ 0.1, 0.1, 0.1 });
+	mkr->setPosition3D(pos3D);
+	rotMat = std::make_shared<FullMatrix<double>>(ListListD{
+		{ 1, 0, 0 },
+		{ 0, 1, 0 },
+		{ 0, 0, 1 }
+		});
+	mkr->setRotationMatrix(rotMat);
+	part->addMarker(mkr);
+	//
+	auto joint = CREATE<ASMTRevoluteJoint>::With();
+	str = "Joint1";
+	joint->setName(str);
+	str = "/Assembly1/Marker1";
+	joint->setMarkerI(str);
+	str = "/Assembly1/Part1/Marker1";
+	joint->setMarkerJ(str);
+	assembly->addJoint(joint);
+	//
+	auto motion = CREATE<ASMTRotationalMotion>::With();
+	str = "Motion1";
+	motion->setName(str);
+	str = "/Assembly1/Joint1";
+	motion->setMotionJoint(str);
+	str = "0.0";
+	motion->setRotationZ(str);
+	assembly->addMotion(motion);
+	//
+	auto constantGravity = CREATE<ASMTConstantGravity>::With();
+	auto gAcceleration = std::make_shared<FullColumn<double>>(ListD{ 0.0, 0.0, 0.0 });
+	constantGravity->setg(gAcceleration);
+	assembly->setConstantGravity(constantGravity);
+	//
+	auto simulationParameters = CREATE<ASMTSimulationParameters>::With();
+	simulationParameters->settstart(0.0);
+	simulationParameters->settend(0.0);	//tstart == tend Initial Conditions only.
+	simulationParameters->sethmin(1.0e-9);
+	simulationParameters->sethmax(1.0);
+	simulationParameters->sethout(0.04);
+	simulationParameters->seterrorTol(1.0e-6);
+	assembly->setSimulationParameters(simulationParameters);
+	//
+	assembly->runKINEMATIC();
+}
+
+void MbD::ASMTAssembly::runFile(const char* fileName)
+{
+	std::ifstream stream(fileName);
+	if (stream.fail()) {
+		throw std::invalid_argument("File not found.");
+	}
 	std::string line;
 	std::vector<std::string> lines;
 	while (std::getline(stream, line)) {
 		lines.push_back(line);
 	}
-	assert(lines[0] == "freeCAD: 3D CAD with Motion Simulation  by  askoh.com");
+	bool bool1 = lines[0] == "freeCAD: 3D CAD with Motion Simulation  by  askoh.com";
+	bool bool2 = lines[0] == "OndselSolver";
+	assert(bool1 || bool2);
 	lines.erase(lines.begin());
 
 	if (lines[0] == "Assembly") {
 		lines.erase(lines.begin());
 		auto assembly = CREATE<ASMTAssembly>::With();
 		assembly->parseASMT(lines);
-		//assembly->runKINEMATIC();
+		assembly->runKINEMATIC();
+	}
+}
+
+void MbD::ASMTAssembly::runDynFile(const char* fileName)
+{
+	auto lines = linesFromFile(fileName);
+
+	if (lines[0] == "Assembly") {
+		lines.erase(lines.begin());
+		auto assembly = CREATE<ASMTAssembly>::With();
+		assembly->parseASMT(lines);
 		assembly->runDYNAMIC();
 	}
+	else {
+		assert(false);
+	}
+}
 
+std::vector<std::string> MbD::ASMTAssembly::linesFromFile(const char* fileName)
+{
+	std::ifstream stream(fileName);
+	if (stream.fail()) {
+		throw std::invalid_argument("File not found.");
+	}
+	std::string line;
+	std::vector<std::string> lines;
+	while (std::getline(stream, line)) {
+		lines.push_back(line);
+	}
+	bool bool1 = lines[0] == "freeCAD: 3D CAD with Motion Simulation  by  askoh.com";
+	bool bool2 = lines[0] == "OndselSolver";
+	assert(bool1 || bool2);
+	lines.erase(lines.begin());
+	return lines;
+}
+
+void MbD::ASMTAssembly::readWriteFile(const char* fileName)
+{
+	std::ifstream stream(fileName);
+	if (stream.fail()) {
+		throw std::invalid_argument("File not found.");
+	}
+	std::string line;
+	std::vector<std::string> lines;
+	while (std::getline(stream, line)) {
+		lines.push_back(line);
+	}
+	bool bool1 = lines[0] == "freeCAD: 3D CAD with Motion Simulation  by  askoh.com";
+	bool bool2 = lines[0] == "OndselSolver";
+	assert(bool1 || bool2);
+	lines.erase(lines.begin());
+
+	if (lines[0] == "Assembly") {
+		lines.erase(lines.begin());
+		auto assembly = CREATE<ASMTAssembly>::With();
+		assembly->parseASMT(lines);
+		assembly->runKINEMATIC();
+		//assembly->runDYNAMIC();
+		assembly->outputFile("assembly.asmt");
+		ASMTAssembly::runFile("assembly.asmt");
+	}
+}
+
+void MbD::ASMTAssembly::initialize()
+{
+	ASMTSpatialContainer::initialize();
+	times = std::make_shared<FullRow<double>>();
 }
 
 ASMTAssembly* MbD::ASMTAssembly::root()
 {
 	return this;
+}
+
+void MbD::ASMTAssembly::setNotes(std::string str)
+{
+	notes = str;
 }
 
 void MbD::ASMTAssembly::parseASMT(std::vector<std::string>& lines)
@@ -94,7 +505,7 @@ void MbD::ASMTAssembly::readParts(std::vector<std::string>& lines)
 {
 	assert(lines[0] == "\tParts");
 	lines.erase(lines.begin());
-	parts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
+	parts->clear();
 	auto it = std::find(lines.begin(), lines.end(), "\tKinematicIJs");
 	std::vector<std::string> partsLines(lines.begin(), it);
 	while (!partsLines.empty()) {
@@ -118,7 +529,7 @@ void MbD::ASMTAssembly::readKinematicIJs(std::vector<std::string>& lines)
 {
 	assert(lines[0] == "\tKinematicIJs");
 	lines.erase(lines.begin());
-	kinematicIJs = std::make_shared<std::vector<std::shared_ptr<ASMTKinematicIJ>>>();
+	kinematicIJs->clear();
 	auto it = std::find(lines.begin(), lines.end(), "\tConstraintSets");
 	std::vector<std::string> kinematicIJsLines(lines.begin(), it);
 	while (!kinematicIJsLines.empty()) {
@@ -146,7 +557,7 @@ void MbD::ASMTAssembly::readJoints(std::vector<std::string>& lines)
 {
 	assert(lines[0] == "\t\tJoints");
 	lines.erase(lines.begin());
-	joints = std::make_shared<std::vector<std::shared_ptr<ASMTJoint>>>();
+	joints->clear();
 	auto it = std::find(lines.begin(), lines.end(), "\t\tMotions");
 	std::vector<std::string> jointsLines(lines.begin(), it);
 	std::shared_ptr<ASMTJoint> joint;
@@ -188,7 +599,7 @@ void MbD::ASMTAssembly::readMotions(std::vector<std::string>& lines)
 {
 	assert(lines[0] == "\t\tMotions");
 	lines.erase(lines.begin());
-	motions = std::make_shared<std::vector<std::shared_ptr<ASMTMotion>>>();
+	motions->clear();
 	auto it = std::find(lines.begin(), lines.end(), "\t\tGeneralConstraintSets");
 	std::vector<std::string> motionsLines(lines.begin(), it);
 	std::shared_ptr<ASMTMotion> motion;
@@ -219,7 +630,7 @@ void MbD::ASMTAssembly::readGeneralConstraintSets(std::vector<std::string>& line
 {
 	assert(lines[0] == "\t\tGeneralConstraintSets");
 	lines.erase(lines.begin());
-	constraintSets = std::make_shared<std::vector<std::shared_ptr<ASMTConstraintSet>>>();
+	constraintSets->clear();
 	auto it = std::find(lines.begin(), lines.end(), "\tForceTorques");
 	std::vector<std::string> generalConstraintSetsLines(lines.begin(), it);
 	while (!generalConstraintSetsLines.empty()) {
@@ -232,7 +643,7 @@ void MbD::ASMTAssembly::readForcesTorques(std::vector<std::string>& lines)
 {
 	assert(lines[0] == "\tForceTorques");	//Spelling is not consistent in asmt file.
 	lines.erase(lines.begin());
-	forcesTorques = std::make_shared<std::vector<std::shared_ptr<ASMTForceTorque>>>();
+	forcesTorques->clear();
 	auto it = std::find(lines.begin(), lines.end(), "\tConstantGravity");
 	std::vector<std::string> forcesTorquesLines(lines.begin(), it);
 	while (!forcesTorquesLines.empty()) {
@@ -443,6 +854,7 @@ void MbD::ASMTAssembly::calcCharacteristicDimensions()
 	auto unitLength = this->calcCharacteristicLength();
 	auto unitAngle = 1.0;
 	this->mbdUnits = std::make_shared<Units>(unitTime, unitMass, unitLength, unitAngle);
+	this->mbdUnits = std::make_shared<Units>(1.0, 1.0, 1.0, 1.0);	//for debug
 }
 
 double MbD::ASMTAssembly::calcCharacteristicTime()
@@ -556,12 +968,57 @@ void MbD::ASMTAssembly::createMbD(std::shared_ptr<System> mbdSys, std::shared_pt
 	mbdSysSolver->orderMax = simulationParameters->orderMax;
 	mbdSysSolver->translationLimit = simulationParameters->translationLimit / mbdUnits->length;
 	mbdSysSolver->rotationLimit = simulationParameters->rotationLimit;
-	animationParameters = nullptr;
+	//animationParameters = nullptr;
+}
+
+void MbD::ASMTAssembly::outputFile(std::string filename)
+{
+	std::ofstream os(filename);
+	os << std::setprecision(std::numeric_limits<double>::digits10 + 1);
+	//	try {
+	os << "OndselSolver" << std::endl;
+	storeOnLevel(os, 0);
+	os.close();
+	//	}
+	//	catch (...) {
+	//		os.close();
+	//	}
+}
+
+void MbD::ASMTAssembly::storeOnLevel(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "Assembly");
+	storeOnLevelNotes(os, level + 1);
+	storeOnLevelName(os, level + 1);
+	ASMTSpatialContainer::storeOnLevel(os, level);
+
+	storeOnLevelParts(os, level + 1);
+	storeOnLevelKinematicIJs(os, level + 1);
+	storeOnLevelConstraintSets(os, level + 1);
+	storeOnLevelForceTorques(os, level + 1);
+	constantGravity->storeOnLevel(os, level + 1);
+	simulationParameters->storeOnLevel(os, level + 1);
+	animationParameters->storeOnLevel(os, level + 1);
+	storeOnTimeSeries(os);
+}
+
+void MbD::ASMTAssembly::solve()
+{
+	auto simulationParameters = CREATE<ASMTSimulationParameters>::With();
+	simulationParameters->settstart(0.0);
+	simulationParameters->settend(0.0);	//tstart == tend Initial Conditions only.
+	simulationParameters->sethmin(1.0e-9);
+	simulationParameters->sethmax(1.0);
+	simulationParameters->sethout(0.04);
+	simulationParameters->seterrorTol(1.0e-6);
+	setSimulationParameters(simulationParameters);
+
+	runKINEMATIC();
 }
 
 void MbD::ASMTAssembly::runKINEMATIC()
 {
-	auto mbdSystem = CREATE<System>::With();
+	auto mbdSystem = std::make_shared<System>();
 	mbdObject = mbdSystem;
 	mbdSystem->externalSystem->asmtAssembly = this;
 	mbdSystem->runKINEMATIC(mbdSystem);
@@ -573,26 +1030,15 @@ void MbD::ASMTAssembly::runDYNAMIC()
 	mbdSystem->externalSystem->asmtAssembly = this;
 	mbdSystem->runDYNAMIC(mbdSystem);
 }
-//
-//void MbD::ASMTAssembly::initprincipalMassMarker()
-//{
-//	//Choose first refPoint as center of mass
-//	assert(!refPoints->empty());
-//	auto refPoint = refPoints->at(0);
-//	principalMassMarker = CREATE<ASMTPrincipalMassMarker>::With();
-//	principalMassMarker->position3D = refPoint->position3D;
-//	principalMassMarker->rotationMatrix = refPoint->rotationMatrix;
-//}
 
 void MbD::ASMTAssembly::initprincipalMassMarker()
 {
-	principalMassMarker = CREATE<ASMTPrincipalMassMarker>::With();
+	principalMassMarker = std::make_shared<ASMTPrincipalMassMarker>();
 	principalMassMarker->mass = 0.0;
 	principalMassMarker->density = 0.0;
 	principalMassMarker->momentOfInertias = std::make_shared<DiagonalMatrix<double>>(3, 0);
-	principalMassMarker->position3D = std::make_shared<FullColumn<double>>(3, 0);
-	principalMassMarker->rotationMatrix = std::make_shared<FullMatrix<double>>(3, 3);
-	principalMassMarker->rotationMatrix->identity();
+	//principalMassMarker->position3D = std::make_shared<FullColumn<double>>(3, 0);
+	//principalMassMarker->rotationMatrix = FullMatrix<double>>::identitysptr(3);
 }
 
 std::shared_ptr<ASMTSpatialContainer> MbD::ASMTAssembly::spatialContainerAt(std::shared_ptr<ASMTAssembly> self, std::string& longname)
@@ -667,11 +1113,8 @@ std::shared_ptr<ASMTTime> MbD::ASMTAssembly::geoTime()
 void MbD::ASMTAssembly::updateFromMbD()
 {
 	ASMTSpatialContainer::updateFromMbD();
-	auto geoTime = asmtTime->getValue();
-	auto it = std::find_if(times->begin(), times->end(), [&](double t) {
-		return Numeric::equaltol(t, geoTime, 1.0e-9);
-		});
-	assert(it != times->end());
+	times->push_back(asmtTime->getValue());
+	std::cout << "Time = " << asmtTime->getValue() << std::endl;
 	for (auto& part : *parts) part->updateFromMbD();
 	for (auto& joint : *joints) joint->updateFromMbD();
 	for (auto& motion : *motions) motion->updateFromMbD();
@@ -685,6 +1128,150 @@ void MbD::ASMTAssembly::compareResults(AnalysisType type)
 	for (auto& joint : *joints) joint->compareResults(type);
 	for (auto& motion : *motions) motion->compareResults(type);
 	for (auto& forceTorque : *forcesTorques) forceTorque->compareResults(type);
+}
+
+void MbD::ASMTAssembly::outputResults(AnalysisType type)
+{
+	ASMTSpatialContainer::outputResults(type);
+	for (auto& part : *parts) part->outputResults(type);
+	for (auto& joint : *joints) joint->outputResults(type);
+	for (auto& motion : *motions) motion->outputResults(type);
+	for (auto& forceTorque : *forcesTorques) forceTorque->outputResults(type);
+}
+
+void MbD::ASMTAssembly::addPart(std::shared_ptr<ASMTPart> part)
+{
+	parts->push_back(part);
+	part->owner = this;
+}
+
+void MbD::ASMTAssembly::addJoint(std::shared_ptr<ASMTJoint> joint)
+{
+	joints->push_back(joint);
+	joint->owner = this;
+}
+
+void MbD::ASMTAssembly::addMotion(std::shared_ptr<ASMTMotion> motion)
+{
+	motions->push_back(motion);
+	motion->owner = this;
+	motion->initMarkers();
+}
+
+void MbD::ASMTAssembly::setConstantGravity(std::shared_ptr<ASMTConstantGravity> gravity)
+{
+	constantGravity = gravity;
+	gravity->owner = this;
+}
+
+void MbD::ASMTAssembly::setSimulationParameters(std::shared_ptr<ASMTSimulationParameters> parameters)
+{
+	simulationParameters = parameters;
+	parameters->owner = this;
+}
+
+std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partNamed(std::string partName)
+{
+	auto it = std::find_if(parts->begin(), parts->end(), [&](const std::shared_ptr<ASMTPart>& prt) {
+		return prt->fullName("") == partName;
+		});
+	auto& part = *it;
+	return part;
+}
+
+std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partPartialNamed(std::string partialName)
+{
+	auto it = std::find_if(parts->begin(), parts->end(), [&](const std::shared_ptr<ASMTPart>& prt) {
+		auto fullName = prt->fullName("");
+		return fullName.find(partialName) != std::string::npos;
+		});
+	auto part = *it;
+	return part;
+}
+
+void MbD::ASMTAssembly::storeOnLevelNotes(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "Notes");
+	storeOnLevelString(os, level + 1, notes);
+}
+
+void MbD::ASMTAssembly::storeOnLevelParts(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "Parts");
+	for (auto& part : *parts) {
+		part->storeOnLevel(os, level + 1);
+	}
+}
+
+void MbD::ASMTAssembly::storeOnLevelKinematicIJs(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "KinematicIJs");
+	for (auto& kinematicIJ : *kinematicIJs) {
+		kinematicIJ->storeOnLevel(os, level);
+	}
+}
+
+void MbD::ASMTAssembly::storeOnLevelConstraintSets(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "ConstraintSets");
+	storeOnLevelJoints(os, level + 1);
+	storeOnLevelMotions(os, level + 1);
+	storeOnLevelGeneralConstraintSets(os, level + 1);
+}
+
+void MbD::ASMTAssembly::storeOnLevelForceTorques(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "ForceTorques");
+	for (auto& forceTorque : *forcesTorques) {
+		forceTorque->storeOnLevel(os, level + 1);
+	}
+}
+
+void MbD::ASMTAssembly::storeOnLevelJoints(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "Joints");
+	for (auto& joint : *joints) {
+		joint->storeOnLevel(os, level + 1);
+	}
+}
+
+void MbD::ASMTAssembly::storeOnLevelMotions(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "Motions");
+	for (auto& motion : *motions) {
+		motion->storeOnLevel(os, level + 1);
+	}
+}
+
+void MbD::ASMTAssembly::storeOnLevelGeneralConstraintSets(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "GeneralConstraintSets");
+	//for (auto& generalConstraintSet : *generalConstraintSets) {
+	//	generalConstraintSet->storeOnLevel(os, level);
+	//}
+}
+
+void MbD::ASMTAssembly::storeOnTimeSeries(std::ofstream& os)
+{
+	if (times->empty()) return;
+	os << "TimeSeries" << std::endl;
+	os << "Number\tInput\t";
+	for (int i = 1; i < times->size(); i++)
+	{
+		os << i << '\t';
+	}
+	os << std::endl;
+	os << "Time\tInput\t";
+	for (int i = 1; i < times->size(); i++)
+	{
+		os << times->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "AssemblySeries\t" << fullName("") << std::endl;
+	ASMTSpatialContainer::storeOnTimeSeries(os);
+	for (auto& part : *parts) part->storeOnTimeSeries(os);
+	for (auto& joint : *joints) joint->storeOnTimeSeries(os);
+	for (auto& motion : *motions) motion->storeOnTimeSeries(os);
 }
 
 

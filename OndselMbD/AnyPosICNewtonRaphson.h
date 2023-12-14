@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -24,7 +24,7 @@ namespace MbD {
         void fillY() override;
         void fillPyPx() override;
         void passRootToSystem() override;
-        void assignEquationNumbers() = 0;
+        void assignEquationNumbers();
 
         int nqsu = -1;
         FColDsptr qsuOld;

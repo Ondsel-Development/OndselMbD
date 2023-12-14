@@ -1,13 +1,12 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
 #include <string>
-#include <cassert>
 
 #include "KineIntegrator.h"
 #include "SystemSolver.h"
@@ -19,6 +18,21 @@ void KineIntegrator::preRun()
 {
 	system->Solver::logString("MbD: Starting kinematic analysis.");
 	QuasiIntegrator::preRun();
+}
+
+void KineIntegrator::firstStep()
+{
+	assert(false);
+}
+
+void KineIntegrator::subsequentSteps()
+{
+	assert(false);
+}
+
+void KineIntegrator::nextStep()
+{
+	assert(false);
 }
 
 void KineIntegrator::runInitialConditionTypeSolution()

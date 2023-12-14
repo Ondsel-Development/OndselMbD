@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -102,4 +102,18 @@ void MbD::GearConstraintIJ::postDynCorrectorIteration()
 	orbitIeJe->postDynCorrectorIteration();
 	orbitJeIe->postDynCorrectorIteration();
 	ConstraintIJ::postDynCorrectorIteration();
+}
+
+void MbD::GearConstraintIJ::preDynOutput()
+{
+	orbitIeJe->preDynOutput();
+	orbitJeIe->preDynOutput();
+	ConstraintIJ::preDynOutput();
+}
+
+void MbD::GearConstraintIJ::postDynOutput()
+{
+	orbitIeJe->postDynOutput();
+	orbitJeIe->postDynOutput();
+	ConstraintIJ::postDynOutput();
 }

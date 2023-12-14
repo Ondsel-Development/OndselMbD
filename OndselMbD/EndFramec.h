@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -45,6 +45,7 @@ namespace MbD {
 		void fillpqsumudot(FColDsptr col) override;
 		void setpqsumu(FColDsptr col) override;
 		void setpqsumudot(FColDsptr col) override;
+		void setpqsumuddot(FColDsptr col) override;
 
 		MarkerFrame* markerFrame; //Use raw pointer when pointing backwards.
 		FColDsptr rOeO = std::make_shared<FullColumn<double>>(3);

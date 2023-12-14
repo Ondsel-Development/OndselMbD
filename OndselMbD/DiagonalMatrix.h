@@ -1,11 +1,11 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "Array.h"
@@ -24,10 +24,11 @@ namespace MbD {
 	{
 		//
 	public:
+		DiagonalMatrix() : Array<T>() {}
 		DiagonalMatrix(int count) : Array<T>(count) {}
 		DiagonalMatrix(int count, const T& value) : Array<T>(count, value) {}
 		DiagonalMatrix(std::initializer_list<T> list) : Array<T>{ list } {}
-		void atiputDiagonalMatrix(int i, std::shared_ptr < DiagonalMatrix<T>> diagMat);
+		void atiputDiagonalMatrix(int i, DiagMatsptr<T> diagMat);
 		DiagMatsptr<T> times(T factor);
 		FColsptr<T> timesFullColumn(FColsptr<T> fullCol);
 		FMatsptr<T> timesFullMatrix(FMatsptr<T> fullMat);
@@ -142,10 +143,10 @@ namespace MbD {
 	template<>
 	inline double DiagonalMatrix<double>::maxMagnitude()
 	{
-		auto max = 0.0;
+		double max = 0.0;
 		for (int i = 0; i < this->size(); i++)
 		{
-			auto element = this->at(i);
+			double element = this->at(i);
 			if (element < 0.0) element = -element;
 			if (max < element) max = element;
 		}

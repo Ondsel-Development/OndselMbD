@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -26,4 +26,16 @@ void MbD::FunctionXY::arguments(Symsptr args)
 	assert(sum->terms->size() == 2);
 	x = sum->terms->at(0);
 	y = sum->terms->at(1);
+}
+
+Symsptr MbD::FunctionXY::differentiateWRTx()
+{
+	assert(false);
+	return Symsptr();
+}
+
+Symsptr MbD::FunctionXY::differentiateWRTy()
+{
+	assert(false);
+	return Symsptr();
 }

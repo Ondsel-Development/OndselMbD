@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -243,7 +243,7 @@ void MbD::DynIntegrator::postDAEFirstStep()
 
 void MbD::DynIntegrator::postDAEOutput()
 {
-	assert(false);
+	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postDynOutput(); });
 }
 
 double MbD::DynIntegrator::suggestSmallerOrAcceptFirstStepSize(double hnew)
@@ -328,7 +328,7 @@ void MbD::DynIntegrator::preDAEFirstStep()
 
 void MbD::DynIntegrator::preDAEOutput()
 {
-	assert(false);
+	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->preDynOutput(); });
 }
 
 void MbD::DynIntegrator::preDAEPredictor()

@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -9,10 +9,10 @@
 #pragma once
 #include <vector>
 
-#include "Math.h"
+#include "MbDMath.h"
 
 namespace MbD {
-    class Numeric : public Math
+    class Numeric : public MbDMath
     {
         //
     public:

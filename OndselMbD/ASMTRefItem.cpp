@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -11,11 +11,17 @@
 
 using namespace MbD;
 
+void MbD::ASMTRefItem::addMarker(std::shared_ptr<ASMTMarker> marker)
+{
+	markers->push_back(marker);
+	marker->owner = this;
+}
+
 void MbD::ASMTRefItem::readMarkers(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("Markers") != std::string::npos);
 	lines.erase(lines.begin());
-	markers = std::make_shared<std::vector<std::shared_ptr<ASMTMarker>>>();
+	markers->clear();
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
 		return s.find("RefPoint") != std::string::npos;
 		});
@@ -34,4 +40,13 @@ void MbD::ASMTRefItem::readMarker(std::vector<std::string>& lines)
 	marker->parseASMT(lines);
 	markers->push_back(marker);
 	marker->owner = this;
+}
+
+void MbD::ASMTRefItem::storeOnLevel(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "RefPoints");
+	ASMTSpatialItem::storeOnLevel(os, level+1);
+	for (auto& marker : *markers) {
+		marker->storeOnLevel(os, level);
+	}
 }

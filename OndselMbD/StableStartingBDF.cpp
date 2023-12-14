@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -63,7 +63,7 @@ void MbD::StableStartingBDF::formTaylorMatrix()
 void MbD::StableStartingBDF::setorder(int o)
 {
 	//"order is controlled by iStep."
-	if (order != o) throw std::runtime_error("iStep and order must be consistent.");
+	if ((order != o) && (order != o + 1)) throw std::runtime_error("iStep and order must be consistent.");
 }
 
 void MbD::StableStartingBDF::setiStep(int i)

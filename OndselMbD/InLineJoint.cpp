@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -15,6 +15,11 @@ MbD::InLineJoint::InLineJoint()
 
 MbD::InLineJoint::InLineJoint(const char* str)
 {
+}
+
+void MbD::InLineJoint::initializeGlobally()
+{
+	assert(false);
 }
 
 void MbD::InLineJoint::createInLineConstraints()

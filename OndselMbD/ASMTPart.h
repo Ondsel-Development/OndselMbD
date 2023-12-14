@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -9,14 +9,11 @@
 #pragma once
 
 #include "ASMTSpatialContainer.h"
-#include "ASMTRefPoint.h"
-#include "ASMTRefCurve.h"
-#include "ASMTRefSurface.h"
-#include "ASMTPrincipalMassMarker.h"
-#include "PosVelAccData.h"
 
 namespace MbD {
-    class ASMTPart : public ASMTSpatialContainer
+    class PosVelAccData;
+
+    class EXPORT ASMTPart : public ASMTSpatialContainer
     {
         //
     public:
@@ -26,9 +23,15 @@ namespace MbD {
         void readPartSeries(std::vector<std::string>& lines);
         FColDsptr vOcmO() override;
         FColDsptr omeOpO() override;
+        ASMTPart* part() override;
+        void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+        void storeOnLevel(std::ofstream& os, int level) override;
+        void storeOnLevelMassMarker(std::ofstream& os, int level);
+        void storeOnTimeSeries(std::ofstream& os) override;
 
         //std::shared_ptr<std::vector<std::shared_ptr<ASMTFeature>>> featureOrder;
         std::shared_ptr<std::vector<std::shared_ptr<PosVelAccData>>> partSeries;
+        bool isFixed = false;
 
     };
 }

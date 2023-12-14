@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -94,7 +94,7 @@ void GESpMatParPvMarko::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr ful
 	for (int i = 0; i < m; i++)
 	{
 		auto& spRowi = spMat->at(i);
-		auto maxRowMagnitude = spRowi->maxMagnitude();
+		double maxRowMagnitude = spRowi->maxMagnitude();
 		if (maxRowMagnitude == 0) {
 			throwSingularMatrixError("");
 		}

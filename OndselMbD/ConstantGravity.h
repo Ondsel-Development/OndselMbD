@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -21,6 +21,8 @@ namespace MbD {
         void fillpFpy(SpMatDsptr mat) override;
         void fillpFpydot(SpMatDsptr mat) override;
         void postDynCorrectorIteration() override;
+        void preDynOutput() override;
+		void postDynOutput() override;
 
         FColDsptr gXYZ;
     };

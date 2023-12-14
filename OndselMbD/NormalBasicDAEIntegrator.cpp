@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -15,7 +15,6 @@
 #include "StartingBasicDAEIntegrator.h"
 
 using namespace MbD;
-
 
 MbD::NormalBasicDAEIntegrator::NormalBasicDAEIntegrator()
 {
@@ -63,7 +62,7 @@ MbD::NormalBasicDAEIntegrator::NormalBasicDAEIntegrator(std::shared_ptr<Starting
 	opBDFhigher->timeNodes = tpast;
 	opBDFhigher->time = t;
 	opBDFhigher->iStep = istep;
-	opBDFhigher->order = order;
+	opBDFhigher->order = order + 1;
 	calcOperatorMatrix();
 }
 

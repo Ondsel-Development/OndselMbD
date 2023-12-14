@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -20,7 +20,7 @@ namespace MbD {
         AngleZIecJec(EndFrmsptr frmi, EndFrmsptr frmj);
         
         void calcPostDynCorrectorIteration() override;
-        virtual void init_aAijIeJe() = 0;
+        virtual void init_aAijIeJe();
         void initialize() override;
         void initializeGlobally() override;
         void initializeLocally() override;
@@ -33,6 +33,8 @@ namespace MbD {
         double value() override;
         void postDynPredictor() override;
         void postDynCorrectorIteration() override;
+        void preDynOutput() override;
+		void postDynOutput() override;
 
         double thez, cosOverSSq, sinOverSSq, twoCosSinOverSSqSq, dSqOverSSqSq;
         std::shared_ptr<DirectionCosineIeqcJec> aA00IeJe, aA10IeJe;

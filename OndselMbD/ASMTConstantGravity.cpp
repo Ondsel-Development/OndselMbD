@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -27,4 +27,20 @@ void MbD::ASMTConstantGravity::createMbD(std::shared_ptr<System> mbdSys, std::sh
 	mbdObject = mbdGravity;
 	mbdGravity->gXYZ = g->times(1.0 / mbdUnits->acceleration);
 	mbdSys->addForceTorque(mbdGravity);
+}
+
+void MbD::ASMTConstantGravity::setg(FColDsptr gravity)
+{
+	g = gravity;
+}
+
+void MbD::ASMTConstantGravity::setg(double a, double b, double c)
+{
+	g = std::make_shared<FullColumn<double>>(ListD{ a, b, c });
+}
+
+void MbD::ASMTConstantGravity::storeOnLevel(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "ConstantGravity");
+	storeOnLevelArray(os, level + 1, *g);
 }

@@ -1,11 +1,12 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+#include <fstream>	
+
 #include "ASMTJoint.h"
 
 using namespace MbD;
@@ -33,4 +34,14 @@ void MbD::ASMTJoint::readJointSeries(std::vector<std::string>& lines)
 	readTXonIs(lines);
 	readTYonIs(lines);
 	readTZonIs(lines);
+}
+
+void MbD::ASMTJoint::storeOnLevel(std::ofstream& os, int level)
+{
+	assert(false);
+}
+
+void MbD::ASMTJoint::storeOnTimeSeries(std::ofstream& os)
+{
+	assert(false);
 }

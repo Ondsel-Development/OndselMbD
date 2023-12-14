@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -26,17 +26,17 @@ namespace MbD {
         virtual FColDsptr solvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal);
         virtual FColDsptr timedSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal);
         virtual FColDsptr timedSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal);
-        virtual FColDsptr basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal) = 0;
-        virtual FColDsptr basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) = 0;
-        virtual void preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal) = 0;
-        virtual void preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) = 0;
-        virtual void doPivoting(int p) = 0;
-        virtual void forwardEliminateWithPivot(int p) = 0;
-        virtual void backSubstituteIntoDU() = 0;
+        virtual FColDsptr basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal);
+        virtual FColDsptr basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal);
+        virtual void preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal);
+        virtual void preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal);
+        virtual void doPivoting(int p);
+        virtual void forwardEliminateWithPivot(int p);
+        virtual void backSubstituteIntoDU();
 
-        virtual void postSolve() = 0;
+        virtual void postSolve();
         virtual void findScalingsForRowRange(int begin, int end);
-        virtual double getmatrixArowimaxMagnitude(int i) = 0;
+        virtual double getmatrixArowimaxMagnitude(int i);
         void throwSingularMatrixError(const char* chars);
         void throwSingularMatrixError(const char* chars, std::shared_ptr<FullColumn<int>> redunEqnNos);
 

@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -16,8 +16,8 @@ namespace MbD {
 		//
 	public:
 		FColDsptr derivativeatpresentpast(int n, double t, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast);
-		virtual FColDsptr derivativepresentpast(int order, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast) = 0;
-		virtual double pvdotpv()= 0;
+		virtual FColDsptr derivativepresentpast(int order, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast);
+		virtual double pvdotpv();
 		double firstPastTimeNode();
 		virtual FColDsptr derivativepresentpastpresentDerivativepastDerivative(int n,
 			FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast,

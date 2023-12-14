@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -24,8 +24,20 @@ void BasicIntegrator::iStep(int integer)
 	opBDF->setiStep(integer);
 }
 
+void BasicIntegrator::postFirstStep()
+{
+	t = tnew;
+	system->postFirstStep();
+}
+
 void BasicIntegrator::postRun()
 {
+}
+
+void BasicIntegrator::postStep()
+{
+	t = tnew;
+	system->postStep();
 }
 
 void BasicIntegrator::initializeGlobally()
@@ -41,11 +53,6 @@ void BasicIntegrator::initializeGlobally()
 void BasicIntegrator::setSystem(Solver* sys)
 {
 	system = static_cast<IntegratorInterface*>(sys);
-}
-
-void MbD::BasicIntegrator::preFirstStep()
-{
-	system->preFirstStep();
 }
 
 void BasicIntegrator::calcOperatorMatrix()
@@ -104,6 +111,11 @@ void BasicIntegrator::selectOrder()
 	if (iTry == 1) orderNew = std::min(istep + 1, orderMax);
 }
 
+void BasicIntegrator::preFirstStep()
+{
+	system->preFirstStep();
+}
+
 void BasicIntegrator::preRun()
 {
 }
@@ -132,7 +144,7 @@ void BasicIntegrator::settnew(double t)
 void BasicIntegrator::sett(double tt)
 {
 	t = tt;
-	settime(tt);
+	opBDF->settime(tt);
 }
 
 void BasicIntegrator::settime(double tt)
@@ -145,7 +157,7 @@ double BasicIntegrator::tprevious()
 	return tpast->at(0);
 }
 
-FColDsptr MbD::BasicIntegrator::yDerivat(int n, double time)
+FColDsptr BasicIntegrator::yDerivat(int n, double time)
 {
 	assert(false);
 	return FColDsptr();

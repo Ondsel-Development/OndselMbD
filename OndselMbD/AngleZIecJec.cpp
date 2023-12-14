@@ -1,12 +1,12 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
-#include <corecrt_math_defines.h>
+#include "corecrt_math_defines.h"
 
 #include "AngleZIecJec.h"
 #include "Numeric.h"
@@ -34,6 +34,11 @@ void MbD::AngleZIecJec::calcPostDynCorrectorIteration()
 	sinOverSSq = sthez / sumOfSquares;
 	twoCosSinOverSSqSq = 2.0 * cthez * sthez / sumOfSquaresSquared;
 	dSqOverSSqSq = diffOfSquares / sumOfSquaresSquared;
+}
+
+void MbD::AngleZIecJec::init_aAijIeJe()
+{
+	assert(false);
 }
 
 void MbD::AngleZIecJec::initialize()
@@ -114,4 +119,18 @@ void MbD::AngleZIecJec::postDynCorrectorIteration()
 	aA00IeJe->postDynCorrectorIteration();
 	aA10IeJe->postDynCorrectorIteration();
 	KinematicIeJe::postDynCorrectorIteration();
+}
+
+void MbD::AngleZIecJec::preDynOutput()
+{
+	aA00IeJe->preDynOutput();
+	aA10IeJe->preDynOutput();
+	KinematicIeJe::preDynOutput();
+}
+
+void MbD::AngleZIecJec::postDynOutput()
+{
+	aA00IeJe->postDynOutput();
+	aA10IeJe->postDynOutput();
+	KinematicIeJe::postDynOutput();
 }

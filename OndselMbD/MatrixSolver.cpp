@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -26,6 +26,7 @@ void MatrixSolver::initialize()
 
 void MatrixSolver::setSystem(Solver* sys)
 {
+	assert(false);
 }
 
 FColDsptr MatrixSolver::solvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
@@ -53,9 +54,52 @@ FColDsptr MatrixSolver::timedSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr f
 	return answerX;
 }
 
+FColDsptr MbD::MatrixSolver::basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
+{
+	assert(false);
+	return FColDsptr();
+}
+
+FColDsptr MbD::MatrixSolver::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+{
+	assert(false);
+	return FColDsptr();
+}
+
+void MbD::MatrixSolver::preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
+{
+	assert(false);
+}
+
+void MbD::MatrixSolver::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+{
+	assert(false);
+}
+
+void MbD::MatrixSolver::doPivoting(int p)
+{
+	assert(false);
+}
+
+void MbD::MatrixSolver::forwardEliminateWithPivot(int p)
+{
+	assert(false);
+}
+
+void MbD::MatrixSolver::backSubstituteIntoDU()
+{
+	assert(false);
+}
+
 FColDsptr MatrixSolver::timedSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
 {
+	assert(false);
 	return FColDsptr();
+}
+
+void MbD::MatrixSolver::postSolve()
+{
+	assert(false);
 }
 
 void MatrixSolver::findScalingsForRowRange(int begin, int end)
@@ -64,10 +108,16 @@ void MatrixSolver::findScalingsForRowRange(int begin, int end)
 	rowScalings = std::make_shared<FullColumn<double>>(m);
 	for (int i = begin; i < end; i++)
 	{
-		auto maxRowMagnitude = this->getmatrixArowimaxMagnitude(i);
+		double maxRowMagnitude = this->getmatrixArowimaxMagnitude(i);
 		if (maxRowMagnitude == 0.0) throwSingularMatrixError("");
 		rowScalings->at(i) = 1.0 / maxRowMagnitude;
 	}
+}
+
+double MbD::MatrixSolver::getmatrixArowimaxMagnitude(int i)
+{
+	assert(false);
+	return 0.0;
 }
 
 void MatrixSolver::throwSingularMatrixError(const char* chars)

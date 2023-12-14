@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -46,7 +46,7 @@ void MbD::ASMTConstraintSet::updateFromMbD()
 	auto aFIeO = mbdJoint->aFX()->times(mbdUnts->force);
 	auto aTIeO = mbdJoint->aTX()->times(mbdUnts->torque);
 	auto rImIeO = mbdJoint->frmI->rmeO()->times(mbdUnts->length);
-	auto& aFIO = aFIeO;
+	auto aFIO = aFIeO;
 	auto aTIO = aTIeO->plusFullColumn(rImIeO->cross(aFIeO));
 	fxs->push_back(aFIO->at(0));
 	fys->push_back(aFIO->at(1));
@@ -58,6 +58,7 @@ void MbD::ASMTConstraintSet::updateFromMbD()
 
 void MbD::ASMTConstraintSet::compareResults(AnalysisType type)
 {
+	if (infxs == nullptr || infxs->empty()) return;
 	auto mbdUnts = mbdUnits();
 	auto factor = 1.0e-6;
 	auto forceTol = mbdUnts->force * factor;
@@ -69,4 +70,8 @@ void MbD::ASMTConstraintSet::compareResults(AnalysisType type)
 	//assert(Numeric::equaltol(txs->at(i), intxs->at(i), torqueTol));
 	//assert(Numeric::equaltol(tys->at(i), intys->at(i), torqueTol));
 	//assert(Numeric::equaltol(tzs->at(i), intzs->at(i), torqueTol));
+}
+
+void MbD::ASMTConstraintSet::outputResults(AnalysisType type)
+{
 }

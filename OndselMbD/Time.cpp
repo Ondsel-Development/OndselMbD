@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -12,10 +12,10 @@ using namespace MbD;
 
 Time::Time()
 {
+	std::string str = "t";
+	this->setName(str);
 }
 
 void Time::initialize()
 {
-	std::string str = "t";
-	this->setName(str);
 }

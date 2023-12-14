@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -47,16 +47,16 @@ namespace MbD {
 		FColDsptr fillF();
 		int iterMax() override;
 		SpMatDsptr calcG();
-		virtual std::shared_ptr<LinearMultiStepMethod> correctorBDF() = 0;
+		virtual std::shared_ptr<LinearMultiStepMethod> correctorBDF();
 		void calcOperatorMatrix() override;
 		void setorder(int o) override;
 		void settime(double t) override;
 		void iStep(int i) override;
 		double corErrorNormFromwrt(FColDsptr error, FColDsptr ref);
 		void updateForDAECorrector();
-		virtual FColDsptr yDeriv(int order) = 0;
+		virtual FColDsptr yDeriv(int order);
 		void calcTruncError();
-		virtual FColDsptr dyOrderPlusOnedt() = 0;
+		virtual FColDsptr dyOrderPlusOnedt();
 		bool isConvergedForand(int iterNo, std::shared_ptr<std::vector<double>> dxNorms);
 		void postFirstStep();
 		void postStep();

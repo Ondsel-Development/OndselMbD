@@ -1,20 +1,31 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+#include <algorithm>
+#include <fstream>	
+
 #include "ASMTSpatialContainer.h"
 #include "Units.h"
 #include "Part.h"
 #include "System.h"
+#include "ASMTRefPoint.h"
+#include "ASMTRefCurve.h"
+#include "ASMTRefSurface.h"
+ //#include "ASMTPrincipalMassMarker.h"
+
 
 using namespace MbD;
 
-void MbD::ASMTSpatialContainer::initialize()
+MbD::ASMTSpatialContainer::ASMTSpatialContainer()
 {
+	refPoints = std::make_shared<std::vector<std::shared_ptr<ASMTRefPoint>>>();
+	refCurves = std::make_shared<std::vector<std::shared_ptr<ASMTRefCurve>>>();
+	refSurfaces = std::make_shared<std::vector<std::shared_ptr<ASMTRefSurface>>>();
+
 	xs = std::make_shared<FullRow<double>>();
 	ys = std::make_shared<FullRow<double>>();
 	zs = std::make_shared<FullRow<double>>();
@@ -35,11 +46,42 @@ void MbD::ASMTSpatialContainer::initialize()
 	alpzs = std::make_shared<FullRow<double>>();
 }
 
+void MbD::ASMTSpatialContainer::initialize()
+{
+	refPoints = std::make_shared<std::vector<std::shared_ptr<ASMTRefPoint>>>();
+	refCurves = std::make_shared<std::vector<std::shared_ptr<ASMTRefCurve>>>();
+	refSurfaces = std::make_shared<std::vector<std::shared_ptr<ASMTRefSurface>>>();
+
+	xs = std::make_shared<FullRow<double>>();
+	ys = std::make_shared<FullRow<double>>();
+	zs = std::make_shared<FullRow<double>>();
+	bryxs = std::make_shared<FullRow<double>>();
+	bryys = std::make_shared<FullRow<double>>();
+	bryzs = std::make_shared<FullRow<double>>();
+	vxs = std::make_shared<FullRow<double>>();
+	vys = std::make_shared<FullRow<double>>();
+	vzs = std::make_shared<FullRow<double>>();
+	omexs = std::make_shared<FullRow<double>>();
+	omeys = std::make_shared<FullRow<double>>();
+	omezs = std::make_shared<FullRow<double>>();
+	axs = std::make_shared<FullRow<double>>();
+	ays = std::make_shared<FullRow<double>>();
+	azs = std::make_shared<FullRow<double>>();
+	alpxs = std::make_shared<FullRow<double>>();
+	alpys = std::make_shared<FullRow<double>>();
+	alpzs = std::make_shared<FullRow<double>>();
+}
+
+void MbD::ASMTSpatialContainer::setPrincipalMassMarker(std::shared_ptr<ASMTPrincipalMassMarker> aJ)
+{
+	principalMassMarker = aJ;
+}
+
 void MbD::ASMTSpatialContainer::readRefPoints(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("RefPoints") != std::string::npos);
 	lines.erase(lines.begin());
-	refPoints = std::make_shared<std::vector<std::shared_ptr<ASMTRefPoint>>>();
+	refPoints->clear();
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
 		return s.find("RefCurves") != std::string::npos;
 		});
@@ -64,7 +106,7 @@ void MbD::ASMTSpatialContainer::readRefCurves(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("RefCurves") != std::string::npos);
 	lines.erase(lines.begin());
-	refCurves = std::make_shared<std::vector<std::shared_ptr<ASMTRefCurve>>>();
+	refCurves->clear();
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
 		return s.find("RefSurfaces") != std::string::npos;
 		});
@@ -84,7 +126,7 @@ void MbD::ASMTSpatialContainer::readRefSurfaces(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("RefSurfaces") != std::string::npos);
 	lines.erase(lines.begin());
-	refSurfaces = std::make_shared<std::vector<std::shared_ptr<ASMTRefSurface>>>();
+	refSurfaces->clear();
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
 		return s.find("Part") != std::string::npos;
 		});
@@ -280,9 +322,9 @@ FColDsptr MbD::ASMTSpatialContainer::omeOpO()
 	return FColDsptr();
 }
 
-std::shared_ptr<ASMTSpatialContainer> MbD::ASMTSpatialContainer::part()
+ASMTSpatialContainer* MbD::ASMTSpatialContainer::partOrAssembly()
 {
-	return std::make_shared<ASMTSpatialContainer>(*this);
+	return this;
 }
 
 void MbD::ASMTSpatialContainer::updateFromMbD()
@@ -293,14 +335,18 @@ void MbD::ASMTSpatialContainer::updateFromMbD()
 	auto aAOp = mbdPart->aAOp();
 	auto vOcmO = mbdPart->qXdot()->times(mbdUnts->velocity);
 	auto omeOPO = mbdPart->omeOpO()->times(mbdUnts->omega);
+	omega3D = omeOPO;
 	auto aOcmO = mbdPart->qXddot()->times(mbdUnts->acceleration);
 	auto alpOPO = mbdPart->alpOpO()->times(mbdUnts->alpha);
 	auto& rPcmP = principalMassMarker->position3D;
 	auto& aAPp = principalMassMarker->rotationMatrix;
 	auto aAOP = aAOp->timesTransposeFullMatrix(aAPp);
+	rotationMatrix = aAOP;
 	auto rPcmO = aAOP->timesFullColumn(rPcmP);
 	auto rOPO = rOcmO->minusFullColumn(rPcmO);
+	position3D = rOPO;
 	auto vOPO = vOcmO->minusFullColumn(omeOPO->cross(rPcmO));
+	velocity3D = vOPO;
 	auto aOPO = aOcmO->minusFullColumn(alpOPO->cross(rPcmO))->minusFullColumn(omeOPO->cross(omeOPO->cross(rPcmO)));
 	xs->push_back(rOPO->at(0));
 	ys->push_back(rOPO->at(1));
@@ -325,6 +371,7 @@ void MbD::ASMTSpatialContainer::updateFromMbD()
 
 void MbD::ASMTSpatialContainer::compareResults(AnalysisType type)
 {
+	if (inxs == nullptr || inxs->empty()) return;
 	auto mbdUnts = mbdUnits();
 	auto factor = 1.0e-6;
 	auto lengthTol = mbdUnts->length * factor;
@@ -391,4 +438,292 @@ void MbD::ASMTSpatialContainer::compareResults(AnalysisType type)
 	if (!Numeric::equaltol(alpzs->at(i), inalpzs->at(i), alphaTol)) {
 		std::cout << i << " alpzs " << alpzs->at(i) << ", " << inalpzs->at(i) << ", " << alphaTol << std::endl;
 	}
+}
+
+void MbD::ASMTSpatialContainer::outputResults(AnalysisType type)
+{
+	if (inxs != nullptr && !inxs->empty()) return;
+	auto i = xs->size() - 1;
+	std::cout << i << " ";
+	std::cout << xs->at(i) << ", " << ys->at(i) << ", " << zs->at(i) << ", ";
+	std::cout << bryxs->at(i) << ", " << bryys->at(i) << ", " << bryzs->at(i) << std::endl;
+}
+
+void MbD::ASMTSpatialContainer::addRefPoint(std::shared_ptr<ASMTRefPoint> refPoint)
+{
+	refPoints->push_back(refPoint);
+	refPoint->owner = this;
+}
+
+void MbD::ASMTSpatialContainer::addMarker(std::shared_ptr<ASMTMarker> marker)
+{
+	auto refPoint = CREATE<ASMTRefPoint>::With();
+	addRefPoint(refPoint);
+	refPoint->addMarker(marker);
+}
+
+std::string MbD::ASMTSpatialContainer::generateUniqueMarkerName()
+{
+	auto aItemList = markerList();
+	auto markerNames = std::vector<std::string>();
+	for (auto& mkr : *aItemList) {
+		markerNames.push_back(mkr->name);
+	}
+	std::stringstream ss;
+	auto count = 0;
+	while (true) {
+		ss.str("");
+		ss << "Marker";
+		ss << count;
+		if (std::find(markerNames.begin(), markerNames.end(), ss.str()) == markerNames.end()) break;
+		count++;
+	}
+	return ss.str();
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<ASMTMarker>>> MbD::ASMTSpatialContainer::markerList()
+{
+	auto markers = std::make_shared<std::vector<std::shared_ptr<ASMTMarker>>>();
+	for (auto& refPoint : *refPoints) {
+		auto refmarkers = refPoint->markers;
+		markers->insert(markers->end(), refmarkers->begin(), refmarkers->end());
+	}
+	return markers;
+}
+
+void MbD::ASMTSpatialContainer::storeOnLevel(std::ofstream& os, int level)
+{
+	ASMTSpatialItem::storeOnLevel(os, level);
+	storeOnLevelVelocity(os, level + 1);
+	storeOnLevelOmega(os, level + 1);
+	storeOnLevelRefPoints(os, level + 1);
+	storeOnLevelRefCurves(os, level + 1);
+	storeOnLevelRefSurfaces(os, level + 1);
+}
+
+void MbD::ASMTSpatialContainer::setVelocity3D(FColDsptr vec)
+{
+	velocity3D = vec;
+}
+
+void MbD::ASMTSpatialContainer::setOmega3D(FColDsptr vec)
+{
+	omega3D = vec;
+}
+
+void MbD::ASMTSpatialContainer::readVelocity3D(std::vector<std::string>& lines)
+{
+	assert(lines[0].find("Velocity3D") != std::string::npos);
+	lines.erase(lines.begin());
+	std::istringstream iss(lines[0]);
+	velocity3D = std::make_shared<FullColumn<double>>();
+	double d;
+	while (iss >> d) {
+		velocity3D->push_back(d);
+	}
+	lines.erase(lines.begin());
+}
+
+void MbD::ASMTSpatialContainer::readOmega3D(std::vector<std::string>& lines)
+{
+	assert(lines[0].find("Omega3D") != std::string::npos);
+	lines.erase(lines.begin());
+	std::istringstream iss(lines[0]);
+	omega3D = std::make_shared<FullColumn<double>>();
+	double d;
+	while (iss >> d) {
+		omega3D->push_back(d);
+	}
+	lines.erase(lines.begin());
+}
+
+void MbD::ASMTSpatialContainer::setVelocity3D(double a, double b, double c)
+{
+	velocity3D = std::make_shared<FullColumn<double>>(ListD{ a, b, c });
+}
+
+void MbD::ASMTSpatialContainer::setOmega3D(double a, double b, double c)
+{
+	omega3D = std::make_shared<FullColumn<double>>(ListD{ a, b, c });
+}
+
+void MbD::ASMTSpatialContainer::storeOnLevelVelocity(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "Velocity3D");
+	if (vxs == nullptr || vxs->empty()) {
+		storeOnLevelArray(os, level + 1, *velocity3D);
+	}
+	else {
+		auto array = getVelocity3D(0);
+		storeOnLevelArray(os, level + 1, *array);
+	}
+}
+
+void MbD::ASMTSpatialContainer::storeOnLevelOmega(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "Omega3D");
+	if (omexs == nullptr || omexs->empty()) {
+		storeOnLevelArray(os, level + 1, *omega3D);
+	}
+	else {
+		auto array = getOmega3D(0);
+		storeOnLevelArray(os, level + 1, *array);
+	}
+}
+
+void MbD::ASMTSpatialContainer::storeOnLevelRefPoints(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "RefPoints");
+	for (auto& refPoint : *refPoints)
+	{
+		refPoint->storeOnLevel(os, level + 1);
+	}
+}
+
+void MbD::ASMTSpatialContainer::storeOnLevelRefCurves(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "RefCurves");
+	for (auto& refCurve : *refCurves)
+	{
+		refCurve->storeOnLevel(os, level);
+	}
+}
+
+void MbD::ASMTSpatialContainer::storeOnLevelRefSurfaces(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "RefSurfaces");
+	for (auto& refSurface : *refSurfaces)
+	{
+		refSurface->storeOnLevel(os, level);
+	}
+}
+
+void MbD::ASMTSpatialContainer::storeOnTimeSeries(std::ofstream& os)
+{
+	os << "X\t";
+	for (int i = 0; i < xs->size(); i++)
+	{
+		os << xs->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "Y\t";
+	for (int i = 0; i < ys->size(); i++)
+	{
+		os << ys->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "Z\t";
+	for (int i = 0; i < zs->size(); i++)
+	{
+		os << zs->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "Bryantx\t";
+	for (int i = 0; i < bryxs->size(); i++)
+	{
+		os << bryxs->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "Bryanty\t";
+	for (int i = 0; i < bryys->size(); i++)
+	{
+		os << bryys->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "Bryantz\t";
+	for (int i = 0; i < bryzs->size(); i++)
+	{
+		os << bryzs->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "VX\t";
+	for (int i = 0; i < vxs->size(); i++)
+	{
+		os << vxs->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "VY\t";
+	for (int i = 0; i < vys->size(); i++)
+	{
+		os << vys->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "VZ\t";
+	for (int i = 0; i < vzs->size(); i++)
+	{
+		os << vzs->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "OmegaX\t";
+	for (int i = 0; i < omexs->size(); i++)
+	{
+		os << omexs->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "OmegaY\t";
+	for (int i = 0; i < omeys->size(); i++)
+	{
+		os << omeys->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "OmegaZ\t";
+	for (int i = 0; i < omezs->size(); i++)
+	{
+		os << omezs->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "AX\t";
+	for (int i = 0; i < axs->size(); i++)
+	{
+		os << axs->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "AY\t";
+	for (int i = 0; i < ays->size(); i++)
+	{
+		os << ays->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "AZ\t";
+	for (int i = 0; i < azs->size(); i++)
+	{
+		os << azs->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "AlphaX\t";
+	for (int i = 0; i < alpxs->size(); i++)
+	{
+		os << alpxs->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "AlphaY\t";
+	for (int i = 0; i < alpys->size(); i++)
+	{
+		os << alpys->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "AlphaZ\t";
+	for (int i = 0; i < alpzs->size(); i++)
+	{
+		os << alpzs->at(i) << '\t';
+	}
+	os << std::endl;
+}
+
+FColDsptr MbD::ASMTSpatialContainer::getVelocity3D(size_t i)
+{
+	auto vec3 = std::make_shared<FullColumn<double>>(3);
+	vec3->atiput(0, vxs->at(i));
+	vec3->atiput(1, vys->at(i));
+	vec3->atiput(2, vzs->at(i));
+	return vec3;
+}
+
+FColDsptr MbD::ASMTSpatialContainer::getOmega3D(size_t i)
+{
+	auto vec3 = std::make_shared<FullColumn<double>>(3);
+	vec3->atiput(0, omexs->at(i));
+	vec3->atiput(1, omeys->at(i));
+	vec3->atiput(2, omezs->at(i));
+	return vec3;
 }

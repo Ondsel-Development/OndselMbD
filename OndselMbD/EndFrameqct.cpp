@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -31,7 +31,7 @@ void EndFrameqct::initialize()
 	rmem = std::make_shared<FullColumn<double>>(3);
 	prmempt = std::make_shared<FullColumn<double>>(3);
 	pprmemptpt = std::make_shared<FullColumn<double>>(3);
-	aAme = std::make_shared<FullMatrix<double>>(3, 3);
+	aAme = FullMatrix<double>::identitysptr(3);
 	pAmept = std::make_shared<FullMatrix<double>>(3, 3);
 	ppAmeptpt = std::make_shared<FullMatrix<double>>(3, 3);
 	pprOeOpEpt = std::make_shared<FullMatrix<double>>(3, 4);
@@ -101,6 +101,8 @@ void EndFrameqct::initpPhiThePsiptBlks()
 		auto vel = var->simplified(var);
 		//std::cout << "vel " << *vel << std::endl;
 		pPhiThePsiptBlks->at(i) = vel;
+		//std::cout << *angle << std::endl;
+		//std::cout << *vel << std::endl;
 	}
 }
 
@@ -113,6 +115,8 @@ void EndFrameqct::initppPhiThePsiptptBlks()
 		auto var = angleVel->differentiateWRT(mbdTime);
 		auto angleAcc = var->simplified(var);
 		ppPhiThePsiptptBlks->at(i) = angleAcc;
+		//std::cout << *angleVel << std::endl;
+		//std::cout << *angleAcc << std::endl;
 	}
 }
 
@@ -368,4 +372,20 @@ void MbD::EndFrameqct::postDynPredictor()
 	this->evalrmem();
 	this->evalAme();
 	EndFrameqc::postDynPredictor();
+}
+
+void MbD::EndFrameqct::preDynOutput()
+{
+	time = this->root()->mbdTimeValue();
+	this->evalrmem();
+	this->evalAme();
+	EndFrameqc::preDynOutput();
+}
+
+void MbD::EndFrameqct::postDynOutput()
+{
+	time = this->root()->mbdTimeValue();
+	this->evalrmem();
+	this->evalAme();
+	EndFrameqc::postDynOutput();
 }

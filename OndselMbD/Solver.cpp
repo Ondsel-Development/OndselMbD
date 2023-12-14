@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -12,6 +12,11 @@
 #include <string>
 
 using namespace MbD;
+
+void MbD::Solver::noop()
+{
+	//No Operations
+}
 
 void Solver::initialize()
 {
@@ -63,4 +68,14 @@ void Solver::logString(const char* chars)
 {
 	std::string str = chars;
 	this->logString(str);
+}
+
+void MbD::Solver::setSystem(Solver* sys)
+{
+	assert(false);
+}
+
+void MbD::Solver::handleSingularMatrix()
+{
+	assert(false);
 }

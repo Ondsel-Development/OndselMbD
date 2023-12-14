@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -51,7 +51,9 @@ namespace MbD {
 		FColDsptr rpep() override;
 		void preAccIC() override;
 		void postDynPredictor() override;
-
+		void preDynOutput() override;
+		void postDynOutput() override;
+		
 		std::shared_ptr<FullColumn<Symsptr>> rmemBlks, prmemptBlks, pprmemptptBlks;
 		std::shared_ptr<FullColumn<Symsptr>> phiThePsiBlks, pPhiThePsiptBlks, ppPhiThePsiptptBlks;
 		FColDsptr rmem, prmempt, pprmemptpt, prOeOpt, pprOeOptpt;

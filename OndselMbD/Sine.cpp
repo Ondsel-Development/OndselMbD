@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -25,8 +25,13 @@ Symsptr MbD::Sine::differentiateWRTx()
     return std::make_shared<Cosine>(xx);
 }
 
+Symsptr MbD::Sine::copyWith(Symsptr arg)
+{
+	return std::make_shared<Sine>(arg);
+}
+
 std::ostream& MbD::Sine::printOn(std::ostream& s) const
 {
-	s << "sin(" << xx << ")";
+	s << "sin(" << *xx << ")";
 	return s;
 }

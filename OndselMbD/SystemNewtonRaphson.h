@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -19,7 +19,7 @@ namespace MbD {
         //
     public:
         void initializeGlobally() override;
-        virtual void assignEquationNumbers() = 0;
+        virtual void assignEquationNumbers();
         virtual void createVectorsAndMatrices();
         std::shared_ptr<MatrixSolver> matrixSolverClassNew() override;
         void calcdxNorm() override;

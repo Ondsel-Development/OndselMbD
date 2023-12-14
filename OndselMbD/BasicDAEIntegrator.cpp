@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -325,6 +325,12 @@ SpMatDsptr MbD::BasicDAEIntegrator::calcG()
 	return matG;
 }
 
+std::shared_ptr<LinearMultiStepMethod> MbD::BasicDAEIntegrator::correctorBDF()
+{
+	assert(false);
+	return std::shared_ptr<LinearMultiStepMethod>();
+}
+
 void MbD::BasicDAEIntegrator::calcOperatorMatrix()
 {
 	BasicIntegrator::calcOperatorMatrix();
@@ -362,6 +368,12 @@ void MbD::BasicDAEIntegrator::updateForDAECorrector()
 	system->updateForDAECorrector();
 }
 
+FColDsptr MbD::BasicDAEIntegrator::yDeriv(int order)
+{
+	assert(false);
+	return FColDsptr();
+}
+
 void MbD::BasicDAEIntegrator::calcTruncError()
 {
 	//"Calculate the leading term of truncation error in Taylor series."
@@ -371,6 +383,12 @@ void MbD::BasicDAEIntegrator::calcTruncError()
 	auto yndotNorm = integErrorNormFromwrt(yndot, y);
 	auto hpower = std::pow(h, order + 1);
 	truncError = factor * yndotNorm * hpower;
+}
+
+FColDsptr MbD::BasicDAEIntegrator::dyOrderPlusOnedt()
+{
+	assert(false);
+	return FColDsptr();
 }
 
 bool MbD::BasicDAEIntegrator::isConvergedForand(int iterNo, std::shared_ptr<std::vector<double>> dxNorms)

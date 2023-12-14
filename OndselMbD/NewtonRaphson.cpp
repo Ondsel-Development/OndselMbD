@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -77,6 +77,31 @@ void NewtonRaphson::iterate()
 	}
 }
 
+void MbD::NewtonRaphson::fillY()
+{
+	assert(false);
+}
+
+void MbD::NewtonRaphson::fillPyPx()
+{
+	assert(false);
+}
+
+void MbD::NewtonRaphson::calcyNorm()
+{
+	assert(false);
+}
+
+void MbD::NewtonRaphson::calcdxNorm()
+{
+	assert(false);
+}
+
+void MbD::NewtonRaphson::solveEquations()
+{
+	assert(false);
+}
+
 void NewtonRaphson::incrementIterNo()
 {
 	iterNo++;
@@ -86,12 +111,27 @@ void NewtonRaphson::incrementIterNo()
 	}
 }
 
+void MbD::NewtonRaphson::updatexold()
+{
+	assert(false);
+}
+
+void MbD::NewtonRaphson::xEqualxoldPlusdx()
+{
+	assert(false);
+}
+
 bool NewtonRaphson::isConverged()
 {
 	return this->isConvergedToNumericalLimit();
 }
 
 void NewtonRaphson::askSystemToUpdate()
+{
+	assert(false);
+}
+
+void MbD::NewtonRaphson::passRootToSystem()
 {
 	assert(false);
 }

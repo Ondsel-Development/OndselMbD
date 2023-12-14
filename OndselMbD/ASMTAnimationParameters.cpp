@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -41,4 +41,21 @@ void MbD::ASMTAnimationParameters::parseASMT(std::vector<std::string>& lines)
 	framesPerSecond = readInt(lines[0]);
 	lines.erase(lines.begin());
 
+}
+
+void MbD::ASMTAnimationParameters::storeOnLevel(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "AnimationParameters");
+	storeOnLevelString(os, level + 1, "nframe");
+	storeOnLevelInt(os, level + 2, nframe);
+	storeOnLevelString(os, level + 1, "icurrent");
+	storeOnLevelInt(os, level + 2, icurrent);
+	storeOnLevelString(os, level + 1, "istart");
+	storeOnLevelInt(os, level + 2, istart);
+	storeOnLevelString(os, level + 1, "iend");
+	storeOnLevelInt(os, level + 2, iend);
+	storeOnLevelString(os, level + 1, "isForward");
+	storeOnLevelBool(os, level + 2, isForward);
+	storeOnLevelString(os, level + 1, "framesPerSecond");
+	storeOnLevelInt(os, level + 2, framesPerSecond);
 }

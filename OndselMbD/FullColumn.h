@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -44,7 +44,7 @@ namespace MbD {
 		void atiplusFullColumn(int i, FColsptr<T> fullCol);
 		void equalSelfPlusFullColumnAt(FColsptr<T> fullCol, int i);
 		void atiminusFullColumn(int i, FColsptr<T> fullCol);
-		void equalFullColumnat(FColsptr<T> fullCol, int i);
+		void equalFullColumnAt(FColsptr<T> fullCol, int i);
 		FColsptr<T> copy();
 		FRowsptr<T> transpose();
 		void atiplusFullColumntimes(int i, FColsptr<T> fullCol, T factor);
@@ -143,7 +143,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void FullColumn<T>::equalFullColumnat(FColsptr<T> fullCol, int i)
+	inline void FullColumn<T>::equalFullColumnAt(FColsptr<T> fullCol, int i)
 	{
 		this->equalArrayAt(fullCol, i);
 		//for (int ii = 0; ii < this->size(); ii++)
@@ -189,17 +189,17 @@ namespace MbD {
 	template<typename T>
 	inline FColsptr<T> FullColumn<T>::cross(FColsptr<T> fullCol)
 	{
-		auto a0 = this->at(0);
-		auto a1 = this->at(1);
-		auto a2 = this->at(2);
-		auto b0 = fullCol->at(0);
-		auto b1 = fullCol->at(1);
-		auto b2 = fullCol->at(2);
-		auto answer = std::make_shared<FullColumn<T>>(3);
-		answer->atiput(0, a1 * b2 - (a2 * b1));
-		answer->atiput(1, a2 * b0 - (a0 * b2));
-		answer->atiput(2, a0 * b1 - (a1 * b0));
-		return answer;
+			auto a0 = this->at(0);
+			auto a1 = this->at(1);
+			auto a2 = this->at(2);
+			auto b0 = fullCol->at(0);
+			auto b1 = fullCol->at(1);
+			auto b2 = fullCol->at(2);
+			auto answer = std::make_shared<FullColumn<T>>(3);
+			answer->atiput(0, a1 * b2 - (a2 * b1));
+			answer->atiput(1, a2 * b0 - (a0 * b2));
+			answer->atiput(2, a0 * b1 - (a1 * b0));
+			return answer;
 	}
 	//template<>
 	//inline std::shared_ptr<FullColumn<Symsptr>> FullColumn<Symsptr>::simplified()

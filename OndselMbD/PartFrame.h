@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -42,6 +42,7 @@ namespace MbD {
 		void setqX(FColDsptr x);
 		FColDsptr getqX();
 		void setqE(FColDsptr x);
+		void setaAap(FMatDsptr mat);
 		FColDsptr getqE();
 		void setqXdot(FColDsptr x);
 		FColDsptr getqXdot();
@@ -108,11 +109,14 @@ namespace MbD {
 		void postDynStep() override;
 		void setpqsumu(FColDsptr col) override;
 		void setpqsumudot(FColDsptr col) override;
+		void setpqsumuddot(FColDsptr col) override;
 		void postDynPredictor() override;
 		void fillDynError(FColDsptr col) override;
 		void fillpFpy(SpMatDsptr mat) override;
 		void fillpFpydot(SpMatDsptr mat) override;
 		void postDynCorrectorIteration() override;
+        void preDynOutput() override;
+		void postDynOutput() override;
 
 		Part* part = nullptr; //Use raw pointer when pointing backwards.
 		int iqX = -1;

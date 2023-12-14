@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -15,6 +15,11 @@ MbD::InPlaneJoint::InPlaneJoint()
 
 MbD::InPlaneJoint::InPlaneJoint(const char* str)
 {
+}
+
+void MbD::InPlaneJoint::initializeGlobally()
+{
+	assert(false);
 }
 
 void MbD::InPlaneJoint::createInPlaneConstraint()

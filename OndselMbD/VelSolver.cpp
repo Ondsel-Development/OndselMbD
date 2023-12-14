@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -25,13 +25,13 @@ void VelSolver::basicSolveEquations()
 void VelSolver::handleSingularMatrix()
 {
 	std::string str = typeid(*matrixSolver).name();
-	if (str == "class MbD::GESpMatParPvMarkoFast") {
+	if (str.find("GESpMatParPvMarkoFast") != std::string::npos) {
 		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
 		this->solveEquations();
 	}
 	else {
 		str = typeid(*matrixSolver).name();
-		if (str == "class MbD::GESpMatParPvPrecise") {
+		if (str.find("GESpMatParPvPrecise") != std::string::npos) {
 			this->logSingularMatrixMessage();
 			matrixSolver = this->matrixSolverClassNew();
 		}

@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -78,11 +78,13 @@ namespace MbD {
 		void useEquationNumbers() override;
 		void setpqsumu(FColDsptr col) override;
 		void setpqsumudot(FColDsptr col) override;
+		void setpqsumuddot(FColDsptr col) override;
 		void postDynPredictor() override;
 		void fillDynError(FColDsptr col) override;
 		void fillpFpy(SpMatDsptr mat) override;
 		void fillpFpydot(SpMatDsptr mat) override;
 		void postDynCorrectorIteration() override;
+        void preDynOutput() override;
 
 		EndFrmsptr frmI;
 		EndFrmsptr frmJ;

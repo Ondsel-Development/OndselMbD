@@ -1,12 +1,10 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
-
-#include <cassert>
  
 #include "ICKineIntegrator.h"
 #include "SystemSolver.h"
@@ -34,4 +32,19 @@ void ICKineIntegrator::preRun()
 {
 	system->Solver::logString("MbD: Starting quasi kinematic analysis.");
 	QuasiIntegrator::preRun();
+}
+
+void ICKineIntegrator::firstStep()
+{
+	assert(false);
+}
+
+void ICKineIntegrator::subsequentSteps()
+{
+	assert(false);
+}
+
+void MbD::ICKineIntegrator::nextStep()
+{
+	assert(false);
 }

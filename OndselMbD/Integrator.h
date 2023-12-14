@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -19,11 +19,16 @@ namespace MbD {
         //system direction 
     public:
         void setSystem(Solver* sys) override;
-        virtual void preFirstStep() = 0;
-        virtual void preStep() = 0;
-        virtual void runInitialConditionTypeSolution() = 0;
-        virtual void iStep(int i) = 0;
-        virtual void selectOrder() = 0;
+        virtual void firstStep();
+        virtual void preFirstStep();
+        virtual void postFirstStep();
+        virtual void subsequentSteps();
+        virtual void nextStep();
+        virtual void preStep();
+        virtual void postStep();
+        virtual void runInitialConditionTypeSolution();
+        virtual void iStep(int i);
+        virtual void selectOrder();
         virtual int iterMax();
 
         double direction = 1;

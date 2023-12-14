@@ -1,12 +1,12 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
-#include <corecrt_math_defines.h>
+#include "corecrt_math_defines.h"
 
 #include "ScrewConstraintIJ.h"
 
@@ -101,4 +101,18 @@ void MbD::ScrewConstraintIJ::postDynCorrectorIteration()
 	zIeJeIe->postDynCorrectorIteration();
 	thezIeJe->postDynCorrectorIteration();
 	ConstraintIJ::postDynCorrectorIteration();
+}
+
+void MbD::ScrewConstraintIJ::preDynOutput()
+{
+	zIeJeIe->preDynOutput();
+	thezIeJe->preDynOutput();
+	ConstraintIJ::preDynOutput();
+}
+
+void MbD::ScrewConstraintIJ::postDynOutput()
+{
+	zIeJeIe->postDynOutput();
+	thezIeJe->postDynOutput();
+	ConstraintIJ::postDynOutput();
 }

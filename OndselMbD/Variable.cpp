@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -28,7 +28,7 @@ void Variable::initialize()
 {
 }
 
-void Variable::setName(std::string& str)
+void Variable::setName(std::string str)
 {
 	name = str;
 }
@@ -51,4 +51,19 @@ std::ostream& Variable::printOn(std::ostream& s) const
 void Variable::setValue(double val)
 {
 	value = val;
+}
+
+Symsptr MbD::Variable::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+{
+	return sptr;
+}
+
+Symsptr MbD::Variable::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+{
+	return sptr;
+}
+
+bool MbD::Variable::isVariable()
+{
+	return true;
 }

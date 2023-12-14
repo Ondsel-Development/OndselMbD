@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -77,6 +77,18 @@ void MbD::DirectionCosineConstraintIJ::postDynCorrectorIteration()
 {
 	aAijIeJe->postDynCorrectorIteration();
 	ConstraintIJ::postDynCorrectorIteration();
+}
+
+void MbD::DirectionCosineConstraintIJ::preDynOutput()
+{
+	aAijIeJe->preDynOutput();
+	ConstraintIJ::preDynOutput();
+}
+
+void MbD::DirectionCosineConstraintIJ::postDynOutput()
+{
+	aAijIeJe->postDynOutput();
+	ConstraintIJ::postDynOutput();
 }
 
 void DirectionCosineConstraintIJ::preVelIC()

@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -32,6 +32,8 @@ namespace MbD {
         ConstraintType type() override;
         void postDynPredictor() override;
         void postDynCorrectorIteration() override;
+        void preDynOutput() override;
+		void postDynOutput() override;
 
         std::shared_ptr<DistIecJec> distIeJe;
 

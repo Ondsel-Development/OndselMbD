@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -29,6 +29,7 @@ namespace MbD {
 		Item();
 		Item(const char* str);
 		virtual System* root();
+		void noop();
 
 		virtual void calcPostDynCorrectorIteration();
 		virtual void checkForCollisionDiscontinuityBetweenand(double impulsePrevious, double impulse);
@@ -128,8 +129,8 @@ namespace MbD {
 		virtual void registerName();
 		virtual void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos);
 		virtual void setpqsumu(FColDsptr col);
-		virtual void setpqsumuddot(FColDsptr col);
 		virtual void setpqsumudot(FColDsptr col);
+		virtual void setpqsumuddot(FColDsptr col);
 		virtual void setqsu(FColDsptr qsuOld);
 		virtual void setqsuddotlam(FColDsptr col);
 		virtual void setqsudot(FColDsptr col);

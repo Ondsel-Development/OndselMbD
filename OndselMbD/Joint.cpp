@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -49,12 +49,12 @@ void Joint::initializeLocally()
 			frmI = frmIqc->endFrameqct;
 		}
 	}
-	constraintsDo([](std::shared_ptr<Constraint> con) { con->initializeLocally(); });
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->initializeLocally(); });
 }
 
 void Joint::initializeGlobally()
 {
-	constraintsDo([](std::shared_ptr<Constraint> con) { con->initializeGlobally(); });
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->initializeGlobally(); });
 }
 
 void Joint::constraintsDo(const std::function<void(std::shared_ptr<Constraint>)>& f)
@@ -64,7 +64,7 @@ void Joint::constraintsDo(const std::function<void(std::shared_ptr<Constraint>)>
 
 void Joint::postInput()
 {
-	constraintsDo([](std::shared_ptr<Constraint> con) { con->postInput(); });
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postInput(); });
 
 }
 
@@ -91,12 +91,12 @@ FColDsptr MbD::Joint::aFIeJtO()
 
 void Joint::prePosIC()
 {
-	constraintsDo([](std::shared_ptr<Constraint> con) { con->prePosIC(); });
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->prePosIC(); });
 }
 
 void Joint::prePosKine()
 {
-	constraintsDo([](std::shared_ptr<Constraint> con) { con->prePosKine(); });
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->prePosKine(); });
 }
 
 void Joint::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
@@ -150,7 +150,7 @@ void Joint::fillqsudotWeights(DiagMatDsptr diagMat)
 
 void Joint::useEquationNumbers()
 {
-	constraintsDo([](std::shared_ptr<Constraint> con) { con->useEquationNumbers(); });
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->useEquationNumbers(); });
 }
 
 void MbD::Joint::setpqsumu(FColDsptr col)
@@ -188,9 +188,19 @@ void MbD::Joint::postDynCorrectorIteration()
 	constraintsDo([](std::shared_ptr<Constraint> con) { con->postDynCorrectorIteration(); });
 }
 
+void MbD::Joint::preDynOutput()
+{
+	constraintsDo([](std::shared_ptr<Constraint> con) { con->preDynOutput(); });
+}
+
 void Joint::setqsulam(FColDsptr col)
 {
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->setqsulam(col); });
+}
+
+void MbD::Joint::setpqsumuddot(FColDsptr col)
+{
+	constraintsDo([&](std::shared_ptr<Constraint> con) { con->setpqsumuddot(col); });
 }
 
 void Joint::setqsudotlam(FColDsptr col)
@@ -200,7 +210,7 @@ void Joint::setqsudotlam(FColDsptr col)
 
 void Joint::postPosICIteration()
 {
-	constraintsDo([](std::shared_ptr<Constraint> con) { con->postPosICIteration(); });
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postPosICIteration(); });
 }
 
 void Joint::fillPosICError(FColDsptr col)
@@ -257,12 +267,12 @@ void Joint::constraintsReport()
 
 void Joint::postPosIC()
 {
-	constraintsDo([](std::shared_ptr<Constraint> con) { con->postPosIC(); });
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postPosIC(); });
 }
 
 void Joint::preDyn()
 {
-	constraintsDo([](std::shared_ptr<Constraint> con) { con->preDyn(); });
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->preDyn(); });
 }
 
 void Joint::fillPosKineError(FColDsptr col)
@@ -272,17 +282,17 @@ void Joint::fillPosKineError(FColDsptr col)
 
 void Joint::fillPosKineJacob(SpMatDsptr mat)
 {
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillPosKineJacob(mat); });
+	constraintsDo([&](std::shared_ptr<Constraint> constraint) { constraint->fillPosKineJacob(mat); });
 }
 
 void MbD::Joint::fillqsuddotlam(FColDsptr col)
 {
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillqsuddotlam(col); });
+	constraintsDo([&](std::shared_ptr<Constraint> constraint) { constraint->fillqsuddotlam(col); });
 }
 
 void Joint::preVelIC()
 {
-	constraintsDo([](std::shared_ptr<Constraint> con) { con->preVelIC(); });
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->preVelIC(); });
 }
 
 void Joint::fillVelICError(FColDsptr col)
@@ -292,12 +302,12 @@ void Joint::fillVelICError(FColDsptr col)
 
 void Joint::fillVelICJacob(SpMatDsptr mat)
 {
-	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillVelICJacob(mat); });
+	constraintsDo([&](std::shared_ptr<Constraint> constraint) { constraint->fillVelICJacob(mat); });
 }
 
 void Joint::preAccIC()
 {
-	constraintsDo([](std::shared_ptr<Constraint> con) { con->preAccIC(); });
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->preAccIC(); });
 }
 
 void Joint::fillAccICIterError(FColDsptr col)
@@ -376,5 +386,5 @@ FColDsptr Joint::jointTorqueI()
 
 void Joint::postDynStep()
 {
-	constraintsDo([](std::shared_ptr<Constraint> con) { con->postDynStep(); });
+	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->postDynStep(); });
 }

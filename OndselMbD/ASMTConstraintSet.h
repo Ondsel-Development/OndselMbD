@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -13,7 +13,7 @@
 namespace MbD {
     class Joint;
 
-    class ASMTConstraintSet : public ASMTItemIJ
+    class EXPORT ASMTConstraintSet : public ASMTItemIJ
     {
         //
     public:
@@ -21,6 +21,7 @@ namespace MbD {
         virtual std::shared_ptr<Joint> mbdClassNew();
         void updateFromMbD() override;
         void compareResults(AnalysisType type) override;
+        void outputResults(AnalysisType type) override;
 
     };
 }

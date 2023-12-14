@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -103,4 +103,18 @@ void MbD::DistancexyConstraintIJ::postDynCorrectorIteration()
 	xIeJeIe->postDynCorrectorIteration();
 	yIeJeIe->postDynCorrectorIteration();
 	ConstraintIJ::postDynCorrectorIteration();
+}
+
+void MbD::DistancexyConstraintIJ::preDynOutput()
+{
+	xIeJeIe->preDynOutput();
+	yIeJeIe->preDynOutput();
+	ConstraintIJ::preDynOutput();
+}
+
+void MbD::DistancexyConstraintIJ::postDynOutput()
+{
+	xIeJeIe->postDynOutput();
+	yIeJeIe->postDynOutput();
+	ConstraintIJ::postDynOutput();
 }

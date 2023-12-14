@@ -1,12 +1,12 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
-#include <corecrt_math_defines.h>
+#include "corecrt_math_defines.h"
 #include <sstream>
 #include <iomanip>
 
@@ -24,6 +24,16 @@
 #include "Negative.h"
 #include "Reciprocal.h"
 #include "GeneralSpline.h"
+#include "ArcSine.h"
+#include "Integral.h"
+#include "RampStepFunction.h"
+
+MbD::SymbolicParser::SymbolicParser()
+{
+	variables = std::make_shared<std::map<std::string, Symsptr>>();
+	stack = std::make_shared<std::stack<Symsptr>>();
+	buffer = std::make_shared<std::stringstream>();
+}
 
 void MbD::SymbolicParser::initialize()
 {
@@ -214,7 +224,7 @@ void MbD::SymbolicParser::xLetter()
 	while (true) {
 		hereChar = source->get();
 		if (hereChar == EOF) break;
-		if (!std::isalnum(hereChar)) break;
+		if (!std::isalnum(hereChar) && hereChar != '_') break;
 		*buffer << hereChar;
 	}
 	tokenType = "word";
@@ -338,6 +348,9 @@ bool MbD::SymbolicParser::intrinsic()
 	if (peekForTypevalue("word", "abs")) {
 		symfunc = std::make_shared<Abs>();
 	}
+	else if (peekForTypevalue("word", "asin") || peekForTypevalue("word", "arcsin")) {
+		symfunc = std::make_shared<ArcSine>();
+	}
 	else if (peekForTypevalue("word", "arctan")) {
 		symfunc = std::make_shared<ArcTan>();
 	}
@@ -349,6 +362,12 @@ bool MbD::SymbolicParser::intrinsic()
 	}
 	else if (peekForTypevalue("word", "spline")) {
 		symfunc = std::make_shared<GeneralSpline>();
+	}
+	else if (peekForTypevalue("word", "integral")) {
+		symfunc = std::make_shared<Integral>();
+	}
+	else if (peekForTypevalue("word", "rampstep")) {
+		symfunc = std::make_shared<RampStepFunction>();
 	}
 	if (symfunc != nullptr) {
 		stack->push(symfunc);

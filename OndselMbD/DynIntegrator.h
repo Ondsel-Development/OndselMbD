@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -33,14 +33,14 @@ namespace MbD {
         void postDAECorrector();
         void postDAECorrectorIteration();
         void postDAEFirstStep();
-        void postDAEOutput();
+        void postDAEOutput() override;
         void postDAEPredictor();
         void postDAEStep();
         void postRun() override;
         void preDAECorrector();
         void preDAECorrectorIteration();
         void preDAEFirstStep();
-        void preDAEOutput();
+        void preDAEOutput() override;
         void preDAEPredictor();
         void preDAEStep();
         void preRun() override;

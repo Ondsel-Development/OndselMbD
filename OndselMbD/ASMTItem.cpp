@@ -1,11 +1,11 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "ASMTItem.h"
 #include "CREATE.h"
 #include "ASMTSpatialContainer.h"
@@ -19,13 +19,28 @@ ASMTAssembly* MbD::ASMTItem::root()
 	return owner->root();
 }
 
-std::shared_ptr<ASMTSpatialContainer> MbD::ASMTItem::part()
+ASMTSpatialContainer* MbD::ASMTItem::partOrAssembly()
+{
+	return owner->partOrAssembly();
+}
+
+ASMTPart* MbD::ASMTItem::part()
 {
 	return owner->part();
 }
 
 void MbD::ASMTItem::initialize()
 {
+}
+
+void MbD::ASMTItem::noop()
+{
+	//No Operations
+}
+
+void MbD::ASMTItem::setName(std::string str)
+{
+	name = str;
 }
 
 void MbD::ASMTItem::parseASMT(std::vector<std::string>& lines)
@@ -141,6 +156,11 @@ void MbD::ASMTItem::compareResults(AnalysisType type)
 	assert(false);
 }
 
+void MbD::ASMTItem::outputResults(AnalysisType type)
+{
+	assert(false);
+}
+
 std::shared_ptr<Units> MbD::ASMTItem::mbdUnits()
 {
 	if (owner) {
@@ -152,4 +172,67 @@ std::shared_ptr<Units> MbD::ASMTItem::mbdUnits()
 std::shared_ptr<Constant> MbD::ASMTItem::sptrConstant(double value)
 {
 	return std::make_shared<Constant>(value);
+}
+
+void MbD::ASMTItem::storeOnLevel(std::ofstream& os, int level)
+{
+	assert(false);
+}
+
+void MbD::ASMTItem::storeOnLevelTabs(std::ofstream& os, int level)
+{
+	for (int i = 0; i < level; i++)
+	{
+		os << '\t';
+	}
+}
+
+void MbD::ASMTItem::storeOnLevelString(std::ofstream& os, int level, std::string str)
+{
+	storeOnLevelTabs(os, level);
+	os << str << std::endl;
+}
+
+void MbD::ASMTItem::storeOnLevelDouble(std::ofstream& os, int level, double value)
+{
+	storeOnLevelTabs(os, level);
+	os << value << std::endl;
+}
+
+void MbD::ASMTItem::storeOnLevelInt(std::ofstream& os, int level, int i)
+{
+	storeOnLevelTabs(os, level);
+	os << i << std::endl;
+}
+
+void MbD::ASMTItem::storeOnLevelBool(std::ofstream& os, int level, bool value)
+{
+	storeOnLevelTabs(os, level);
+	if (value) {
+		os << "true" << std::endl;
+	}
+	else {
+		os << "false" << std::endl;
+	}
+}
+
+void MbD::ASMTItem::storeOnLevelArray(std::ofstream& os, int level, std::vector<double> array)
+{
+	storeOnLevelTabs(os, level);
+	for (int i = 0; i < array.size(); i++)
+	{
+		os << array[i] << '\t';
+	}
+	os << std::endl;
+}
+
+void MbD::ASMTItem::storeOnLevelName(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "Name");
+	storeOnLevelString(os, level + 1, name);
+}
+
+void MbD::ASMTItem::storeOnTimeSeries(std::ofstream& os)
+{
+	assert(false);
 }

@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -11,11 +11,12 @@
 #include "ASMTRefItem.h"
 
 namespace MbD {
-    class ASMTRefCurve : public ASMTRefItem
+    class EXPORT ASMTRefCurve : public ASMTRefItem
     {
         //
     public:
         void parseASMT(std::vector<std::string>& lines) override;
+        void storeOnLevel(std::ofstream& os, int level) override;
 
 
     };

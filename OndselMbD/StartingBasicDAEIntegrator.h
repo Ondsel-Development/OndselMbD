@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -18,7 +18,7 @@ namespace MbD {
     public:
         void initialize() override;
         void initializeLocally() override;
-        FColDsptr yDerivat(int order, double tout) override;
+        FColDsptr yDerivat(int _order, double tout) override;
         std::shared_ptr<LinearMultiStepMethod> correctorBDF() override;
         void calcOperatorMatrix() override;
         void setorder(int o) override;

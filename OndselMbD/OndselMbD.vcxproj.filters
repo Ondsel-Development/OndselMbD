@@ -594,13 +594,13 @@
     <ClCompile Include="Numeric.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OrbitAnglezIecJec.cpp">
+    <ClCompile Include="OrbitAngleZIecJec.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OrbitAnglezIeqcJec.cpp">
+    <ClCompile Include="OrbitAngleZIeqcJec.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OrbitAnglezIeqcJeqc.cpp">
+    <ClCompile Include="OrbitAngleZIeqcJeqc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Orientation.cpp">
@@ -844,6 +844,84 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StartingBDF.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StepFunction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RampStepFunction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Polynomial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PiecewiseFunction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MomentOfInertiaSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynStructural.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynReference.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynMarker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynInitialValue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynElement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynDrive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynControlData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynBlock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MbDMath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Integral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EigenDecomposition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTPointInLineJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTNoRotationJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ArcSine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LDUFullMatParPvRobust.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1440,13 +1518,13 @@
     <ClInclude Include="Numeric.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OrbitAnglezIecJec.h">
+    <ClInclude Include="OrbitAngleZIecJec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OrbitAnglezIeqcJec.h">
+    <ClInclude Include="OrbitAngleZIeqcJec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OrbitAnglezIeqcJeqc.h">
+    <ClInclude Include="OrbitAngleZIeqcJeqc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Orientation.h">
@@ -1693,6 +1771,90 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StartingBDF.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StepFunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RampStepFunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Polynomial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PiecewiseFunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MomentOfInertiaSolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynStructural.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynReference.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynMarker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynInitialValue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynElement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynDrive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynControlData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynBody.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynBlock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MbDMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Integral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EigenDecomposition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="corecrt_math_defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTPointInLineJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTNoRotationJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ArcSine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="APIExport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LDUFullMatParPvRobust.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

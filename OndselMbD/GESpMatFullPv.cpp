@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -20,7 +20,7 @@ void GESpMatFullPv::doPivoting(int p)
 	//"Swap rows but keep columns in place."
 	//"The elements below the diagonal are removed column by column."
 
-	auto max = 0.0;
+	double max = 0.0;
 	auto pivotRow = p;
 	auto pivotCol = p;
 	for (int j = p; j < n; j++)
@@ -163,7 +163,7 @@ void GESpMatFullPv::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol
 	for (int i = 0; i < m; i++)
 	{
 		auto& spRowi = spMat->at(i);
-		auto maxRowMagnitude = spRowi->maxMagnitude();
+		double maxRowMagnitude = spRowi->maxMagnitude();
 		if (maxRowMagnitude == 0) {
 			throwSingularMatrixError("");
 		}

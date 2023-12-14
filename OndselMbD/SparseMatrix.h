@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -189,10 +189,10 @@ namespace MbD {
 	template<typename T>
 	inline double SparseMatrix<T>::maxMagnitude()
 	{
-		auto max = 0.0;
+		double max = 0.0;
 		for (int i = 0; i < this->size(); i++)
 		{
-			auto element = this->at(i)->maxMagnitude();
+			double element = this->at(i)->maxMagnitude();
 			if (max < element) max = element;
 		}
 		return max;

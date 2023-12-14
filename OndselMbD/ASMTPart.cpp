@@ -1,13 +1,17 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+#include <fstream>	
+
 #include "ASMTPart.h"
 #include "CREATE.h"
+#include "ASMTPrincipalMassMarker.h"
+#include "Part.h"
+
 
 using namespace MbD;
 
@@ -53,7 +57,7 @@ void MbD::ASMTPart::readPrincipalMassMarker(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("PrincipalMassMarker") != std::string::npos);
 	lines.erase(lines.begin());
-	principalMassMarker = CREATE<ASMTPrincipalMassMarker>::With();
+	principalMassMarker = std::make_shared<ASMTPrincipalMassMarker>();
 	principalMassMarker->parseASMT(lines);
 	principalMassMarker->owner = this;
 }
@@ -101,4 +105,41 @@ FColDsptr MbD::ASMTPart::vOcmO()
 FColDsptr MbD::ASMTPart::omeOpO()
 {
 	return omega3D;
+}
+
+ASMTPart* MbD::ASMTPart::part()
+{
+	return this;
+}
+
+void MbD::ASMTPart::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+{
+	ASMTSpatialContainer::createMbD(mbdSys, mbdUnits);
+	if (isFixed) std::static_pointer_cast<Part>(mbdObject)->asFixed();
+}
+
+void MbD::ASMTPart::storeOnLevel(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "Part");
+	storeOnLevelName(os, level + 1);
+	storeOnLevelPosition(os, level + 1);
+	storeOnLevelRotationMatrix(os, level + 1);
+	storeOnLevelVelocity(os, level + 1);
+	storeOnLevelOmega(os, level + 1);
+	storeOnLevelString(os, level + 1, "FeatureOrder");
+	storeOnLevelMassMarker(os, level + 1);
+	storeOnLevelRefPoints(os, level + 1);
+	storeOnLevelRefCurves(os, level + 1);
+	storeOnLevelRefSurfaces(os, level + 1);
+}
+
+void MbD::ASMTPart::storeOnLevelMassMarker(std::ofstream& os, int level)
+{
+	principalMassMarker->storeOnLevel(os, level);
+}
+
+void MbD::ASMTPart::storeOnTimeSeries(std::ofstream& os)
+{
+	os << "PartSeries\t" << fullName("") << std::endl;
+	ASMTSpatialContainer::storeOnTimeSeries(os);
 }

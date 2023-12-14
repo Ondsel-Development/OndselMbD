@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -44,9 +44,10 @@ void AnyPosICNewtonRaphson::fillY()
 	y->atiminusFullColumn(0, (qsuWeights->timesFullColumn(newMinusOld)));
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) {
 		item->fillPosICError(y);
-		//std::cout << *y << std::endl;
+		//std::cout << item->name << *y << std::endl;
+		//noop();
 		});
-	//std::cout << *y << std::endl;
+	//std::cout << "Final" << *y << std::endl;
 }
 
 void AnyPosICNewtonRaphson::fillPyPx()
@@ -63,4 +64,9 @@ void AnyPosICNewtonRaphson::fillPyPx()
 void AnyPosICNewtonRaphson::passRootToSystem()
 {
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->setqsulam(x); });
+}
+
+void MbD::AnyPosICNewtonRaphson::assignEquationNumbers()
+{
+	assert(false);
 }

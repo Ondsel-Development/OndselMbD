@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -20,25 +20,48 @@
 #include "CREATE.h"
 #include "GESpMatParPvPrecise.h"
 #include "ASMTAssembly.h"
+#include "MBDynSystem.h"
+#include "MomentOfInertiaSolver.h"
 
 using namespace MbD;
 void runSpMat();
 
 int main()
 {
-	ASMTAssembly::runFile("piston.asmt");
-	//ASMTAssembly::runFile("00backhoe.asmt");
-	//ASMTAssembly::runFile("circular.asmt");
-	//ASMTAssembly::runFile("cirpendu.asmt");	//Under constrained. Testing ICKine.
-	//ASMTAssembly::runFile("engine1.asmt");
-	//ASMTAssembly::runFile("fourbar.asmt");
-	//ASMTAssembly::runFile("fourbot.asmt");
-	//ASMTAssembly::runFile("wobpump.asmt");
+	ASMTAssembly::runDynFile("simplePendu2.asmt");
+	return 0;
+	ASMTAssembly::runDynFile("circularPendulum.asmt");
 
-	//auto cadSystem = std::make_shared<CADSystem>();
-	////cadSystem->runOndselPiston();
-	//cadSystem->runPiston();
-	//runSpMat();
+	ASMTAssembly::runFile("cirpendu2.asmt");	//Under constrained. Testing ICKine.
+	ASMTAssembly::runFile("quasikine.asmt");	//Under constrained. Testing ICKine.
+	ASMTAssembly::readWriteFile("piston.asmt");
+	//MBDynSystem::runFile("MBDynCaseDebug2.mbd");
+	return 0;
+	MBDynSystem::runFile("MBDynCase2.mbd");
+	MBDynSystem::runFile("MBDynCase.mbd");
+	MBDynSystem::runFile("CrankSlider2.mbd");
+	//MBDynSystem::runFile("crank_slider.mbd");	//Needs integration of product
+	////ASMTAssembly::runSinglePendulumSuperSimplified();	//Mass is missing
+	////ASMTAssembly::runSinglePendulumSuperSimplified2();	//DOF has infinite acceleration due to zero mass and inertias
+
+	ASMTAssembly::runSinglePendulumSimplified();
+	ASMTAssembly::runSinglePendulum();
+	ASMTAssembly::runFile("piston.asmt");
+	ASMTAssembly::runFile("00backhoe.asmt");
+	//ASMTAssembly::runFile("circular.asmt");	//Needs checking
+	//ASMTAssembly::runFile("cirpendu.asmt");	//Under constrained. Testing ICKine.
+	//ASMTAssembly::runFile("engine1.asmt");	//Needs checking
+	ASMTAssembly::runFile("fourbar.asmt");
+	//ASMTAssembly::runFile("fourbot.asmt");	//Very large but works
+	ASMTAssembly::runFile("wobpump.asmt");
+
+	auto cadSystem = std::make_shared<CADSystem>();
+	cadSystem->runOndselSinglePendulum();
+	cadSystem->runOndselDoublePendulum();
+	//cadSystem->runOndselPiston();		//For debugging
+	cadSystem->runPiston();
+	runSpMat();
+	MomentOfInertiaSolver::example1();
 }
 
 void runSpMat() {

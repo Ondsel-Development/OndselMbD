@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -22,6 +22,11 @@ void SystemNewtonRaphson::initializeGlobally()
 	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->useEquationNumbers(); });
 	this->createVectorsAndMatrices();
 	matrixSolver = this->matrixSolverClassNew();
+}
+
+void MbD::SystemNewtonRaphson::assignEquationNumbers()
+{
+	assert(false);
 }
 
 void SystemNewtonRaphson::createVectorsAndMatrices()
@@ -52,13 +57,13 @@ void SystemNewtonRaphson::basicSolveEquations()
 void SystemNewtonRaphson::handleSingularMatrix()
 {
 	std::string str = typeid(*matrixSolver).name();
-	if (str == "class MbD::GESpMatParPvMarkoFast") {
+	if (str.find("GESpMatParPvMarkoFast") != std::string::npos) {
 		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
 		this->solveEquations();
 	}
 	else {
 		str = typeid(*matrixSolver).name();
-		if (str == "class MbD::GESpMatParPvPrecise") {
+		if (str.find("GESpMatParPvPrecise") != std::string::npos) {
 			str = "MbD: Singular Matrix Error. ";
 			system->logString(str);
 			matrixSolver = this->matrixSolverClassNew();

@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -9,6 +9,7 @@
 #pragma once
 
 #include <ostream>
+#include <limits>
 
 #include "Array.h"
 
@@ -23,6 +24,7 @@ namespace MbD {
 		FullVector(int count, const T& value) : Array<T>(count, value) {}
 		FullVector(typename std::vector<T>::iterator begin, typename std::vector<T>::iterator end) : Array<T>(begin, end) {}
 		FullVector(std::initializer_list<T> list) : Array<T>{ list } {}
+		double dot(std::shared_ptr<FullVector<T>> vec);
 		void atiplusNumber(int i, T value);
 		void atiminusNumber(int i, T value);
 		double sumOfSquares() override;
@@ -45,6 +47,16 @@ namespace MbD {
 		std::ostream& printOn(std::ostream& s) const override;
 
 	};
+	template<typename T>
+	inline double FullVector<T>::dot(std::shared_ptr<FullVector<T>> vec)
+	{
+		int n = (int)this->size();
+		double answer = 0.0;
+		for (int i = 0; i < n; i++) {
+			answer += this->at(i) * vec->at(i);
+		}
+		return answer;
+	}
 	template<typename T>
 	inline void FullVector<T>::atiplusNumber(int i, T value)
 	{
@@ -118,10 +130,10 @@ namespace MbD {
 	template<>
 	inline double FullVector<double>::maxMagnitude()
 	{
-		auto max = 0.0;
+		double max = 0.0;
 		for (int i = 0; i < this->size(); i++)
 		{
-			auto element = this->at(i);
+			double element = this->at(i);
 			if (element < 0.0) element = -element;
 			if (max < element) max = element;
 		}
@@ -136,17 +148,17 @@ namespace MbD {
 	template<>
 	inline void FullVector<double>::normalizeSelf()
 	{
-		auto length = this->length();
+		double length = this->length();
 		if (length == 0.0) throw std::runtime_error("Cannot normalize a null vector.");
 		this->magnifySelf(1.0 / length);
 	}
 	template<typename T>
 	inline double FullVector<T>::length()
 	{
-		auto ssq = 0.0;
+		double ssq = 0.0;
 		for (int i = 0; i < this->size(); i++)
 		{
-			auto elem = this->at(i);
+			double elem = this->at(i);
 			ssq += elem * elem;
 		}
 		return std::sqrt(ssq);
@@ -154,8 +166,8 @@ namespace MbD {
 	template<typename T>
 	inline void FullVector<T>::conditionSelf()
 	{
-		constexpr auto epsilon = std::numeric_limits<double>::epsilon();
-		auto tol = this->maxMagnitude() * epsilon;
+		constexpr double epsilon = std::numeric_limits<double>::epsilon();
+		double tol = this->maxMagnitude() * epsilon;
 		this->conditionSelfWithTol(tol);
 	}
 	template<>
@@ -163,7 +175,7 @@ namespace MbD {
 	{
 		for (int i = 0; i < this->size(); i++)
 		{
-			auto element = this->at(i);
+			double element = this->at(i);
 			if (element < 0.0) element = -element;
 			if (element < tol) this->atiput(i, 0.0);
 		}

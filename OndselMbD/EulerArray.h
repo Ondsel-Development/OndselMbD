@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -22,8 +22,8 @@ namespace MbD {
         EulerArray(std::initializer_list<T> list) : FullColumn<T>{ list } {}
         void initialize() override;
         void equalFullColumn(FColsptr<T> fullCol);
-        void equalFullColumnat(FColsptr<T> fullCol, int i);
-        virtual void calc() = 0;
+        void equalFullColumnAt(FColsptr<T> fullCol, int i);
+        virtual void calc();
 
     };
     template<typename T>
@@ -36,9 +36,14 @@ namespace MbD {
         this->equalArrayAt(fullCol, 0);
     }
     template<typename T>
-    inline void EulerArray<T>::equalFullColumnat(FColsptr<T> fullCol, int i)
+    inline void EulerArray<T>::equalFullColumnAt(FColsptr<T> fullCol, int i)
     {
         this->equalArrayAt(fullCol, i);
+    }
+    template<typename T>
+    inline void EulerArray<T>::calc()
+    {
+        assert(false);
     }
 }
 

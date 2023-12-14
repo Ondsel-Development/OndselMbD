@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -23,8 +23,8 @@ namespace MbD {
     public:
 
         void initializeGlobally() override;
-        virtual void preRun() = 0;
-        virtual void checkForDiscontinuity() = 0;
+        virtual void preRun();
+        virtual void checkForDiscontinuity();
         
         void setSystem(Solver* sys) override;
         void logString(std::string& str) override;
@@ -32,9 +32,10 @@ namespace MbD {
         int orderMax();
         virtual void incrementTime(double tnew);
 
-        virtual double suggestSmallerOrAcceptFirstStepSize(double hnew) = 0;
-        virtual double suggestSmallerOrAcceptStepSize(double hnew) = 0;
-        virtual void checkForOutputThrough(double t) = 0;
+        void postFirstStep() override;
+        virtual double suggestSmallerOrAcceptFirstStepSize(double hnew);
+        virtual double suggestSmallerOrAcceptStepSize(double hnew);
+        virtual void checkForOutputThrough(double t);
         virtual void interpolateAt(double t);
         virtual void fillF(FColDsptr vecF);
         virtual void fillpFpy(SpMatDsptr mat);
@@ -45,7 +46,7 @@ namespace MbD {
         virtual void updateForDAECorrector();
 
         SystemSolver* system;
-        double tout = 0, hout = 0, hmin = 0, hmax = 0, tstart = 0, tend = 0;
+        double tout = 0.0, hout = 0.0, hmin = 0.0, hmax = 0.0, tstart = 0.0, tend = 0.0;
         std::shared_ptr<BasicIntegrator> integrator;
     };
 }

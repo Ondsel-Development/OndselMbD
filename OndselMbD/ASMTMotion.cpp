@@ -1,11 +1,12 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+#include <fstream>	
+
 #include "ASMTMotion.h"
 
 using namespace MbD;
@@ -30,4 +31,14 @@ void MbD::ASMTMotion::readMotionSeries(std::vector<std::string>& lines)
 
 void MbD::ASMTMotion::initMarkers()
 {
+}
+
+void MbD::ASMTMotion::storeOnLevel(std::ofstream& os, int level)
+{
+	assert(false);
+}
+
+void MbD::ASMTMotion::storeOnTimeSeries(std::ofstream& os)
+{
+	assert(false);
 }

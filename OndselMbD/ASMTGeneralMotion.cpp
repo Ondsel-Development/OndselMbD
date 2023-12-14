@@ -1,11 +1,12 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+#include <fstream>	
+
 #include "ASMTGeneralMotion.h"
 #include "ASMTAssembly.h"
 #include "SymbolicParser.h"
@@ -13,6 +14,8 @@
 #include "CREATE.h"
 #include "Constant.h"
 #include "EulerAngles.h"
+#include "FullMotion.h"
+#include "ASMTTime.h"
 
 using namespace MbD;
 
@@ -28,7 +31,7 @@ void MbD::ASMTGeneralMotion::parseASMT(std::vector<std::string>& lines)
 
 void MbD::ASMTGeneralMotion::readrIJI(std::vector<std::string>& lines)
 {
-	rIJI = std::make_shared<std::vector<std::string>>(3);
+	rIJI = std::make_shared<FullColumn<std::string>>(3);
 
 	assert(lines[0].find("rIJI1") != std::string::npos);
 	lines.erase(lines.begin());
@@ -46,7 +49,7 @@ void MbD::ASMTGeneralMotion::readrIJI(std::vector<std::string>& lines)
 
 void MbD::ASMTGeneralMotion::readangIJJ(std::vector<std::string>& lines)
 {
-	angIJJ = std::make_shared<std::vector<std::string>>(3);
+	angIJJ = std::make_shared<FullColumn<std::string>>(3);
 
 	assert(lines[0].find("angIJJ1") != std::string::npos);
 	lines.erase(lines.begin());
@@ -78,7 +81,7 @@ std::shared_ptr<Joint> MbD::ASMTGeneralMotion::mbdClassNew()
 void MbD::ASMTGeneralMotion::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
 {
 	ASMTMotion::createMbD(mbdSys, mbdUnits);
-	auto parser = CREATE<SymbolicParser>::With();
+	auto parser = std::make_shared<SymbolicParser>();
 	parser->owner = this;
 	auto geoTime = owner->root()->geoTime();
 	parser->variables->insert(std::make_pair("time", geoTime));
@@ -86,24 +89,24 @@ void MbD::ASMTGeneralMotion::createMbD(std::shared_ptr<System> mbdSys, std::shar
 	auto fullMotion = std::static_pointer_cast<FullMotion>(mbdObject);
 
 	//rIJI
-	userFunc = CREATE<BasicUserFunction>::With(rIJI->at(0), 1.0);
+	userFunc = std::make_shared<BasicUserFunction>(rIJI->at(0), 1.0);
 	parser->parseUserFunction(userFunc);
 	auto geoX = parser->stack->top();
-	geoX = Symbolic::times(geoX, std::make_shared<Constant>(1.0 / mbdUnits->length));
+	geoX = Symbolic::times(geoX, sptrConstant(1.0 / mbdUnits->length));
 	geoX->createMbD(mbdSys, mbdUnits);
 	auto xBlk = geoX->simplified(geoX);
 
-	userFunc = CREATE<BasicUserFunction>::With(rIJI->at(1), 1.0);
+	userFunc = std::make_shared<BasicUserFunction>(rIJI->at(1), 1.0);
 	parser->parseUserFunction(userFunc);
 	auto geoY = parser->stack->top();
-	geoY = Symbolic::times(geoY, std::make_shared<Constant>(1.0 / mbdUnits->length));
+	geoY = Symbolic::times(geoY, sptrConstant(1.0 / mbdUnits->length));
 	geoY->createMbD(mbdSys, mbdUnits);
 	auto yBlk = geoY->simplified(geoY);
 
-	userFunc = CREATE<BasicUserFunction>::With(rIJI->at(2), 1.0);
+	userFunc = std::make_shared<BasicUserFunction>(rIJI->at(2), 1.0);
 	parser->parseUserFunction(userFunc);
 	auto geoZ = parser->stack->top();
-	geoZ = Symbolic::times(geoZ, std::make_shared<Constant>(1.0 / mbdUnits->length));
+	geoZ = Symbolic::times(geoZ, sptrConstant(1.0 / mbdUnits->length));
 	geoZ->createMbD(mbdSys, mbdUnits);
 	auto zBlk = geoZ->simplified(geoZ);
 
@@ -111,24 +114,24 @@ void MbD::ASMTGeneralMotion::createMbD(std::shared_ptr<System> mbdSys, std::shar
 	fullMotion->frIJI = std::make_shared<FullColumn<Symsptr>>(xyzBlkList);
 
 	//angIJJ
-	userFunc = CREATE<BasicUserFunction>::With(angIJJ->at(0), 1.0);
+	userFunc = std::make_shared<BasicUserFunction>(angIJJ->at(0), 1.0);
 	parser->parseUserFunction(userFunc);
 	auto geoPhi = parser->stack->top();
-	geoPhi = Symbolic::times(geoPhi, std::make_shared<Constant>(1.0 / mbdUnits->angle));
+	geoPhi = Symbolic::times(geoPhi, sptrConstant(1.0 / mbdUnits->angle));
 	geoPhi->createMbD(mbdSys, mbdUnits);
 	auto phiBlk = geoPhi->simplified(geoPhi);
 
-	userFunc = CREATE<BasicUserFunction>::With(angIJJ->at(1), 1.0);
+	userFunc = std::make_shared<BasicUserFunction>(angIJJ->at(1), 1.0);
 	parser->parseUserFunction(userFunc);
 	auto geoThe = parser->stack->top();
-	geoThe = Symbolic::times(geoThe, std::make_shared<Constant>(1.0 / mbdUnits->angle));
+	geoThe = Symbolic::times(geoThe, sptrConstant(1.0 / mbdUnits->angle));
 	geoThe->createMbD(mbdSys, mbdUnits);
 	auto theBlk = geoThe->simplified(geoThe);
 
-	userFunc = CREATE<BasicUserFunction>::With(angIJJ->at(2), 1.0);
+	userFunc = std::make_shared<BasicUserFunction>(angIJJ->at(2), 1.0);
 	parser->parseUserFunction(userFunc);
 	auto geoPsi = parser->stack->top();
-	geoPsi = Symbolic::times(geoPsi, std::make_shared<Constant>(1.0 / mbdUnits->angle));
+	geoPsi = Symbolic::times(geoPsi, sptrConstant(1.0 / mbdUnits->angle));
 	geoPsi->createMbD(mbdSys, mbdUnits);
 	auto psiBlk = geoPsi->simplified(geoPsi);
 
@@ -144,4 +147,18 @@ void MbD::ASMTGeneralMotion::createMbD(std::shared_ptr<System> mbdSys, std::shar
 	}
 	fangIJJ->rotOrder = rotOrder;
 	fullMotion->fangIJJ = fangIJJ;
+}
+
+void MbD::ASMTGeneralMotion::storeOnLevel(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "GeneralMotion");
+	storeOnLevelString(os, level + 1, "Name");
+	storeOnLevelString(os, level + 2, name);
+	ASMTItemIJ::storeOnLevel(os, level);
+}
+
+void MbD::ASMTGeneralMotion::storeOnTimeSeries(std::ofstream& os)
+{
+	os << "GeneralMotionSeries\t" << fullName("") << std::endl;
+	ASMTItemIJ::storeOnTimeSeries(os);
 }

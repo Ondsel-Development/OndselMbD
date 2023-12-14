@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -27,6 +27,16 @@ void IntegratorInterface::initializeGlobally()
 	tout = system->firstOutputTime();
 	tend = system->endTime();
 	direction = (tstart < tend) ? 1.0 : -1.0;
+}
+
+void MbD::IntegratorInterface::preRun()
+{
+	assert(false);
+}
+
+void MbD::IntegratorInterface::checkForDiscontinuity()
+{
+	assert(false);
 }
 
 void IntegratorInterface::setSystem(Solver* sys)
@@ -64,6 +74,28 @@ int IntegratorInterface::orderMax()
 void IntegratorInterface::incrementTime(double tnew)
 {
 	system->settime(tnew);
+}
+
+void MbD::IntegratorInterface::postFirstStep()
+{
+	assert(false);
+}
+
+double MbD::IntegratorInterface::suggestSmallerOrAcceptFirstStepSize(double hnew)
+{
+	assert(false);
+	return 0.0;
+}
+
+double MbD::IntegratorInterface::suggestSmallerOrAcceptStepSize(double hnew)
+{
+	assert(false);
+	return 0.0;
+}
+
+void MbD::IntegratorInterface::checkForOutputThrough(double t)
+{
+	assert(false);
 }
 
 void IntegratorInterface::interpolateAt(double tArg)

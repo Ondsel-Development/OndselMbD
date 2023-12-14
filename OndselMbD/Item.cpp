@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -13,6 +13,7 @@
 
 #include "Item.h"
 #include "System.h"
+#include "Symbolic.h"
 
 using namespace MbD;
 
@@ -26,6 +27,11 @@ Item::Item(const char* str) : name(str)
 System* Item::root()
 {
 	return owner->root();
+}
+
+void MbD::Item::noop()
+{
+	//No Operations
 }
 
 void Item::initialize()
@@ -266,7 +272,8 @@ void Item::preDynFirstStep()
 
 void MbD::Item::preDynOutput()
 {
-	assert(false);
+	//"Calculate all instance variables just before output."
+	calcPostDynCorrectorIteration();
 }
 
 void MbD::Item::preDynPredictor()
@@ -281,7 +288,8 @@ void Item::postDynFirstStep()
 
 void MbD::Item::postDynOutput()
 {
-	assert(false);
+	//"Calculate all instance variables just after output."
+	calcPostDynCorrectorIteration();
 }
 
 void MbD::Item::postDynPredictor()

@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -21,8 +21,8 @@ namespace MbD {
         FunctionXY();
         FunctionXY(Symsptr base, Symsptr exp);
         void arguments(Symsptr args) override;
-        virtual Symsptr differentiateWRTx() = 0;
-        virtual Symsptr differentiateWRTy() = 0;
+        virtual Symsptr differentiateWRTx();
+        virtual Symsptr differentiateWRTy();
 
         Symsptr x, y;
 

@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -154,6 +154,7 @@ void SystemSolver::runBasicCollision()
 
 void SystemSolver::runBasicKinematic()
 {
+	if (tstart == tend) return;
 	try {
 		basicIntegrator = CREATE<KineIntegrator>::With();
 		basicIntegrator->setSystem(this);

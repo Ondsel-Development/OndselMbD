@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -11,8 +11,8 @@
 #include "DifferenceOperator.h"
 #include "CREATE.h"
 #include "SingularMatrixError.h"
-#include "LDUFullMatParPv.h"
 #include "FullRow.h"
+#include "LDUFullMatParPvRobust.h"
 
 using namespace MbD;
 
@@ -34,9 +34,12 @@ void DifferenceOperator::calcOperatorMatrix()
 
 	this->formTaylorMatrix();
 	try {
-		operatorMatrix = CREATE<LDUFullMatParPv>::With()->inversesaveOriginal(taylorMatrix, false);
+		auto matrixSolver = std::make_shared<LDUFullMatParPvRobust>();
+		operatorMatrix = matrixSolver->inversesaveOriginal(taylorMatrix, false);
+		noop();	//For Debug
 	}
 	catch (SingularMatrixError ex) {
+		assert(false);
 	}
 }
 
@@ -58,6 +61,11 @@ void DifferenceOperator::setiStep(int i)
 void DifferenceOperator::setorder(int o)
 {
 	order = o;
+}
+
+void MbD::DifferenceOperator::formTaylorMatrix()
+{
+	assert(false);
 }
 
 void DifferenceOperator::instantiateTaylorMatrix()
@@ -176,4 +184,15 @@ FColDsptr MbD::DifferenceOperator::derivativewith(int deriv, std::shared_ptr<std
 	auto& coeffs = operatorMatrix->at(deriv);
 	auto answer = coeffs->dot(series);
 	return std::static_pointer_cast<FullColumn<double>>(answer);
+}
+
+FColDsptr MbD::DifferenceOperator::derivativeatpresentpast(int n, double t, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast)
+{
+	assert(false);
+	return FColDsptr();
+}
+
+void MbD::DifferenceOperator::noop()
+{
+	//No Operations
 }

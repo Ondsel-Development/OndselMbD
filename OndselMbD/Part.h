@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -32,6 +32,7 @@ namespace MbD {
 		void initializeGlobally() override;
 		void setqX(FColDsptr x);
 		FColDsptr getqX();
+		void setaAap(FMatDsptr mat);
 		void setqE(FColDsptr x);
 		FColDsptr getqE();
 		void setqXdot(FColDsptr x);
@@ -117,11 +118,14 @@ namespace MbD {
 		void postAccIC() override;
 		void setpqsumu(FColDsptr col) override;
 		void setpqsumudot(FColDsptr col) override;
+		void setpqsumuddot(FColDsptr col) override;
 		void postDynPredictor() override;
 		void fillDynError(FColDsptr col) override;
 		void fillpFpy(SpMatDsptr mat) override;
 		void fillpFpydot(SpMatDsptr mat) override;
 		void postDynCorrectorIteration() override;
+        void preDynOutput() override;
+		void postDynOutput() override;
 
 		System* system;	//Use raw pointer when pointing backwards.
 		int ipX = -1; 

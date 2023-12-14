@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -184,6 +184,11 @@ void Constraint::fillAccICIterJacob(SpMatDsptr mat)
 void Constraint::setqsuddotlam(FColDsptr col)
 {
 	lam = col->at(iG);
+}
+
+void MbD::Constraint::setpqsumuddot(FColDsptr col)
+{
+	//Do nothing.
 }
 
 void Constraint::addToJointForceI(FColDsptr col)

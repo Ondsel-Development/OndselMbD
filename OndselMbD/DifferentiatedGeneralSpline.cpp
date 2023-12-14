@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -34,6 +34,6 @@ Symsptr MbD::DifferentiatedGeneralSpline::clonesptr()
 
 std::ostream& MbD::DifferentiatedGeneralSpline::printOn(std::ostream& s) const
 {
-	s << "deriv(" << generalSpline << ", " << derivativeOrder << ")";
+	s << "deriv(" << *generalSpline << ", " << derivativeOrder << ")";
 	return s;
 }

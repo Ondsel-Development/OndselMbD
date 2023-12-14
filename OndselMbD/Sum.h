@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -31,6 +31,7 @@ namespace MbD {
         double getValue() override;
         Symsptr clonesptr() override;
         Symsptr differentiateWRT(Symsptr var) override;
+        Symsptr integrateWRT(Symsptr var) override;
 
         std::ostream& printOn(std::ostream& s) const override;
     

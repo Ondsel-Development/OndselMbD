@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.									   *
+ *   This file is part of OndselSolver.									   *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -40,6 +40,16 @@ void MbD::ConstantGravity::fillpFpydot(SpMatDsptr mat)
 }
 
 void MbD::ConstantGravity::postDynCorrectorIteration()
+{
+	//Do nothing.
+}
+
+void MbD::ConstantGravity::preDynOutput()
+{
+	//Do nothing.
+}
+
+void MbD::ConstantGravity::postDynOutput()
 {
 	//Do nothing.
 }

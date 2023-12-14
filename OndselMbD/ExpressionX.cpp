@@ -1,12 +1,13 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
 #include "ExpressionX.h"
+#include "Constant.h"
 
 using namespace MbD;
 
@@ -23,8 +24,14 @@ void MbD::ExpressionX::xexpression(Symsptr arg, Symsptr func)
 	expression = func;
 }
 
+Symsptr MbD::ExpressionX::differentiateWRTx()
+{
+	return expression->differentiateWRT(xx);
+}
+
 Symsptr MbD::ExpressionX::differentiateWRT(Symsptr var)
 {
+	if (this == var.get()) return sptrConstant(1.0);
 	return expression->differentiateWRT(var);
 }
 

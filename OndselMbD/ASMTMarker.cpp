@@ -1,17 +1,18 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "ASMTMarker.h"
 #include "ASMTRefItem.h"
 #include "ASMTPart.h"
 #include "Part.h"
 #include "PartFrame.h"
 #include "MarkerFrame.h"
+#include "ASMTPrincipalMassMarker.h"
 
 using namespace MbD;
 
@@ -52,10 +53,18 @@ FMatDsptr MbD::ASMTMarker::aApm()
 void MbD::ASMTMarker::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
 {
 	auto mkr = CREATE<MarkerFrame>::With(name.c_str());
-	auto prt = std::static_pointer_cast<Part>(part()->mbdObject);
+	auto prt = std::static_pointer_cast<Part>(partOrAssembly()->mbdObject);
 	prt->partFrame->addMarkerFrame(mkr);
 
 	mkr->rpmp = rpmp()->times(1.0 / mbdUnits->length);
 	mkr->aApm = aApm();
 	mbdObject = mkr->endFrames->at(0);
+}
+
+void MbD::ASMTMarker::storeOnLevel(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "Marker");
+	storeOnLevelString(os, level + 1, "Name");
+	storeOnLevelString(os, level + 2, name);
+	ASMTSpatialItem::storeOnLevel(os, level);
 }

@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -76,6 +76,11 @@ bool VectorNewtonRaphson::isConverged()
 void VectorNewtonRaphson::xEqualxoldPlusdx()
 {
 	x = xold->plusFullColumn(dx);
+}
+
+void MbD::VectorNewtonRaphson::basicSolveEquations()
+{
+	assert(false);
 }
 
 void VectorNewtonRaphson::handleSingularMatrix()

@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -29,18 +29,18 @@ namespace MbD {
         void run() override;
         void setSystem(Solver* sys) override;
         void iterate();
-        virtual void fillY() = 0;
-        virtual void fillPyPx() = 0;
-        virtual void calcyNorm() = 0;
-        virtual void calcdxNorm() = 0;
-        virtual void solveEquations() = 0;
+        virtual void fillY();
+        virtual void fillPyPx();
+        virtual void calcyNorm();
+        virtual void calcdxNorm();
+        virtual void solveEquations();
         virtual void incrementIterNo();
-        virtual void updatexold() = 0;
-        virtual void xEqualxoldPlusdx() = 0;
+        virtual void updatexold();
+        virtual void xEqualxoldPlusdx();
 
         virtual bool isConverged();
         virtual void askSystemToUpdate();
-        virtual void passRootToSystem() = 0;
+        virtual void passRootToSystem();
         bool isConvergedToNumericalLimit();
         void calcDXNormImproveRootCalcYNorm();
         void postRun() override;

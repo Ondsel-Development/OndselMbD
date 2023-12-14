@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel, Inc.                                       *
  *                                                                         *
- *   This file is part of OndselMbD.                                       *
+ *   This file is part of OndselSolver.                                    *
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
@@ -41,4 +41,57 @@ void MbD::ASMTSimulationParameters::parseASMT(std::vector<std::string>& lines)
 	errorTol = readDouble(lines[0]);
 	lines.erase(lines.begin());
 
+}
+
+void MbD::ASMTSimulationParameters::settstart(double t)
+{
+	tstart = t;
+}
+
+void MbD::ASMTSimulationParameters::settend(double t)
+{
+	tend = t;
+}
+
+void MbD::ASMTSimulationParameters::sethmin(double h)
+{
+	hmin = h;
+}
+
+void MbD::ASMTSimulationParameters::sethmax(double h)
+{
+	hmax = h;
+}
+
+void MbD::ASMTSimulationParameters::sethout(double h)
+{
+	hout = h;
+}
+
+void MbD::ASMTSimulationParameters::seterrorTol(double tol)
+{
+	errorTol = tol;
+}
+
+void MbD::ASMTSimulationParameters::setmaxIter(int maxIter)
+{
+	iterMaxPosKine = maxIter;
+	iterMaxAccKine = maxIter;
+}
+
+void MbD::ASMTSimulationParameters::storeOnLevel(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "SimulationParameters");
+	storeOnLevelString(os, level + 1, "tstart");
+	storeOnLevelDouble(os, level + 2, tstart);
+	storeOnLevelString(os, level + 1, "tend");
+	storeOnLevelDouble(os, level + 2, tend);
+	storeOnLevelString(os, level + 1, "hmin");
+	storeOnLevelDouble(os, level + 2, hmin);
+	storeOnLevelString(os, level + 1, "hmax");
+	storeOnLevelDouble(os, level + 2, hmax);
+	storeOnLevelString(os, level + 1, "hout");
+	storeOnLevelDouble(os, level + 2, hout);
+	storeOnLevelString(os, level + 1, "errorTol");
+	storeOnLevelDouble(os, level + 2, errorTol);
 }

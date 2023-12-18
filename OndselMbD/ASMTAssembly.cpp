@@ -11,6 +11,7 @@
 #include <fstream>	
 #include <algorithm>
 #include <numeric>
+#include <iomanip>
 
 #include "ASMTAssembly.h"
 #include "CREATE.h"
@@ -25,7 +26,6 @@
 #include "ASMTFixedJoint.h"
 #include "ASMTGeneralMotion.h"
 #include "ASMTUniversalJoint.h"
-#include "ExternalSystem.h"
 #include "ASMTPointInPlaneJoint.h"
 #include "ASMTPrincipalMassMarker.h"
 #include "ASMTForceTorque.h"
@@ -33,14 +33,30 @@
 #include "ASMTSimulationParameters.h"
 #include "ASMTAnimationParameters.h"
 #include "Part.h"
+#include "ASMTTime.h"
+#include "ASMTItemIJ.h"
+#include "ASMTAngleJoint.h"
+#include "ASMTConstantVelocityJoint.h"
+#include "ASMTCylSphJoint.h"
+#include "ASMTGearJoint.h"
+#include "ASMTPointInLineJoint.h"
+#include "ASMTRevCylJoint.h"
+#include "ASMTSphSphJoint.h"
+#include "ASMTLineInPlaneJoint.h"
+#include "ASMTPlanarJoint.h"
+#include "ASMTNoRotationJoint.h"
+#include "ASMTParallelAxesJoint.h"
+#include "ASMTPerpendicularJoint.h"
+#include "ASMTRackPinionJoint.h"
+#include "ASMTScrewJoint.h"
+#include "SimulationStoppingError.h"
+#include "ASMTKinematicIJ.h"
 #include "ASMTRefPoint.h"
 #include "ASMTRefCurve.h"
 #include "ASMTRefSurface.h"
-#include "ASMTTime.h"
+#include "ExternalSystem.h"
 #include "SystemSolver.h"
-#include "ASMTItemIJ.h"
-#include "ASMTKinematicIJ.h"
-#include <iomanip>
+#include "ASMTRevRevJoint.h"
 
 using namespace MbD;
 
@@ -386,6 +402,7 @@ void MbD::ASMTAssembly::runFile(const char* fileName)
 	if (lines[0] == "Assembly") {
 		lines.erase(lines.begin());
 		auto assembly = CREATE<ASMTAssembly>::With();
+		assembly->setFilename(fileName);
 		assembly->parseASMT(lines);
 		assembly->runKINEMATIC();
 	}
@@ -539,7 +556,7 @@ void MbD::ASMTAssembly::readKinematicIJs(std::vector<std::string>& lines)
 
 }
 
-void MbD::ASMTAssembly::readKinematicIJ(std::vector<std::string>& lines)
+void MbD::ASMTAssembly::readKinematicIJ(std::vector<std::string>&)
 {
 	assert(false);
 }
@@ -562,23 +579,72 @@ void MbD::ASMTAssembly::readJoints(std::vector<std::string>& lines)
 	std::vector<std::string> jointsLines(lines.begin(), it);
 	std::shared_ptr<ASMTJoint> joint;
 	while (!jointsLines.empty()) {
-		if (jointsLines[0] == "\t\t\tRevoluteJoint") {
-			joint = CREATE<ASMTRevoluteJoint>::With();
+		if (jointsLines[0] == "\t\t\tAngleJoint") {
+			joint = CREATE<ASMTAngleJoint>::With();
 		}
-		else if (jointsLines[0] == "\t\t\tCylindricalJoint") {
-			joint = CREATE<ASMTCylindricalJoint>::With();
+		else if (jointsLines[0] == "\t\t\tGearJoint") {
+			joint = CREATE<ASMTGearJoint>::With();
 		}
-		else if (jointsLines[0] == "\t\t\tTranslationalJoint") {
-			joint = CREATE<ASMTTranslationalJoint>::With();
+		else if (jointsLines[0] == "\t\t\tNoRotationJoint") {
+			joint = CREATE<ASMTNoRotationJoint>::With();
 		}
-		else if (jointsLines[0] == "\t\t\tSphericalJoint") {
-			joint = CREATE<ASMTSphericalJoint>::With();
+		else if (jointsLines[0] == "\t\t\tParallelAxesJoint") {
+			joint = CREATE<ASMTParallelAxesJoint>::With();
+		}
+		else if (jointsLines[0] == "\t\t\tPerpendicularJoint") {
+			joint = CREATE<ASMTPerpendicularJoint>::With();
+		}
+		else if (jointsLines[0] == "\t\t\tRackPinionJoint") {
+			joint = CREATE<ASMTRackPinionJoint>::With();
+		}
+		else if (jointsLines[0] == "\t\t\tScrewJoint") {
+			joint = CREATE<ASMTScrewJoint>::With();
+		}
+		//AtPointJoints
+		else if (jointsLines[0] == "\t\t\tConstantVelocityJoint") {
+			joint = CREATE<ASMTConstantVelocityJoint>::With();
 		}
 		else if (jointsLines[0] == "\t\t\tFixedJoint") {
 			joint = CREATE<ASMTFixedJoint>::With();
 		}
+		else if (jointsLines[0] == "\t\t\tRevoluteJoint") {
+			joint = CREATE<ASMTRevoluteJoint>::With();
+		}
+		else if (jointsLines[0] == "\t\t\tSphericalJoint") {
+			joint = CREATE<ASMTSphericalJoint>::With();
+		}
 		else if (jointsLines[0] == "\t\t\tUniversalJoint") {
 			joint = CREATE<ASMTUniversalJoint>::With();
+		}
+		//CompoundJoints
+		else if (jointsLines[0] == "\t\t\tSphSphJoint") {
+			joint = CREATE<ASMTSphSphJoint>::With();
+		}
+		else if (jointsLines[0] == "\t\t\tCylSphJoint") {
+			joint = CREATE<ASMTCylSphJoint>::With();
+		}
+		else if (jointsLines[0] == "\t\t\tRevCylJoint") {
+			joint = CREATE<ASMTRevCylJoint>::With();
+		}
+		else if (jointsLines[0] == "\t\t\tRevRevJoint") {
+			joint = CREATE<ASMTRevRevJoint>::With();
+		}
+		//InLineJoints
+		else if (jointsLines[0] == "\t\t\tCylindricalJoint") {
+			joint = CREATE<ASMTCylindricalJoint>::With();
+		}
+		else if (jointsLines[0] == "\t\t\tPointInLineJoint") {
+			joint = CREATE<ASMTPointInLineJoint>::With();
+		}
+		else if (jointsLines[0] == "\t\t\tTranslationalJoint") {
+			joint = CREATE<ASMTTranslationalJoint>::With();
+		}
+		//InPlaneJoints
+		else if (jointsLines[0] == "\t\t\tLineInPlaneJoint") {
+			joint = CREATE<ASMTLineInPlaneJoint>::With();
+		}
+		else if (jointsLines[0] == "\t\t\tPlanarJoint") {
+			joint = CREATE<ASMTPlanarJoint>::With();
 		}
 		else if (jointsLines[0] == "\t\t\tPointInPlaneJoint") {
 			joint = CREATE<ASMTPointInPlaneJoint>::With();
@@ -626,7 +692,7 @@ void MbD::ASMTAssembly::readMotions(std::vector<std::string>& lines)
 
 }
 
-void MbD::ASMTAssembly::readGeneralConstraintSets(std::vector<std::string>& lines)
+void MbD::ASMTAssembly::readGeneralConstraintSets(std::vector<std::string>& lines) const
 {
 	assert(lines[0] == "\t\tGeneralConstraintSets");
 	lines.erase(lines.begin());
@@ -690,6 +756,7 @@ void MbD::ASMTAssembly::readAnimationParameters(std::vector<std::string>& lines)
 
 void MbD::ASMTAssembly::readTimeSeries(std::vector<std::string>& lines)
 {
+	if (lines.empty()) return;
 	assert(lines[0] == "TimeSeries");
 	lines.erase(lines.begin());
 	assert(lines[0].find("Number\tInput") != std::string::npos);
@@ -699,6 +766,7 @@ void MbD::ASMTAssembly::readTimeSeries(std::vector<std::string>& lines)
 
 void MbD::ASMTAssembly::readTimes(std::vector<std::string>& lines)
 {
+	if (lines.empty()) return;
 	std::string str = lines[0];
 	std::string substr = "Time\tInput";
 	auto pos = str.find(substr);
@@ -711,6 +779,7 @@ void MbD::ASMTAssembly::readTimes(std::vector<std::string>& lines)
 
 void MbD::ASMTAssembly::readPartSeriesMany(std::vector<std::string>& lines)
 {
+	if (lines.empty()) return;
 	assert(lines[0].find("PartSeries") != std::string::npos);
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
 		return s.find("JointSeries") != std::string::npos;
@@ -724,6 +793,7 @@ void MbD::ASMTAssembly::readPartSeriesMany(std::vector<std::string>& lines)
 
 void MbD::ASMTAssembly::readJointSeriesMany(std::vector<std::string>& lines)
 {
+	if (lines.empty()) return;
 	assert(lines[0].find("JointSeries") != std::string::npos);
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
 		return s.find("MotionSeries") != std::string::npos;
@@ -737,6 +807,7 @@ void MbD::ASMTAssembly::readJointSeriesMany(std::vector<std::string>& lines)
 
 void MbD::ASMTAssembly::readAssemblySeries(std::vector<std::string>& lines)
 {
+	if (lines.empty()) return;
 	std::string str = lines[0];
 	std::string substr = "AssemblySeries";
 	auto pos = str.find(substr);
@@ -768,6 +839,7 @@ void MbD::ASMTAssembly::readAssemblySeries(std::vector<std::string>& lines)
 
 void MbD::ASMTAssembly::readPartSeries(std::vector<std::string>& lines)
 {
+	if (lines.empty()) return;
 	std::string str = lines[0];
 	std::string substr = "PartSeries";
 	auto pos = str.find(substr);
@@ -783,6 +855,7 @@ void MbD::ASMTAssembly::readPartSeries(std::vector<std::string>& lines)
 
 void MbD::ASMTAssembly::readJointSeries(std::vector<std::string>& lines)
 {
+	if (lines.empty()) return;
 	std::string str = lines[0];
 	std::string substr = "JointSeries";
 	auto pos = str.find(substr);
@@ -806,6 +879,7 @@ void MbD::ASMTAssembly::readMotionSeriesMany(std::vector<std::string>& lines)
 
 void MbD::ASMTAssembly::readMotionSeries(std::vector<std::string>& lines)
 {
+	if (lines.empty()) return;
 	std::string str = lines[0];
 	std::string substr = "MotionSeries";
 	auto pos = str.find(substr);
@@ -857,14 +931,14 @@ void MbD::ASMTAssembly::calcCharacteristicDimensions()
 	this->mbdUnits = std::make_shared<Units>(1.0, 1.0, 1.0, 1.0);	//for debug
 }
 
-double MbD::ASMTAssembly::calcCharacteristicTime()
+double MbD::ASMTAssembly::calcCharacteristicTime() const
 {
 	return std::abs(simulationParameters->hout);
 }
 
-double MbD::ASMTAssembly::calcCharacteristicMass()
+double MbD::ASMTAssembly::calcCharacteristicMass() const
 {
-	auto n = parts->size();
+	auto n = (int)parts->size();
 	double sumOfSquares = 0.0;
 	for (int i = 0; i < n; i++)
 	{
@@ -876,7 +950,7 @@ double MbD::ASMTAssembly::calcCharacteristicMass()
 	return unitMass;
 }
 
-double MbD::ASMTAssembly::calcCharacteristicLength()
+double MbD::ASMTAssembly::calcCharacteristicLength() const
 {
 	auto markerMap = this->markerMap();
 	auto lengths = std::make_shared<std::vector<double>>();
@@ -887,14 +961,14 @@ double MbD::ASMTAssembly::calcCharacteristicLength()
 		auto& mkrJ = markerMap->at(connector->markerJ);
 		lengths->push_back(mkrJ->rpmp()->length());
 	}
-	auto n = lengths->size();
+	auto n = (int)lengths->size();
 	double sumOfSquares = std::accumulate(lengths->begin(), lengths->end(), 0.0, [](double sum, double l) { return sum + l * l; });
 	auto unitLength = std::sqrt(sumOfSquares / std::max((int)n, 1));
 	if (unitLength <= 0) unitLength = 1.0;
 	return unitLength;
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<ASMTItemIJ>>> MbD::ASMTAssembly::connectorList()
+std::shared_ptr<std::vector<std::shared_ptr<ASMTItemIJ>>> MbD::ASMTAssembly::connectorList() const
 {
 	auto list = std::make_shared<std::vector<std::shared_ptr<ASMTItemIJ>>>();
 	list->insert(list->end(), joints->begin(), joints->end());
@@ -904,7 +978,7 @@ std::shared_ptr<std::vector<std::shared_ptr<ASMTItemIJ>>> MbD::ASMTAssembly::con
 	return list;
 }
 
-std::shared_ptr<std::map<std::string, std::shared_ptr<ASMTMarker>>> MbD::ASMTAssembly::markerMap()
+std::shared_ptr<std::map<std::string, std::shared_ptr<ASMTMarker>>> MbD::ASMTAssembly::markerMap() const
 {
 	auto answer = std::make_shared<std::map<std::string, std::shared_ptr<ASMTMarker>>>();
 	for (auto& refPoint : *refPoints) {
@@ -974,7 +1048,7 @@ void MbD::ASMTAssembly::createMbD(std::shared_ptr<System> mbdSys, std::shared_pt
 void MbD::ASMTAssembly::outputFile(std::string filename)
 {
 	std::ofstream os(filename);
-	os << std::setprecision(std::numeric_limits<double>::digits10 + 1);
+	os << std::setprecision(static_cast<std::streamsize>(std::numeric_limits<double>::digits10) + 1);
 	//	try {
 	os << "OndselSolver" << std::endl;
 	storeOnLevel(os, 0);
@@ -1021,14 +1095,24 @@ void MbD::ASMTAssembly::runKINEMATIC()
 	auto mbdSystem = std::make_shared<System>();
 	mbdObject = mbdSystem;
 	mbdSystem->externalSystem->asmtAssembly = this;
-	mbdSystem->runKINEMATIC(mbdSystem);
+	try {
+		mbdSystem->runKINEMATIC(mbdSystem);
+	}
+	catch (SimulationStoppingError ex) {
+
+	}
 }
 void MbD::ASMTAssembly::runDYNAMIC()
 {
 	auto mbdSystem = CREATE<System>::With();
 	mbdObject = mbdSystem;
 	mbdSystem->externalSystem->asmtAssembly = this;
-	mbdSystem->runDYNAMIC(mbdSystem);
+	try {
+		mbdSystem->runDYNAMIC(mbdSystem);
+	}
+	catch (SimulationStoppingError ex) {
+
+	}
 }
 
 void MbD::ASMTAssembly::initprincipalMassMarker()
@@ -1041,7 +1125,7 @@ void MbD::ASMTAssembly::initprincipalMassMarker()
 	//principalMassMarker->rotationMatrix = FullMatrix<double>>::identitysptr(3);
 }
 
-std::shared_ptr<ASMTSpatialContainer> MbD::ASMTAssembly::spatialContainerAt(std::shared_ptr<ASMTAssembly> self, std::string& longname)
+std::shared_ptr<ASMTSpatialContainer> MbD::ASMTAssembly::spatialContainerAt(std::shared_ptr<ASMTAssembly> self, std::string& longname) const
 {
 	if ((self->fullName("")) == longname) return self;
 	auto it = std::find_if(parts->begin(), parts->end(), [&](const std::shared_ptr<ASMTPart>& prt) {
@@ -1051,7 +1135,7 @@ std::shared_ptr<ASMTSpatialContainer> MbD::ASMTAssembly::spatialContainerAt(std:
 	return part;
 }
 
-std::shared_ptr<ASMTMarker> MbD::ASMTAssembly::markerAt(std::string& longname)
+std::shared_ptr<ASMTMarker> MbD::ASMTAssembly::markerAt(std::string& longname) const
 {
 	for (auto& refPoint : *refPoints) {
 		for (auto& marker : *refPoint->markers) {
@@ -1068,7 +1152,7 @@ std::shared_ptr<ASMTMarker> MbD::ASMTAssembly::markerAt(std::string& longname)
 	return nullptr;
 }
 
-std::shared_ptr<ASMTJoint> MbD::ASMTAssembly::jointAt(std::string& longname)
+std::shared_ptr<ASMTJoint> MbD::ASMTAssembly::jointAt(std::string& longname) const
 {
 	auto it = std::find_if(joints->begin(), joints->end(), [&](const std::shared_ptr<ASMTJoint>& jt) {
 		return jt->fullName("") == longname;
@@ -1077,7 +1161,7 @@ std::shared_ptr<ASMTJoint> MbD::ASMTAssembly::jointAt(std::string& longname)
 	return joint;
 }
 
-std::shared_ptr<ASMTMotion> MbD::ASMTAssembly::motionAt(std::string& longname)
+std::shared_ptr<ASMTMotion> MbD::ASMTAssembly::motionAt(std::string& longname) const
 {
 	auto it = std::find_if(motions->begin(), motions->end(), [&](const std::shared_ptr<ASMTMotion>& mt) {
 		return mt->fullName("") == longname;
@@ -1086,7 +1170,7 @@ std::shared_ptr<ASMTMotion> MbD::ASMTAssembly::motionAt(std::string& longname)
 	return motion;
 }
 
-std::shared_ptr<ASMTForceTorque> MbD::ASMTAssembly::forceTorqueAt(std::string& longname)
+std::shared_ptr<ASMTForceTorque> MbD::ASMTAssembly::forceTorqueAt(std::string& longname) const
 {
 	auto it = std::find_if(forcesTorques->begin(), forcesTorques->end(), [&](const std::shared_ptr<ASMTForceTorque>& mt) {
 		return mt->fullName("") == longname;
@@ -1105,7 +1189,7 @@ FColDsptr MbD::ASMTAssembly::omeOpO()
 	return std::make_shared<FullColumn<double>>(3, 0.0);
 }
 
-std::shared_ptr<ASMTTime> MbD::ASMTAssembly::geoTime()
+std::shared_ptr<ASMTTime> MbD::ASMTAssembly::geoTime() const
 {
 	return asmtTime;
 }
@@ -1113,8 +1197,9 @@ std::shared_ptr<ASMTTime> MbD::ASMTAssembly::geoTime()
 void MbD::ASMTAssembly::updateFromMbD()
 {
 	ASMTSpatialContainer::updateFromMbD();
-	times->push_back(asmtTime->getValue());
-	std::cout << "Time = " << asmtTime->getValue() << std::endl;
+	auto time = asmtTime->getValue();
+	times->push_back(time);
+	std::cout << "Time = " << time << std::endl;
 	for (auto& part : *parts) part->updateFromMbD();
 	for (auto& joint : *joints) joint->updateFromMbD();
 	for (auto& motion : *motions) motion->updateFromMbD();
@@ -1132,11 +1217,11 @@ void MbD::ASMTAssembly::compareResults(AnalysisType type)
 
 void MbD::ASMTAssembly::outputResults(AnalysisType type)
 {
-	ASMTSpatialContainer::outputResults(type);
-	for (auto& part : *parts) part->outputResults(type);
-	for (auto& joint : *joints) joint->outputResults(type);
-	for (auto& motion : *motions) motion->outputResults(type);
-	for (auto& forceTorque : *forcesTorques) forceTorque->outputResults(type);
+	//ASMTSpatialContainer::outputResults(type);
+	//for (auto& part : *parts) part->outputResults(type);
+	//for (auto& joint : *joints) joint->outputResults(type);
+	//for (auto& motion : *motions) motion->outputResults(type);
+	//for (auto& forceTorque : *forcesTorques) forceTorque->outputResults(type);
 }
 
 void MbD::ASMTAssembly::addPart(std::shared_ptr<ASMTPart> part)
@@ -1170,7 +1255,7 @@ void MbD::ASMTAssembly::setSimulationParameters(std::shared_ptr<ASMTSimulationPa
 	parameters->owner = this;
 }
 
-std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partNamed(std::string partName)
+std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partNamed(std::string partName) const
 {
 	auto it = std::find_if(parts->begin(), parts->end(), [&](const std::shared_ptr<ASMTPart>& prt) {
 		return prt->fullName("") == partName;
@@ -1179,13 +1264,13 @@ std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partNamed(std::string partName)
 	return part;
 }
 
-std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partPartialNamed(std::string partialName)
+std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partPartialNamed(std::string partialName) const
 {
 	auto it = std::find_if(parts->begin(), parts->end(), [&](const std::shared_ptr<ASMTPart>& prt) {
 		auto fullName = prt->fullName("");
 		return fullName.find(partialName) != std::string::npos;
 		});
-	auto part = *it;
+	auto& part = *it;
 	return part;
 }
 
@@ -1256,13 +1341,13 @@ void MbD::ASMTAssembly::storeOnTimeSeries(std::ofstream& os)
 	if (times->empty()) return;
 	os << "TimeSeries" << std::endl;
 	os << "Number\tInput\t";
-	for (int i = 1; i < times->size(); i++)
+	for (int i = 1; i < (int)times->size(); i++)
 	{
 		os << i << '\t';
 	}
 	os << std::endl;
 	os << "Time\tInput\t";
-	for (int i = 1; i < times->size(); i++)
+	for (int i = 1; i < (int)times->size(); i++)
 	{
 		os << times->at(i) << '\t';
 	}
@@ -1272,6 +1357,15 @@ void MbD::ASMTAssembly::storeOnTimeSeries(std::ofstream& os)
 	for (auto& part : *parts) part->storeOnTimeSeries(os);
 	for (auto& joint : *joints) joint->storeOnTimeSeries(os);
 	for (auto& motion : *motions) motion->storeOnTimeSeries(os);
+}
+
+void MbD::ASMTAssembly::setFilename(std::string str)
+{
+	std::stringstream ss;
+	ss << "FileName = " << str << std::endl;
+	auto str2 = ss.str();
+	logString(str2);
+	filename = str;
 }
 
 

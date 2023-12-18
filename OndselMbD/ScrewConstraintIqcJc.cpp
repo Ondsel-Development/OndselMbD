@@ -18,6 +18,20 @@ using namespace MbD;
 
 MbD::ScrewConstraintIqcJc::ScrewConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : ScrewConstraintIJ(frmi, frmj)
 {
+	pGpXI = std::make_shared<FullRow<double>>(3);
+	pGpEI = std::make_shared<FullRow<double>>(4);
+	ppGpXIpEI = std::make_shared<FullMatrix<double>>(3, 4);
+	ppGpEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
+}
+
+void MbD::ScrewConstraintIqcJc::initzIeJeIe()
+{
+	zIeJeIe = std::make_shared<DispCompIeqcJecIe>(frmI, frmJ, 2);
+}
+
+void MbD::ScrewConstraintIqcJc::initthezIeJe()
+{
+	thezIeJe = std::make_shared<AngleZIeqcJec>(frmI, frmJ);
 }
 
 void MbD::ScrewConstraintIqcJc::addToJointForceI(FColDsptr col)
@@ -45,22 +59,23 @@ void MbD::ScrewConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 
 void MbD::ScrewConstraintIqcJc::calc_pGpEI()
 {
-	pGpEI = zIeJeIe->pvaluepEI()->times(2.0 * M_PI)->minusFullRow(thezIeJe->pvaluepEI()->times(pitch));
+	pGpEI = zIeJeIe->pvaluepEI()->times(2.0 * OS_M_PI)->minusFullRow(thezIeJe->pvaluepEI()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJc::calc_pGpXI()
 {
-	pGpXI = zIeJeIe->pvaluepXI()->times(2.0 * M_PI)->minusFullRow(thezIeJe->pvaluepXI()->times(pitch));
+	pGpXI = zIeJeIe->pvaluepXI()->times(2.0 * OS_M_PI);
 }
 
 void MbD::ScrewConstraintIqcJc::calc_ppGpEIpEI()
 {
-	ppGpEIpEI = zIeJeIe->ppvaluepEIpEI()->times(2.0 * M_PI)->minusFullMatrix(thezIeJe->ppvaluepEIpEI()->times(pitch));
+	ppGpEIpEI = zIeJeIe->ppvaluepEIpEI()->times(2.0 * OS_M_PI)
+		->minusFullMatrix(thezIeJe->ppvaluepEIpEI()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJc::calc_ppGpXIpEI()
 {
-	ppGpXIpEI = zIeJeIe->ppvaluepXIpEI()->times(2.0 * M_PI)->minusFullMatrix(thezIeJe->ppvaluepXIpEI()->times(pitch));
+	ppGpXIpEI = zIeJeIe->ppvaluepXIpEI()->times(2.0 * OS_M_PI);
 }
 
 void MbD::ScrewConstraintIqcJc::calcPostDynCorrectorIteration()

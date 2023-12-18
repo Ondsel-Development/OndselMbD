@@ -20,7 +20,7 @@ namespace MbD {
 		void initializeGlobally() override;
 		void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ) override;
 
-		double pitchRadius, aConstant;
+		double pitchRadius = 1.0, aConstant = 0.0;
 	};
 }
 

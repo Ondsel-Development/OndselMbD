@@ -19,7 +19,7 @@ namespace MbD {
 		GearJoint(const char* str);
 		void initializeGlobally() override;
 
-		double radiusI, radiusJ, aConstant;
+		double radiusI = 0.0, radiusJ = 0.0, aConstant = 0.0;
 	};
 }
 

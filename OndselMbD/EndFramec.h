@@ -41,6 +41,7 @@ namespace MbD {
 		virtual FColFMatDsptr pAOppE();
 		virtual FMatDsptr aBOp();
 		std::shared_ptr<EndFrameqc> newCopyEndFrameqc();
+		virtual bool isEndFrameqc();
 		void fillpqsumu(FColDsptr col) override;
 		void fillpqsumudot(FColDsptr col) override;
 		void setpqsumu(FColDsptr col) override;
@@ -49,7 +50,7 @@ namespace MbD {
 
 		MarkerFrame* markerFrame; //Use raw pointer when pointing backwards.
 		FColDsptr rOeO = std::make_shared<FullColumn<double>>(3);
-		FMatDsptr aAOe = std::make_shared<FullMatrix<double>>(3, 3);
+		FMatDsptr aAOe = FullMatrix<double>::identitysptr(3);
 	};
 	//using EndFrmsptr = std::shared_ptr<EndFramec>;
 }

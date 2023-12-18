@@ -11,6 +11,7 @@
 #include "CREATE.h"
 #include "GESpMatParPvMarkoFast.h"
 #include "GESpMatParPvPrecise.h"
+#include "SystemSolver.h"
 
 using namespace MbD;
 
@@ -99,4 +100,10 @@ void MbD::DAECorrector::postRun()
 void MbD::DAECorrector::setSystem(Solver* sys)
 {
 	daeSystem = static_cast<BasicDAEIntegrator*>(sys);
+}
+
+void MbD::DAECorrector::reportStats()
+{
+	statistics->iterNo = iterNo;
+	daeSystem->useDAECorrectorStats(statistics);
 }

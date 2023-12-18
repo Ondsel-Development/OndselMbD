@@ -62,7 +62,7 @@ void MbD::BasicDAEIntegrator::firstStep()
 	incrementTime();
 	predictFirstStep();
 	correctFirstStep();
-	//reportTrialStepStats();
+	reportTrialStepStats();
 	while (isRedoingFirstStep()) {
 		incrementTry();
 		orderNew = 1;
@@ -70,10 +70,10 @@ void MbD::BasicDAEIntegrator::firstStep()
 		changeTime();
 		predictFirstStep();
 		correctFirstStep();
-		//reportTrialStepStats();
+		reportTrialStepStats();
 	}
 	postFirstStep();
-	//reportStepStats();
+	reportStepStats();
 }
 
 bool MbD::BasicDAEIntegrator::isRedoingFirstStep()
@@ -99,7 +99,7 @@ void MbD::BasicDAEIntegrator::nextStep()
 	incrementTime();
 	predict();
 	correct();
-	//reportTrialStepStats();
+	reportTrialStepStats();
 	while (isRedoingStep()) {
 		incrementTry();
 		selectOrder();
@@ -107,10 +107,25 @@ void MbD::BasicDAEIntegrator::nextStep()
 		changeTime();
 		predict();
 		correct();
-		//reportTrialStepStats();
+		reportTrialStepStats();
 	}
 	postStep();
-	//reportStepStats();
+	reportStepStats();
+}
+
+void MbD::BasicDAEIntegrator::reportStepStats()
+{
+	system->useDAEStepStats(statistics);
+}
+
+void MbD::BasicDAEIntegrator::reportTrialStepStats()
+{
+	statistics->istep = istep;
+	statistics->t = t;
+	statistics->h = direction * h;
+	statistics->order = order;
+	statistics->truncError = truncError;
+	system->useTrialStepStats(statistics);
 }
 
 void MbD::BasicDAEIntegrator::runInitialConditionTypeSolution()
@@ -507,4 +522,9 @@ void MbD::BasicDAEIntegrator::selectStepSizeNormal()
 			hnew = 0.25 * h;
 		}
 	}
+}
+
+void MbD::BasicDAEIntegrator::useDAECorrectorStats(std::shared_ptr<SolverStatistics> stats)
+{
+	statistics->corIterNo = stats->iterNo;
 }

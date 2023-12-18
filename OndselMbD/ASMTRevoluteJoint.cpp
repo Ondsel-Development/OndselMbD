@@ -8,6 +8,7 @@
 #include <fstream>	
 
 #include "ASMTRevoluteJoint.h"
+#include "RevoluteJoint.h"
 
 using namespace MbD;
 

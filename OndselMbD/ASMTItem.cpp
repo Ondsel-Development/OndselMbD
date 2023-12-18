@@ -11,6 +11,7 @@
 #include "ASMTSpatialContainer.h"
 #include "ASMTAssembly.h"
 #include "Constant.h"
+#include <algorithm>
 
 using namespace MbD;
 
@@ -38,12 +39,19 @@ void MbD::ASMTItem::noop()
 	//No Operations
 }
 
+std::string MbD::ASMTItem::classname()
+{
+	std::string str = typeid(*this).name();
+	auto answer = str.substr(11, str.size() - 11);
+	return answer;
+}
+
 void MbD::ASMTItem::setName(std::string str)
 {
 	name = str;
 }
 
-void MbD::ASMTItem::parseASMT(std::vector<std::string>& lines)
+void MbD::ASMTItem::parseASMT(std::vector<std::string>&)
 {
 	assert(false);
 }
@@ -141,8 +149,9 @@ void MbD::ASMTItem::deleteMbD()
 	mbdObject = nullptr;
 }
 
-void MbD::ASMTItem::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+void MbD::ASMTItem::createMbD(std::shared_ptr<System>, std::shared_ptr<Units>)
 {
+	noop();
 	assert(false);
 }
 
@@ -151,12 +160,12 @@ void MbD::ASMTItem::updateFromMbD()
 	assert(false);
 }
 
-void MbD::ASMTItem::compareResults(AnalysisType type)
+void MbD::ASMTItem::compareResults(AnalysisType)
 {
 	assert(false);
 }
 
-void MbD::ASMTItem::outputResults(AnalysisType type)
+void MbD::ASMTItem::outputResults(AnalysisType)
 {
 	assert(false);
 }
@@ -174,8 +183,9 @@ std::shared_ptr<Constant> MbD::ASMTItem::sptrConstant(double value)
 	return std::make_shared<Constant>(value);
 }
 
-void MbD::ASMTItem::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTItem::storeOnLevel(std::ofstream&, int)
 {
+	noop();
 	assert(false);
 }
 
@@ -219,7 +229,7 @@ void MbD::ASMTItem::storeOnLevelBool(std::ofstream& os, int level, bool value)
 void MbD::ASMTItem::storeOnLevelArray(std::ofstream& os, int level, std::vector<double> array)
 {
 	storeOnLevelTabs(os, level);
-	for (int i = 0; i < array.size(); i++)
+	for (int i = 0; i < (int)array.size(); i++)
 	{
 		os << array[i] << '\t';
 	}
@@ -232,7 +242,17 @@ void MbD::ASMTItem::storeOnLevelName(std::ofstream& os, int level)
 	storeOnLevelString(os, level + 1, name);
 }
 
-void MbD::ASMTItem::storeOnTimeSeries(std::ofstream& os)
+void MbD::ASMTItem::storeOnTimeSeries(std::ofstream&)
 {
 	assert(false);
+}
+
+void MbD::ASMTItem::logString(std::string& str)
+{
+	std::cout << str << std::endl;
+}
+
+void MbD::ASMTItem::logString(const char* chars)
+{
+	std::cout << chars << std::endl;
 }

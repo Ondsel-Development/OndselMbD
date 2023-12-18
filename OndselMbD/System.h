@@ -31,6 +31,7 @@ namespace MbD {
 	class PrescribedMotion;
 	class ForceTorqueItem;
 	class ExternalSystem;
+	class SolverStatistics;
 
 	class System : public Item
 	{
@@ -67,6 +68,8 @@ namespace MbD {
 		double translationLimit();
 		double rotationLimit();
 		void outputFor(AnalysisType type);
+		void useKineTrialStepStats(std::shared_ptr<SolverStatistics> stats);
+		void useDynTrialStepStats(std::shared_ptr<SolverStatistics> stats);
 
 		std::shared_ptr<ExternalSystem> externalSystem;
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts;

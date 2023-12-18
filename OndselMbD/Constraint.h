@@ -21,12 +21,17 @@ namespace MbD {
 		Constraint();
 		Constraint(const char* str);
 
+		void initialize() override;
 		virtual void addToJointForceI(FColDsptr col);
 		virtual void addToJointTorqueI(FColDsptr col);
 		void fillAccICIterJacob(SpMatDsptr mat) override;
+        void fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints) override;
 		virtual void fillConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints);
+        void fillDispConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints) override;
 		virtual void fillDispConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints);
+        void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
 		virtual void fillEssenConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints);
+        void fillPerpenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints) override;
 		virtual void fillPerpenConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints);
 		void fillPosICError(FColDsptr col) override;
 		void fillPosKineError(FColDsptr col) override;
@@ -34,8 +39,8 @@ namespace MbD {
 		void fillqsulam(FColDsptr col) override;
 		void fillpqsumu(FColDsptr col) override;
 		void fillpqsumudot(FColDsptr col) override;
+        void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) override;
 		virtual void fillRedundantConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints);
-		void initialize() override;
 		virtual bool isRedundant();
 		void postInput() override;
 		void preAccIC() override;
@@ -44,7 +49,7 @@ namespace MbD {
 		void prePosKine() override;
 		void reactivateRedundantConstraints() override;
 		void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos) override;
-		virtual void setConstant(double value);
+		void setConstant(double value);
 		void setqsudotlam(FColDsptr col) override;
 		void setqsuddotlam(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;
@@ -56,6 +61,7 @@ namespace MbD {
 
 		int iG = -1;
 		double aG = 0.0;		//Constraint function
+		double aConstant = 0.0;
 		double lam = 0.0;		//Lambda is Lagrange Multiplier
 		double mu = 0.0, lamDeriv = 0.0;
 	};

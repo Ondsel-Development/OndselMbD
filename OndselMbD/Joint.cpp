@@ -57,7 +57,7 @@ void Joint::initializeGlobally()
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->initializeGlobally(); });
 }
 
-void Joint::constraintsDo(const std::function<void(std::shared_ptr<Constraint>)>& f)
+void Joint::constraintsDo(const std::function<void(std::shared_ptr<Constraint>)>& f) const
 {
 	std::for_each(constraints->begin(), constraints->end(), f);
 }
@@ -74,14 +74,14 @@ void Joint::addConstraint(std::shared_ptr<Constraint> con)
 	constraints->push_back(con);
 }
 
-FColDsptr MbD::Joint::aFIeJtIe()
+FColDsptr MbD::Joint::aFIeJtIe() const
 {
 	//"aFIeJtIe is joint force on end frame Ie expresses in Ie components."
 	auto frmIqc = std::dynamic_pointer_cast<EndFrameqc>(frmI);
 	return frmIqc->aAeO()->timesFullColumn(this->aFIeJtO());
 }
 
-FColDsptr MbD::Joint::aFIeJtO()
+FColDsptr MbD::Joint::aFIeJtO() const
 {
 	//"aFIeJtO is joint force on end frame Ie expresses in O components."
 	auto aFIeJtO = std::make_shared <FullColumn<double>>(3);
@@ -144,7 +144,7 @@ void Joint::fillqsudot(FColDsptr col)
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillqsudot(col); });
 }
 
-void Joint::fillqsudotWeights(DiagMatDsptr diagMat)
+void Joint::fillqsudotWeights(DiagMatDsptr)
 {
 }
 
@@ -225,7 +225,7 @@ void Joint::fillPosICJacob(SpMatDsptr mat)
 
 void Joint::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos)
 {
-	for (size_t i = 0; i < constraints->size(); i++)
+	for (int i = 0; i < (int)constraints->size(); i++)
 	{
 		auto& constraint = constraints->at(i);
 		if (std::find(redundantEqnNos->begin(), redundantEqnNos->end(), constraint->iG) != redundantEqnNos->end()) {
@@ -238,7 +238,7 @@ void Joint::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redunda
 
 void Joint::reactivateRedundantConstraints()
 {
-	for (size_t i = 0; i < constraints->size(); i++)
+	for (int i = 0; i < (int)constraints->size(); i++)
 	{
 		auto& con = constraints->at(i);
 		if (con->isRedundant()) {
@@ -344,18 +344,18 @@ std::shared_ptr<StateData> Joint::stateData()
 	return answer;
 }
 
-FColDsptr Joint::aFX()
+FColDsptr Joint::aFX() const
 {
 	return this->jointForceI();
 }
 
-FColDsptr MbD::Joint::aTIeJtIe()
+FColDsptr MbD::Joint::aTIeJtIe() const
 {
 	//"aTIeJtIe is torque on part containing end frame Ie expressed in Ie components."
 	return frmI->aAeO()->timesFullColumn(this->aTIeJtO());
 }
 
-FColDsptr MbD::Joint::aTIeJtO()
+FColDsptr MbD::Joint::aTIeJtO() const
 {
 	//"aTIeJtO is torque on part containing end frame Ie expressed in O components."
 	auto aTIeJtO = std::make_shared <FullColumn<double>>(3);
@@ -363,7 +363,7 @@ FColDsptr MbD::Joint::aTIeJtO()
 	return aTIeJtO;
 }
 
-FColDsptr Joint::jointForceI()
+FColDsptr Joint::jointForceI() const
 {
 	//"jointForceI is force on MbD marker I."
 	auto jointForce = std::make_shared <FullColumn<double>>(3);
@@ -371,12 +371,12 @@ FColDsptr Joint::jointForceI()
 	return jointForce;
 }
 
-FColDsptr Joint::aTX()
+FColDsptr Joint::aTX() const
 {
 	return this->jointTorqueI();
 }
 
-FColDsptr Joint::jointTorqueI()
+FColDsptr Joint::jointTorqueI() const
 {
 	//"jointTorqueI is torque on MbD marker I."
 	auto jointTorque = std::make_shared <FullColumn<double>>(3);

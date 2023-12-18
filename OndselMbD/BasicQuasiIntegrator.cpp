@@ -22,9 +22,9 @@ void BasicQuasiIntegrator::firstStep()
 	selectFirstStepSize();
 	incrementTime();
 	runInitialConditionTypeSolution();
-	//reportTrialStepStats();
+	reportTrialStepStats();
 	postFirstStep();
-	//reportStepStats();
+	reportStepStats();
 }
 
 bool BasicQuasiIntegrator::isRedoingFirstStep()
@@ -40,9 +40,22 @@ void BasicQuasiIntegrator::nextStep()
 	selectStepSize();
 	incrementTime();
 	runInitialConditionTypeSolution();
-	//reportTrialStepStats();
+	reportTrialStepStats();
 	postStep();
-	//reportStepStats();
+	reportStepStats();
+}
+
+void MbD::BasicQuasiIntegrator::reportStepStats()
+{
+	system->useQuasiStepStats(statistics);
+}
+
+void MbD::BasicQuasiIntegrator::reportTrialStepStats()
+{
+	statistics->istep = istep;
+	statistics->t = t;
+	statistics->h = direction * h;
+	system->useTrialStepStats(statistics);
 }
 
 void BasicQuasiIntegrator::runInitialConditionTypeSolution()

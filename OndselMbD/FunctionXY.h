@@ -21,8 +21,9 @@ namespace MbD {
         FunctionXY();
         FunctionXY(Symsptr base, Symsptr exp);
         void arguments(Symsptr args) override;
-        virtual Symsptr differentiateWRTx();
-        virtual Symsptr differentiateWRTy();
+        virtual Symsptr differentiateWRTx() = 0;
+        virtual Symsptr differentiateWRTy() = 0;
+        bool isConstant() override;
 
         Symsptr x, y;
 

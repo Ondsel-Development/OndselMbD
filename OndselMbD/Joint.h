@@ -27,14 +27,14 @@ namespace MbD {
 		Joint(const char* str);
 
 		void addConstraint(std::shared_ptr<Constraint> con);
-		FColDsptr aFIeJtIe();
-		FColDsptr aFIeJtO();
-		FColDsptr aFX();
-		FColDsptr aTIeJtIe();
-		FColDsptr aTIeJtO();
-		FColDsptr aTX();
+		FColDsptr aFIeJtIe() const;
+		FColDsptr aFIeJtO() const;
+		FColDsptr aFX() const;
+		FColDsptr aTIeJtIe() const;
+		FColDsptr aTIeJtO() const;
+		FColDsptr aTX() const;
 		virtual void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ);
-		void constraintsDo(const std::function <void(std::shared_ptr<Constraint>)>& f);
+		void constraintsDo(const std::function <void(std::shared_ptr<Constraint>)>& f) const;
 		void constraintsReport() override;
 		void fillAccICIterError(FColDsptr col) override;
 		void fillAccICIterJacob(SpMatDsptr mat) override;
@@ -58,8 +58,8 @@ namespace MbD {
 		void initialize() override;
 		void initializeGlobally() override;
 		void initializeLocally() override;
-		FColDsptr jointForceI();
-		FColDsptr jointTorqueI();
+		FColDsptr jointForceI() const;
+		FColDsptr jointTorqueI() const;
 		void postDynStep() override;
 		void postInput() override;
 		void postPosIC() override;

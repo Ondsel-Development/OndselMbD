@@ -33,6 +33,7 @@ namespace MbD {
         void interpolateAt(double t) override;
         void postStep() override;
         void postRun() override;
+        virtual void useTrialStepStats(std::shared_ptr<SolverStatistics> stats);
 
     };
 }

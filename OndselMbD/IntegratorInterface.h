@@ -23,8 +23,8 @@ namespace MbD {
     public:
 
         void initializeGlobally() override;
-        virtual void preRun();
-        virtual void checkForDiscontinuity();
+        virtual void preRun() override = 0;
+        virtual void checkForDiscontinuity() = 0;
         
         void setSystem(Solver* sys) override;
         void logString(std::string& str) override;
@@ -33,9 +33,9 @@ namespace MbD {
         virtual void incrementTime(double tnew);
 
         void postFirstStep() override;
-        virtual double suggestSmallerOrAcceptFirstStepSize(double hnew);
-        virtual double suggestSmallerOrAcceptStepSize(double hnew);
-        virtual void checkForOutputThrough(double t);
+        virtual double suggestSmallerOrAcceptFirstStepSize(double hnew) = 0;
+        virtual double suggestSmallerOrAcceptStepSize(double hnew) = 0;
+        virtual void checkForOutputThrough(double t) = 0;
         virtual void interpolateAt(double t);
         virtual void fillF(FColDsptr vecF);
         virtual void fillpFpy(SpMatDsptr mat);
@@ -44,8 +44,11 @@ namespace MbD {
         virtual void y(FColDsptr col);
         virtual void ydot(FColDsptr col);
         virtual void updateForDAECorrector();
+        virtual void useTrialStepStats(std::shared_ptr<SolverStatistics> stats);
+        virtual void useDAEStepStats(std::shared_ptr<SolverStatistics> stats);
+        virtual void useQuasiStepStats(std::shared_ptr<SolverStatistics> stats);
 
-        SystemSolver* system;
+        SystemSolver* system = nullptr;
         double tout = 0.0, hout = 0.0, hmin = 0.0, hmax = 0.0, tstart = 0.0, tend = 0.0;
         std::shared_ptr<BasicIntegrator> integrator;
     };

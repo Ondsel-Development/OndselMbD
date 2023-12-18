@@ -9,6 +9,8 @@
 #include "corecrt_math_defines.h"
 
 #include "ScrewConstraintIJ.h"
+#include "ScrewConstraintIqcJqc.h"
+#include "EndFrameqc.h"
 
 using namespace MbD;
 
@@ -16,14 +18,34 @@ MbD::ScrewConstraintIJ::ScrewConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : Co
 {
 }
 
+std::shared_ptr<ScrewConstraintIJ> MbD::ScrewConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	assert(frmi->isEndFrameqc());
+	assert(frmj->isEndFrameqc());
+	auto screwCon = std::make_shared<ScrewConstraintIqcJqc>(frmi, frmj);
+	screwCon->initzIeJeIe();
+	screwCon->initthezIeJe();
+	return screwCon;
+}
+
 void MbD::ScrewConstraintIJ::calcPostDynCorrectorIteration()
 {
 	auto z = zIeJeIe->value();
-	auto thez = thezIeJe->value();
-	aG = (2.0 * M_PI * z) - (pitch * thez) - aConstant;
+	auto thez = thezIeJe->thez;
+	aG = (2.0 * OS_M_PI * z) - (pitch * thez) - aConstant;
 }
 
 void MbD::ScrewConstraintIJ::init_zthez()
+{
+	assert(false);
+}
+
+void MbD::ScrewConstraintIJ::initzIeJeIe()
+{
+	assert(false);
+}
+
+void MbD::ScrewConstraintIJ::initthezIeJe()
 {
 	assert(false);
 }
@@ -50,7 +72,7 @@ void MbD::ScrewConstraintIJ::postInput()
 {
 	zIeJeIe->postInput();
 	thezIeJe->postInput();
-	aConstant = (2.0 * M_PI * zIeJeIe->value()) - (thezIeJe->value() * pitch);
+	aConstant = (2.0 * OS_M_PI * zIeJeIe->value()) - (thezIeJe->value() * pitch);
 	ConstraintIJ::postInput();
 }
 

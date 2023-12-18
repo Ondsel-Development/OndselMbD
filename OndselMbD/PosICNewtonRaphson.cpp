@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include <assert.h>
 #include <exception>
 
@@ -24,7 +24,12 @@ void PosICNewtonRaphson::run()
 {
 	while (true) {
 		try {
-			VectorNewtonRaphson::run();
+			//VectorNewtonRaphson::run();   //Inline to help debugging
+			preRun();
+			initializeLocally();
+			initializeGlobally();
+			iterate();
+			postRun();
 			break;
 		}
 		catch (SingularMatrixError ex) {
@@ -97,23 +102,25 @@ bool PosICNewtonRaphson::isConverged()
 void PosICNewtonRaphson::handleSingularMatrix()
 {
 	nSingularMatrixError++;
-	if (nSingularMatrixError = 1){
+	if (nSingularMatrixError == 1) {
 		this->lookForRedundantConstraints();
 		matrixSolver = this->matrixSolverClassNew();
 	}
 	else {
-		std::string str = typeid(*matrixSolver).name();
+        auto& r = *matrixSolver;
+		std::string str = typeid(r).name();
 		if (str.find("GESpMatParPvMarkoFast") != std::string::npos) {
-		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
-		this->solveEquations();
+		    matrixSolver = CREATE<GESpMatParPvPrecise>::With();
+		    this->solveEquations();
 		}
 		else {
-			str = typeid(*matrixSolver).name();
+            auto& msRef = *matrixSolver.get(); // extrapolated to suppress warning
+            str = typeid(msRef).name();
+            (void) msRef;                      // also for warning suppression
 			if (str.find("GESpMatParPvPrecise") != std::string::npos) {
 				this->lookForRedundantConstraints();
 				matrixSolver = this->matrixSolverClassNew();
-			}
-			else {
+			} else {
 				assert(false);
 			}
 		}

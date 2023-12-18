@@ -117,7 +117,7 @@ void MbD::ASMTSpatialContainer::readRefCurves(std::vector<std::string>& lines)
 	lines.erase(lines.begin(), it);
 }
 
-void MbD::ASMTSpatialContainer::readRefCurve(std::vector<std::string>& lines)
+void MbD::ASMTSpatialContainer::readRefCurve(std::vector<std::string>&)
 {
 	assert(false);
 }
@@ -137,7 +137,7 @@ void MbD::ASMTSpatialContainer::readRefSurfaces(std::vector<std::string>& lines)
 	lines.erase(lines.begin(), it);
 }
 
-void MbD::ASMTSpatialContainer::readRefSurface(std::vector<std::string>& lines)
+void MbD::ASMTSpatialContainer::readRefSurface(std::vector<std::string>&)
 {
 	assert(false);
 }
@@ -333,6 +333,7 @@ void MbD::ASMTSpatialContainer::updateFromMbD()
 	auto mbdPart = std::static_pointer_cast<Part>(mbdObject);
 	auto rOcmO = mbdPart->qX()->times(mbdUnts->length);
 	auto aAOp = mbdPart->aAOp();
+	//std::cout << "aAOp" << *aAOp << std::endl;
 	auto vOcmO = mbdPart->qXdot()->times(mbdUnts->velocity);
 	auto omeOPO = mbdPart->omeOpO()->times(mbdUnts->omega);
 	omega3D = omeOPO;
@@ -355,6 +356,7 @@ void MbD::ASMTSpatialContainer::updateFromMbD()
 	bryxs->push_back(bryantAngles->at(0));
 	bryys->push_back(bryantAngles->at(1));
 	bryzs->push_back(bryantAngles->at(2));
+	//std::cout << "bry " << *bryantAngles << std::endl;
 	vxs->push_back(vOPO->at(0));
 	vys->push_back(vOPO->at(1));
 	vzs->push_back(vOPO->at(2));
@@ -369,7 +371,7 @@ void MbD::ASMTSpatialContainer::updateFromMbD()
 	alpzs->push_back(alpOPO->at(2));
 }
 
-void MbD::ASMTSpatialContainer::compareResults(AnalysisType type)
+void MbD::ASMTSpatialContainer::compareResults(AnalysisType)
 {
 	if (inxs == nullptr || inxs->empty()) return;
 	auto mbdUnts = mbdUnits();
@@ -383,64 +385,64 @@ void MbD::ASMTSpatialContainer::compareResults(AnalysisType type)
 	auto i = xs->size() - 1;
 	//Pos
 	if (!Numeric::equaltol(xs->at(i), inxs->at(i), lengthTol)) {
-		std::cout << i << " xs " << xs->at(i) << ", " << inxs->at(i) << ", " << lengthTol << std::endl;
+		std::cout << i << " xs " << xs->at(i) << " != " << inxs->at(i) << " tol = " << lengthTol << std::endl;
 	}
 	if (!Numeric::equaltol(ys->at(i), inys->at(i), lengthTol)) {
-		std::cout << i << " ys " << ys->at(i) << ", " << inys->at(i) << ", " << lengthTol << std::endl;
+		std::cout << i << " ys " << ys->at(i) << " != " << inys->at(i) << " tol = " << lengthTol << std::endl;
 	}
 	if (!Numeric::equaltol(zs->at(i), inzs->at(i), lengthTol)) {
-		std::cout << i << " zs " << zs->at(i) << ", " << inzs->at(i) << ", " << lengthTol << std::endl;
+		std::cout << i << " zs " << zs->at(i) << " != " << inzs->at(i) << " tol = " << lengthTol << std::endl;
 	}
 	if (!Numeric::equaltol(bryxs->at(i), inbryxs->at(i), angleTol)) {
-		std::cout << i << " bryxs " << bryxs->at(i) << ", " << inbryxs->at(i) << ", " << angleTol << std::endl;
+		std::cout << i << " bryxs " << bryxs->at(i) << " != " << inbryxs->at(i) << " tol = " << angleTol << std::endl;
 	}
 	if (!Numeric::equaltol(bryys->at(i), inbryys->at(i), angleTol)) {
-		std::cout << i << " bryys " << bryys->at(i) << ", " << inbryys->at(i) << ", " << angleTol << std::endl;
+		std::cout << i << " bryys " << bryys->at(i) << " != " << inbryys->at(i) << " tol = " << angleTol << std::endl;
 	}
 	if (!Numeric::equaltol(bryzs->at(i), inbryzs->at(i), angleTol)) {
-		std::cout << i << " bryzs " << bryzs->at(i) << ", " << inbryzs->at(i) << ", " << angleTol << std::endl;
+		std::cout << i << " bryzs " << bryzs->at(i) << " != " << inbryzs->at(i) << " tol = " << angleTol << std::endl;
 	}
 	//Vel
 	if (!Numeric::equaltol(vxs->at(i), invxs->at(i), velocityTol)) {
-		std::cout << i << " vxs " << vxs->at(i) << ", " << invxs->at(i) << ", " << velocityTol << std::endl;
+		std::cout << i << " vxs " << vxs->at(i) << " != " << invxs->at(i) << " tol = " << velocityTol << std::endl;
 	}
 	if (!Numeric::equaltol(vys->at(i), invys->at(i), velocityTol)) {
-		std::cout << i << " vys " << vys->at(i) << ", " << invys->at(i) << ", " << velocityTol << std::endl;
+		std::cout << i << " vys " << vys->at(i) << " != " << invys->at(i) << " tol = " << velocityTol << std::endl;
 	}
 	if (!Numeric::equaltol(vzs->at(i), invzs->at(i), velocityTol)) {
-		std::cout << i << " vzs " << vzs->at(i) << ", " << invzs->at(i) << ", " << velocityTol << std::endl;
+		std::cout << i << " vzs " << vzs->at(i) << " != " << invzs->at(i) << " tol = " << velocityTol << std::endl;
 	}
 	if (!Numeric::equaltol(omexs->at(i), inomexs->at(i), omegaTol)) {
-		std::cout << i << " omexs " << omexs->at(i) << ", " << inomexs->at(i) << ", " << omegaTol << std::endl;
+		std::cout << i << " omexs " << omexs->at(i) << " != " << inomexs->at(i) << " tol = " << omegaTol << std::endl;
 	}
 	if (!Numeric::equaltol(omeys->at(i), inomeys->at(i), omegaTol)) {
-		std::cout << i << " omeys " << omeys->at(i) << ", " << inomeys->at(i) << ", " << omegaTol << std::endl;
+		std::cout << i << " omeys " << omeys->at(i) << " != " << inomeys->at(i) << " tol = " << omegaTol << std::endl;
 	}
 	if (!Numeric::equaltol(omezs->at(i), inomezs->at(i), omegaTol)) {
-		std::cout << i << " omezs " << omezs->at(i) << ", " << inomezs->at(i) << ", " << omegaTol << std::endl;
+		std::cout << i << " omezs " << omezs->at(i) << " != " << inomezs->at(i) << " tol = " << omegaTol << std::endl;
 	}
 	//Acc
 	if (!Numeric::equaltol(axs->at(i), inaxs->at(i), accelerationTol)) {
-		std::cout << i << " axs " << axs->at(i) << ", " << inaxs->at(i) << ", " << accelerationTol << std::endl;
+		std::cout << i << " axs " << axs->at(i) << " != " << inaxs->at(i) << " tol = " << accelerationTol << std::endl;
 	}
 	if (!Numeric::equaltol(ays->at(i), inays->at(i), accelerationTol)) {
-		std::cout << i << " ays " << ays->at(i) << ", " << inays->at(i) << ", " << accelerationTol << std::endl;
+		std::cout << i << " ays " << ays->at(i) << " != " << inays->at(i) << " tol = " << accelerationTol << std::endl;
 	}
 	if (!Numeric::equaltol(azs->at(i), inazs->at(i), accelerationTol)) {
-		std::cout << i << " azs " << azs->at(i) << ", " << inazs->at(i) << ", " << accelerationTol << std::endl;
+		std::cout << i << " azs " << azs->at(i) << " != " << inazs->at(i) << " tol = " << accelerationTol << std::endl;
 	}
 	if (!Numeric::equaltol(alpxs->at(i), inalpxs->at(i), alphaTol)) {
-		std::cout << i << " alpxs " << alpxs->at(i) << ", " << inalpxs->at(i) << ", " << alphaTol << std::endl;
+		std::cout << i << " alpxs " << alpxs->at(i) << " != " << inalpxs->at(i) << " tol = " << alphaTol << std::endl;
 	}
 	if (!Numeric::equaltol(alpys->at(i), inalpys->at(i), alphaTol)) {
-		std::cout << i << " alpys " << alpys->at(i) << ", " << inalpys->at(i) << ", " << alphaTol << std::endl;
+		std::cout << i << " alpys " << alpys->at(i) << " != " << inalpys->at(i) << " tol = " << alphaTol << std::endl;
 	}
 	if (!Numeric::equaltol(alpzs->at(i), inalpzs->at(i), alphaTol)) {
-		std::cout << i << " alpzs " << alpzs->at(i) << ", " << inalpzs->at(i) << ", " << alphaTol << std::endl;
+		std::cout << i << " alpzs " << alpzs->at(i) << " != " << inalpzs->at(i) << " tol = " << alphaTol << std::endl;
 	}
 }
 
-void MbD::ASMTSpatialContainer::outputResults(AnalysisType type)
+void MbD::ASMTSpatialContainer::outputResults(AnalysisType)
 {
 	if (inxs != nullptr && !inxs->empty()) return;
 	auto i = xs->size() - 1;
@@ -601,109 +603,109 @@ void MbD::ASMTSpatialContainer::storeOnLevelRefSurfaces(std::ofstream& os, int l
 void MbD::ASMTSpatialContainer::storeOnTimeSeries(std::ofstream& os)
 {
 	os << "X\t";
-	for (int i = 0; i < xs->size(); i++)
+	for (int i = 0; i < (int)xs->size(); i++)
 	{
 		os << xs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "Y\t";
-	for (int i = 0; i < ys->size(); i++)
+	for (int i = 0; i < (int)ys->size(); i++)
 	{
 		os << ys->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "Z\t";
-	for (int i = 0; i < zs->size(); i++)
+	for (int i = 0; i < (int)zs->size(); i++)
 	{
 		os << zs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "Bryantx\t";
-	for (int i = 0; i < bryxs->size(); i++)
+	for (int i = 0; i < (int)bryxs->size(); i++)
 	{
 		os << bryxs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "Bryanty\t";
-	for (int i = 0; i < bryys->size(); i++)
+	for (int i = 0; i < (int)bryys->size(); i++)
 	{
 		os << bryys->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "Bryantz\t";
-	for (int i = 0; i < bryzs->size(); i++)
+	for (int i = 0; i < (int)bryzs->size(); i++)
 	{
 		os << bryzs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "VX\t";
-	for (int i = 0; i < vxs->size(); i++)
+	for (int i = 0; i < (int)vxs->size(); i++)
 	{
 		os << vxs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "VY\t";
-	for (int i = 0; i < vys->size(); i++)
+	for (int i = 0; i < (int)vys->size(); i++)
 	{
 		os << vys->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "VZ\t";
-	for (int i = 0; i < vzs->size(); i++)
+	for (int i = 0; i < (int)vzs->size(); i++)
 	{
 		os << vzs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "OmegaX\t";
-	for (int i = 0; i < omexs->size(); i++)
+	for (int i = 0; i < (int)omexs->size(); i++)
 	{
 		os << omexs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "OmegaY\t";
-	for (int i = 0; i < omeys->size(); i++)
+	for (int i = 0; i < (int)omeys->size(); i++)
 	{
 		os << omeys->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "OmegaZ\t";
-	for (int i = 0; i < omezs->size(); i++)
+	for (int i = 0; i < (int)omezs->size(); i++)
 	{
 		os << omezs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "AX\t";
-	for (int i = 0; i < axs->size(); i++)
+	for (int i = 0; i < (int)axs->size(); i++)
 	{
 		os << axs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "AY\t";
-	for (int i = 0; i < ays->size(); i++)
+	for (int i = 0; i < (int)ays->size(); i++)
 	{
 		os << ays->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "AZ\t";
-	for (int i = 0; i < azs->size(); i++)
+	for (int i = 0; i < (int)azs->size(); i++)
 	{
 		os << azs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "AlphaX\t";
-	for (int i = 0; i < alpxs->size(); i++)
+	for (int i = 0; i < (int)alpxs->size(); i++)
 	{
 		os << alpxs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "AlphaY\t";
-	for (int i = 0; i < alpys->size(); i++)
+	for (int i = 0; i < (int)alpys->size(); i++)
 	{
 		os << alpys->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "AlphaZ\t";
-	for (int i = 0; i < alpzs->size(); i++)
+	for (int i = 0; i < (int)alpzs->size(); i++)
 	{
 		os << alpzs->at(i) << '\t';
 	}

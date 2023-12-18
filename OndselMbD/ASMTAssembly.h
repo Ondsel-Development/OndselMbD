@@ -10,29 +10,23 @@
 #include <fstream>	
 
 #include "ASMTSpatialContainer.h"
-#include "FullColumn.h"
-#include "FullMatrix.h"
-#include "MBDynSystem.h"
-#include "ASMTTime.h"
+//Required for initialization
 #include "ASMTConstantGravity.h"
+#include "ASMTSimulationParameters.h"
+#include "ASMTAnimationParameters.h"
+#include "ASMTTime.h"
+#include "Units.h"
 
 namespace MbD {
-	class ASMTRefPoint;
-	class ASMTRefCurve;
-	class ASMTRefSurface;
 	class ASMTPart;
 	class ASMTKinematicIJ;
 	class ASMTConstraintSet;
 	class ASMTForceTorque;
-	class ASMTConstantGravity;
-	class ASMTSimulationParameters;
-	class ASMTAnimationParameters;
 	class ASMTJoint;
 	class ASMTMotion;
-	class Units;
-	class ASMTTime;
 	class SystemSolver;
 	class ASMTItemIJ;
+	class MBDynSystem;
 
 	class ASMTAssembly : public ASMTSpatialContainer
 	{
@@ -59,7 +53,7 @@ namespace MbD {
 		void readConstraintSets(std::vector<std::string>& lines);
 		void readJoints(std::vector<std::string>& lines);
 		void readMotions(std::vector<std::string>& lines);
-		void readGeneralConstraintSets(std::vector<std::string>& lines);
+		void readGeneralConstraintSets(std::vector<std::string>& lines) const;
 		void readForcesTorques(std::vector<std::string>& lines);
 		void readConstantGravity(std::vector<std::string>& lines);
 		void readSimulationParameters(std::vector<std::string>& lines);
@@ -80,12 +74,12 @@ namespace MbD {
 		void preMbDrun(std::shared_ptr<System> mbdSys);
 		void postMbDrun();
 		void calcCharacteristicDimensions();
-		double calcCharacteristicTime();
-		double calcCharacteristicMass();
-		double calcCharacteristicLength();
-		std::shared_ptr<std::vector<std::shared_ptr<ASMTItemIJ>>> connectorList();
-		std::shared_ptr<std::map<std::string, std::shared_ptr<ASMTMarker>>>markerMap();
-		void deleteMbD();
+		double calcCharacteristicTime() const;
+		double calcCharacteristicMass() const;
+		double calcCharacteristicLength() const;
+		std::shared_ptr<std::vector<std::shared_ptr<ASMTItemIJ>>> connectorList() const;
+		std::shared_ptr<std::map<std::string, std::shared_ptr<ASMTMarker>>>markerMap() const;
+		void deleteMbD() override;
 		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
 		void outputFile(std::string filename);
 		void storeOnLevel(std::ofstream& os, int level) override;
@@ -96,14 +90,14 @@ namespace MbD {
 		void runKINEMATIC();
 		void runDYNAMIC();
 		void initprincipalMassMarker();
-		std::shared_ptr<ASMTSpatialContainer> spatialContainerAt(std::shared_ptr<ASMTAssembly> self, std::string& longname);
-		std::shared_ptr<ASMTMarker> markerAt(std::string& longname);
-		std::shared_ptr<ASMTJoint> jointAt(std::string& longname);
-		std::shared_ptr<ASMTMotion> motionAt(std::string& longname);
-		std::shared_ptr<ASMTForceTorque> forceTorqueAt(std::string& longname);
+		std::shared_ptr<ASMTSpatialContainer> spatialContainerAt(std::shared_ptr<ASMTAssembly> self, std::string& longname) const;
+		std::shared_ptr<ASMTMarker> markerAt(std::string& longname) const;
+		std::shared_ptr<ASMTJoint> jointAt(std::string& longname) const;
+		std::shared_ptr<ASMTMotion> motionAt(std::string& longname) const;
+		std::shared_ptr<ASMTForceTorque> forceTorqueAt(std::string& longname) const;
 		FColDsptr vOcmO() override;
 		FColDsptr omeOpO() override;
-		std::shared_ptr<ASMTTime> geoTime();
+		std::shared_ptr<ASMTTime> geoTime() const;
 		void updateFromMbD() override;
 		void compareResults(AnalysisType type) override;
 		void outputResults(AnalysisType type) override;
@@ -112,8 +106,8 @@ namespace MbD {
 		void addMotion(std::shared_ptr<ASMTMotion> motion);
 		void setConstantGravity(std::shared_ptr<ASMTConstantGravity> constantGravity);
 		void setSimulationParameters(std::shared_ptr<ASMTSimulationParameters> simulationParameters);
-		std::shared_ptr<ASMTPart> partNamed(std::string partName);
-		std::shared_ptr<ASMTPart> partPartialNamed(std::string partialName);
+		std::shared_ptr<ASMTPart> partNamed(std::string partName) const;
+		std::shared_ptr<ASMTPart> partPartialNamed(std::string partialName) const;
 		void storeOnLevelNotes(std::ofstream& os, int level);
 		void storeOnLevelParts(std::ofstream& os, int level);
 		void storeOnLevelKinematicIJs(std::ofstream& os, int level);
@@ -123,7 +117,9 @@ namespace MbD {
 		void storeOnLevelMotions(std::ofstream& os, int level);
 		void storeOnLevelGeneralConstraintSets(std::ofstream& os, int level);
 		void storeOnTimeSeries(std::ofstream& os) override;
+		void setFilename(std::string filename);
 
+		std::string filename = "";
 		std::string notes = "(Text string: '' runs: (Core.RunArray runs: #() values: #()))";
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTPart>>> parts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTKinematicIJ>>> kinematicIJs = std::make_shared<std::vector<std::shared_ptr<ASMTKinematicIJ>>>();

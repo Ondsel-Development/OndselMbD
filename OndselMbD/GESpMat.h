@@ -16,7 +16,7 @@ namespace MbD {
     {
         //markowitzPivotRowCount markowitzPivotColCount privateIndicesOfNonZerosInPivotRow rowPositionsOfNonZerosInPivotColumn 
     public:
-        FColDsptr solvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal);
+        FColDsptr solvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) override;
         FColDsptr basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) override;
         FColDsptr basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal) override;
         void preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal) override;
@@ -24,7 +24,7 @@ namespace MbD {
         double getmatrixArowimaxMagnitude(int i) override;
 
         SpMatDsptr matrixA;
-        int markowitzPivotRowCount, markowitzPivotColCount;
+        int markowitzPivotRowCount = -1, markowitzPivotColCount = -1;
         std::shared_ptr<std::vector<int>> rowPositionsOfNonZerosInPivotColumn;
     };
 }

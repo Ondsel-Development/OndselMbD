@@ -33,8 +33,8 @@ namespace MbD {
 	public:
 		FullRow() : FullVector<T>() {}
 		FullRow(std::vector<T> vec) : FullVector<T>(vec) {}
-		FullRow(int count) : FullVector<T>(count) {}
-		FullRow(int count, const T& value) : FullVector<T>(count, value) {}
+		FullRow(size_t count) : FullVector<T>(count) {}
+		FullRow(size_t count, const T& value) : FullVector<T>(count, value) {}
 		FullRow(typename std::vector<T>::const_iterator begin, typename std::vector<T>::const_iterator end) : FullVector<T>(begin, end) {}
 		FullRow(std::initializer_list<T> list) : FullVector<T>{ list } {}
 		FRowsptr<T> times(T a);
@@ -73,7 +73,7 @@ namespace MbD {
 		return answer;
 	}
 	template<typename T>
-	inline FRowsptr<T> FullRow<T>::times(T a)
+	inline FRowsptr<T> FullRow<T>::times(T)
 	{
 		assert(false);
 	}
@@ -111,7 +111,7 @@ namespace MbD {
 	inline T FullRow<T>::timesFullColumn(FullColumn<T>* fullCol)
 	{
 		auto answer = this->at(0) * fullCol->at(0);
-		for (int i = 1; i < this->size(); i++)
+		for (int i = 1; i < (int)this->size(); i++)
 		{
 			answer += this->at(i) * fullCol->at(i);
 		}
@@ -168,7 +168,7 @@ namespace MbD {
 	{
 		//"a*b = a(i)b(j)"
 		auto nrow = (int)this->size();
-		auto answer = std::make_shared<FullMatrix<double>>(nrow);
+		auto answer = std::make_shared<FullMatrix<T>>(nrow);
 		for (int i = 0; i < nrow; i++)
 		{
 			answer->atiput(i, fullRow->times(this->at(i)));
@@ -196,7 +196,7 @@ namespace MbD {
 		auto ncol = (int)this->size();
 		auto nelem = vecvec->at(0)->size();
 		auto answer = std::make_shared<FullVector<T>>(nelem);
-		for (int k = 0; k < nelem; k++) {
+		for (int k = 0; k < (int)nelem; k++) {
 			auto sum = 0.0;
 			for (int i = 0; i < ncol; i++)
 			{
@@ -211,7 +211,7 @@ namespace MbD {
 	{
 		s << "FullRow{";
 		s << this->at(0);
-		for (int i = 1; i < this->size(); i++)
+		for (int i = 1; i < (int)this->size(); i++)
 		{
 			s << ", " << this->at(i);
 		}

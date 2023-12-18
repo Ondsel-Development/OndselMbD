@@ -15,7 +15,7 @@ void MbD::MomentOfInertiaSolver::example1()
 
 	auto rpPp = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 1 });
 	auto rotAxis = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 1 });
-	auto aApP = std::make_shared<EulerParameters<double>>(rotAxis, M_PI*10/180)->aA;
+	auto aApP = std::make_shared<EulerParameters<double>>(rotAxis, OS_M_PI*10/180)->aA;
 	auto solver = std::make_shared<MomentOfInertiaSolver>();
 	solver->setm(4.0);
 	solver->setJPP(aJpp);
@@ -99,30 +99,30 @@ void MbD::MomentOfInertiaSolver::postSolve()
 {
 }
 
-FColDsptr MbD::MomentOfInertiaSolver::basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
+FColDsptr MbD::MomentOfInertiaSolver::basicSolvewithsaveOriginal(FMatDsptr, FColDsptr, bool)
 {
 	return FColDsptr();
 }
 
-FColDsptr MbD::MomentOfInertiaSolver::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+FColDsptr MbD::MomentOfInertiaSolver::basicSolvewithsaveOriginal(SpMatDsptr, FColDsptr, bool)
 {
 	return FColDsptr();
 }
 
-void MbD::MomentOfInertiaSolver::preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
+void MbD::MomentOfInertiaSolver::preSolvewithsaveOriginal(FMatDsptr, FColDsptr, bool)
 {
 }
 
-void MbD::MomentOfInertiaSolver::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+void MbD::MomentOfInertiaSolver::preSolvewithsaveOriginal(SpMatDsptr, FColDsptr, bool)
 {
 }
 
-double MbD::MomentOfInertiaSolver::getmatrixArowimaxMagnitude(int i)
+double MbD::MomentOfInertiaSolver::getmatrixArowimaxMagnitude(int)
 {
 	return 0.0;
 }
 
-void MbD::MomentOfInertiaSolver::doPivoting(int p)
+void MbD::MomentOfInertiaSolver::doPivoting(int)
 {
 }
 
@@ -267,7 +267,7 @@ FColDsptr MbD::MomentOfInertiaSolver::eigenvectorFor(double lam)
 	auto row1 = aJcmPcopy->at(1);
 	auto row2 = aJcmPcopy->at(2);
 	auto norm0 = row0->length();
-	auto aaaa = row2->length();
+	//auto aaaa = row2->length();
 	if ((row2->length() / norm0) > 1.0e-5) throw std::runtime_error("3rd row should be very small.");
 	if ((row1->length() / norm0) > 1.0e-5) {
 		e2 = 1.0;
@@ -350,7 +350,7 @@ void MbD::MomentOfInertiaSolver::calcJppFromFullJcmP()
 	auto q = (c + (2.0 * aDiv3 * aDiv3 * aDiv3) - (aDiv3 * b)) / 2.0;
 	auto phiDiv3 = modifiedArcCos(-q / std::sqrt(-p * p * p)) / 3.0;
 	auto twoSqrtMinusp = 2.0 * std::sqrt(-p);
-	auto piDiv3 = M_PI / 3.0;
+	auto piDiv3 = OS_M_PI / 3.0;
 	auto sortedJ = std::make_shared<DiagonalMatrix<double>>();
 	sortedJ->push_back(twoSqrtMinusp * std::cos(phiDiv3));
 	sortedJ->push_back(twoSqrtMinusp * -std::cos(phiDiv3 + piDiv3));
@@ -392,7 +392,7 @@ double MbD::MomentOfInertiaSolver::modifiedArcCos(double val)
 	}
 	else {
 		if (val < -1.0) {
-			return M_PI;
+			return OS_M_PI;
 		}
 		else {
 			return std::acos(val);

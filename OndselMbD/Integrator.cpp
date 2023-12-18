@@ -11,7 +11,7 @@
 
 using namespace MbD;
 
-void Integrator::setSystem(Solver* sys)
+void Integrator::setSystem(Solver*)
 {
     assert(false);
 }
@@ -62,6 +62,11 @@ void MbD::Integrator::iStep(int i)
 }
 
 void MbD::Integrator::selectOrder()
+{
+    assert(false);
+}
+
+void MbD::Integrator::selectStepSize()
 {
     assert(false);
 }

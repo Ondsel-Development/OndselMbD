@@ -87,6 +87,9 @@ namespace MbD {
 		void tstartPastsAddFirst(double t);
 		void output();
 		void time(double t);
+		void useKineTrialStepStats(std::shared_ptr<SolverStatistics> stats);
+		void useDynTrialStepStats(std::shared_ptr<SolverStatistics> stats);
+		void useDAEStepStats(std::shared_ptr<SolverStatistics> stats);
 
 		double errorTolPosKine = 1.0e-6;
 		double errorTolAccKine = 1.0e-6;

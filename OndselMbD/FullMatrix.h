@@ -13,6 +13,7 @@
 
 #include "RowTypeMatrix.h"
 #include "FullColumn.h"
+#include "FullRow.h"
 
 namespace MbD {
 	template<typename T>
@@ -103,6 +104,7 @@ namespace MbD {
 		FColsptr<T> bryantAngles();
 		bool isDiagonal();
 		bool isDiagonalToWithin(double ratio);
+		bool equaltol(FMatsptr<T> mat, double ratio);
 		std::shared_ptr<DiagonalMatrix<T>> asDiagonalMatrix();
 		void conditionSelfWithTol(double tol);
 
@@ -334,9 +336,16 @@ namespace MbD {
 		return tilde;
 	}
 	template<>
+	inline void FullMatrix<double>::zeroSelf()
+	{
+		for (int i = 0; i < (int)this->size(); i++) {
+			this->at(i)->zeroSelf();
+		}
+	}
+	template<>
 	inline void FullMatrix<double>::identity() {
 		this->zeroSelf();
-		for (int i = 0; i < this->size(); i++) {
+		for (int i = 0; i < (int)this->size(); i++) {
 			this->at(i)->at(i) = 1.0;
 		}
 	}
@@ -380,7 +389,7 @@ namespace MbD {
 		return answer;
 	}
 	template<typename T>
-	inline FMatsptr<T> FullMatrix<T>::times(T a)
+	inline FMatsptr<T> FullMatrix<T>::times(T)
 	{
 		assert(false);
 	}
@@ -451,7 +460,7 @@ namespace MbD {
 	template<typename T>
 	inline void FullMatrix<T>::atijputFullColumn(int i1, int j1, FColsptr<T> fullCol)
 	{
-		for (int ii = 0; ii < fullCol->size(); ii++)
+		for (int ii = 0; ii < (int)fullCol->size(); ii++)
 		{
 			this->at(i1 + ii)->at(j1) = fullCol->at(ii);
 		}
@@ -477,7 +486,7 @@ namespace MbD {
 	inline double FullMatrix<double>::sumOfSquares()
 	{
 		double sum = 0.0;
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			sum += this->at(i)->sumOfSquares();
 		}
@@ -488,13 +497,6 @@ namespace MbD {
 	{
 		assert(false);
 		return 0.0;
-	}
-	template<>
-	inline void FullMatrix<double>::zeroSelf()
-	{
-		for (int i = 0; i < this->size(); i++) {
-			this->at(i)->zeroSelf();
-		}
 	}
 	template<typename T>
 	inline void FullMatrix<T>::zeroSelf()
@@ -531,7 +533,7 @@ namespace MbD {
 	template<typename T>
 	inline void FullMatrix<T>::magnifySelf(T factor)
 	{
-		for (int i = 0; i < this->size(); i++) {
+		for (int i = 0; i < (int)this->size(); i++) {
 			this->at(i)->magnifySelf(factor);
 		}
 	}
@@ -539,7 +541,7 @@ namespace MbD {
 	inline std::ostream& FullMatrix<T>::printOn(std::ostream& s) const
 	{
 		s << "FullMat[" << std::endl;
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			s << *(this->at(i)) << std::endl;
 		}
@@ -610,7 +612,7 @@ namespace MbD {
 	inline T FullMatrix<T>::trace()
 	{
 		T trace = 0.0;
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			trace += this->at(i)->at(i);
 		}
@@ -620,7 +622,7 @@ namespace MbD {
 	inline double FullMatrix<T>::maxMagnitude()
 	{
 		double max = 0.0;
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			double element = this->at(i)->maxMagnitude();
 			if (max < element) max = element;
@@ -636,12 +638,12 @@ namespace MbD {
 		if (std::abs(sthe1y) > 0.9999) {
 			if (sthe1y > 0.0) {
 				the0x = std::atan2(this->at(1)->at(0), this->at(1)->at(1));
-				the1y = M_PI / 2.0;
+				the1y = OS_M_PI / 2.0;
 				the2z = 0.0;
 			}
 			else {
 				the0x = std::atan2(this->at(2)->at(1), this->at(2)->at(0));
-				the1y = M_PI / -2.0;
+				the1y = OS_M_PI / -2.0;
 				the2z = 0.0;
 			}
 		}
@@ -700,6 +702,22 @@ namespace MbD {
 		else {
 			return false;
 		}
+	}
+	template<typename T>
+	inline bool FullMatrix<T>::equaltol(FMatsptr<T> mat2, double tol)
+	{
+		if (this->size() != mat2->size()) return false;
+		for (size_t i = 0; i < this->size(); i++)
+		{
+			auto& rowi = this->at(i);
+			auto& rowi2 = mat2->at(i);
+			if (rowi->size() != rowi2->size()) return false;
+			for (size_t j = 0; j < rowi->size(); j++)
+			{
+				if (!Array<double>::equaltol((double)rowi->at(j), (double)rowi2->at(j), tol)) return false;
+			}
+		}
+		return true;
 	}
 	template<typename T>
 	inline std::shared_ptr<DiagonalMatrix<T>> FullMatrix<T>::asDiagonalMatrix()

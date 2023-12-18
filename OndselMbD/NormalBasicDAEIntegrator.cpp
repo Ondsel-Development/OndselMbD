@@ -52,6 +52,7 @@ MbD::NormalBasicDAEIntegrator::NormalBasicDAEIntegrator(std::shared_ptr<Starting
 	matG = startingBasicDAEIntegrator->matG;
 	extrapolator = startingBasicDAEIntegrator->extrapolator;
 	newtonRaphson = startingBasicDAEIntegrator->newtonRaphson;
+	newtonRaphson->setSystem(this);
 	corAbsTol = startingBasicDAEIntegrator->corAbsTol;
 	corRelTol = startingBasicDAEIntegrator->corRelTol;
 	corOK = startingBasicDAEIntegrator->corOK;
@@ -63,7 +64,7 @@ MbD::NormalBasicDAEIntegrator::NormalBasicDAEIntegrator(std::shared_ptr<Starting
 	opBDFhigher->time = t;
 	opBDFhigher->iStep = istep;
 	opBDFhigher->order = order + 1;
-	calcOperatorMatrix();
+	//calcOperatorMatrix();
 }
 
 void MbD::NormalBasicDAEIntegrator::initialize()
@@ -134,7 +135,14 @@ void MbD::NormalBasicDAEIntegrator::run()
 
 void MbD::NormalBasicDAEIntegrator::selectOrder()
 {
+	if (tpast->size() < order + 1) return;	//Needed to transition from Starting to Normal
 	selectOrderNormal();
+}
+
+void MbD::NormalBasicDAEIntegrator::selectStepSize()
+{
+	if (tpast->size() < order + 1) return;	//Needed to transition from Starting to Normal
+	BasicDAEIntegrator::selectStepSize();
 }
 
 void MbD::NormalBasicDAEIntegrator::selectOrderNormal()

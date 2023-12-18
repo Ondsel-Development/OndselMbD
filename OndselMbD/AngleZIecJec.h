@@ -20,7 +20,7 @@ namespace MbD {
         AngleZIecJec(EndFrmsptr frmi, EndFrmsptr frmj);
         
         void calcPostDynCorrectorIteration() override;
-        virtual void init_aAijIeJe();
+        virtual void init_aAijIeJe() = 0;
         void initialize() override;
         void initializeGlobally() override;
         void initializeLocally() override;
@@ -36,7 +36,8 @@ namespace MbD {
         void preDynOutput() override;
 		void postDynOutput() override;
 
-        double thez, cosOverSSq, sinOverSSq, twoCosSinOverSSqSq, dSqOverSSqSq;
+        double thez = std::numeric_limits<double>::min();
+        double cosOverSSq = 0.0, sinOverSSq = 0.0, twoCosSinOverSSqSq = 0.0, dSqOverSSqSq = 0.0;
         std::shared_ptr<DirectionCosineIeqcJec> aA00IeJe, aA10IeJe;
     };
 }

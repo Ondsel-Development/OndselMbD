@@ -42,7 +42,7 @@ void KineIntegrator::runInitialConditionTypeSolution()
 	system->runAccKine();
 }
 
-void KineIntegrator::iStep(int i)
+void KineIntegrator::iStep(int)
 {
 	assert(false);
 }
@@ -50,4 +50,9 @@ void KineIntegrator::iStep(int i)
 void KineIntegrator::selectOrder()
 {
 	assert(false);
+}
+
+void MbD::KineIntegrator::useTrialStepStats(std::shared_ptr<SolverStatistics> stats)
+{
+	system->useKineTrialStepStats(stats);
 }

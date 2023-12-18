@@ -22,7 +22,7 @@ namespace MbD {
 		void arguments(Symsptr args) override;
 		void initxdegreexsys(Symsptr arg, int order, std::shared_ptr<std::vector<double>> xarr, std::shared_ptr<std::vector<double>> yarr);
 		void computeDerivatives();
-		bool isCyclic();
+		bool isCyclic() const;
 		double derivativeAt(int derivativeOrder, double arg);
 		void calcIndexAndDeltaFor(double xxx);
 		void calcCyclicIndexAndDelta();
@@ -35,8 +35,8 @@ namespace MbD {
 		std::ostream& printOn(std::ostream& s) const override;
 
 		FMatDsptr derivs;
-		int degree, index;
-		double delta;
+		int degree = -1, index = -1;
+		double delta = std::numeric_limits<double>::min();
 	};
 }
 

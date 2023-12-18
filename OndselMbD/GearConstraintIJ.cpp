@@ -7,11 +7,22 @@
  ***************************************************************************/
  
 #include "GearConstraintIJ.h"
+#include "GearConstraintIqcJqc.h"
+#include "EndFrameqc.h"
 
 using namespace MbD;
 
 MbD::GearConstraintIJ::GearConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj)
 {
+}
+
+std::shared_ptr<GearConstraintIJ> MbD::GearConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	assert(frmi->isEndFrameqc());
+	assert(frmj->isEndFrameqc());
+	auto gearCon = std::make_shared<GearConstraintIqcJqc>(frmi, frmj);
+	gearCon->initorbitsIJ();
+	return gearCon;
 }
 
 void MbD::GearConstraintIJ::calcPostDynCorrectorIteration()
@@ -46,7 +57,9 @@ void MbD::GearConstraintIJ::postInput()
 {
 	orbitIeJe->postInput();
 	orbitJeIe->postInput();
-	aConstant = orbitJeIe->value() + (this->ratio() * orbitIeJe->value());
+	if (aConstant == std::numeric_limits<double>::min()) {
+		aConstant = orbitJeIe->value() + (this->ratio() * orbitIeJe->value());
+	}
 	ConstraintIJ::postInput();
 }
 

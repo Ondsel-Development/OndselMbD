@@ -88,7 +88,7 @@ void MbD::StartingBasicDAEIntegrator::firstSteps()
 void MbD::StartingBasicDAEIntegrator::earlySteps()
 {
 	while (_continue) {
-		if (istep <= orderMax) {
+		if (istep < orderMax) {
 			this->nextStep();
 		}
 		else {

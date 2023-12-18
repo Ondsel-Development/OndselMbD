@@ -22,16 +22,6 @@
 
 using namespace MbD;
 
-void MbD::QuasiIntegrator::preFirstStep()
-{
-	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->preDynFirstStep(); });
-}
-
-void MbD::QuasiIntegrator::postFirstStep()
-{
-	assert(false);
-}
-
 void QuasiIntegrator::preRun()
 {
 	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->preDyn(); });
@@ -82,6 +72,21 @@ void QuasiIntegrator::run()
 		throw SimulationStoppingError("");
 	}
 
+}
+
+void QuasiIntegrator::preFirstStep()
+{
+	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->preDynFirstStep(); });
+}
+
+void QuasiIntegrator::postFirstStep()
+{
+	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postDynFirstStep(); });
+	if (integrator->istep > 0) {
+		//"Noise make checking at the start unreliable."
+		this->checkForDiscontinuity();
+	}
+	this->checkForOutputThrough(integrator->t);
 }
 
 void QuasiIntegrator::preStep()
@@ -191,12 +196,23 @@ void QuasiIntegrator::interpolateAt(double tArg)
 	this->runInitialConditionTypeSolution();
 }
 
-void MbD::QuasiIntegrator::postStep()
+void QuasiIntegrator::postStep()
 {
-	assert(false);
+	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postDynStep(); });
+
+	if (integrator->istep > 0) {
+		//"Noise make checking at the start unreliable."
+		this->checkForDiscontinuity();
+	}
+	this->checkForOutputThrough(integrator->t);
 }
 
 void QuasiIntegrator::postRun()
 {
 	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postDyn(); });
+}
+
+void MbD::QuasiIntegrator::useTrialStepStats(std::shared_ptr<SolverStatistics> stats)
+{
+	assert(false);
 }

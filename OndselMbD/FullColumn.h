@@ -31,8 +31,8 @@ namespace MbD {
 	public:
 		FullColumn() : FullVector<T>() {}
 		FullColumn(std::vector<T> vec) : FullVector<T>(vec) {}
-		FullColumn(int count) : FullVector<T>(count) {}
-		FullColumn(int count, const T& value) : FullVector<T>(count, value) {}
+		FullColumn(size_t count) : FullVector<T>(count) {}
+		FullColumn(size_t count, const T& value) : FullVector<T>(count, value) {}
 		FullColumn(typename std::vector<T>::iterator begin, typename std::vector<T>::iterator end) : FullVector<T>(begin, end) {}
 		FullColumn(std::initializer_list<T> list) : FullVector<T>{ list } {}
 		FColsptr<T> plusFullColumn(FColsptr<T> fullCol);
@@ -99,7 +99,7 @@ namespace MbD {
 		return answer;
 	}
 	template<typename T>
-	inline FColsptr<T> FullColumn<T>::times(T a)
+	inline FColsptr<T> FullColumn<T>::times(T)
 	{
 		assert(false);
 	}
@@ -111,7 +111,7 @@ namespace MbD {
 	template<typename T>
 	inline void FullColumn<T>::atiputFullColumn(int i, FColsptr<T> fullCol)
 	{
-		for (int ii = 0; ii < fullCol->size(); ii++)
+		for (int ii = 0; ii < (int)fullCol->size(); ii++)
 		{
 			this->at((size_t)i + ii) = fullCol->at(ii);
 		}
@@ -119,7 +119,7 @@ namespace MbD {
 	template<typename T>
 	inline void FullColumn<T>::atiplusFullColumn(int i, FColsptr<T> fullCol)
 	{
-		for (int ii = 0; ii < fullCol->size(); ii++)
+		for (int ii = 0; ii < (int)fullCol->size(); ii++)
 		{
 			this->at(i + ii) += fullCol->at(ii);
 		}
@@ -128,7 +128,7 @@ namespace MbD {
 	inline void FullColumn<T>::equalSelfPlusFullColumnAt(FColsptr<T> fullCol, int ii)
 	{
 		//self is subcolumn of fullCol
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			this->at(i) += fullCol->at(ii + i);
 		}
@@ -136,7 +136,7 @@ namespace MbD {
 	template<typename T>
 	inline void FullColumn<T>::atiminusFullColumn(int i1, FColsptr<T> fullCol)
 	{
-		for (int ii = 0; ii < fullCol->size(); ii++)
+		for (int ii = 0; ii < (int)fullCol->size(); ii++)
 		{
 			int i = i1 + ii;
 			this->at(i) -= fullCol->at(ii);
@@ -170,7 +170,7 @@ namespace MbD {
 	template<typename T>
 	inline void FullColumn<T>::atiplusFullColumntimes(int i1, FColsptr<T> fullCol, T factor)
 	{
-		for (int ii = 0; ii < fullCol->size(); ii++)
+		for (int ii = 0; ii < (int)fullCol->size(); ii++)
 		{
 			int i = i1 + ii;
 			this->at(i) += fullCol->at(ii) * factor;
@@ -255,7 +255,7 @@ namespace MbD {
 	{
 		s << "FullCol{";
 		s << this->at(0);
-		for (int i = 1; i < this->size(); i++)
+		for (int i = 1; i < (int)this->size(); i++)
 		{
 			s << ", " << this->at(i);
 		}

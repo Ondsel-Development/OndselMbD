@@ -8,6 +8,7 @@
 #include <fstream>	
 
 #include "ASMTSphericalJoint.h"
+#include "SphericalJoint.h"
 
 using namespace MbD;
 

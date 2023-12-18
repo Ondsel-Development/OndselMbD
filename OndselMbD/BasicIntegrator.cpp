@@ -127,6 +127,7 @@ void BasicIntegrator::preStep()
 
 void BasicIntegrator::reportStats()
 {
+	//Do nothing.
 }
 
 void BasicIntegrator::setorder(int o)

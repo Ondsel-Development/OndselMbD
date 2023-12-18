@@ -17,11 +17,11 @@ namespace MbD {
 	public:
 		InPlaneJoint();
 		InPlaneJoint(const char* str);
-		virtual void initializeGlobally();	//To prevent instantiation of this class
+		virtual void initializeGlobally() = 0;	//To prevent instantiation of this class
 
 		void createInPlaneConstraint();
 
-		double offset;
+		double offset = 0.0;
 	};
 }
 

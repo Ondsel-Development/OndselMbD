@@ -17,7 +17,7 @@ MbD::GearJoint::GearJoint()
 {
 }
 
-MbD::GearJoint::GearJoint(const char* str)
+MbD::GearJoint::GearJoint(const char*)
 {
 }
 
@@ -25,10 +25,10 @@ void MbD::GearJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		auto gearIJ = CREATE<GearConstraintIJ>::With(frmI, frmJ);
+		auto gearIJ = GearConstraintIJ::With(frmI, frmJ);
 		gearIJ->radiusI = radiusI;
 		gearIJ->radiusJ = radiusJ;
-		gearIJ->setConstant(aConstant);
+		gearIJ->setConstant(std::numeric_limits<double>::min());
 		addConstraint(gearIJ);
 		this->root()->hasChanged = true;
 	}

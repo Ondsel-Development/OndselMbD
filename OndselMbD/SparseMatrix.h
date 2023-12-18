@@ -13,6 +13,7 @@
 #include "RowTypeMatrix.h"
 #include "SparseRow.h"
 #include "DiagonalMatrix.h"
+#include "FullMatrix.h"
 
 namespace MbD {
 	template<typename T>
@@ -49,12 +50,12 @@ namespace MbD {
 		void zeroSelf() override;
 		void atijplusFullRow(int i, int j, FRowsptr<T> fullRow);
 		void atijplusFullColumn(int i, int j, FColsptr<T> fullCol);
-		void atijminusFullColumn(int i, int j, FColsptr<T> fullCol);
-		void atijplusFullMatrix(int i, int j, FMatsptr<T> fullMat);
-		void atijminusFullMatrix(int i, int j, FMatsptr<T> fullMat);
-		void atijplusTransposeFullMatrix(int i, int j, FMatsptr<T> fullMat);
-		void atijminusTransposeFullMatrix(int i, int j, FMatsptr<T> fullMat);
-		void atijplusFullMatrixtimes(int i, int j, FMatsptr<T> fullMat, T factor);
+		void atijplusFullMatrix(int i, int j, FMatDsptr fullMat);
+		void atijminusFullMatrix(int i, int j, FMatDsptr fullMat);
+		void atijplusTransposeFullMatrix(int i, int j, FMatDsptr fullMat);
+		void atijplusFullMatrixtimes(int i, int j, FMatDsptr fullMat, T factor);
+		void atijminusFullColumn(int i, int j, FColDsptr fullCol);
+		void atijminusTransposeFullMatrix(int i, int j, FMatDsptr fullMat);
 		void atijplusNumber(int i, int j, double value);
 		void atijminusNumber(int i, int j, double value);
 		void atijput(int i, int j, T value);
@@ -97,7 +98,7 @@ namespace MbD {
 	inline double SparseMatrix<T>::sumOfSquares()
 	{
 		double sum = 0.0;
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			sum += this->at(i)->sumOfSquares();
 		}
@@ -106,7 +107,7 @@ namespace MbD {
 	template<>
 	inline void SparseMatrix<double>::zeroSelf()
 	{
-		for (int i = 0; i < this->size(); i++) {
+		for (int i = 0; i < (int)this->size(); i++) {
 			this->at(i)->zeroSelf();
 		}
 	}
@@ -118,13 +119,13 @@ namespace MbD {
 	template<typename T>
 	inline void SparseMatrix<T>::atijplusFullColumn(int i, int j, FColsptr<T> fullCol)
 	{
-		for (int ii = 0; ii < fullCol->size(); ii++)
+		for (int ii = 0; ii < (int)fullCol->size(); ii++)
 		{
 			this->atijplusNumber(i + ii, j, fullCol->at(ii));
 		}
 	}
 	template<typename T>
-	inline void SparseMatrix<T>::atijminusFullColumn(int i, int j, FColsptr<T> fullCol)
+	inline void SparseMatrix<T>::atijminusFullColumn(int i, int j, FColDsptr fullCol)
 	{
 		for (int ii = 0; ii < fullCol->size(); ii++)
 		{
@@ -132,7 +133,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void SparseMatrix<T>::atijplusFullMatrix(int i, int j, FMatsptr<T> fullMat)
+	inline void SparseMatrix<T>::atijplusFullMatrix(int i, int j, FMatDsptr fullMat)
 	{
 		for (int ii = 0; ii < fullMat->nrow(); ii++)
 		{
@@ -140,7 +141,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void SparseMatrix<T>::atijminusFullMatrix(int i, int j, FMatsptr<T> fullMat)
+	inline void SparseMatrix<T>::atijminusFullMatrix(int i, int j, FMatDsptr fullMat)
 	{
 		for (int ii = 0; ii < fullMat->nrow(); ii++)
 		{
@@ -148,7 +149,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void SparseMatrix<T>::atijplusTransposeFullMatrix(int i, int j, FMatsptr<T> fullMat)
+	inline void SparseMatrix<T>::atijplusTransposeFullMatrix(int i, int j, FMatDsptr fullMat)
 	{
 		for (int ii = 0; ii < fullMat->nrow(); ii++)
 		{
@@ -156,7 +157,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void SparseMatrix<T>::atijminusTransposeFullMatrix(int i, int j, FMatsptr<T> fullMat)
+	inline void SparseMatrix<T>::atijminusTransposeFullMatrix(int i, int j, FMatDsptr fullMat)
 	{
 		for (int ii = 0; ii < fullMat->nrow(); ii++)
 		{
@@ -164,7 +165,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void SparseMatrix<T>::atijplusFullMatrixtimes(int i, int j, FMatsptr<T> fullMat, T factor)
+	inline void SparseMatrix<T>::atijplusFullMatrixtimes(int i, int j, FMatDsptr fullMat, T factor)
 	{
 		for (int ii = 0; ii < fullMat->nrow(); ii++)
 		{
@@ -190,7 +191,7 @@ namespace MbD {
 	inline double SparseMatrix<T>::maxMagnitude()
 	{
 		double max = 0.0;
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			double element = this->at(i)->maxMagnitude();
 			if (max < element) max = element;
@@ -201,7 +202,7 @@ namespace MbD {
 	inline std::ostream& SparseMatrix<T>::printOn(std::ostream& s) const
 	{
 		s << "SpMat[" << std::endl;
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			s << *(this->at(i)) << std::endl;
 		}
@@ -242,7 +243,7 @@ namespace MbD {
 	template<typename T>
 	inline void SparseMatrix<T>::magnifySelf(T factor)
 	{
-		for (int i = 0; i < this->size(); i++) {
+		for (int i = 0; i < (int)this->size(); i++) {
 			this->at(i)->magnifySelf(factor);
 		}
 	}

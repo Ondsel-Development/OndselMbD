@@ -13,7 +13,7 @@ void MbD::MBDynMarker::parseMBDyn(std::vector<std::string>& args)
 	rPmP = std::make_shared<FullColumn<double>>(3);
 	aAPm = FullMatrix<double>::identitysptr(3);
 	if (args.empty()) return;
-	auto& str = args.at(0);
+	auto str = args.at(0); //Must copy string
 	if (str.find("reference") != std::string::npos) {
 		auto strucNode = std::static_pointer_cast<MBDynStructural>(nodeAt(nodeStr));
 		auto rOPO = strucNode->rOfO;
@@ -30,6 +30,13 @@ void MbD::MBDynMarker::parseMBDyn(std::vector<std::string>& args)
 		rPmP = readPosition(args);
 		aAPm = readOrientation(args);
 	}
+}
+
+void MbD::MBDynMarker::parseMBDynTotalJointMarker(std::vector<std::string>& args)
+{
+	parseMBDyn(args);
+	aAPm2 = readOrientation(args);
+	assert(aAPm->equaltol(aAPm2, 1.0e-9));
 }
 
 void MbD::MBDynMarker::parseMBDynClamp(std::vector<std::string>& args)

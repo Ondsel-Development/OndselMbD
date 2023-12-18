@@ -8,10 +8,10 @@
  
 #pragma once
 
-#include "ASMTJoint.h"
+#include "ASMTInPlaneJoint.h"
 
 namespace MbD {
-    class EXPORT ASMTPointInPlaneJoint : public ASMTJoint
+    class ASMTPointInPlaneJoint : public ASMTInPlaneJoint
     {
         //
     public:
@@ -21,8 +21,6 @@ namespace MbD {
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
         void storeOnLevel(std::ofstream& os, int level) override;
         void storeOnTimeSeries(std::ofstream& os) override;
-
-        double offset;
     };
 }
 

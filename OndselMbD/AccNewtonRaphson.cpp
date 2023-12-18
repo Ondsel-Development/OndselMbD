@@ -49,7 +49,7 @@ void AccNewtonRaphson::assignEquationNumbers()
 		con->iG = eqnNo;
 		eqnNo += 1;
 	}
-	auto lastEqnNo = eqnNo - 1;
+    //auto lastEqnNo = eqnNo - 1;
 	nEqns = eqnNo;	//C++ uses index 0.
 	n = nEqns;
 }
@@ -69,7 +69,7 @@ void AccNewtonRaphson::fillY()
 		item->fillAccICIterError(y);
 		//std::cout << item->name << *y << std::endl;
 		});
-	//std::cout << *y << std::endl;
+	//std::cout << "Final" << *y << std::endl;
 }
 
 void AccNewtonRaphson::incrementIterNo()
@@ -126,18 +126,17 @@ void AccNewtonRaphson::preRun()
 
 void MbD::AccNewtonRaphson::handleSingularMatrix()
 {
-	std::string str = typeid(*matrixSolver).name();
+    auto& r = *matrixSolver;
+	std::string str = typeid(r).name();
 	if (str.find("GESpMatParPvMarkoFast") != std::string::npos) {
 		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
 		this->solveEquations();
-	}
-	else {
-		str = typeid(*matrixSolver).name();
+	} else {
+		str = typeid(r).name();
 		if (str.find("GESpMatParPvPrecise") != std::string::npos) {
 			this->logSingularMatrixMessage();
 			matrixSolver->throwSingularMatrixError("AccAccNewtonRaphson");
-		}
-		else {
+		} else {
 			assert(false);
 		}
 	}

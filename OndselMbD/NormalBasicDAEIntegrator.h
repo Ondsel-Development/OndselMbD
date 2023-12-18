@@ -33,6 +33,7 @@ namespace MbD {
         void run() override;
         void selectOrder() override;
         void selectOrderNormal();
+        void selectStepSize() override;
 
         std::shared_ptr<StableBackwardDifference> opBDFhigher;
     };

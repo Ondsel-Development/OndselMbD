@@ -34,7 +34,7 @@ using namespace MbD;
 
 //class PosICNewtonRaphson;
 
-void SystemSolver::setSystem(Solver* sys)
+void SystemSolver::setSystem(Solver*)
 {
 	//Do not use
 	assert(false);
@@ -374,4 +374,19 @@ void SystemSolver::output()
 void SystemSolver::time(double t)
 {
 	system->mbdTimeValue(t);
+}
+
+void MbD::SystemSolver::useKineTrialStepStats(std::shared_ptr<SolverStatistics> stats)
+{
+	assert(false);
+}
+
+void MbD::SystemSolver::useDynTrialStepStats(std::shared_ptr<SolverStatistics> stats)
+{
+	system->useDynTrialStepStats(stats);
+}
+
+void MbD::SystemSolver::useDAEStepStats(std::shared_ptr<SolverStatistics> stats)
+{
+	assert(false);
 }

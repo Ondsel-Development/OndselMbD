@@ -25,8 +25,8 @@ void MbD::RackPinJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		auto rackPinIJ = CREATE<RackPinConstraintIJ>::With(frmI, frmJ);
-		rackPinIJ->setConstant(aConstant);
+		auto rackPinIJ = RackPinConstraintIJ::With(frmI, frmJ);
+		rackPinIJ->setConstant(std::numeric_limits<double>::min());
 		rackPinIJ->pitchRadius = pitchRadius;
 		addConstraint(rackPinIJ);
 		this->root()->hasChanged = true;

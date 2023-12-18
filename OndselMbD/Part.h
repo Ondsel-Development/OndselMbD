@@ -11,14 +11,11 @@
 #include <memory>
 
 #include "Item.h"
-#include "FullColumn.h"
-#include "FullMatrix.h"
 #include "EulerParametersDot.h"
 
 namespace MbD {
 	class System;
 	class PartFrame;
-	template<typename T> class DiagonalMatrix;
 
 	class Part : public Item
 	{

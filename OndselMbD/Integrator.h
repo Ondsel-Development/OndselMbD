@@ -29,6 +29,7 @@ namespace MbD {
         virtual void runInitialConditionTypeSolution();
         virtual void iStep(int i);
         virtual void selectOrder();
+        virtual void selectStepSize();
         virtual int iterMax();
 
         double direction = 1;

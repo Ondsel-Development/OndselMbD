@@ -50,6 +50,7 @@ namespace MbD {
 		FColDsptr rmeO() override;
 		FColDsptr rpep() override;
 		void preAccIC() override;
+		bool isEndFrameqc() override;
 		void postDynPredictor() override;
 		void preDynOutput() override;
 		void postDynOutput() override;

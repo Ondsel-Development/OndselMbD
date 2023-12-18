@@ -8,6 +8,7 @@
 #include <fstream>	
 
 #include "ASMTFixedJoint.h"
+#include "FixedJoint.h"
 
 using namespace MbD;
 

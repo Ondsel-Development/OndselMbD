@@ -103,6 +103,11 @@ std::shared_ptr<EndFrameqc> MbD::EndFramec::newCopyEndFrameqc()
 	return frmIeqc;
 }
 
+bool MbD::EndFramec::isEndFrameqc()
+{
+	return false;
+}
+
 void MbD::EndFramec::fillpqsumu(FColDsptr col)
 {
 }

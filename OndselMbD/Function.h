@@ -15,7 +15,7 @@ namespace MbD {
     {
         //
     public:
-        virtual void arguments(Symsptr args);
+        virtual void arguments(Symsptr args) = 0;
 
     };
 }

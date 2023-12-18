@@ -42,7 +42,7 @@ void MarkerFrame::initializeLocally()
 {
 	pprOmOpEpE = EulerParameters<double>::ppApEpEtimesColumn(rpmp);
 	ppAOmpEpE = EulerParameters<double>::ppApEpEtimesMatrix(aApm);
-	for (int i = 0; i < endFrames->size(); i++)
+	for (int i = 0; i < (int)endFrames->size(); i++)
 	{
 		auto eFrmqc = std::dynamic_pointer_cast<EndFrameqc>(endFrames->at(i));
 		if (eFrmqc) {
@@ -86,17 +86,17 @@ void MarkerFrame::prePosIC()
 	endFramesDo([](EndFrmsptr endFrame) { endFrame->prePosIC(); });
 }
 
-int MarkerFrame::iqX()
+int MarkerFrame::iqX() const
 {
 	return partFrame->iqX;
 }
 
-int MarkerFrame::iqE()
+int MarkerFrame::iqE() const
 {
 	return partFrame->iqE;
 }
 
-void MarkerFrame::endFramesDo(const std::function<void(EndFrmsptr)>& f)
+void MarkerFrame::endFramesDo(const std::function<void(EndFrmsptr)>& f) const
 {
 	std::for_each(endFrames->begin(), endFrames->end(), f);
 }
@@ -205,22 +205,22 @@ void MbD::MarkerFrame::preDynOutput()
 	endFramesDo([](EndFrmsptr endFrame) { endFrame->preDynOutput(); });
 }
 
-FColDsptr MarkerFrame::qXdot()
+FColDsptr MarkerFrame::qXdot() const
 {
 	return partFrame->qXdot;
 }
 
-std::shared_ptr<EulerParametersDot<double>> MarkerFrame::qEdot()
+std::shared_ptr<EulerParametersDot<double>> MarkerFrame::qEdot() const
 {
 	return partFrame->qEdot;
 }
 
-FColDsptr MarkerFrame::qXddot()
+FColDsptr MarkerFrame::qXddot() const
 {
 	return partFrame->qXddot;
 }
 
-FColDsptr MarkerFrame::qEddot()
+FColDsptr MarkerFrame::qEddot() const
 {
 	return partFrame->qEddot;
 }
@@ -288,16 +288,16 @@ void MarkerFrame::setPartFrame(PartFrame* partFrm)
 	partFrame = partFrm;
 }
 
-PartFrame* MarkerFrame::getPartFrame() {
+PartFrame* MarkerFrame::getPartFrame() const {
 	return partFrame;
 }
 
-void MarkerFrame::setrpmp(FColDsptr x)
+void MarkerFrame::setrpmp(FColDsptr x) const
 {
 	rpmp->copyFrom(x);
 }
 
-void MarkerFrame::setaApm(FMatDsptr mat)
+void MarkerFrame::setaApm(FMatDsptr mat) const
 {
 	aApm->copyFrom(mat);
 }

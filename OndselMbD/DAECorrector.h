@@ -31,6 +31,7 @@ namespace MbD {
         bool isConverged() override;
         void postRun() override;
         void setSystem(Solver* sys) override;
+        void reportStats() override;
 
         SpMatDsptr pypx;
         BasicDAEIntegrator* daeSystem;

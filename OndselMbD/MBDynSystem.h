@@ -11,7 +11,6 @@
 #include <string>
 
 #include "MBDynItem.h"
-#include "MBDynDrive.h"
 
 namespace MbD {
     class MBDynData;
@@ -19,9 +18,10 @@ namespace MbD {
     class MBDynControlData;
     class MBDynNode;
     class MBDynElement;
-    class MBDynVariable;
     class MBDynLabel;
     class MBDynReference;
+    class MBDynDrive;
+    class MBDynGravity;
 
     class MBDynSystem : public MBDynItem
     {
@@ -70,6 +70,7 @@ namespace MbD {
         std::shared_ptr<std::vector<std::shared_ptr<MBDynBody>>> bodies;
         std::shared_ptr<std::vector<std::shared_ptr<MBDynJoint>>> joints;
         std::shared_ptr<std::vector<std::shared_ptr<MBDynDrive>>> drives;
+        std::shared_ptr<MBDynGravity> gravity;
         std::shared_ptr<std::map<std::string, Symsptr>> variables;
         std::shared_ptr<std::map<std::string, int>> labels;
         std::shared_ptr<std::map<std::string, std::shared_ptr<MBDynReference>>> references;

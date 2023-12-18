@@ -8,6 +8,7 @@
 #include <fstream>	
 
 #include "ASMTCylindricalJoint.h"
+#include "CylindricalJoint.h"
 
 using namespace MbD;
 

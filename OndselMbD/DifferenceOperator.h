@@ -17,12 +17,13 @@ namespace MbD {
 	{
 		//iStep order taylorMatrix operatorMatrix time timeNodes 
 	public:
+		virtual ~DifferenceOperator() {}
 		void calcOperatorMatrix();
 		virtual void initialize();
 		virtual void initializeLocally();
 		virtual void setiStep(int i);
 		virtual void setorder(int o);
-		virtual void formTaylorMatrix();
+		virtual void formTaylorMatrix() = 0;
 		virtual void instantiateTaylorMatrix();
 		virtual void formTaylorRowwithTimeNodederivative(int i, int ii, int k);
 		void settime(double t);

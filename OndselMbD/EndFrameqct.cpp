@@ -366,6 +366,11 @@ void EndFrameqct::preAccIC()
 	ppAOeptpt = aAOm->timesFullMatrix(ppAmeptpt);
 }
 
+bool MbD::EndFrameqct::isEndFrameqc()
+{
+	return false;
+}
+
 void MbD::EndFrameqct::postDynPredictor()
 {	
 	time = this->root()->mbdTimeValue();

@@ -17,7 +17,7 @@ namespace MbD {
 	public:
 		InLineJoint();
 		InLineJoint(const char* str);
-		virtual void initializeGlobally();	//To prevent instantiation of this class
+		virtual void initializeGlobally() = 0;	//To prevent instantiation of this class
 
 		void createInLineConstraints();
 

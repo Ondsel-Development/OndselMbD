@@ -13,7 +13,7 @@ using namespace MbD;
 
 void StableBackwardDifference::formTaylorMatrix()
 {
-	//This form is numerically more stable and is prefered over the full Taylor Matrix.
+	//This form is numerically more stable and is preferred over the full Taylor Matrix.
 	//For method order 3:
 	//| (t1 - t)	(t1 - t) ^ 2 / 2!	(t1 - t) ^ 3 / 3!|	|qd(t)  | = | q(t1) - q(t)	|
 	//|	(t2 - t)	(t2 - t) ^ 2 / 2!	(t2 - t) ^ 3 / 3!|	|qdd(t)	|	|q(t2) - q(t)	|
@@ -39,7 +39,9 @@ double MbD::StableBackwardDifference::pvdotpv()
 	return sum;
 }
 
-FColDsptr MbD::StableBackwardDifference::derivativepresentpastpresentDerivativepastDerivative(int n, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast, FColDsptr ydot, std::shared_ptr<std::vector<FColDsptr>> ydotpast)
+FColDsptr MbD::StableBackwardDifference::derivativepresentpastpresentDerivativepastDerivative(
+        int, FColDsptr, std::shared_ptr<std::vector<FColDsptr>>, FColDsptr,
+        std::shared_ptr<std::vector<FColDsptr>>)
 {
 	assert(false);
 	return FColDsptr();
@@ -79,7 +81,7 @@ FColDsptr MbD::StableBackwardDifference::derivativepresentpast(int deriv, FColDs
 	//"Answer ith derivative given present value and past values."
 
 	if (deriv == 0) {
-		return y->clonesptr();
+		return std::static_pointer_cast<FullColumn<double>>(y->clonesptr());
 	}
 	else {
 		if (deriv <= order) {

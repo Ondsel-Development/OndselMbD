@@ -26,11 +26,11 @@ namespace MbD {
         void calcdxNorm() override;
         bool isConverged() override;
         void xEqualxoldPlusdx() override;
-        virtual void basicSolveEquations();
-        virtual void handleSingularMatrix();
+        virtual void basicSolveEquations() = 0;
+        virtual void handleSingularMatrix() override;
 
         std::shared_ptr<MatrixSolver> matrixSolver;
-        int n;
+        int n = -1;
         FColDsptr xold, x, dx, y;
         //std::shared_ptr<RowTypeMatrix<double>> pypx;
     };

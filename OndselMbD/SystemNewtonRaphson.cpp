@@ -6,6 +6,8 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
+#include <iomanip>
+
 #include "SystemNewtonRaphson.h"
 #include "SystemSolver.h"
 #include "SparseMatrix.h"
@@ -44,8 +46,10 @@ std::shared_ptr<MatrixSolver> SystemNewtonRaphson::matrixSolverClassNew()
 void SystemNewtonRaphson::calcdxNorm()
 {
 	VectorNewtonRaphson::calcdxNorm();
-	std::string str("MbD: Convergence = ");
-	str += std::to_string(dxNorm);
+	std::stringstream ss;
+	ss << std::setprecision(std::numeric_limits<double>::max_digits10);
+	ss << "MbD: Convergence = " << dxNorm;
+	auto str = ss.str();
 	system->logString(str);
 }
 
@@ -56,13 +60,14 @@ void SystemNewtonRaphson::basicSolveEquations()
 
 void SystemNewtonRaphson::handleSingularMatrix()
 {
-	std::string str = typeid(*matrixSolver).name();
+    auto& r = *matrixSolver;
+	std::string str = typeid(r).name();
 	if (str.find("GESpMatParPvMarkoFast") != std::string::npos) {
 		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
 		this->solveEquations();
 	}
 	else {
-		str = typeid(*matrixSolver).name();
+		str = typeid(r).name();
 		if (str.find("GESpMatParPvPrecise") != std::string::npos) {
 			str = "MbD: Singular Matrix Error. ";
 			system->logString(str);

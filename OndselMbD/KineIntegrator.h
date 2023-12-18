@@ -22,6 +22,7 @@ namespace MbD {
         void runInitialConditionTypeSolution() override;
         void iStep(int i) override;
         void selectOrder() override;
+        void useTrialStepStats(std::shared_ptr<SolverStatistics> stats);
     };
 }
 

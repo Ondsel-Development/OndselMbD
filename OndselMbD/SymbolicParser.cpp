@@ -27,6 +27,9 @@
 #include "ArcSine.h"
 #include "Integral.h"
 #include "RampStepFunction.h"
+#include "Arguments.h"
+#include "Functions.h"
+#include "Transitions.h"
 
 MbD::SymbolicParser::SymbolicParser()
 {
@@ -283,6 +286,11 @@ bool MbD::SymbolicParser::symfunction()
 
 bool MbD::SymbolicParser::expression()
 {
+	if (token == "" && tokenType == "end") {
+		auto symNum = std::make_shared<Constant>(0.0);
+		stack->push(symNum);
+		return true;
+	}
 	auto sum = std::make_shared<Sum>();
 	stack->push(sum);
 	if (plusTerm() || minusTerm() || plainTerm()) {
@@ -330,7 +338,7 @@ bool MbD::SymbolicParser::constant()
 		return true;
 	}
 	if (peekForTypevalue("word", "pi")) {
-		auto symconst = std::make_shared<Constant>(M_PI);
+		auto symconst = std::make_shared<Constant>(OS_M_PI);
 		stack->push(symconst);
 		return true;
 	}
@@ -368,6 +376,15 @@ bool MbD::SymbolicParser::intrinsic()
 	}
 	else if (peekForTypevalue("word", "rampstep")) {
 		symfunc = std::make_shared<RampStepFunction>();
+	}
+	else if (peekForTypevalue("word", "piecewise")) {
+		symfunc = std::make_shared<PiecewiseFunction>();
+	}
+	else if (peekForTypevalue("word", "functions")) {
+		symfunc = std::make_shared<Functions>();
+	}
+	else if (peekForTypevalue("word", "transitions")) {
+		symfunc = std::make_shared<Transitions>();
 	}
 	if (symfunc != nullptr) {
 		stack->push(symfunc);
@@ -422,7 +439,7 @@ bool MbD::SymbolicParser::raisedTo()
 	return false;
 }
 
-bool MbD::SymbolicParser::expected(std::string msg)
+bool MbD::SymbolicParser::expected(std::string)
 {
 	return false;
 }
@@ -468,7 +485,7 @@ void MbD::SymbolicParser::notify(std::string msg)
 	notifyat(msg, mark);
 }
 
-void MbD::SymbolicParser::notifyat(std::string msg, int mrk)
+void MbD::SymbolicParser::notifyat(std::string, int)
 {
 	//"Temporarily reset source in order to get full contents"
 	auto p = source->tellg();
@@ -487,13 +504,13 @@ void MbD::SymbolicParser::notifyat(std::string msg, int mrk)
 void MbD::SymbolicParser::combineStackTo(int pos)
 {
 	auto args = std::make_shared<std::vector<Symsptr>>();
-	while (stack->size() > pos) {
+	while ((int)stack->size() > pos) {
 		Symsptr arg = stack->top();
 		stack->pop();
 		args->push_back(arg);
 	}
 	std::reverse(args->begin(), args->end());
-	auto sum = std::make_shared<Sum>();
+	auto sum = std::make_shared<Arguments>();
 	sum->terms = args;
 	stack->push(sum);
 }

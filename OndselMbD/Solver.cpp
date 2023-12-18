@@ -52,6 +52,7 @@ void Solver::finalize()
 
 void Solver::reportStats()
 {
+	assert(false);
 }
 
 void Solver::postRun()
@@ -59,7 +60,7 @@ void Solver::postRun()
 	assert(false);
 }
 
-void Solver::logString(std::string& str)
+void Solver::logString(std::string&)
 {
 	assert(false);
 }
@@ -70,7 +71,7 @@ void Solver::logString(const char* chars)
 	this->logString(str);
 }
 
-void MbD::Solver::setSystem(Solver* sys)
+void MbD::Solver::setSystem(Solver*)
 {
 	assert(false);
 }

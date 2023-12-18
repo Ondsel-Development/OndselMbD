@@ -26,11 +26,11 @@ namespace MbD {
 		bool isRedoingFirstStep();
 		bool isRedoingStep();
 		void nextStep() override;
-		//void reportStepStats();
-		//void reportTrialStepStats();
+		void reportStepStats();
+		void reportTrialStepStats();
 		void runInitialConditionTypeSolution() override;
 		void selectFirstStepSize();
-		void selectStepSize();
+		void selectStepSize() override;
 		void predictFirstStep();
 		void correctFirstStep();
 		void changeTime();
@@ -63,6 +63,7 @@ namespace MbD {
 		void predict();
 		void correct();
 		void selectStepSizeNormal();
+		void useDAECorrectorStats(std::shared_ptr<SolverStatistics> stats);
 
 		FColDsptr y, ydot, dy, aF, corAbsTol, corRelTol, integAbsTol, integRelTol;
 		std::shared_ptr<std::vector<FColDsptr>> ypast, ydotpast;

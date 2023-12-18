@@ -33,12 +33,12 @@ void MbD::ASMTMotion::initMarkers()
 {
 }
 
-void MbD::ASMTMotion::storeOnLevel(std::ofstream& os, int level)
+void ASMTMotion::storeOnLevel(std::ofstream&, int)
 {
 	assert(false);
 }
 
-void MbD::ASMTMotion::storeOnTimeSeries(std::ofstream& os)
+void ASMTMotion::storeOnTimeSeries(std::ofstream&)
 {
 	assert(false);
 }

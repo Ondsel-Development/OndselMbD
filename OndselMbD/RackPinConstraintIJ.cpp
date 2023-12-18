@@ -7,11 +7,23 @@
  ***************************************************************************/
  
 #include "RackPinConstraintIJ.h"
+#include "RackPinConstraintIqcJqc.h"
+#include "EndFrameqc.h"
 
 using namespace MbD;
 
 MbD::RackPinConstraintIJ::RackPinConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj)
 {
+}
+
+std::shared_ptr<RackPinConstraintIJ> MbD::RackPinConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	assert(frmi->isEndFrameqc());
+	assert(frmj->isEndFrameqc());
+	auto rackPinCon = std::make_shared<RackPinConstraintIqcJqc>(frmi, frmj);
+	rackPinCon->initxIeJeIe();
+	rackPinCon->initthezIeJe();
+	return rackPinCon;
 }
 
 void MbD::RackPinConstraintIJ::calcPostDynCorrectorIteration()
@@ -22,6 +34,16 @@ void MbD::RackPinConstraintIJ::calcPostDynCorrectorIteration()
 }
 
 void MbD::RackPinConstraintIJ::init_xthez()
+{
+	assert(false);
+}
+
+void MbD::RackPinConstraintIJ::initxIeJeIe()
+{
+	assert(false);
+}
+
+void MbD::RackPinConstraintIJ::initthezIeJe()
 {
 	assert(false);
 }
@@ -48,7 +70,9 @@ void MbD::RackPinConstraintIJ::postInput()
 {
 	xIeJeIe->postInput();
 	thezIeJe->postInput();
-	aConstant = xIeJeIe->value() + (pitchRadius * thezIeJe->value());
+	if (aConstant == std::numeric_limits<double>::min()) {
+		aConstant = xIeJeIe->value() + (pitchRadius * thezIeJe->value());
+	}
 	ConstraintIJ::postInput();
 }
 

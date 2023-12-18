@@ -151,7 +151,7 @@ void MbD::DynIntegrator::fillpFpydot(SpMatDsptr mat)
 
 void MbD::DynIntegrator::preRun()
 {
-	std::string str("MbD: Solving for quasi kinematic acceleration.");
+	std::string str("MbD: Starting dynamic analysis.");
 	system->logString(str);
 	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->preDyn(); });
 }
@@ -291,6 +291,21 @@ void MbD::DynIntegrator::throwDiscontinuityError(const char* chars, std::shared_
 	throw DiscontinuityError(chars, discontinuityTypes);
 }
 
+void MbD::DynIntegrator::useTrialStepStats(std::shared_ptr<SolverStatistics> stats)
+{
+	system->useDynTrialStepStats(stats);
+}
+
+void MbD::DynIntegrator::useDAEStepStats(std::shared_ptr<SolverStatistics> stats)
+{
+	//Do nothing.
+}
+
+void MbD::DynIntegrator::reportStats()
+{
+	//Do nothing.
+}
+
 void MbD::DynIntegrator::postDAEPredictor()
 {
 	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postDynPredictor(); });
@@ -308,7 +323,7 @@ void MbD::DynIntegrator::postDAEStep()
 
 void MbD::DynIntegrator::postRun()
 {
-	assert(false);
+	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->postDyn(); });
 }
 
 void MbD::DynIntegrator::preDAECorrector()

@@ -43,6 +43,8 @@ namespace MbD {
         void ydot(FColDsptr col) override;
         virtual void preDAEOutput();
         virtual void postDAEOutput();
+        void useTrialStepStats(std::shared_ptr<SolverStatistics> stats) override;
+        void useDAEStepStats(std::shared_ptr<SolverStatistics> stats) override;
 
         int neqn, ncon;
 

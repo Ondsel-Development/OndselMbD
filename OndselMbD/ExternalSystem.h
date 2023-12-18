@@ -19,6 +19,7 @@ namespace MbD {
 	class CADSystem;
 	class ASMTAssembly;
 	class System;
+	class SolverStatistics;
 
 	class ExternalSystem
 	{
@@ -31,7 +32,7 @@ namespace MbD {
 		void runOndselPiston();
 		void runPiston();
 		void postMbDrun();
-
+		void useDynTrialStepStats(std::shared_ptr<SolverStatistics> stats);
 
 		CADSystem* cadSystem;
 		ASMTAssembly* asmtAssembly;

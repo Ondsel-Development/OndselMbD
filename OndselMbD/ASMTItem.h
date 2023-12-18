@@ -8,7 +8,6 @@
  
 #pragma once
 #include "CREATE.h"
-#include "APIExport.h"
 
 namespace MbD {
 	class ASMTAssembly;
@@ -16,16 +15,18 @@ namespace MbD {
 	class ASMTSpatialContainer;
 	class ASMTPart;
 
-	class EXPORT ASMTItem
+	class ASMTItem
 	{
 		//
 	public:
+		virtual ~ASMTItem() {}
 		virtual ASMTAssembly* root();
 		virtual ASMTSpatialContainer* partOrAssembly();
 		virtual ASMTPart* part();
 
 		virtual void initialize();
 		void noop();
+		virtual std::string classname();
 		void setName(std::string str);
 		virtual void parseASMT(std::vector<std::string>& lines);
 		FRowDsptr readRowOfDoubles(std::string& line);
@@ -55,6 +56,8 @@ namespace MbD {
 		void storeOnLevelArray(std::ofstream& os, int level, std::vector<double> array);
 		void storeOnLevelName(std::ofstream& os, int level);
 		virtual void storeOnTimeSeries(std::ofstream& os);
+		void logString(std::string& str);
+		void logString(const char* chars);
 
 		std::string name;
 		ASMTItem* owner = nullptr;

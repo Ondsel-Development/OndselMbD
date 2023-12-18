@@ -146,3 +146,18 @@ void MbD::IntegratorInterface::updateForDAECorrector()
 {
 	assert(false);
 }
+
+void MbD::IntegratorInterface::useTrialStepStats(std::shared_ptr<SolverStatistics> stats)
+{
+	assert(false);
+}
+
+void MbD::IntegratorInterface::useDAEStepStats(std::shared_ptr<SolverStatistics> stats)
+{
+	assert(false);
+}
+
+void MbD::IntegratorInterface::useQuasiStepStats(std::shared_ptr<SolverStatistics> stats)
+{
+	assert(false);
+}

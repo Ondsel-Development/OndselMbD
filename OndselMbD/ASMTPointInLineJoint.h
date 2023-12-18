@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include "ASMTJoint.h"
+#include "ASMTInLineJoint.h"
 
 namespace MbD {
-    class EXPORT ASMTPointInLineJoint : public ASMTJoint
+    class ASMTPointInLineJoint : public ASMTInLineJoint
     {
         //
     public:

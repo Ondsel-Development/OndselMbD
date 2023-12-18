@@ -184,3 +184,14 @@ void MbD::DAEIntegrator::postDAEOutput()
 {
 	assert(false);
 }
+
+void MbD::DAEIntegrator::useTrialStepStats(std::shared_ptr<SolverStatistics> stats)
+{
+	assert(false);
+	//system->useDAETrialStepStats(stats);
+}
+
+void MbD::DAEIntegrator::useDAEStepStats(std::shared_ptr<SolverStatistics> stats)
+{
+	system->useDAEStepStats(stats);
+}

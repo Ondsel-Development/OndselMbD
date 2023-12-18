@@ -51,6 +51,9 @@ namespace MbD {
         void y(FColDsptr col) override;
         void ydot(FColDsptr col) override;
         void throwDiscontinuityError(const char* chars, std::shared_ptr<std::vector<DiscontinuityType>> discontinuityTypes);
+        void useTrialStepStats(std::shared_ptr<SolverStatistics> stats);
+        void useDAEStepStats(std::shared_ptr<SolverStatistics> stats);
+        void reportStats() override;
 
     };
 }

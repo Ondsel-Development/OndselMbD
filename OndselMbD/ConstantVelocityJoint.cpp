@@ -27,7 +27,9 @@ void MbD::ConstantVelocityJoint::initializeGlobally()
 	if (constraints->empty())
 	{
 		createAtPointConstraints();
-		addConstraint(CREATE<ConstVelConstraintIJ>::With(frmI, frmJ));
+		auto constVelIJ = ConstVelConstraintIJ::With(frmI, frmJ);
+		constVelIJ->setConstant(0.0);
+		addConstraint(constVelIJ);
 		this->root()->hasChanged = true;
 	}
 	else {

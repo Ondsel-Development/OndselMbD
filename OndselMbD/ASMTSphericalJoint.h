@@ -8,11 +8,10 @@
  
 #pragma once
 
-#include "ASMTJoint.h"
-#include "SphericalJoint.h"
+#include "ASMTAtPointJoint.h"
 
 namespace MbD {
-    class EXPORT ASMTSphericalJoint : public ASMTJoint
+    class ASMTSphericalJoint : public ASMTAtPointJoint
     {
         //
     public:

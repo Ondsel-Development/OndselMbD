@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "FullColumn.h"
+#include "FullRow.h"
 #include "FullMatrix.h"
 #include "DiagonalMatrix.h"
 #include "SparseMatrix.h"
@@ -28,6 +29,7 @@ namespace MbD {
 	public:
 		Item();
 		Item(const char* str);
+		virtual ~Item() {}
 		virtual System* root();
 		void noop();
 

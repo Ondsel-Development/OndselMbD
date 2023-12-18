@@ -32,16 +32,16 @@ namespace MbD {
 		System* root() override;
 		void initialize() override;
 		void setPartFrame(PartFrame* partFrm);
-		PartFrame* getPartFrame();
-		void setrpmp(FColDsptr x);
-		void setaApm(FMatDsptr mat);
+		PartFrame* getPartFrame() const;
+		void setrpmp(FColDsptr x) const;
+		void setaApm(FMatDsptr mat) const;
 		void addEndFrame(EndFrmsptr x);
 		void initializeLocally() override;
 		void initializeGlobally() override;
 		void calcPostDynCorrectorIteration() override;
-		int iqX();
-		int iqE();
-		void endFramesDo(const std::function <void(EndFrmsptr)>& f);
+		int iqX() const;
+		int iqE() const;
+		void endFramesDo(const std::function <void(EndFrmsptr)>& f) const;
 		void fillqsu(FColDsptr col) override;
 		void fillqsuWeights(DiagMatDsptr diagMat) override;
 		void fillqsuddotlam(FColDsptr col) override;
@@ -69,10 +69,10 @@ namespace MbD {
 		void preVelIC() override;
 		void preAccIC() override;
 		void preDynOutput() override;
-		FColDsptr qXdot();
-		std::shared_ptr<EulerParametersDot<double>> qEdot();
-		FColDsptr qXddot();
-		FColDsptr qEddot();
+		FColDsptr qXdot() const;
+		std::shared_ptr<EulerParametersDot<double>> qEdot() const;
+		FColDsptr qXddot() const;
+		FColDsptr qEddot() const;
 		FColFMatDsptr pAOppE();
 		FMatDsptr aBOp();
 		void setpqsumu(FColDsptr col) override;
@@ -80,7 +80,7 @@ namespace MbD {
 		void setpqsumuddot(FColDsptr col) override;
 		void fillDynError(FColDsptr col) override;
 
-		PartFrame* partFrame; //Use raw pointer when pointing backwards.
+		PartFrame* partFrame = nullptr; //Use raw pointer when pointing backwards.
 		FColDsptr rpmp = std::make_shared<FullColumn<double>>(3);
 		FMatDsptr aApm = FullMatrix<double>::identitysptr(3);
 		FColDsptr rOmO = std::make_shared<FullColumn<double>>(3);

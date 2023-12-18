@@ -20,7 +20,7 @@ namespace MbD {
         OrbitAngleZIecJec(EndFrmsptr frmi, EndFrmsptr frmj);
 
         void calcPostDynCorrectorIteration() override;
-        virtual void init_xyIeJeIe();
+        virtual void init_xyIeJeIe() = 0;
         void initialize() override;
         void initializeGlobally() override;
         void initializeLocally() override;
@@ -36,7 +36,8 @@ namespace MbD {
         void preDynOutput() override;
 		void postDynOutput() override;
 
-        double thez, cosOverSSq, sinOverSSq, twoCosSinOverSSqSq, dSqOverSSqSq;
+        double thez = std::numeric_limits<double>::min();
+        double cosOverSSq, sinOverSSq, twoCosSinOverSSqSq, dSqOverSSqSq;
         std::shared_ptr<DispCompIecJecIe> xIeJeIe, yIeJeIe;
     };
 }

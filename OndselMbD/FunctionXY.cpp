@@ -28,6 +28,11 @@ void MbD::FunctionXY::arguments(Symsptr args)
 	y = sum->terms->at(1);
 }
 
+bool MbD::FunctionXY::isConstant()
+{
+	return x->isConstant() && y->isConstant();
+}
+
 Symsptr MbD::FunctionXY::differentiateWRTx()
 {
 	assert(false);

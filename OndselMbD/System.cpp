@@ -203,7 +203,7 @@ double System::maximumMass()
 double System::maximumMomentOfInertia()
 {
 	double max = 0.0;
-	for (int i = 0; i < parts->size(); i++)
+	for (int i = 0; i < (int)parts->size(); i++)
 	{
 		auto& part = parts->at(i);
 		for (int j = 0; j < 3; j++)
@@ -229,4 +229,14 @@ double System::rotationLimit()
 void System::outputFor(AnalysisType type)
 {
 	externalSystem->outputFor(type);
+}
+
+void MbD::System::useKineTrialStepStats(std::shared_ptr<SolverStatistics> stats)
+{
+	assert(false);
+}
+
+void MbD::System::useDynTrialStepStats(std::shared_ptr<SolverStatistics> stats)
+{
+	externalSystem->useDynTrialStepStats(stats);
 }

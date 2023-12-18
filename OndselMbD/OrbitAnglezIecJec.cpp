@@ -29,16 +29,11 @@ void MbD::OrbitAngleZIecJec::calcPostDynCorrectorIteration()
 	auto diffOfSquares = y * y - (x * x);
 	auto sumOfSquaresSquared = sumOfSquares * sumOfSquares;
 	auto thez0to2pi = Numeric::arcTan0to2piYoverX(y, x);
-	thez = std::round((thez - thez0to2pi) / (2.0 * M_PI)) * (2.0 * M_PI) + thez0to2pi;
-	auto cosOverSSq = x / sumOfSquares;
-	auto sinOverSSq = y / sumOfSquares;
+	thez = std::round((thez - thez0to2pi) / (2.0 * OS_M_PI)) * (2.0 * OS_M_PI) + thez0to2pi;
+	cosOverSSq = x / sumOfSquares;
+	sinOverSSq = y / sumOfSquares;
 	twoCosSinOverSSqSq = 2.0 * x * y / sumOfSquaresSquared;
 	dSqOverSSqSq = diffOfSquares / sumOfSquaresSquared;
-}
-
-void MbD::OrbitAngleZIecJec::init_xyIeJeIe()
-{
-	assert(false);
 }
 
 void MbD::OrbitAngleZIecJec::initialize()
@@ -63,13 +58,15 @@ void MbD::OrbitAngleZIecJec::postInput()
 {
 	xIeJeIe->postInput();
 	yIeJeIe->postInput();
-	auto x = xIeJeIe->value();
-	auto y = yIeJeIe->value();
-	if (x > 0.0) {
-		thez = std::atan2(y, x);
-	}
-	else {
-		thez = Numeric::arcTan0to2piYoverX(y, x);
+	if (thez == std::numeric_limits<double>::min()) {
+		auto x = xIeJeIe->value();
+		auto y = yIeJeIe->value();
+		if (x > 0.0) {
+			thez = std::atan2(y, x);
+		}
+		else {
+			thez = Numeric::arcTan0to2piYoverX(y, x);
+		}
 	}
 	KinematicIeJe::postInput();
 }
@@ -83,7 +80,7 @@ void MbD::OrbitAngleZIecJec::postPosICIteration()
 
 void MbD::OrbitAngleZIecJec::preAccIC()
 {
-	if (thez == 0.0) this->prePosIC();
+	if (thez == std::numeric_limits<double>::min()) this->prePosIC();
 	xIeJeIe->preAccIC();
 	yIeJeIe->preAccIC();
 	KinematicIeJe::preAccIC();
@@ -93,14 +90,7 @@ void MbD::OrbitAngleZIecJec::prePosIC()
 {
 	xIeJeIe->prePosIC();
 	yIeJeIe->prePosIC();
-	auto x = xIeJeIe->value();
-	auto y = yIeJeIe->value();
-	if (x > 0.0) {
-		thez = std::atan2(y, x);
-	}
-	else {
-		thez = Numeric::arcTan0to2piYoverX(y, x);
-	}
+	assert(thez != std::numeric_limits<double>::min());
 	KinematicIeJe::prePosIC();
 }
 

@@ -9,10 +9,11 @@
 #pragma once
 
 #include "ASMTConstraintSet.h"
-#include "ForceTorqueData.h"
 
 namespace MbD {
-    class EXPORT ASMTJoint : public ASMTConstraintSet
+    class ForceTorqueData;
+
+    class ASMTJoint : public ASMTConstraintSet
     {
         //
     public:

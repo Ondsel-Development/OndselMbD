@@ -8,6 +8,7 @@
 #include <fstream>	
 
 #include "ASMTTranslationalJoint.h"
+#include "TranslationalJoint.h"
 
 using namespace MbD;
 

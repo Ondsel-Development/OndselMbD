@@ -24,7 +24,7 @@ void MatrixSolver::initialize()
 	singularPivotTolerance = 4 * std::numeric_limits<double>::epsilon();
 }
 
-void MatrixSolver::setSystem(Solver* sys)
+void MatrixSolver::setSystem(Solver*)
 {
 	assert(false);
 }
@@ -50,8 +50,14 @@ FColDsptr MatrixSolver::timedSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr f
 	auto end = std::chrono::steady_clock::now();
 	auto diff = end - start;
 	millisecondsToRun = std::chrono::duration<double, std::milli>(diff).count();
-	std::cout << "milliseconds to run = " << millisecondsToRun << std::endl;
+	//std::cout << "milliseconds to run = " << millisecondsToRun << std::endl;
 	return answerX;
+}
+
+FColDsptr MatrixSolver::timedSolvewithsaveOriginal(FMatDsptr, FColDsptr, bool)
+{
+	assert(false);
+	return FColDsptr();
 }
 
 FColDsptr MbD::MatrixSolver::basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
@@ -89,12 +95,6 @@ void MbD::MatrixSolver::forwardEliminateWithPivot(int p)
 void MbD::MatrixSolver::backSubstituteIntoDU()
 {
 	assert(false);
-}
-
-FColDsptr MatrixSolver::timedSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
-{
-	assert(false);
-	return FColDsptr();
 }
 
 void MbD::MatrixSolver::postSolve()

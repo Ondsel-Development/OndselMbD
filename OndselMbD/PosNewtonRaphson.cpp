@@ -6,9 +6,9 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
+#include <iostream>
 #include <sstream> 
 
-#include "Item.h"
 #include "PosNewtonRaphson.h"
 #include "SystemSolver.h"
 #include "SimulationStoppingError.h"

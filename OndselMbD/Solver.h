@@ -9,6 +9,9 @@
 #pragma once
 
 #include <string>
+#include <memory>
+
+#include "SolverStatistics.h"
 
 namespace MbD {
 	class Solver
@@ -16,6 +19,7 @@ namespace MbD {
 		//statistics
 	public:
 		void noop();
+		virtual ~Solver() {}
 		virtual void initialize();
 		virtual void initializeLocally();
 		virtual void initializeGlobally();
@@ -27,9 +31,10 @@ namespace MbD {
 		virtual void postRun();
 		virtual void logString(std::string& str);
 		void logString(const char* chars);
-		virtual void setSystem(Solver* sys);
+		virtual void setSystem(Solver* sys) = 0;
 		virtual void handleSingularMatrix();
 
+		std::shared_ptr<SolverStatistics> statistics = std::make_shared<SolverStatistics>();
 	};
 }
 

@@ -27,21 +27,23 @@ namespace MbD {
 	public:
 		Array() {}
 		Array(std::vector<T> vec) : std::vector<T>(vec) {}
-		Array(int count) : std::vector<T>(count) {}
-		Array(int count, const T& value) : std::vector<T>(count, value) {}
+		Array(size_t count) : std::vector<T>(count) {}
+		Array(size_t count, const T& value) : std::vector<T>(count, value) {}
 		Array(typename std::vector<T>::iterator begin, typename std::vector<T>::iterator end) : std::vector<T>(begin, end) {}
 		Array(std::initializer_list<T> list) : std::vector<T>{ list } {}
+		virtual ~Array() {}
 		virtual void initialize();
+		static bool equaltol(double x, double xx, double tol);
 		void copyFrom(std::shared_ptr<Array<T>> x);
 		virtual void zeroSelf();
-		virtual double sumOfSquares();
+		virtual double sumOfSquares() = 0;
 		double rootMeanSquare();
 		virtual int numberOfElements();
 		void swapElems(int i, int ii);
-		virtual double maxMagnitude();
+		virtual double maxMagnitude() = 0;
 		double maxMagnitudeOfVector();
 		void equalArrayAt(std::shared_ptr<Array<T>> array, int i);
-		virtual void atiput(int i, T value);
+		void atiput(int i, T value);
 		void magnifySelf(T factor);
 		void negateSelf();
 		void atitimes(int i, double factor);
@@ -62,17 +64,22 @@ namespace MbD {
 	inline void Array<T>::initialize()
 	{
 	}
+	template<>
+	inline bool Array<double>::equaltol(double x, double xx, double tol)
+	{
+		return std::abs(x - xx) < tol;
+	}
 	template<typename T>
 	inline void Array<T>::copyFrom(std::shared_ptr<Array<T>> x)
 	{
-		for (int i = 0; i < x->size(); i++) {
+		for (int i = 0; i < (int)x->size(); i++) {
 			this->at(i) = x->at(i);
 		}
 	}
 	template<typename T>
 	inline void Array<T>::zeroSelf()
 	{
-		for (int i = 0; i < this->size(); i++) {
+		for (int i = 0; i < (int)this->size(); i++) {
 			this->at(i) = (T)0;
 		}
 	}
@@ -131,7 +138,7 @@ namespace MbD {
 	template<typename T>
 	inline void Array<T>::equalArrayAt(std::shared_ptr<Array<T>> array, int i)
 	{
-		for (int ii = 0; ii < this->size(); ii++)
+		for (int ii = 0; ii < (int)this->size(); ii++)
 		{
 			this->at(ii) = array->at((size_t)i + ii);
 		}
@@ -179,7 +186,7 @@ namespace MbD {
 	template<typename T>
 	inline void Array<T>::magnifySelf(T factor)
 	{
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			this->atitimes(i, factor);
 		}

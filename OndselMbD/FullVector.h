@@ -20,8 +20,8 @@ namespace MbD {
 	public:
 		FullVector() : Array<T>() {}
 		FullVector(std::vector<T> vec) : Array<T>(vec) {}
-		FullVector(int count) : Array<T>(count) {}
-		FullVector(int count, const T& value) : Array<T>(count, value) {}
+		FullVector(size_t count) : Array<T>(count) {}
+		FullVector(size_t count, const T& value) : Array<T>(count, value) {}
 		FullVector(typename std::vector<T>::iterator begin, typename std::vector<T>::iterator end) : Array<T>(begin, end) {}
 		FullVector(std::initializer_list<T> list) : Array<T>{ list } {}
 		double dot(std::shared_ptr<FullVector<T>> vec);
@@ -71,7 +71,7 @@ namespace MbD {
 	inline double FullVector<double>::sumOfSquares()
 	{
 		double sum = 0.0;
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			double element = this->at(i);
 			sum += element * element;
@@ -92,7 +92,7 @@ namespace MbD {
 	template<>
 	inline void FullVector<double>::zeroSelf()
 	{
-		for (int i = 0; i < this->size(); i++) {
+		for (int i = 0; i < (int)this->size(); i++) {
 			this->at(i) = 0.0;
 		}
 	}
@@ -104,7 +104,7 @@ namespace MbD {
 	template<typename T>
 	inline void FullVector<T>::atiplusFullVector(int i1, std::shared_ptr<FullVector<T>> fullVec)
 	{
-		for (int ii = 0; ii < fullVec->size(); ii++)
+		for (int ii = 0; ii < (int)fullVec->size(); ii++)
 		{
 			auto i = i1 + ii;
 			this->at(i) += fullVec->at(ii);
@@ -113,7 +113,7 @@ namespace MbD {
 	template<typename T>
 	inline void FullVector<T>::atiplusFullVectortimes(int i1, std::shared_ptr<FullVector<T>> fullVec, T factor)
 	{
-		for (int ii = 0; ii < fullVec->size(); ii++)
+		for (int ii = 0; ii < (int)fullVec->size(); ii++)
 		{
 			auto i = i1 + ii;
 			this->at(i) += fullVec->at(ii) * factor;
@@ -122,7 +122,7 @@ namespace MbD {
 	template<typename T>
 	inline void FullVector<T>::equalSelfPlusFullVectortimes(std::shared_ptr<FullVector<T>> fullVec, T factor)
 	{
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			this->atiplusNumber(i, fullVec->at(i) * factor);
 		}
@@ -131,7 +131,7 @@ namespace MbD {
 	inline double FullVector<double>::maxMagnitude()
 	{
 		double max = 0.0;
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			double element = this->at(i);
 			if (element < 0.0) element = -element;
@@ -156,7 +156,7 @@ namespace MbD {
 	inline double FullVector<T>::length()
 	{
 		double ssq = 0.0;
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			double elem = this->at(i);
 			ssq += elem * elem;
@@ -173,7 +173,7 @@ namespace MbD {
 	template<>
 	inline void FullVector<double>::conditionSelfWithTol(double tol)
 	{
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			double element = this->at(i);
 			if (element < 0.0) element = -element;
@@ -204,7 +204,7 @@ namespace MbD {
 		//"Test if elements are increasing."
 		//"Ok if spoilers are less than tol."
 		auto next = this->at(0);
-		for (int i = 1; i < this->size(); i++)
+		for (int i = 1; i < (int)this->size(); i++)
 		{
 			auto previous = next;
 			next = this->at(i);
@@ -218,7 +218,7 @@ namespace MbD {
 		//"Test if elements are increasing."
 		//"Ok if spoilers are less than tol."
 		auto next = this->at(0);
-		for (int i = 1; i < this->size(); i++)
+		for (int i = 1; i < (int)this->size(); i++)
 		{
 			auto previous = next;
 			next = this->at(i);
@@ -231,7 +231,7 @@ namespace MbD {
 	{
 		s << "FullVec{";
 		s << this->at(0);
-		for (int i = 1; i < this->size(); i++)
+		for (int i = 1; i < (int)this->size(); i++)
 		{
 			s << ", " << this->at(i);
 		}

@@ -25,10 +25,10 @@ namespace MbD {
 		//
 	public:
 		DiagonalMatrix() : Array<T>() {}
-		DiagonalMatrix(int count) : Array<T>(count) {}
-		DiagonalMatrix(int count, const T& value) : Array<T>(count, value) {}
+		DiagonalMatrix(size_t count) : Array<T>(count) {}
+		DiagonalMatrix(size_t count, const T& value) : Array<T>(count, value) {}
 		DiagonalMatrix(std::initializer_list<T> list) : Array<T>{ list } {}
-		void atiputDiagonalMatrix(int i, DiagMatsptr<T> diagMat);
+		void atiputDiagonalMatrix(int i, std::shared_ptr<DiagonalMatrix<T>> diagMat);
 		DiagMatsptr<T> times(T factor);
 		FColsptr<T> timesFullColumn(FColsptr<T> fullCol);
 		FMatsptr<T> timesFullMatrix(FMatsptr<T> fullMat);
@@ -67,15 +67,6 @@ namespace MbD {
 		}
 		return identity4by4;
 	}();
-
-	template<typename T>
-	inline void DiagonalMatrix<T>::atiputDiagonalMatrix(int i, DiagMatsptr<T> diagMat)
-	{
-		for (int ii = 0; ii < diagMat->size(); ii++)
-		{
-			this->at(i + ii) = diagMat->at(ii);
-		}
-	}
 	template<>
 	inline DiagMatDsptr DiagonalMatrix<double>::times(double factor)
 	{
@@ -88,7 +79,15 @@ namespace MbD {
 		return answer;
 	}
 	template<typename T>
-	inline DiagMatsptr<T> DiagonalMatrix<T>::times(T factor)
+	inline void DiagonalMatrix<T>::atiputDiagonalMatrix(int i, std::shared_ptr<DiagonalMatrix<T>> diagMat)
+	{
+		for (int ii = 0; ii < (int)diagMat->size(); ii++)
+		{
+			this->at(i + ii) = diagMat->at(ii);
+		}
+	}
+	template<typename T>
+	inline DiagMatsptr<T> DiagonalMatrix<T>::times(T)
 	{
 		assert(false);
 	}
@@ -120,7 +119,7 @@ namespace MbD {
 	inline double DiagonalMatrix<double>::sumOfSquares()
 	{
 		double sum = 0.0;
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			double element = this->at(i);
 			sum += element * element;
@@ -136,7 +135,7 @@ namespace MbD {
 	template<>
 	inline void DiagonalMatrix<double>::zeroSelf()
 	{
-		for (int i = 0; i < this->size(); i++) {
+		for (int i = 0; i < (int)this->size(); i++) {
 			this->at(i) = 0.0;
 		}
 	}
@@ -144,7 +143,7 @@ namespace MbD {
 	inline double DiagonalMatrix<double>::maxMagnitude()
 	{
 		double max = 0.0;
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			double element = this->at(i);
 			if (element < 0.0) element = -element;
@@ -163,7 +162,7 @@ namespace MbD {
 	{
 		s << "DiagMat[";
 		s << this->at(0);
-		for (int i = 1; i < this->size(); i++)
+		for (int i = 1; i < (int)this->size(); i++)
 		{
 			s << ", " << this->at(i);
 		}

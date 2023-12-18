@@ -10,9 +10,11 @@
 #include "PartFrame.h"
 #include "System.h"
 #include "CREATE.h"
-#include "DiagonalMatrix.h"
 #include "EulerParameters.h"
 #include "PosVelAccData.h"
+#include "FullColumn.h"
+#include "FullMatrix.h"
+#include "DiagonalMatrix.h"
 
 
 using namespace MbD;
@@ -242,7 +244,7 @@ void Part::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Cons
 	partFrame->fillEssenConstraints(essenConstraints);
 }
 
-void Part::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
+void Part::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>)
 {
 }
 

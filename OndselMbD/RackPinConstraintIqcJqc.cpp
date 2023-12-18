@@ -16,6 +16,21 @@ using namespace MbD;
 
 MbD::RackPinConstraintIqcJqc::RackPinConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : RackPinConstraintIqcJc(frmi, frmj)
 {
+	pGpXJ = std::make_shared<FullRow<double>>(3);
+	pGpEJ = std::make_shared<FullRow<double>>(4);
+	ppGpEIpXJ = std::make_shared<FullMatrix<double>>(4, 3);
+	ppGpEIpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+	ppGpEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+}
+
+void MbD::RackPinConstraintIqcJqc::initxIeJeIe()
+{
+	xIeJeIe = std::make_shared<DispCompIeqcJeqcIe>(frmI, frmJ, 0);
+}
+
+void MbD::RackPinConstraintIqcJqc::initthezIeJe()
+{
+	thezIeJe = std::make_shared<AngleZIeqcJeqc>(frmI, frmJ);
 }
 
 void MbD::RackPinConstraintIqcJqc::calc_pGpEJ()
@@ -25,22 +40,24 @@ void MbD::RackPinConstraintIqcJqc::calc_pGpEJ()
 
 void MbD::RackPinConstraintIqcJqc::calc_pGpXJ()
 {
-	pGpXJ = xIeJeIe->pvaluepXJ()->plusFullRow(thezIeJe->pvaluepXJ()->times(pitchRadius));
+	pGpXJ = xIeJeIe->pvaluepXJ();
 }
 
 void MbD::RackPinConstraintIqcJqc::calc_ppGpEIpEJ()
 {
-	ppGpEIpEJ = xIeJeIe->ppvaluepEIpEJ()->plusFullMatrix(thezIeJe->ppvaluepEIpEJ()->times(pitchRadius));
+	ppGpEIpEJ = xIeJeIe->ppvaluepEIpEJ()
+            ->plusFullMatrix(thezIeJe->ppvaluepEIpEJ()->times(pitchRadius));
 }
 
 void MbD::RackPinConstraintIqcJqc::calc_ppGpEIpXJ()
 {
-	ppGpEIpXJ = xIeJeIe->ppvaluepEIpXJ()->plusFullMatrix(thezIeJe->ppvaluepEIpXJ()->times(pitchRadius));
+	ppGpEIpXJ = xIeJeIe->ppvaluepEIpXJ();
 }
 
 void MbD::RackPinConstraintIqcJqc::calc_ppGpEJpEJ()
 {
-	ppGpEJpEJ = xIeJeIe->ppvaluepEJpEJ()->plusFullMatrix(thezIeJe->ppvaluepEJpEJ()->times(pitchRadius));
+	ppGpEJpEJ = xIeJeIe->ppvaluepEJpEJ()
+            ->plusFullMatrix(thezIeJe->ppvaluepEJpEJ()->times(pitchRadius));
 }
 
 void MbD::RackPinConstraintIqcJqc::calcPostDynCorrectorIteration()

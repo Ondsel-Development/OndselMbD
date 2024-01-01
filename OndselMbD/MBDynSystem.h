@@ -26,7 +26,9 @@ namespace MbD {
     class MBDynSystem : public MBDynItem
     {
     public:
+        static std::shared_ptr<MBDynSystem> fromFile(const char* chars);
         static void runFile(const char* chars);
+        static void runDynFile(const char* chars);
         static void eraseComments(std::vector<std::string>& lines);
         static std::vector<std::string> collectStatements(std::vector<std::string>& lines);
         void initialize() override;
@@ -51,6 +53,7 @@ namespace MbD {
         std::vector<std::string> nodeNames() override;
 
         void runKINEMATIC();
+        void runDYNAMIC();
         void outputFiles();
         void setFilename(std::string filename);
         void readDataBlock(std::vector<std::string>& lines);

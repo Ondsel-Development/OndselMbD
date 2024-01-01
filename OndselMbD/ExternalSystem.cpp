@@ -71,7 +71,7 @@ void MbD::ExternalSystem::useDynTrialStepStats(std::shared_ptr<SolverStatistics>
 {
 	//83 , t=1.97948 , o=5 , h=0.0263736 , it=2 , e=0.0522701
 	std::stringstream ss;
-	ss << stats->istep << " t=" << stats->t << " o=" << stats->order << " h=" << stats->h << " it=" << stats->corIterNo << " e=" << stats->truncError;
+	ss << stats->istep << " t=" << stats->t << " o=" << stats->order << " h=" << stats->h << " it=" << stats->corIterNo + 1 << " e=" << stats->truncError;
 	auto str = ss.str();
 	logString(str);
 

@@ -17,6 +17,7 @@ namespace MbD {
     {
         //
     public:
+        static std::shared_ptr<ASMTPart> With();
         void parseASMT(std::vector<std::string>& lines) override;
         void readFeatureOrder(std::vector<std::string>& lines);
         void readPrincipalMassMarker(std::vector<std::string>& lines);
@@ -26,7 +27,7 @@ namespace MbD {
         ASMTPart* part() override;
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
         void storeOnLevel(std::ofstream& os, int level) override;
-        void storeOnLevelMassMarker(std::ofstream& os, int level);
+        void storeOnLevelMassMarker(std::ofstream& os, int level) const;
         void storeOnTimeSeries(std::ofstream& os) override;
 
         //std::shared_ptr<std::vector<std::shared_ptr<ASMTFeature>>> featureOrder;

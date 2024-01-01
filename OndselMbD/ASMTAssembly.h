@@ -33,6 +33,7 @@ namespace MbD {
 		//
 	public:
 		ASMTAssembly();
+        static std::shared_ptr<ASMTAssembly> With();
 		static void runSinglePendulumSuperSimplified();
 		static void runSinglePendulumSuperSimplified2();
 		static void runSinglePendulumSimplified();
@@ -41,6 +42,7 @@ namespace MbD {
 		static void runDynFile(const char* chars);
 		static std::vector<std::string> linesFromFile(const char* chars);
 		static void readWriteFile(const char* chars);
+		static void readWriteDynFile(const char* chars);
 		void initialize() override;
 		ASMTAssembly* root() override;
 		void setNotes(std::string str);
@@ -118,6 +120,7 @@ namespace MbD {
 		void storeOnLevelGeneralConstraintSets(std::ofstream& os, int level);
 		void storeOnTimeSeries(std::ofstream& os) override;
 		void setFilename(std::string filename);
+		void updateFromInputState() override;
 
 		std::string filename = "";
 		std::string notes = "(Text string: '' runs: (Core.RunArray runs: #() values: #()))";
@@ -130,6 +133,7 @@ namespace MbD {
 		std::shared_ptr<ASMTConstantGravity> constantGravity = std::make_shared<ASMTConstantGravity>();
 		std::shared_ptr<ASMTSimulationParameters> simulationParameters = std::make_shared<ASMTSimulationParameters>();
 		std::shared_ptr<ASMTAnimationParameters> animationParameters = std::make_shared<ASMTAnimationParameters>();
+		std::shared_ptr<std::vector<double>> itimes = std::make_shared<std::vector<double>>();
 		std::shared_ptr<std::vector<double>> times = std::make_shared<std::vector<double>>();
 		std::shared_ptr<ASMTTime> asmtTime = std::make_shared<ASMTTime>();
 		std::shared_ptr<Units> mbdUnits = std::make_shared<Units>();

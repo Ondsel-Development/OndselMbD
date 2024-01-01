@@ -15,6 +15,7 @@ namespace MbD {
     {
         //
     public:
+        static std::shared_ptr<ASMTScrewJoint> With();
         std::shared_ptr<Joint> mbdClassNew() override;
         void parseASMT(std::vector<std::string>& lines) override;
         void readPitch(std::vector<std::string>& lines);

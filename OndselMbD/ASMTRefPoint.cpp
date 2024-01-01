@@ -12,6 +12,11 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTRefPoint> MbD::ASMTRefPoint::With()
+{
+	return std::make_shared<ASMTRefPoint>();
+}
+
 void MbD::ASMTRefPoint::parseASMT(std::vector<std::string>& lines)
 {
 	readPosition3D(lines);

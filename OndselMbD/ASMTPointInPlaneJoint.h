@@ -15,6 +15,7 @@ namespace MbD {
     {
         //
     public:
+        static std::shared_ptr<ASMTPointInPlaneJoint> With();
         std::shared_ptr<Joint> mbdClassNew() override;
         void parseASMT(std::vector<std::string>& lines) override;
         void readOffset(std::vector<std::string>& lines);

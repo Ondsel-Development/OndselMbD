@@ -5,6 +5,8 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
+
+#include <iostream>
  
 #include "GESpMat.h"
 #include "FullColumn.h"
@@ -21,6 +23,7 @@ FColDsptr GESpMat::solvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bo
 FColDsptr GESpMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
 	this->preSolvewithsaveOriginal(spMat, fullCol, saveOriginal);
+	//std::cout << *matrixA << std::endl;
 	for (int p = 0; p < m; p++)
 	{
 		this->doPivoting(p);

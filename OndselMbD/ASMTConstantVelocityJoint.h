@@ -15,6 +15,7 @@ namespace MbD {
     {
         //
     public:
+        static std::shared_ptr<ASMTConstantVelocityJoint> With();
         std::shared_ptr<Joint> mbdClassNew() override;
 
     };

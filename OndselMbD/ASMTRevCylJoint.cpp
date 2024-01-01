@@ -12,6 +12,11 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTRevCylJoint> MbD::ASMTRevCylJoint::With()
+{
+    return std::make_shared<ASMTRevCylJoint>();
+}
+
 std::shared_ptr<Joint> MbD::ASMTRevCylJoint::mbdClassNew()
 {
     return CREATE<RevCylJoint>::With();

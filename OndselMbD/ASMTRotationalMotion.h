@@ -16,6 +16,7 @@ namespace MbD {
     {
         //
     public:
+        static std::shared_ptr<ASMTRotationalMotion> With();
         void parseASMT(std::vector<std::string>& lines) override;
         void readMotionJoint(std::vector<std::string>& lines);
         void readRotationZ(std::vector<std::string>& lines);

@@ -12,6 +12,11 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTFixedJoint> MbD::ASMTFixedJoint::With()
+{
+	return std::make_shared<ASMTFixedJoint>();
+}
+
 std::shared_ptr<Joint> MbD::ASMTFixedJoint::mbdClassNew()
 {
     return CREATE<FixedJoint>::With();

@@ -35,7 +35,7 @@ namespace MbD {
 		void postMbDrun();
 		void updateFromMbD();
 
-		std::shared_ptr<System> mbdSystem = std::make_shared<System>();
+		std::shared_ptr<System> mbdSystem = System::With();
 
 	};
 }

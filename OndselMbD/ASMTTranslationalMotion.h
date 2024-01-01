@@ -15,6 +15,7 @@ namespace MbD {
     {
         //
     public:
+        static std::shared_ptr<ASMTTranslationalMotion> With();
         void parseASMT(std::vector<std::string>& lines) override;
         void initMarkers() override;
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;

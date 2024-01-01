@@ -8,6 +8,7 @@
  
 #include <memory>
 #include <cassert>
+#include <fstream>	
 
 #include "VectorNewtonRaphson.h"
 #include "MatrixSolver.h"
@@ -26,11 +27,11 @@ void VectorNewtonRaphson::initializeGlobally()
 
 void VectorNewtonRaphson::run()
 {
-	this->preRun();
-	this->initializeLocally();
-	this->initializeGlobally();
-	this->iterate();
-	this->postRun();
+	preRun();
+	initializeLocally();
+	initializeGlobally();
+	iterate();
+	postRun();
 }
 
 std::shared_ptr<MatrixSolver> VectorNewtonRaphson::matrixSolverClassNew()
@@ -51,10 +52,10 @@ void VectorNewtonRaphson::calcyNorm()
 void VectorNewtonRaphson::solveEquations()
 {
 	try {
-		this->basicSolveEquations();
+		basicSolveEquations();
 	}
 	catch (SingularMatrixError ex) {
-		this->handleSingularMatrix();
+		handleSingularMatrix();
 	}
 }
 

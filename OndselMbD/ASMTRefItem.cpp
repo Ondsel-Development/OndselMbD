@@ -37,7 +37,7 @@ void MbD::ASMTRefItem::readMarker(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("Marker") != std::string::npos);
 	lines.erase(lines.begin());
-	auto marker = CREATE<ASMTMarker>::With();
+	auto marker = ASMTMarker::With();
 	marker->parseASMT(lines);
 	markers->push_back(marker);
 	marker->owner = this;
@@ -49,5 +49,12 @@ void MbD::ASMTRefItem::storeOnLevel(std::ofstream& os, int level)
 	ASMTSpatialItem::storeOnLevel(os, level+1);
 	for (auto& marker : *markers) {
 		marker->storeOnLevel(os, level);
+	}
+}
+
+void MbD::ASMTRefItem::updateFromInputState()
+{
+	for (auto& marker : *markers) {
+		marker->updateFromInputState();
 	}
 }

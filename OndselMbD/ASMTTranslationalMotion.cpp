@@ -18,6 +18,11 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTTranslationalMotion> MbD::ASMTTranslationalMotion::With()
+{
+	return std::make_shared<ASMTTranslationalMotion>();
+}
+
 void MbD::ASMTTranslationalMotion::parseASMT(std::vector<std::string>& lines)
 {
 	readName(lines);
@@ -41,7 +46,7 @@ void MbD::ASMTTranslationalMotion::createMbD(std::shared_ptr<System> mbdSys, std
 	parser->variables->insert(std::make_pair("time", geoTime));
 	auto userFunc = std::make_shared<BasicUserFunction>(translationZ, 1.0);
 	parser->parseUserFunction(userFunc);
-	auto zIJ = parser->stack->top();
+	auto& zIJ = parser->stack->top();
 	zIJ = Symbolic::times(zIJ, sptrConstant(1.0 / mbdUnits->length));
 	zIJ->createMbD(mbdSys, mbdUnits);
 	std::static_pointer_cast<ZTranslation>(mbdObject)->zBlk = zIJ->simplified(zIJ);

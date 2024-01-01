@@ -10,6 +10,11 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTForceTorque> MbD::ASMTForceTorque::With()
+{
+	return std::make_shared<ASMTForceTorque>();
+}
+
 void MbD::ASMTForceTorque::updateFromMbD()
 {
 	assert(false);

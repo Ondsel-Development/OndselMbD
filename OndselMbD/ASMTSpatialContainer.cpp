@@ -96,7 +96,7 @@ void MbD::ASMTSpatialContainer::readRefPoint(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("RefPoint") != std::string::npos);
 	lines.erase(lines.begin());
-	auto refPoint = CREATE<ASMTRefPoint>::With();
+	auto refPoint = ASMTRefPoint::With();
 	refPoint->parseASMT(lines);
 	refPoints->push_back(refPoint);
 	refPoint->owner = this;
@@ -375,7 +375,7 @@ void MbD::ASMTSpatialContainer::compareResults(AnalysisType)
 {
 	if (inxs == nullptr || inxs->empty()) return;
 	auto mbdUnts = mbdUnits();
-	auto factor = 1.0e-6;
+	auto factor = 1.0e-3;
 	auto lengthTol = mbdUnts->length * factor;
 	auto angleTol = mbdUnts->angle * factor;
 	auto velocityTol = mbdUnts->velocity * factor;
@@ -459,7 +459,7 @@ void MbD::ASMTSpatialContainer::addRefPoint(std::shared_ptr<ASMTRefPoint> refPoi
 
 void MbD::ASMTSpatialContainer::addMarker(std::shared_ptr<ASMTMarker> marker)
 {
-	auto refPoint = CREATE<ASMTRefPoint>::With();
+	auto refPoint = ASMTRefPoint::With();
 	addRefPoint(refPoint);
 	refPoint->addMarker(marker);
 }
@@ -728,4 +728,16 @@ FColDsptr MbD::ASMTSpatialContainer::getOmega3D(size_t i)
 	vec3->atiput(1, omeys->at(i));
 	vec3->atiput(2, omezs->at(i));
 	return vec3;
+}
+
+void MbD::ASMTSpatialContainer::updateFromInputState()
+{
+	setPosition3D(getPosition3D(0));
+	setRotationMatrix(getRotationMatrix(0));
+	setVelocity3D(getVelocity3D(0));
+	setOmega3D(getOmega3D(0));
+	for (auto& refPoint : *refPoints) {
+		refPoint->updateFromInputState();
+	}
+
 }

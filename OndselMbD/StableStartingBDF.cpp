@@ -23,12 +23,6 @@ void MbD::StableStartingBDF::initializeLocally()
 	initialize();
 }
 
-FColDsptr MbD::StableStartingBDF::derivativeatpresentpastpresentDerivativepastDerivative(int n, double time, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast, FColDsptr ydot, std::shared_ptr<std::vector<FColDsptr>> ydotpast)
-{
-	assert(false);
-	return FColDsptr();
-}
-
 double MbD::StableStartingBDF::pvdotpv()
 {
 	//"pvdotpv = operatorMatrix timesColumn: #(-1.0d ... -1.0d, 0.0d)."

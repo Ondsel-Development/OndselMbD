@@ -130,14 +130,24 @@ void MbD::AccNewtonRaphson::handleSingularMatrix()
 	std::string str = typeid(r).name();
 	if (str.find("GESpMatParPvMarkoFast") != std::string::npos) {
 		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
-		this->solveEquations();
+		solveEquations();
 	} else {
 		str = typeid(r).name();
 		if (str.find("GESpMatParPvPrecise") != std::string::npos) {
-			this->logSingularMatrixMessage();
+			logSingularMatrixMessage();
 			matrixSolver->throwSingularMatrixError("AccAccNewtonRaphson");
 		} else {
 			assert(false);
 		}
 	}
+}
+
+void MbD::AccNewtonRaphson::run()
+{
+	assert(false);
+}
+
+void MbD::AccNewtonRaphson::iterate()
+{
+	assert(false);
 }

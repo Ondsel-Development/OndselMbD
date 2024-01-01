@@ -41,6 +41,28 @@ void PosICNewtonRaphson::run()
 	}
 }
 
+void MbD::PosICNewtonRaphson::iterate()
+{
+	//Keep for debugging
+	iterNo = -1;
+	this->fillY();
+	this->calcyNorm();
+	yNorms->push_back(yNorm);
+
+	while (true) {
+		this->incrementIterNo();
+		this->fillPyPx();
+		//std::cout << *pypx << std::endl;
+		//outputSpreadsheet();
+		this->solveEquations();
+		this->calcDXNormImproveRootCalcYNorm();
+		if (this->isConverged()) {
+			//std::cout << "iterNo = " << iterNo << std::endl;
+			break;
+		}
+	}
+}
+
 void PosICNewtonRaphson::preRun()
 {
 	std::string str("MbD: Assembling system. ");

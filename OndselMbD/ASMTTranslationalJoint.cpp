@@ -12,6 +12,11 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTTranslationalJoint> MbD::ASMTTranslationalJoint::With()
+{
+	return std::make_shared<ASMTTranslationalJoint>();
+}
+
 std::shared_ptr<Joint> MbD::ASMTTranslationalJoint::mbdClassNew()
 {
     return CREATE<TranslationalJoint>::With();

@@ -8,6 +8,7 @@
  
 #include <cassert>
 #include <memory>
+#include <iostream>
 
 #include "GESpMatParPvMarkoFast.h"
 #include "SingularMatrixError.h"
@@ -100,5 +101,6 @@ void GESpMatParPvMarkoFast::doPivoting(int p)
 		rightHandSideB->swapElems(p, rowPivoti);
 		if (aip != std::numeric_limits<double>::min()) rowPositionsOfNonZerosInPivotColumn->at(markowitzPivotColCount - 1) = rowPivoti;
 	}
+	//std::cout << "p=" << p << " rowPivoti=" << rowPivoti << " max=" << max << std::endl;
 	if (max < singularPivotTolerance) throwSingularMatrixError("");
 }

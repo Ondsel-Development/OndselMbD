@@ -18,6 +18,11 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTRotationalMotion> MbD::ASMTRotationalMotion::With()
+{
+	return std::make_shared<ASMTRotationalMotion>();
+}
+
 void MbD::ASMTRotationalMotion::parseASMT(std::vector<std::string>& lines)
 {
 	readName(lines);
@@ -67,13 +72,13 @@ void MbD::ASMTRotationalMotion::createMbD(std::shared_ptr<System> mbdSys, std::s
 	parser->variables->insert(std::make_pair("time", geoTime));
 	auto userFunc = std::make_shared<BasicUserFunction>(rotationZ, 1.0);
 	parser->parseUserFunction(userFunc);
-	auto geoPhi = parser->stack->top();
+	auto& geoPhi = parser->stack->top();
 	//std::cout << *geoPhi << std::endl;
 	geoPhi = Symbolic::times(geoPhi, sptrConstant(1.0 / mbdUnits->angle));
 	geoPhi->createMbD(mbdSys, mbdUnits);
 	//std::cout << *geoPhi << std::endl;
 	auto simple = geoPhi->simplified(geoPhi);
-	std::cout << *simple << std::endl;
+	//std::cout << *simple << std::endl;
 	std::static_pointer_cast<ZRotation>(mbdObject)->phiBlk = simple;
 }
 

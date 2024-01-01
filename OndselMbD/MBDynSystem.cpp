@@ -25,7 +25,7 @@
 
 using namespace MbD;
 
-void MbD::MBDynSystem::runFile(const char* filename)
+std::shared_ptr<MBDynSystem> MbD::MBDynSystem::fromFile(const char* filename)
 {
 	std::ifstream stream(filename);
 	std::string line;
@@ -39,7 +39,19 @@ void MbD::MBDynSystem::runFile(const char* filename)
 	auto system = std::make_shared<MBDynSystem>();
 	system->setFilename(filename);
 	system->parseMBDyn(statements);
+	return system;
+}
+
+void MbD::MBDynSystem::runFile(const char* filename)
+{
+	auto system = MBDynSystem::fromFile(filename);
 	system->runKINEMATIC();
+}
+
+void MbD::MBDynSystem::runDynFile(const char* filename)
+{
+	auto system = MBDynSystem::fromFile(filename);
+	system->runDYNAMIC();
 }
 
 void MbD::MBDynSystem::parseMBDyn(std::vector<std::string>& lines)
@@ -87,7 +99,7 @@ std::shared_ptr<std::map<std::string, std::shared_ptr<MBDynReference>>> MbD::MBD
 
 void MbD::MBDynSystem::createASMT()
 {
-	auto asmtAsm = std::make_shared<ASMTAssembly>();
+	auto asmtAsm = ASMTAssembly::With();
 	asmtAsm->mbdynItem = this;
 	asmtItem = asmtAsm;
 	asmtItem->setName("Assembly");
@@ -136,12 +148,23 @@ std::vector<std::string> MbD::MBDynSystem::nodeNames()
 void MbD::MBDynSystem::runKINEMATIC()
 {
 	createASMT();
-	auto debugFile1 = filename.substr(0, filename.find_last_of('.')) + "debug1.asmt";
-	asmtAssembly()->outputFile(debugFile1);
+	//auto debugFile1 = filename.substr(0, filename.find_last_of('.')) + "debug1.asmt";
+	//asmtAssembly()->outputFile(debugFile1);
 	std::static_pointer_cast<ASMTAssembly>(asmtItem)->runKINEMATIC();
 	outputFiles();
-	auto debugFile2 = filename.substr(0, filename.find_last_of('.')) + "debug2.asmt";
-	asmtAssembly()->outputFile(debugFile2);
+	//auto debugFile2 = filename.substr(0, filename.find_last_of('.')) + "debug2.asmt";
+	//asmtAssembly()->outputFile(debugFile2);
+}
+
+void MbD::MBDynSystem::runDYNAMIC()
+{
+	createASMT();
+	auto debugFile1 = filename.substr(0, filename.find_last_of('.')) + "debug1.asmt";
+	asmtAssembly()->outputFile(debugFile1);
+	std::static_pointer_cast<ASMTAssembly>(asmtItem)->runDYNAMIC();
+	outputFiles();
+	//auto debugFile2 = filename.substr(0, filename.find_last_of('.')) + "debug2.asmt";
+	//asmtAssembly()->outputFile(debugFile2);
 }
 
 void MbD::MBDynSystem::outputFiles()
@@ -149,11 +172,11 @@ void MbD::MBDynSystem::outputFiles()
 	auto movFile = filename.substr(0, filename.find_last_of('.')) + ".mov";
 	auto asmtAsm = asmtAssembly();
 	auto& asmtTimes = asmtAsm->times;
-    //auto& asmtParts = asmtAsm->parts;
-    //auto& asmtJoints = asmtAsm->joints;
-    //auto& asmtMotions = asmtAsm->motions;
+	//auto& asmtParts = asmtAsm->parts;
+	//auto& asmtJoints = asmtAsm->joints;
+	//auto& asmtMotions = asmtAsm->motions;
 	std::ofstream os(movFile);
-	os << std::setprecision(static_cast<std::streamsize>(std::numeric_limits<double>::digits10) + 1);
+	os << std::setprecision(std::numeric_limits<double>::max_digits10);
 	for (int i = 1; i < (int)asmtTimes->size(); i++)
 	{
 		for (auto& node : *nodes) {

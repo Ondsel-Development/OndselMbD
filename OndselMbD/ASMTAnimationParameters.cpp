@@ -10,6 +10,11 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTAnimationParameters> MbD::ASMTAnimationParameters::With()
+{
+	return std::make_shared<ASMTAnimationParameters>();
+}
+
 void MbD::ASMTAnimationParameters::parseASMT(std::vector<std::string>& lines)
 {
 	//int nframe, icurrent, istart, iend, framesPerSecond;

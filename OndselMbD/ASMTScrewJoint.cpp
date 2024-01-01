@@ -12,6 +12,11 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTScrewJoint> MbD::ASMTScrewJoint::With()
+{
+	return std::make_shared<ASMTScrewJoint>();
+}
+
 std::shared_ptr<Joint> MbD::ASMTScrewJoint::mbdClassNew()
 {
     return CREATE<ScrewJoint>::With();

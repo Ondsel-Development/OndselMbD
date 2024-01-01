@@ -65,6 +65,7 @@ namespace MbD {
 		std::shared_ptr<SparseMatrix<T>> clonesptr();
 		void magnifySelf(T factor);
 
+
 		std::ostream& printOn(std::ostream& s) const override;
 
 	};

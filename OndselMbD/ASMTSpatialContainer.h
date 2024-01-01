@@ -88,6 +88,7 @@ namespace MbD {
         void storeOnTimeSeries(std::ofstream& os) override;
         FColDsptr getVelocity3D(size_t i);
         FColDsptr getOmega3D(size_t i);
+        virtual void updateFromInputState();
 
         FColDsptr velocity3D = std::make_shared<FullColumn<double>>(3);
         FColDsptr omega3D = std::make_shared<FullColumn<double>>(3);

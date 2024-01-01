@@ -15,6 +15,8 @@ namespace MbD {
     {
         //Kinematics with under constrained system
     public:
+        void run() override;
+        void iterate() override;
         void initializeGlobally() override;
         void preRun() override;
 

@@ -80,7 +80,7 @@ namespace MbD {
 	inline void Array<T>::zeroSelf()
 	{
 		for (int i = 0; i < (int)this->size(); i++) {
-			this->at(i) = (T)0;
+			this->at(i) = T();
 		}
 	}
 	template<typename T>

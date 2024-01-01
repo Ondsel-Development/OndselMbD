@@ -406,13 +406,13 @@ FColDsptr MbD::BasicDAEIntegrator::dyOrderPlusOnedt()
 	return FColDsptr();
 }
 
-bool MbD::BasicDAEIntegrator::isConvergedForand(int iterNo, std::shared_ptr<std::vector<double>> dxNorms)
+bool MbD::BasicDAEIntegrator::isConvergedForand(int iterNo, std::shared_ptr<std::vector<double>> dyNorms)
 {
-	auto dyNormIterNo = dxNorms->at(iterNo);
+	auto dyNormIterNo = dyNorms->at(iterNo);
 	auto smallEnoughTol = 4 * std::numeric_limits<double>::epsilon() / corAbsTol->at(0);
 	auto smallEnough = dyNormIterNo < smallEnoughTol;
 	if (iterNo == 0) return smallEnough;
-	auto rho = dyNormIterNo / dxNorms->at((size_t)iterNo - 1);
+	auto rho = dyNormIterNo / dyNorms->at((size_t)iterNo - 1);
 	return smallEnough || (rho < 1.0 && (rho * dyNormIterNo / (1.0 - rho) < 0.33));
 }
 

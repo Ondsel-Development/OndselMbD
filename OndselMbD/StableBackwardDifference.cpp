@@ -40,11 +40,30 @@ double MbD::StableBackwardDifference::pvdotpv()
 }
 
 FColDsptr MbD::StableBackwardDifference::derivativepresentpastpresentDerivativepastDerivative(
-        int, FColDsptr, std::shared_ptr<std::vector<FColDsptr>>, FColDsptr,
-        std::shared_ptr<std::vector<FColDsptr>>)
+	int, FColDsptr, std::shared_ptr<std::vector<FColDsptr>>, FColDsptr,
+	std::shared_ptr<std::vector<FColDsptr>>)
 {
 	assert(false);
 	return FColDsptr();
+}
+
+FColDsptr MbD::StableBackwardDifference::derivativeatpresentpastpresentDerivativepastDerivative(int n, double t, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast, FColDsptr ydot, std::shared_ptr<std::vector<FColDsptr>> ydotpast)
+{
+	//"Interpolate or extrapolate."
+	//"dfdt(t) = df0dt + d2f0dt2*(t - t0) + d3f0dt3*(t - t0)^2 / 2! + ..."
+
+	auto answer = derivativepresentpastpresentDerivativepastDerivative(n, y, ypast, ydot, ydotpast);
+	if (t != time) {
+		auto dt = t - time;
+		auto dtpower = 1.0;
+		for (int i = n + 1; i < order; i++)
+		{
+			auto diydti = derivativepresentpastpresentDerivativepastDerivative(i, y, ypast, ydot, ydotpast);
+			dtpower = dtpower * dt;
+			answer->equalSelfPlusFullColumntimes(diydti, dtpower * OneOverFactorials->at(i - n));
+		}
+	}
+	return answer;
 }
 
 void StableBackwardDifference::instantiateTaylorMatrix()

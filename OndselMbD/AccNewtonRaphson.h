@@ -26,6 +26,8 @@ namespace MbD {
         void postRun() override;
         void preRun() override;
         void handleSingularMatrix() override;
+        void run() override;
+		void iterate() override;
 
 
     };

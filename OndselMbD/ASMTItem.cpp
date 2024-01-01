@@ -56,6 +56,15 @@ void MbD::ASMTItem::parseASMT(std::vector<std::string>&)
 	assert(false);
 }
 
+std::string MbD::ASMTItem::readStringOffTop(std::vector<std::string>& args)
+{
+	auto iss = std::istringstream(args.at(0));
+	args.erase(args.begin());
+	std::string str;
+	iss >> str;
+	return str;
+}
+
 FRowDsptr MbD::ASMTItem::readRowOfDoubles(std::string& line)
 {
 	std::istringstream iss(line);

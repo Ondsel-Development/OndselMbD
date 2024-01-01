@@ -1031,19 +1031,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="00backhoe.asmt" />
-    <None Include="circular.asmt" />
-    <None Include="cirpendu.asmt" />
-    <None Include="engine1.asmt" />
-    <None Include="fourbar.asmt" />
-    <None Include="fourbot.asmt" />
-    <None Include="gyro.asmt" />
-    <None Include="piston.asmt" />
-    <None Include="robot.asmt" />
-    <None Include="temp.asmt" />
-    <None Include="wobpump.asmt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Abs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -2067,5 +2054,76 @@
     <ClInclude Include="DifferentialAlgebraicEquationSolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\testapp\00backhoe.asmt" />
+    <None Include="..\testapp\00camrocker.asmt" />
+    <None Include="..\testapp\anglejoint.asmt" />
+    <None Include="..\testapp\camfollower.asmt" />
+    <None Include="..\testapp\circular.asmt" />
+    <None Include="..\testapp\circularPendulum.asmt" />
+    <None Include="..\testapp\cirpendu.asmt" />
+    <None Include="..\testapp\cirpendu2.asmt" />
+    <None Include="..\testapp\coastharbor2.asmt" />
+    <None Include="..\testapp\constvel.asmt" />
+    <None Include="..\testapp\crank_slider.asmt" />
+    <None Include="..\testapp\CrankSlider2debug1.asmt" />
+    <None Include="..\testapp\CrankSlider2debug2.asmt" />
+    <None Include="..\testapp\CylSphJt.asmt" />
+    <None Include="..\testapp\dxfmotion.asmt" />
+    <None Include="..\testapp\dxftree.asmt" />
+    <None Include="..\testapp\engine1.asmt" />
+    <None Include="..\testapp\fixplnplnpln.asmt" />
+    <None Include="..\testapp\fixplnplnplnNoOffset.asmt" />
+    <None Include="..\testapp\fourbar.asmt" />
+    <None Include="..\testapp\fourbot.asmt" />
+    <None Include="..\testapp\Gears.asmt" />
+    <None Include="..\testapp\gyro.asmt" />
+    <None Include="..\testapp\InitialConditionsdebug1.asmt" />
+    <None Include="..\testapp\InitialConditionsdebug2.asmt" />
+    <None Include="..\testapp\JB_2bars.asmt" />
+    <None Include="..\testapp\mateproblembobcat.asmt" />
+    <None Include="..\testapp\MBDynCase(Assembly)debug1.asmt" />
+    <None Include="..\testapp\MBDynCase(Assembly)debug2.asmt" />
+    <None Include="..\testapp\MBDynCase(Cosine-half drive)debug1.asmt" />
+    <None Include="..\testapp\MBDynCase(Cosine-half drive)debug2.asmt" />
+    <None Include="..\testapp\MBDynCase(simulation)debug1.asmt" />
+    <None Include="..\testapp\MBDynCase(simulation)debug2.asmt" />
+    <None Include="..\testapp\MBDynCase(Sine-forever drive)debug1.asmt" />
+    <None Include="..\testapp\MBDynCase(Sine-forever drive)debug2.asmt" />
+    <None Include="..\testapp\MBDynCase2debug1.asmt" />
+    <None Include="..\testapp\MBDynCase2debug2.asmt" />
+    <None Include="..\testapp\MBDynCase3origdebug1.asmt" />
+    <None Include="..\testapp\MBDynCase3origdebug2.asmt" />
+    <None Include="..\testapp\MBDynCase4origdebug1.asmt" />
+    <None Include="..\testapp\MBDynCase4origdebug2.asmt" />
+    <None Include="..\testapp\MBDynCase5origdebug1.asmt" />
+    <None Include="..\testapp\MBDynCase5origdebug2.asmt" />
+    <None Include="..\testapp\MBDynCase7origdebug1.asmt" />
+    <None Include="..\testapp\MBDynCase7origdebug2.asmt" />
+    <None Include="..\testapp\MBDynCase8origdebug1.asmt" />
+    <None Include="..\testapp\MBDynCase8origdebug2.asmt" />
+    <None Include="..\testapp\MBDynCase9origdebug1.asmt" />
+    <None Include="..\testapp\MBDynCase9origdebug2.asmt" />
+    <None Include="..\testapp\parm.asmt" />
+    <None Include="..\testapp\part32.asmt" />
+    <None Include="..\testapp\piston.asmt" />
+    <None Include="..\testapp\planarbug.asmt" />
+    <None Include="..\testapp\quasikine.asmt" />
+    <None Include="..\testapp\rackscrew.asmt" />
+    <None Include="..\testapp\RevCylJt.asmt" />
+    <None Include="..\testapp\RevRevJt.asmt" />
+    <None Include="..\testapp\robot.asmt" />
+    <None Include="..\testapp\Schmidt_Coupling_Ass_1-1.asmt" />
+    <None Include="..\testapp\Schmidt_Coupling_Ass_1-2.asmt" />
+    <None Include="..\testapp\Schmidt_Coupling_Ass_1a.asmt" />
+    <None Include="..\testapp\simplePendu.asmt" />
+    <None Include="..\testapp\simplePendu2.asmt" />
+    <None Include="..\testapp\simplePendu3.asmt" />
+    <None Include="..\testapp\SphericalHingedebug1.asmt" />
+    <None Include="..\testapp\SphericalHingedebug2.asmt" />
+    <None Include="..\testapp\SphSphJt.asmt" />
+    <None Include="..\testapp\temp.asmt" />
+    <None Include="..\testapp\wobpump.asmt" />
   </ItemGroup>
 </Project>

@@ -39,6 +39,7 @@ namespace MbD {
 	public:
 		System();
 		System(const char* str);
+		static std::shared_ptr<System> With();
 		System* root() override;
 		void initialize() override;
 		void initializeLocally() override;

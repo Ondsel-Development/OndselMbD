@@ -15,6 +15,8 @@ namespace MbD {
     {
         //IC acceleration with fully or under constrained system
     public:
+        void run() override;
+        void iterate() override;
         bool isConverged() override;
         void preRun() override;
 

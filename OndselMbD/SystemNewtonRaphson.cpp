@@ -5,7 +5,8 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
+#include <fstream>	
 #include <iomanip>
 
 #include "SystemNewtonRaphson.h"
@@ -76,5 +77,26 @@ void SystemNewtonRaphson::handleSingularMatrix()
 		else {
 			assert(false);
 		}
+	}
+}
+
+void MbD::SystemNewtonRaphson::outputSpreadsheet()
+{
+	std::ofstream os("../testapp/spreadsheetcpp.csv");
+	os << std::setprecision(std::numeric_limits<double>::max_digits10);
+	for (int i = 0; i < pypx->nrow(); i++)
+	{
+		auto rowi = pypx->at(i);
+		for (int j = 0; j < pypx->ncol(); j++)
+		{
+			if (j > 0) os << '\t';
+			if (rowi->find(j) == rowi->end()) {
+				os << 0.0;
+			}
+			else {
+				os << rowi->at(j);
+			}
+		}
+		os << "\t\t" << y->at(i) << std::endl;
 	}
 }

@@ -19,6 +19,8 @@ namespace MbD {
         void incrementIterNo() override;
         void askSystemToUpdate() override;
         void postRun() override;
+        void run() override;
+        void iterate() override;
     };
 }
 

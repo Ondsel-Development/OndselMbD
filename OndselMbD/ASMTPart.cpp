@@ -15,6 +15,11 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTPart> MbD::ASMTPart::With()
+{
+	return std::make_shared<ASMTPart>();
+}
+
 void MbD::ASMTPart::parseASMT(std::vector<std::string>& lines)
 {
 	readName(lines);
@@ -41,7 +46,7 @@ void MbD::ASMTPart::readFeatureOrder(std::vector<std::string>& lines)
 	//while (!featureOrderLines.empty()) {
 	//	if (featureOrderLines[0] == (leadingTabs + "\tExtrusion")) {
 	//		featureOrderLines.erase(featureOrderLines.begin());
-	//		auto extrusion = CREATE<ASMTExtrusion>::With();
+	//		auto extrusion = ASMTExtrusion>::With();
 	//		extrusion->parseASMT(featureOrderLines);
 	//		featureOrder->push_back(extrusion);
 	//		extrusion->owner = this;
@@ -133,7 +138,7 @@ void MbD::ASMTPart::storeOnLevel(std::ofstream& os, int level)
 	storeOnLevelRefSurfaces(os, level + 1);
 }
 
-void MbD::ASMTPart::storeOnLevelMassMarker(std::ofstream& os, int level)
+void MbD::ASMTPart::storeOnLevelMassMarker(std::ofstream& os, int level) const
 {
 	principalMassMarker->storeOnLevel(os, level);
 }

@@ -24,6 +24,8 @@ namespace MbD {
         FColDsptr derivativepresentpastpresentDerivativepastDerivative(int n,
             FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast,
             FColDsptr ydot, std::shared_ptr<std::vector<FColDsptr>> ydotpast) override;
+        FColDsptr derivativeatpresentpastpresentDerivativepastDerivative(int n, double time, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast,
+            FColDsptr ydot, std::shared_ptr<std::vector<FColDsptr>> ydotpast);
         FColDsptr derivativewith(int deriv, std::shared_ptr<std::vector<FColDsptr>> series);
 
     };

@@ -15,6 +15,7 @@ namespace MbD {
     {
         //
     public:
+        static std::shared_ptr<ASMTGeneralMotion> With();
         void parseASMT(std::vector<std::string>& lines) override;
         void readrIJI(std::vector<std::string>& lines);
         void readangIJJ(std::vector<std::string>& lines);

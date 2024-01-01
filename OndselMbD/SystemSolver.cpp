@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include <vector>
 #include <set>
 #include <algorithm>
@@ -319,6 +319,16 @@ double SystemSolver::endTime()
 void SystemSolver::settime(double tnew)
 {
 	system->mbdTimeValue(tnew);
+}
+
+void MbD::SystemSolver::errorTol(double tol)
+{
+	errorTolPosKine = tol;
+	errorTolAccKine = tol;
+	corAbsTol = tol;
+	corRelTol = tol;
+	intAbsTol = tol;
+	intRelTol = tol;
 }
 
 double MbD::SystemSolver::integrationRelativeTolerance()

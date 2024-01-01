@@ -76,3 +76,8 @@ void MbD::ASMTConstraintSet::compareResults(AnalysisType)
 void MbD::ASMTConstraintSet::outputResults(AnalysisType)
 {
 }
+
+void MbD::ASMTConstraintSet::updateFromInputState()
+{
+	//Do nothing.
+}

@@ -57,7 +57,7 @@ namespace MbD {
 		virtual FColDsptr yDeriv(int order);
 		void calcTruncError();
 		virtual FColDsptr dyOrderPlusOnedt();
-		bool isConvergedForand(int iterNo, std::shared_ptr<std::vector<double>> dxNorms);
+		bool isConvergedForand(int iterNo, std::shared_ptr<std::vector<double>> dyNorms);
 		void postFirstStep();
 		void postStep();
 		void predict();

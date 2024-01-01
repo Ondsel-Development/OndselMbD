@@ -20,6 +20,7 @@ namespace MbD {
         PosICNewtonRaphson(){}
 
         void run() override;
+        void iterate() override;
         void preRun() override;
         void assignEquationNumbers() override;
         bool isConverged() override;

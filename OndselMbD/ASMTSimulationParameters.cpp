@@ -5,10 +5,15 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "ASMTSimulationParameters.h"
 
 using namespace MbD;
+
+std::shared_ptr<ASMTSimulationParameters> MbD::ASMTSimulationParameters::With()
+{
+	return std::make_shared<ASMTSimulationParameters>();
+}
 
 void MbD::ASMTSimulationParameters::parseASMT(std::vector<std::string>& lines)
 {
@@ -38,7 +43,7 @@ void MbD::ASMTSimulationParameters::parseASMT(std::vector<std::string>& lines)
 	lines.erase(lines.begin());
 	assert(lines[0] == (leadingTabs + "errorTol"));
 	lines.erase(lines.begin());
-	errorTol = readDouble(lines[0]);
+	seterrorTol(readDouble(lines[0]));
 	lines.erase(lines.begin());
 
 }
@@ -71,6 +76,12 @@ void MbD::ASMTSimulationParameters::sethout(double h)
 void MbD::ASMTSimulationParameters::seterrorTol(double tol)
 {
 	errorTol = tol;
+	errorTolPosKine = tol;
+	errorTolAccKine = tol;
+	corAbsTol = tol;
+	corRelTol = tol;
+	intAbsTol = tol;
+	intRelTol = tol;
 }
 
 void MbD::ASMTSimulationParameters::setmaxIter(int maxIter)

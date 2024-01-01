@@ -16,3 +16,8 @@ std::shared_ptr<Joint> MbD::ASMTPlanarJoint::mbdClassNew()
 {
     return CREATE<PlanarJoint>::With();
 }
+
+std::shared_ptr<ASMTPlanarJoint> MbD::ASMTPlanarJoint::With()
+{
+    return std::make_shared<ASMTPlanarJoint>();
+}

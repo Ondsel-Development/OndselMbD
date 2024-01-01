@@ -17,6 +17,11 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTMarker> MbD::ASMTMarker::With()
+{
+	return std::make_shared<ASMTMarker>();
+}
+
 void MbD::ASMTMarker::parseASMT(std::vector<std::string>& lines)
 {
 	readName(lines);
@@ -68,4 +73,9 @@ void MbD::ASMTMarker::storeOnLevel(std::ofstream& os, int level)
 	storeOnLevelString(os, level + 1, "Name");
 	storeOnLevelString(os, level + 2, name);
 	ASMTSpatialItem::storeOnLevel(os, level);
+}
+
+void MbD::ASMTMarker::updateFromInputState()
+{
+	//Do nothing.
 }

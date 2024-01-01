@@ -21,6 +21,7 @@ namespace MbD {
         void readMarkers(std::vector<std::string>& lines);
         void readMarker(std::vector<std::string>& lines);
         void storeOnLevel(std::ofstream& os, int level) override;
+        void updateFromInputState();
 
         std::shared_ptr<std::vector<std::shared_ptr<ASMTMarker>>> markers = std::make_shared<std::vector<std::shared_ptr<ASMTMarker>>>();
 

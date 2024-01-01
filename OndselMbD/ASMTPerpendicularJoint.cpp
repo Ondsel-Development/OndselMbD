@@ -16,3 +16,8 @@ std::shared_ptr<Joint> MbD::ASMTPerpendicularJoint::mbdClassNew()
 {
     return CREATE<PerpendicularJoint>::With();
 }
+
+std::shared_ptr<ASMTPerpendicularJoint> MbD::ASMTPerpendicularJoint::With()
+{
+    return std::make_shared<ASMTPerpendicularJoint>();
+}

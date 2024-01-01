@@ -76,6 +76,7 @@ namespace MbD {
 		double firstOutputTime();
 		double endTime();
 		void settime(double tnew);
+		void errorTol(double tol);
 		double integrationRelativeTolerance();
 		double integrationAbsoluteTolerance();
 		double correctorRelativeTolerance();

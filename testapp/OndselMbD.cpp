@@ -24,54 +24,56 @@
 #include "../OndselMbD/MomentOfInertiaSolver.h"
 
 using namespace MbD;
+void doublePrecisionTest();
 void runSpMat();
 void sharedptrTest();
 
 int main()
 {
-	ASMTAssembly::runDynFile("../testapp/simplePendu3.asmt");
-	return 0;
-	ASMTAssembly::runDynFile("../testapp/circularPendulum.asmt");
+	MBDynSystem::runDynFile("../testapp/MBDyn/simplePendulum.mbd");
+	ASMTAssembly::readWriteDynFile("../testapp/ASMT/rotatingCrank2.asmt");
+	ASMTAssembly::readWriteDynFile("../testapp/ASMT/pistonClean.asmt");
+	ASMTAssembly::runDynFile("../testapp/ASMT/simplePendu3.asmt");
 
-	ASMTAssembly::runFile("../testapp/Schmidt_Coupling_Ass_1-1.asmt");
-	ASMTAssembly::runFile("../testapp/RevRevJt.asmt");
-	ASMTAssembly::runFile("../testapp/RevCylJt.asmt");
-	ASMTAssembly::runFile("../testapp/CylSphJt.asmt");
-	ASMTAssembly::runFile("../testapp/SphSphJt.asmt");
-	MBDynSystem::runFile("../testapp/MBDynCase(Cosine-half drive).mbd");
-	MBDynSystem::runFile("../testapp/MBDynCase(Sine-forever drive).mbd");
-	MBDynSystem::runFile("../testapp/MBDynCase9orig.mbd");	//SimulationStoppingError
-	MBDynSystem::runFile("../testapp/MBDynCase8orig.mbd");	//Incompatible geometry at t=3.15
-	MBDynSystem::runFile("../testapp/MBDynCase5orig.mbd");	//Test Product::integrateWRT
+	ASMTAssembly::runDynFile("../testapp/ASMT/Schmidt_Coupling_Ass_1-1.asmt");
+	ASMTAssembly::runDynFile("../testapp/ASMT/RevRevJt.asmt");
+	ASMTAssembly::runDynFile("../testapp/ASMT/RevCylJt.asmt");
+	ASMTAssembly::runDynFile("../testapp/ASMT/CylSphJt.asmt");
+	ASMTAssembly::runDynFile("../testapp/ASMT/SphSphJt.asmt");
+	MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCase(Cosine-half drive).mbd");
+	MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCase(Sine-forever drive).mbd");
+	MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCase9orig.mbd");	//SimulationStoppingError
+	MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCase8orig.mbd");	//Incompatible geometry at t=3.15
+	MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCase5orig.mbd");	//Test Product::integrateWRT
 	ASMTAssembly::readWriteFile("../testapp/Gears.asmt");
 	ASMTAssembly::readWriteFile("../testapp/anglejoint.asmt");
 	ASMTAssembly::readWriteFile("../testapp/constvel.asmt");
 	ASMTAssembly::readWriteFile("../testapp/rackscrew.asmt");
 	ASMTAssembly::readWriteFile("../testapp/planarbug.asmt");
-	MBDynSystem::runFile("../testapp/InitialConditions.mbd");
-	MBDynSystem::runFile("../testapp/SphericalHinge.mbd");
-	ASMTAssembly::runFile("../testapp/cirpendu2.asmt");	//Under constrained. Testing ICKine.
-	ASMTAssembly::runFile("../testapp/quasikine.asmt");	//Under constrained. Testing ICKine.
+	MBDynSystem::runDynFile("../testapp/MBDyn/InitialConditions.mbd");
+	MBDynSystem::runDynFile("../testapp/MBDyn/SphericalHinge.mbd");
+	ASMTAssembly::runDynFile("../testapp/ASMT/cirpendu2.asmt");	//Under constrained. Testing ICKine.
+	ASMTAssembly::runDynFile("../testapp/ASMT/quasikine.asmt");	//Under constrained. Testing ICKine.
 	ASMTAssembly::readWriteFile("../testapp/piston.asmt");
-	//MBDynSystem::runFile("../testapp/MBDynCaseDebug2.mbd");
+	//MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCaseDebug2.mbd");
 	//return 0;
-	MBDynSystem::runFile("../testapp/MBDynCase2.mbd");
-	//MBDynSystem::runFile("../testapp/MBDynCase.mbd");	//Very large but works
-	MBDynSystem::runFile("../testapp/CrankSlider2.mbd");
-	//MBDynSystem::runFile("../testapp/crank_slider.mbd");	//Needs integration of product
+	MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCase2.mbd");
+	//MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCase.mbd");	//Very large but works
+	MBDynSystem::runDynFile("../testapp/MBDyn/CrankSlider2.mbd");
+	//MBDynSystem::runDynFile("../testapp/MBDyn/crank_slider.mbd");	//Needs integration of product
+	ASMTAssembly::runDynFile("../testapp/ASMT/piston.asmt");
+	ASMTAssembly::runDynFile("../testapp/ASMT/00backhoe.asmt");
+	//ASMTAssembly::runDynFile("../testapp/ASMT/circular.asmt");	//Needs checking
+	//ASMTAssembly::runDynFile("../testapp/ASMT/cirpendu.asmt");	//Under constrained. Testing ICKine.
+	//ASMTAssembly::runDynFile("../testapp/ASMT/engine1.asmt");	//Needs checking
+	ASMTAssembly::runDynFile("../testapp/ASMT/fourbar.asmt");
+	//ASMTAssembly::runDynFile("../testapp/ASMT/fourbot.asmt");	//Very large but works
+	ASMTAssembly::runDynFile("../testapp/ASMT/wobpump.asmt");
+
 	////ASMTAssembly::runSinglePendulumSuperSimplified();	//Mass is missing
 	////ASMTAssembly::runSinglePendulumSuperSimplified2();	//DOF has infinite acceleration due to zero mass and inertias
 	ASMTAssembly::runSinglePendulumSimplified();
 	ASMTAssembly::runSinglePendulum();
-	ASMTAssembly::runFile("../testapp/piston.asmt");
-	ASMTAssembly::runFile("../testapp/00backhoe.asmt");
-	//ASMTAssembly::runFile("../testapp/circular.asmt");	//Needs checking
-	//ASMTAssembly::runFile("cirpendu.asmt");	//Under constrained. Testing ICKine.
-	//ASMTAssembly::runFile("../testapp/engine1.asmt");	//Needs checking
-	ASMTAssembly::runFile("../testapp/fourbar.asmt");
-	//ASMTAssembly::runFile("../testapp/fourbot.asmt");	//Very large but works
-	ASMTAssembly::runFile("../testapp/wobpump.asmt");
-
 	auto cadSystem = std::make_shared<CADSystem>();
 	cadSystem->runOndselSinglePendulum();
 	cadSystem->runOndselDoublePendulum();
@@ -82,7 +84,7 @@ int main()
 	sharedptrTest();
 }
 void sharedptrTest() {
-	auto assm = std::make_shared<ASMTAssembly>();
+	auto assm = ASMTAssembly::With();
 
 	auto assm1 = assm;	//New shared_ptr to old object. Reference count incremented.
 	assert(assm == assm1);
@@ -97,6 +99,16 @@ void sharedptrTest() {
 	assert(&assm != &assm2);
 	assert(assm->constantGravity == assm2->constantGravity);	//constantGravity is same object pointed to
 	assert(&(assm->constantGravity) != &(assm2->constantGravity)); //Different shared_ptrs of same reference counter
+}
+void doublePrecisionTest()
+{
+	double pi = OS_M_PI;
+	std::string str = "3.141592653589793238462643";
+	std::istringstream iss(str);
+	double d;
+	iss >> d;
+
+
 }
 void runSpMat() {
 	auto spMat = std::make_shared<SparseMatrix<double>>(3, 3);

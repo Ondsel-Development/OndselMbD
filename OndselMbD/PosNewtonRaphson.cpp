@@ -52,3 +52,13 @@ void PosNewtonRaphson::postRun()
 {
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->postPosIC(); });
 }
+
+void MbD::PosNewtonRaphson::run()
+{
+	assert(false);
+}
+
+void MbD::PosNewtonRaphson::iterate()
+{
+	assert(false);
+}

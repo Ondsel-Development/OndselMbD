@@ -15,6 +15,7 @@ namespace MbD {
     {
         //
     public:
+        static std::shared_ptr<ASMTForceTorque> With();
         void updateFromMbD() override;
         void compareResults(AnalysisType type) override;
         void outputResults(AnalysisType type) override;

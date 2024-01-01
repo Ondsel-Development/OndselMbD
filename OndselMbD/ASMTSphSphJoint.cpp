@@ -12,6 +12,11 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTSphSphJoint> MbD::ASMTSphSphJoint::With()
+{
+    return std::make_shared<ASMTSphSphJoint>();
+}
+
 std::shared_ptr<Joint> MbD::ASMTSphSphJoint::mbdClassNew()
 {
     return CREATE<SphSphJoint>::With();

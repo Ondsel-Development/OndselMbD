@@ -28,7 +28,7 @@ namespace MbD {
         void initializeLocally() override;
         void run() override;
         void setSystem(Solver* sys) override;
-        void iterate();
+        virtual void iterate();
         virtual void fillY() = 0;
         virtual void fillPyPx() = 0;
         virtual void calcyNorm() = 0;

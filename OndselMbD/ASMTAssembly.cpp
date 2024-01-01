@@ -65,34 +65,39 @@ MbD::ASMTAssembly::ASMTAssembly() : ASMTSpatialContainer()
 	times = std::make_shared<FullRow<double>>();
 }
 
+std::shared_ptr<ASMTAssembly> MbD::ASMTAssembly::With()
+{
+	return std::make_shared<ASMTAssembly>();
+}
+
 void MbD::ASMTAssembly::runSinglePendulumSuperSimplified()
 {
 	//In this version we skip declaration of variables that don't need as they use default values.
-	auto assembly = CREATE<ASMTAssembly>::With();
+	auto assembly = ASMTAssembly::With();
 
 	assembly->setName("Assembly1");
 
-	auto mkr = CREATE<ASMTMarker>::With();
+	auto mkr = ASMTMarker::With();
 	mkr->setName("Marker1");
 	assembly->addMarker(mkr);
 
-	auto part = CREATE<ASMTPart>::With();
+	auto part = ASMTPart::With();
 	part->setName("Part1");
 	part->setPosition3D(-0.1, -0.1, -0.1);
 	assembly->addPart(part);
 
-	mkr = CREATE<ASMTMarker>::With();
+	mkr = ASMTMarker::With();
 	mkr->setName("Marker1");
 	mkr->setPosition3D(0.1, 0.1, 0.1);
 	part->addMarker(mkr);
 
-	auto joint = CREATE<ASMTFixedJoint>::With();
+	auto joint = ASMTFixedJoint::With();
 	joint->setName("Joint1");
 	joint->setMarkerI("/Assembly1/Marker1");
 	joint->setMarkerJ("/Assembly1/Part1/Marker1");
 	assembly->addJoint(joint);
 
-	auto simulationParameters = CREATE<ASMTSimulationParameters>::With();
+	auto simulationParameters = ASMTSimulationParameters::With();
 	simulationParameters->settstart(0.0);
 	simulationParameters->settend(0.0);	//tstart == tend Initial Conditions only.
 	simulationParameters->sethmin(1.0e-9);
@@ -107,50 +112,50 @@ void MbD::ASMTAssembly::runSinglePendulumSuperSimplified()
 void MbD::ASMTAssembly::runSinglePendulumSuperSimplified2()
 {
 	//In this version we skip declaration of variables that don't need as they use default values.
-	auto assembly = CREATE<ASMTAssembly>::With();
+	auto assembly = ASMTAssembly::With();
 	assembly->setName("OndselAssembly");
 
-	auto mkr = CREATE<ASMTMarker>::With();
+	auto mkr = ASMTMarker::With();
 	mkr->setName("marker1");
 	assembly->addMarker(mkr);
 
-	auto part = CREATE<ASMTPart>::With();
+	auto part = ASMTPart::With();
 	part->setName("part1");
 	assembly->addPart(part);
 
-	auto marker1 = CREATE<ASMTMarker>::With();
+	auto marker1 = ASMTMarker::With();
 	marker1->setName("FixingMarker");
 	part->addMarker(marker1);
 
-	auto marker2 = CREATE<ASMTMarker>::With();
+	auto marker2 = ASMTMarker::With();
 	marker2->setName("marker2");
 	marker2->setPosition3D(20.0, 10.0, 0.0);
 	part->addMarker(marker2);
 
-	auto part2 = CREATE<ASMTPart>::With();
+	auto part2 = ASMTPart::With();
 	part2->setName("part2");
 	part2->setPosition3D(20.0, 10.0, 0.0);
 	assembly->addPart(part2);
 
-	auto marker3 = CREATE<ASMTMarker>::With();
+	auto marker3 = ASMTMarker::With();
 	marker3->setName("marker2");
 	marker3->setPosition3D(50.0, 10.0, 0.0);
 	part2->addMarker(marker3);
 
 	/*Ground joint*/
-	auto joint = CREATE<ASMTFixedJoint>::With();
+	auto joint = ASMTFixedJoint::With();
 	joint->setName("Joint1");
 	joint->setMarkerI("/OndselAssembly/marker1");
 	joint->setMarkerJ("/OndselAssembly/part1/FixingMarker");
 	assembly->addJoint(joint);
 
-	auto joint2 = CREATE<ASMTRevoluteJoint>::With();
+	auto joint2 = ASMTRevoluteJoint::With();
 	joint2->setName("Joint2");
 	joint2->setMarkerI("/OndselAssembly/part1/marker2");
 	joint2->setMarkerJ("/OndselAssembly/part2/marker2");
 	assembly->addJoint(joint2);
 
-	auto simulationParameters = CREATE<ASMTSimulationParameters>::With();
+	auto simulationParameters = ASMTSimulationParameters::With();
 	simulationParameters->settstart(0.0);
 	simulationParameters->settend(0.0);	//tstart == tend Initial Conditions only.
 	simulationParameters->sethmin(1.0e-9);
@@ -164,7 +169,7 @@ void MbD::ASMTAssembly::runSinglePendulumSuperSimplified2()
 
 void MbD::ASMTAssembly::runSinglePendulumSimplified()
 {
-	auto assembly = CREATE<ASMTAssembly>::With();
+	auto assembly = ASMTAssembly::With();
 
 	assembly->setNotes("");
 	assembly->setName("Assembly1");
@@ -187,7 +192,7 @@ void MbD::ASMTAssembly::runSinglePendulumSimplified()
 		0, 0, 1);
 	assembly->setPrincipalMassMarker(massMarker);
 
-	auto mkr = CREATE<ASMTMarker>::With();
+	auto mkr = ASMTMarker::With();
 	mkr->setName("Marker1");
 	mkr->setPosition3D(0, 0, 0);
 	mkr->setRotationMatrix(
@@ -196,7 +201,7 @@ void MbD::ASMTAssembly::runSinglePendulumSimplified()
 		0, 0, 1);
 	assembly->addMarker(mkr);
 
-	auto part = CREATE<ASMTPart>::With();
+	auto part = ASMTPart::With();
 	part->setName("Part1");
 	part->setPosition3D(-0.1, -0.1, -0.1);
 	part->setRotationMatrix(
@@ -218,7 +223,7 @@ void MbD::ASMTAssembly::runSinglePendulumSimplified()
 		0, 0, 1);
 	part->setPrincipalMassMarker(massMarker);
 
-	mkr = CREATE<ASMTMarker>::With();
+	mkr = ASMTMarker::With();
 	mkr->setName("Marker1");
 	mkr->setPosition3D(0.1, 0.1, 0.1);
 	mkr->setRotationMatrix(
@@ -227,23 +232,23 @@ void MbD::ASMTAssembly::runSinglePendulumSimplified()
 		0, 0, 1);
 	part->addMarker(mkr);
 
-	auto joint = CREATE<ASMTRevoluteJoint>::With();
+	auto joint = ASMTRevoluteJoint::With();
 	joint->setName("Joint1");
 	joint->setMarkerI("/Assembly1/Marker1");
 	joint->setMarkerJ("/Assembly1/Part1/Marker1");
 	assembly->addJoint(joint);
 
-	auto motion = CREATE<ASMTRotationalMotion>::With();
+	auto motion = ASMTRotationalMotion::With();
 	motion->setName("Motion1");
 	motion->setMotionJoint("/Assembly1/Joint1");
 	motion->setRotationZ("0.0");
 	assembly->addMotion(motion);
 
-	auto constantGravity = CREATE<ASMTConstantGravity>::With();
+	auto constantGravity = ASMTConstantGravity::With();
 	constantGravity->setg(0.0, 0.0, 0.0);
 	assembly->setConstantGravity(constantGravity);
 
-	auto simulationParameters = CREATE<ASMTSimulationParameters>::With();
+	auto simulationParameters = ASMTSimulationParameters::With();
 	simulationParameters->settstart(0.0);
 	simulationParameters->settend(0.0);	//tstart == tend Initial Conditions only.
 	simulationParameters->sethmin(1.0e-9);
@@ -257,7 +262,7 @@ void MbD::ASMTAssembly::runSinglePendulumSimplified()
 
 void MbD::ASMTAssembly::runSinglePendulum()
 {
-	auto assembly = CREATE<ASMTAssembly>::With();
+	auto assembly = ASMTAssembly::With();
 	std::string str = "";
 	assembly->setNotes(str);
 	str = "Assembly1";
@@ -290,7 +295,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	massMarker->setRotationMatrix(rotMat);
 	assembly->setPrincipalMassMarker(massMarker);
 	//
-	auto mkr = CREATE<ASMTMarker>::With();
+	auto mkr = ASMTMarker::With();
 	str = "Marker1";
 	mkr->setName(str);
 	pos3D = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
@@ -303,7 +308,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	mkr->setRotationMatrix(rotMat);
 	assembly->addMarker(mkr);
 	//
-	auto part = CREATE<ASMTPart>::With();
+	auto part = ASMTPart::With();
 	str = "Part1";
 	part->setName(str);
 	pos3D = std::make_shared<FullColumn<double>>(ListD{ -0.1, -0.1, -0.1 });
@@ -335,7 +340,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	massMarker->setRotationMatrix(rotMat);
 	part->setPrincipalMassMarker(massMarker);
 	//
-	mkr = CREATE<ASMTMarker>::With();
+	mkr = ASMTMarker::With();
 	str = "Marker1";
 	mkr->setName(str);
 	pos3D = std::make_shared<FullColumn<double>>(ListD{ 0.1, 0.1, 0.1 });
@@ -348,7 +353,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	mkr->setRotationMatrix(rotMat);
 	part->addMarker(mkr);
 	//
-	auto joint = CREATE<ASMTRevoluteJoint>::With();
+	auto joint = ASMTRevoluteJoint::With();
 	str = "Joint1";
 	joint->setName(str);
 	str = "/Assembly1/Marker1";
@@ -357,7 +362,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	joint->setMarkerJ(str);
 	assembly->addJoint(joint);
 	//
-	auto motion = CREATE<ASMTRotationalMotion>::With();
+	auto motion = ASMTRotationalMotion::With();
 	str = "Motion1";
 	motion->setName(str);
 	str = "/Assembly1/Joint1";
@@ -366,12 +371,12 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	motion->setRotationZ(str);
 	assembly->addMotion(motion);
 	//
-	auto constantGravity = CREATE<ASMTConstantGravity>::With();
+	auto constantGravity = ASMTConstantGravity::With();
 	auto gAcceleration = std::make_shared<FullColumn<double>>(ListD{ 0.0, 0.0, 0.0 });
 	constantGravity->setg(gAcceleration);
 	assembly->setConstantGravity(constantGravity);
 	//
-	auto simulationParameters = CREATE<ASMTSimulationParameters>::With();
+	auto simulationParameters = ASMTSimulationParameters::With();
 	simulationParameters->settstart(0.0);
 	simulationParameters->settend(0.0);	//tstart == tend Initial Conditions only.
 	simulationParameters->sethmin(1.0e-9);
@@ -401,7 +406,7 @@ void MbD::ASMTAssembly::runFile(const char* fileName)
 
 	if (lines[0] == "Assembly") {
 		lines.erase(lines.begin());
-		auto assembly = CREATE<ASMTAssembly>::With();
+		auto assembly = ASMTAssembly::With();
 		assembly->setFilename(fileName);
 		assembly->parseASMT(lines);
 		assembly->runKINEMATIC();
@@ -411,16 +416,10 @@ void MbD::ASMTAssembly::runFile(const char* fileName)
 void MbD::ASMTAssembly::runDynFile(const char* fileName)
 {
 	auto lines = linesFromFile(fileName);
-
-	if (lines[0] == "Assembly") {
-		lines.erase(lines.begin());
-		auto assembly = CREATE<ASMTAssembly>::With();
-		assembly->parseASMT(lines);
-		assembly->runDYNAMIC();
-	}
-	else {
-		assert(false);
-	}
+	auto assembly = ASMTAssembly::With();
+	assert(assembly->readStringOffTop(lines) == "Assembly");
+	assembly->parseASMT(lines);
+	assembly->runDYNAMIC();
 }
 
 std::vector<std::string> MbD::ASMTAssembly::linesFromFile(const char* fileName)
@@ -459,12 +458,38 @@ void MbD::ASMTAssembly::readWriteFile(const char* fileName)
 
 	if (lines[0] == "Assembly") {
 		lines.erase(lines.begin());
-		auto assembly = CREATE<ASMTAssembly>::With();
+		auto assembly = ASMTAssembly::With();
 		assembly->parseASMT(lines);
 		assembly->runKINEMATIC();
 		//assembly->runDYNAMIC();
 		assembly->outputFile("assembly.asmt");
 		ASMTAssembly::runFile("assembly.asmt");
+	}
+}
+
+void MbD::ASMTAssembly::readWriteDynFile(const char* fileName)
+{
+	std::ifstream stream(fileName);
+	if (stream.fail()) {
+		throw std::invalid_argument("File not found.");
+	}
+	std::string line;
+	std::vector<std::string> lines;
+	while (std::getline(stream, line)) {
+		lines.push_back(line);
+	}
+	bool bool1 = lines[0] == "freeCAD: 3D CAD with Motion Simulation  by  askoh.com";
+	bool bool2 = lines[0] == "OndselSolver";
+	assert(bool1 || bool2);
+	lines.erase(lines.begin());
+
+	if (lines[0] == "Assembly") {
+		lines.erase(lines.begin());
+		auto assembly = ASMTAssembly::With();
+		assembly->parseASMT(lines);
+		assembly->runDYNAMIC();
+		assembly->outputFile("../testapp/tempAssembly.asmt");
+		ASMTAssembly::runDynFile("../testapp/tempAssembly.asmt");
 	}
 }
 
@@ -536,7 +561,7 @@ void MbD::ASMTAssembly::readPart(std::vector<std::string>& lines)
 {
 	assert(lines[0] == "\t\tPart");
 	lines.erase(lines.begin());
-	auto part = CREATE<ASMTPart>::With();
+	auto part = ASMTPart::With();
 	part->parseASMT(lines);
 	parts->push_back(part);
 	part->owner = this;
@@ -580,74 +605,74 @@ void MbD::ASMTAssembly::readJoints(std::vector<std::string>& lines)
 	std::shared_ptr<ASMTJoint> joint;
 	while (!jointsLines.empty()) {
 		if (jointsLines[0] == "\t\t\tAngleJoint") {
-			joint = CREATE<ASMTAngleJoint>::With();
+			joint = ASMTAngleJoint::With();
 		}
 		else if (jointsLines[0] == "\t\t\tGearJoint") {
-			joint = CREATE<ASMTGearJoint>::With();
+			joint = ASMTGearJoint::With();
 		}
 		else if (jointsLines[0] == "\t\t\tNoRotationJoint") {
-			joint = CREATE<ASMTNoRotationJoint>::With();
+			joint = ASMTNoRotationJoint::With();
 		}
 		else if (jointsLines[0] == "\t\t\tParallelAxesJoint") {
-			joint = CREATE<ASMTParallelAxesJoint>::With();
+			joint = ASMTParallelAxesJoint::With();
 		}
 		else if (jointsLines[0] == "\t\t\tPerpendicularJoint") {
-			joint = CREATE<ASMTPerpendicularJoint>::With();
+			joint = ASMTPerpendicularJoint::With();
 		}
 		else if (jointsLines[0] == "\t\t\tRackPinionJoint") {
-			joint = CREATE<ASMTRackPinionJoint>::With();
+			joint = ASMTRackPinionJoint::With();
 		}
 		else if (jointsLines[0] == "\t\t\tScrewJoint") {
-			joint = CREATE<ASMTScrewJoint>::With();
+			joint = ASMTScrewJoint::With();
 		}
 		//AtPointJoints
 		else if (jointsLines[0] == "\t\t\tConstantVelocityJoint") {
-			joint = CREATE<ASMTConstantVelocityJoint>::With();
+			joint = ASMTConstantVelocityJoint::With();
 		}
 		else if (jointsLines[0] == "\t\t\tFixedJoint") {
-			joint = CREATE<ASMTFixedJoint>::With();
+			joint = ASMTFixedJoint::With();
 		}
 		else if (jointsLines[0] == "\t\t\tRevoluteJoint") {
-			joint = CREATE<ASMTRevoluteJoint>::With();
+			joint = ASMTRevoluteJoint::With();
 		}
 		else if (jointsLines[0] == "\t\t\tSphericalJoint") {
-			joint = CREATE<ASMTSphericalJoint>::With();
+			joint = ASMTSphericalJoint::With();
 		}
 		else if (jointsLines[0] == "\t\t\tUniversalJoint") {
-			joint = CREATE<ASMTUniversalJoint>::With();
+			joint = ASMTUniversalJoint::With();
 		}
 		//CompoundJoints
 		else if (jointsLines[0] == "\t\t\tSphSphJoint") {
-			joint = CREATE<ASMTSphSphJoint>::With();
+			joint = ASMTSphSphJoint::With();
 		}
 		else if (jointsLines[0] == "\t\t\tCylSphJoint") {
-			joint = CREATE<ASMTCylSphJoint>::With();
+			joint = ASMTCylSphJoint::With();
 		}
 		else if (jointsLines[0] == "\t\t\tRevCylJoint") {
-			joint = CREATE<ASMTRevCylJoint>::With();
+			joint = ASMTRevCylJoint::With();
 		}
 		else if (jointsLines[0] == "\t\t\tRevRevJoint") {
-			joint = CREATE<ASMTRevRevJoint>::With();
+			joint = ASMTRevRevJoint::With();
 		}
 		//InLineJoints
 		else if (jointsLines[0] == "\t\t\tCylindricalJoint") {
-			joint = CREATE<ASMTCylindricalJoint>::With();
+			joint = ASMTCylindricalJoint::With();
 		}
 		else if (jointsLines[0] == "\t\t\tPointInLineJoint") {
-			joint = CREATE<ASMTPointInLineJoint>::With();
+			joint = ASMTPointInLineJoint::With();
 		}
 		else if (jointsLines[0] == "\t\t\tTranslationalJoint") {
-			joint = CREATE<ASMTTranslationalJoint>::With();
+			joint = ASMTTranslationalJoint::With();
 		}
 		//InPlaneJoints
 		else if (jointsLines[0] == "\t\t\tLineInPlaneJoint") {
-			joint = CREATE<ASMTLineInPlaneJoint>::With();
+			joint = ASMTLineInPlaneJoint::With();
 		}
 		else if (jointsLines[0] == "\t\t\tPlanarJoint") {
-			joint = CREATE<ASMTPlanarJoint>::With();
+			joint = ASMTPlanarJoint::With();
 		}
 		else if (jointsLines[0] == "\t\t\tPointInPlaneJoint") {
-			joint = CREATE<ASMTPointInPlaneJoint>::With();
+			joint = ASMTPointInPlaneJoint::With();
 		}
 		else {
 			assert(false);
@@ -671,13 +696,13 @@ void MbD::ASMTAssembly::readMotions(std::vector<std::string>& lines)
 	std::shared_ptr<ASMTMotion> motion;
 	while (!motionsLines.empty()) {
 		if (motionsLines[0] == "\t\t\tRotationalMotion") {
-			motion = CREATE<ASMTRotationalMotion>::With();
+			motion = ASMTRotationalMotion::With();
 		}
 		else if (motionsLines[0] == "\t\t\tTranslationalMotion") {
-			motion = CREATE<ASMTTranslationalMotion>::With();
+			motion = ASMTTranslationalMotion::With();
 		}
 		else if (motionsLines[0] == "\t\t\tGeneralMotion") {
-			motion = CREATE<ASMTGeneralMotion>::With();
+			motion = ASMTGeneralMotion::With();
 		}
 		else {
 			assert(false);
@@ -715,7 +740,7 @@ void MbD::ASMTAssembly::readForcesTorques(std::vector<std::string>& lines)
 	while (!forcesTorquesLines.empty()) {
 		if (forcesTorquesLines[0] == "\t\tForceTorque") {
 			forcesTorquesLines.erase(forcesTorquesLines.begin());
-			auto forceTorque = CREATE<ASMTForceTorque>::With();
+			auto forceTorque = ASMTForceTorque::With();
 			forceTorque->parseASMT(forcesTorquesLines);
 			forcesTorques->push_back(forceTorque);
 			forceTorque->owner = this;
@@ -731,7 +756,7 @@ void MbD::ASMTAssembly::readConstantGravity(std::vector<std::string>& lines)
 {
 	assert(lines[0] == "\tConstantGravity");
 	lines.erase(lines.begin());
-	constantGravity = CREATE<ASMTConstantGravity>::With();
+	constantGravity = ASMTConstantGravity::With();
 	constantGravity->parseASMT(lines);
 	constantGravity->owner = this;
 }
@@ -740,7 +765,7 @@ void MbD::ASMTAssembly::readSimulationParameters(std::vector<std::string>& lines
 {
 	assert(lines[0] == "\tSimulationParameters");
 	lines.erase(lines.begin());
-	simulationParameters = CREATE<ASMTSimulationParameters>::With();
+	simulationParameters = ASMTSimulationParameters::With();
 	simulationParameters->parseASMT(lines);
 	simulationParameters->owner = this;
 }
@@ -749,7 +774,7 @@ void MbD::ASMTAssembly::readAnimationParameters(std::vector<std::string>& lines)
 {
 	assert(lines[0] == "\tAnimationParameters");
 	lines.erase(lines.begin());
-	animationParameters = CREATE<ASMTAnimationParameters>::With();
+	animationParameters = ASMTAnimationParameters::With();
 	animationParameters->parseASMT(lines);
 	animationParameters->owner = this;
 }
@@ -772,8 +797,8 @@ void MbD::ASMTAssembly::readTimes(std::vector<std::string>& lines)
 	auto pos = str.find(substr);
 	assert(pos != std::string::npos);
 	str.erase(0, pos + substr.length());
-	times = readRowOfDoubles(str);
-	times->insert(times->begin(), times->at(0));	//The first element is the input state.
+	itimes = readRowOfDoubles(str);
+	itimes->insert(itimes->begin(), itimes->at(0));	//The first element is the input state.
 	lines.erase(lines.begin());
 }
 
@@ -1048,7 +1073,7 @@ void MbD::ASMTAssembly::createMbD(std::shared_ptr<System> mbdSys, std::shared_pt
 void MbD::ASMTAssembly::outputFile(std::string filename)
 {
 	std::ofstream os(filename);
-	os << std::setprecision(static_cast<std::streamsize>(std::numeric_limits<double>::digits10) + 1);
+	os << std::setprecision(std::numeric_limits<double>::max_digits10);
 	//	try {
 	os << "OndselSolver" << std::endl;
 	storeOnLevel(os, 0);
@@ -1078,7 +1103,7 @@ void MbD::ASMTAssembly::storeOnLevel(std::ofstream& os, int level)
 
 void MbD::ASMTAssembly::solve()
 {
-	auto simulationParameters = CREATE<ASMTSimulationParameters>::With();
+	auto simulationParameters = ASMTSimulationParameters::With();
 	simulationParameters->settstart(0.0);
 	simulationParameters->settend(0.0);	//tstart == tend Initial Conditions only.
 	simulationParameters->sethmin(1.0e-9);
@@ -1092,7 +1117,7 @@ void MbD::ASMTAssembly::solve()
 
 void MbD::ASMTAssembly::runKINEMATIC()
 {
-	auto mbdSystem = std::make_shared<System>();
+	auto mbdSystem = System::With();
 	mbdObject = mbdSystem;
 	mbdSystem->externalSystem->asmtAssembly = this;
 	try {
@@ -1104,7 +1129,7 @@ void MbD::ASMTAssembly::runKINEMATIC()
 }
 void MbD::ASMTAssembly::runDYNAMIC()
 {
-	auto mbdSystem = CREATE<System>::With();
+	auto mbdSystem = System::With();
 	mbdObject = mbdSystem;
 	mbdSystem->externalSystem->asmtAssembly = this;
 	try {
@@ -1199,7 +1224,7 @@ void MbD::ASMTAssembly::updateFromMbD()
 	ASMTSpatialContainer::updateFromMbD();
 	auto time = asmtTime->getValue();
 	times->push_back(time);
-	std::cout << "Time = " << time << std::endl;
+	//std::cout << "Time = " << time << std::endl;
 	for (auto& part : *parts) part->updateFromMbD();
 	for (auto& joint : *joints) joint->updateFromMbD();
 	for (auto& motion : *motions) motion->updateFromMbD();
@@ -1366,6 +1391,14 @@ void MbD::ASMTAssembly::setFilename(std::string str)
 	auto str2 = ss.str();
 	logString(str2);
 	filename = str;
+}
+
+void MbD::ASMTAssembly::updateFromInputState()
+{
+	ASMTSpatialContainer::updateFromInputState();
+	for (auto& part : *parts) part->updateFromInputState();
+	for (auto& joint : *joints) joint->updateFromInputState();
+	for (auto& motion : *motions) motion->updateFromInputState();
 }
 
 

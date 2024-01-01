@@ -32,6 +32,11 @@ System::System() {
 System::System(const char* str) : Item(str) {
 }
 
+std::shared_ptr<System> MbD::System::With()
+{
+	return std::make_shared<System>();
+}
+
 System* MbD::System::root()
 {
 	return this;

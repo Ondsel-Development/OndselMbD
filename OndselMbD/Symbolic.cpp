@@ -5,13 +5,16 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include <memory>
-#include <unordered_set>
 #include <assert.h>
+#include <unordered_set>
 
 #include "Symbolic.h"
+#include "System.h"
+#include "Units.h"
 #include "Constant.h"
+#include "Variable.h"
 #include "Product.h"
 #include "Sum.h"
 #include "Power.h"
@@ -183,12 +186,6 @@ double Symbolic::getValue()
 	return 0.0;
 }
 
-double MbD::Symbolic::getValue(double)
-{
-	assert(false);
-	return 0.0;
-}
-
 void MbD::Symbolic::setValue(double)
 {
 	assert(false);
@@ -217,7 +214,7 @@ bool MbD::Symbolic::isVariable()
 	return false;
 }
 
-void MbD::Symbolic::integrationConstant(double)
+void MbD::Symbolic::setIntegrationConstant(double integConstant)
 {
 	assert(false);
 }

@@ -31,6 +31,18 @@ Symsptr MbD::Cosine::copyWith(Symsptr arg)
 	return std::make_shared<Cosine>(arg);
 }
 
+Symsptr MbD::Cosine::clonesptr()
+{
+	return std::make_shared<Cosine>(*this);
+}
+
+Symsptr MbD::Cosine::integrateWRTx()
+{
+	auto sine = std::make_shared<Sine>(xx);
+	return std::make_shared<Negative>(sine);
+
+}
+
 std::ostream& MbD::Cosine::printOn(std::ostream& s) const
 {
 	s << "cos(" << *xx << ")";

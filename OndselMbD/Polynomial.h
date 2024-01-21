@@ -22,7 +22,6 @@ namespace MbD {
         Symsptr differentiateWRTx() override;
         Symsptr integrateWRT(Symsptr var) override;
         double getValue() override;
-        void integrationConstant(double integConstant) override;
 
         std::ostream& printOn(std::ostream& s) const override;
 

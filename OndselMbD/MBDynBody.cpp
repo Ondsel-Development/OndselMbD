@@ -22,6 +22,7 @@ void MbD::MBDynBody::parseMBDyn(std::string line)
 	readMass(arguments);
 	rPcmP = readPosition(arguments);
 	readInertiaMatrix(arguments);
+	aAPcm = readOrientation(arguments);
 }
 
 void MbD::MBDynBody::readMass(std::vector<std::string>& args)
@@ -67,7 +68,7 @@ void MbD::MBDynBody::createASMT()
 	if (aJmat->isDiagonalToWithin(1.0e-6)) {
 		asmtMassMarker->setMomentOfInertias(aJmat->asDiagonalMatrix());
 		asmtMassMarker->setPosition3D(rPcmP);
-		asmtMassMarker->setRotationMatrix(FullMatrix<double>::identitysptr(3));
+		asmtMassMarker->setRotationMatrix(aAPcm);
 		auto asmtPart = asmtAssembly()->partPartialNamed(nodeName);
 		asmtPart->setPrincipalMassMarker(asmtMassMarker);
 	}
@@ -76,7 +77,7 @@ void MbD::MBDynBody::createASMT()
 		solver->setm(mass);
 		solver->setJPP(aJmat);
 		solver->setrPoP(rPcmP);
-		solver->setAPo(FullMatrix<double>::identitysptr(3));
+		solver->setAPo(aAPcm);
 		solver->setrPcmP(rPcmP);
 		solver->calc();
 		asmtMassMarker->setMomentOfInertias(solver->aJpp);

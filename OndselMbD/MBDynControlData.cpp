@@ -1,4 +1,5 @@
 #include "MBDynControlData.h"
+#include "MBDynOutputMeter.h"
 
 using namespace MbD;
 
@@ -13,6 +14,7 @@ void MbD::MBDynControlData::parseMBDyn(std::vector<std::string>& lines)
 	readOmegaRotates(lines);
 	readPrint(lines);
 	readInitialStiffness(lines);
+	readOutputMeter(lines);
 	readStructuralNodes(lines);
 	readRigidBodies(lines);
 	readJoints(lines);
@@ -90,6 +92,18 @@ void MbD::MBDynControlData::readInitialStiffness(std::vector<std::string>& lines
 	iss >> str;
 	initialStiffness.append(str);
 	lines.erase(it);
+}
+
+void MbD::MBDynControlData::readOutputMeter(std::vector<std::string>& lines)
+{
+	std::vector<std::string> tokens{ "output", "meter:" };
+	auto it = findLineWith(lines, tokens);
+	if (it != lines.end()) {
+		outputMeter = std::make_shared<MBDynOutputMeter>();
+		outputMeter->owner = this;
+		outputMeter->parseMBDyn(*it);
+		lines.erase(it);
+	}
 }
 
 void MbD::MBDynControlData::readStructuralNodes(std::vector<std::string>& lines)

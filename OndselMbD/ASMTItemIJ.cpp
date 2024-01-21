@@ -8,25 +8,14 @@
 #include <fstream>	
 
 #include "ASMTItemIJ.h"
+#include "Joint.h"
+
+using namespace MbD;
 
 MbD::ASMTItemIJ::ASMTItemIJ()
 {
-	fxs = std::make_shared<FullRow<double>>();
-	fys = std::make_shared<FullRow<double>>();
-	fzs = std::make_shared<FullRow<double>>();
-	txs = std::make_shared<FullRow<double>>();
-	tys = std::make_shared<FullRow<double>>();
-	tzs = std::make_shared<FullRow<double>>();
-}
-
-void MbD::ASMTItemIJ::initialize()
-{
-	fxs = std::make_shared<FullRow<double>>();
-	fys = std::make_shared<FullRow<double>>();
-	fzs = std::make_shared<FullRow<double>>();
-	txs = std::make_shared<FullRow<double>>();
-	tys = std::make_shared<FullRow<double>>();
-	tzs = std::make_shared<FullRow<double>>();
+	cFIO = std::make_shared<std::vector<std::shared_ptr<FullColumn<double>>>>();
+	cTIO = std::make_shared<std::vector<std::shared_ptr<FullColumn<double>>>>();
 }
 
 void MbD::ASMTItemIJ::setMarkerI(std::string mkrI)
@@ -107,40 +96,65 @@ void MbD::ASMTItemIJ::storeOnLevel(std::ofstream& os, int level)
 
 void MbD::ASMTItemIJ::storeOnTimeSeries(std::ofstream& os)
 {
+	auto n = (int)cFIO->size();
 	os << "FXonI\t";
-	for (int i = 0; i < (int)fxs->size(); i++)
+	for (int i = 0; i < n; i++)
 	{
-		os << fxs->at(i) << '\t';
+		os << cFIO->at(i)-> at(0) << '\t';
 	}
 	os << std::endl;
 	os << "FYonI\t";
-	for (int i = 0; i < (int)fys->size(); i++)
+	for (int i = 0; i < n; i++)
 	{
-		os << fys->at(i) << '\t';
+		os << cFIO->at(i)->at(1) << '\t';
 	}
 	os << std::endl;
 	os << "FZonI\t";
-	for (int i = 0; i < (int)fzs->size(); i++)
+	for (int i = 0; i < n; i++)
 	{
-		os << fzs->at(i) << '\t';
+		os << cFIO->at(i)->at(2) << '\t';
 	}
 	os << std::endl;
 	os << "TXonI\t";
-	for (int i = 0; i < (int)txs->size(); i++)
+	for (int i = 0; i < n; i++)
 	{
-		os << txs->at(i) << '\t';
+		os << cTIO->at(i)->at(0) << '\t';
 	}
 	os << std::endl;
 	os << "TYonI\t";
-	for (int i = 0; i < (int)tys->size(); i++)
+	for (int i = 0; i < n; i++)
 	{
-		os << tys->at(i) << '\t';
+		os << cTIO->at(i)->at(1) << '\t';
 	}
 	os << std::endl;
 	os << "TZonI\t";
-	for (int i = 0; i < (int)tzs->size(); i++)
+	for (int i = 0; i < n; i++)
 	{
-		os << tzs->at(i) << '\t';
+		os << cTIO->at(i)->at(2) << '\t';
 	}
 	os << std::endl;
+}
+
+FColDsptr MbD::ASMTItemIJ::aFII(size_t i)
+{
+	auto mbdJoint = std::static_pointer_cast<Joint>(mbdObject);
+	auto aAIO = mbdJoint->frmI->aAeO();
+	return aAIO->timesFullColumn(aFIO(i));
+}
+
+FColDsptr MbD::ASMTItemIJ::aFIO(size_t i)
+{
+	return cFIO->at(i);
+}
+
+FColDsptr MbD::ASMTItemIJ::aTII(size_t i)
+{
+	auto mbdJoint = std::static_pointer_cast<Joint>(mbdObject);
+	auto aAIO = mbdJoint->frmI->aAeO();
+	return aAIO->timesFullColumn(aTIO(i));
+}
+
+FColDsptr MbD::ASMTItemIJ::aTIO(size_t i)
+{
+	return cTIO->at(i);
 }

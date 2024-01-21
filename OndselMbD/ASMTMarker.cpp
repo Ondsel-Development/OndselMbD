@@ -14,6 +14,7 @@
 #include "PartFrame.h"
 #include "MarkerFrame.h"
 #include "ASMTPrincipalMassMarker.h"
+#include "Units.h"
 
 using namespace MbD;
 

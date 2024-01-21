@@ -19,6 +19,7 @@ namespace MbD {
         void parseMBDyn(std::string line) override;
         void createASMT() override;
         std::shared_ptr<ASMTJoint> asmtClassNew() override;
+        void outputLine(int i, std::ostream& os) override;
 
         std::shared_ptr<ASMTRotationalMotion> asmtMotion;
     };

@@ -9,6 +9,7 @@
 #pragma once
 
 #include "AnyGeneralSpline.h"
+#include "FullMatrix.h"
 
 namespace MbD {
 	class GeneralSpline : public AnyGeneralSpline

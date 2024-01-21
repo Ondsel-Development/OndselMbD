@@ -9,6 +9,7 @@
 #include "Power.h"
 #include "Constant.h"
 #include "Ln.h"
+#include <cassert>
 
 using namespace MbD;
 

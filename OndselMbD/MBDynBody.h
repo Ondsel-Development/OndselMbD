@@ -23,6 +23,7 @@ namespace MbD {
         double mass = std::numeric_limits<double>::min();
         FColDsptr rPcmP;
         FMatDsptr aJmat;
+        FMatDsptr aAPcm;
 
     };
 }

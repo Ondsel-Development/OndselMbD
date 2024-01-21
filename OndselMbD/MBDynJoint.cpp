@@ -236,63 +236,18 @@ std::shared_ptr<ASMTJoint> MbD::MBDynJoint::asmtClassNew()
 	return std::make_shared<ASMTJoint>();
 }
 
-std::string MbD::MBDynJoint::asmtFormula()
+void MbD::MBDynJoint::outputLine(int i, std::ostream& os)
 {
-	auto ss = std::stringstream();
-	std::string drivestr = "model::drive";
-	size_t previousPos = 0;
-	auto pos = formula.find(drivestr);
-	ss << formula.substr(previousPos, pos - previousPos);
-	while (pos != std::string::npos) {
-		previousPos = pos;
-		pos = formula.find('(', pos + 1);
-		previousPos = pos;
-		pos = formula.find(',', pos + 1);
-		auto driveName = formula.substr(previousPos + 1, pos - previousPos - 1);
-		driveName = readToken(driveName);
-		previousPos = pos;
-		pos = formula.find(')', pos + 1);
-		auto varName = formula.substr(previousPos + 1, pos - previousPos - 1);
-		varName = readToken(varName);
-		//Insert drive formula
-		ss << formulaFromDrive(driveName, varName);
-		previousPos = pos;
-		pos = formula.find(drivestr, pos + 1);
-		ss << formula.substr(previousPos + 1, pos - previousPos);
-	}
-	return ss.str();
-}
-
-std::string MbD::MBDynJoint::asmtFormula(std::string mbdynFormula)
-{
-	auto ss = std::stringstream();
-	std::string drivestr = "model::drive";
-	size_t previousPos = 0;
-	auto pos = mbdynFormula.find(drivestr);
-	ss << mbdynFormula.substr(previousPos, pos - previousPos);
-	while (pos != std::string::npos) {
-		previousPos = pos;
-		pos = mbdynFormula.find('(', pos + 1);
-		previousPos = pos;
-		pos = mbdynFormula.find(',', pos + 1);
-		auto driveName = mbdynFormula.substr(previousPos + 1, pos - previousPos - 1);
-		driveName = readToken(driveName);
-		previousPos = pos;
-		pos = mbdynFormula.find(')', pos + 1);
-		auto varName = mbdynFormula.substr(previousPos + 1, pos - previousPos - 1);
-		varName = readToken(varName);
-		//Insert drive mbdynFormula
-		ss << formulaFromDrive(driveName, varName);
-		previousPos = pos;
-		pos = mbdynFormula.find(drivestr, pos + 1);
-		ss << mbdynFormula.substr(previousPos + 1, pos - previousPos);
-	}
-	return ss.str();
-}
-
-std::string MbD::MBDynJoint::asmtFormulaIntegral()
-{
-	auto ss = std::stringstream();
-	ss << "integral(time, " << asmtFormula() << ")";
-	return ss.str();
+	auto id = nodeidAt(name);
+	auto asmtJoint = std::static_pointer_cast<ASMTJoint>(asmtItem);
+	auto aFII = asmtJoint->aFII(i);
+	auto aTII = asmtJoint->aTII(i);
+	auto aFIO = asmtJoint->aFIO(i);
+	auto aTIO = asmtJoint->aTIO(i);
+	os << id << " ";
+	os << aFII->at(0) << " " << aFII->at(1) << " " << aFII->at(2) << " ";
+	os << aTII->at(0) << " " << aTII->at(1) << " " << aTII->at(2) << " ";
+	os << aFIO->at(0) << " " << aFIO->at(1) << " " << aFIO->at(2) << " ";
+	os << aTIO->at(0) << " " << aTIO->at(1) << " " << aTIO->at(2) << " ";
+	os << std::endl;
 }

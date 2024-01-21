@@ -32,6 +32,7 @@ ASMTPart* MbD::ASMTItem::part()
 
 void MbD::ASMTItem::initialize()
 {
+	assert(false);
 }
 
 void MbD::ASMTItem::noop()

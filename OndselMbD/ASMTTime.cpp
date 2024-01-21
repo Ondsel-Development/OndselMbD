@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include <cassert>
 
 #include "ASMTTime.h"
@@ -23,7 +23,7 @@ void MbD::ASMTTime::deleteMbD()
 
 void MbD::ASMTTime::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
 {
-	auto mbdTime = mbdSys->time;
+	auto& mbdTime = mbdSys->time;
 	if (xx == mbdTime) return;
 	auto timeScale = sptrConstant(mbdUnits->time);
 	auto geoTime = std::make_shared<Product>(timeScale, mbdTime);
@@ -47,5 +47,17 @@ bool MbD::ASMTTime::isVariable()
 
 void MbD::ASMTTime::setValue(double val)
 {
-	xx->setValue(val);
+	std::string str = typeid(*xx).name();
+	if (str == "class MbD::Time") {
+		xx->setValue(val);
+	}
+	else {
+		//ToDo: Handle when Units time is not unity
+		assert(false);
+	}
+}
+
+double MbD::ASMTTime::getValue()
+{
+	return ExpressionX::getValue();
 }

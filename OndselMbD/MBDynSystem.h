@@ -31,6 +31,7 @@ namespace MbD {
         static void runDynFile(const char* chars);
         static void eraseComments(std::vector<std::string>& lines);
         static std::vector<std::string> collectStatements(std::vector<std::string>& lines);
+        MBDynSystem* root() override;
         void initialize() override;
         void parseMBDyn(std::vector<std::string>& lines) override;
         void parseMBDynData(std::vector<std::string>& lines);
@@ -55,6 +56,8 @@ namespace MbD {
         void runKINEMATIC();
         void runDYNAMIC();
         void outputFiles();
+        void outputNodesFile();
+        void outputJointsFile();
         void setFilename(std::string filename);
         void readDataBlock(std::vector<std::string>& lines);
         void readInitialValueBlock(std::vector<std::string>& lines);

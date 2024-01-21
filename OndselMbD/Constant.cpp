@@ -10,6 +10,7 @@
 #include "System.h"
 #include "Units.h"
 #include "Polynomial.h"
+#include "Integral.h"
 
 using namespace MbD;
 
@@ -28,13 +29,18 @@ Symsptr MbD::Constant::differentiateWRT(Symsptr)
 
 Symsptr MbD::Constant::integrateWRT(Symsptr var)
 {
-	if (value == 0.0) return clonesptr();
+	auto simple = simplified();
+	auto answer = std::make_shared<Integral>();
+	answer->xx = var;
+	answer->integrand = simple;
+	if (value == 0.0) answer->expression = clonesptr();
 	auto slope = sptrConstant(value);
 	auto intercept = sptrConstant(0.0);
 	auto coeffs = std::make_shared<std::vector<Symsptr>>();
 	coeffs->push_back(intercept);
 	coeffs->push_back(slope);
-	return std::make_shared<Polynomial>(var, coeffs);
+	answer->expression = std::make_shared<Polynomial>(var, coeffs);
+	return answer;
 }
 
 Symsptr MbD::Constant::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>>)
@@ -68,11 +74,6 @@ void MbD::Constant::createMbD(std::shared_ptr<System>, std::shared_ptr<Units>)
 }
 
 double MbD::Constant::getValue()
-{
-	return value;
-}
-
-double MbD::Constant::getValue(double)
 {
 	return value;
 }

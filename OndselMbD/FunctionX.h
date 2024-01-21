@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Function.h"
+#include <unordered_set>
 
 namespace MbD {
 	class Symbolic;
@@ -25,10 +26,11 @@ namespace MbD {
 		Symsptr expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
 		Symsptr simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
 		Symsptr differentiateWRT(Symsptr var) override;
+		Symsptr integrateWRT(Symsptr var) override;
 		virtual Symsptr differentiateWRTx();
+		virtual Symsptr integrateWRTx();
 		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
 		double getValue() override;
-		double getValue(double arg) override;
 		bool isConstant() override;
 
 		Symsptr xx;

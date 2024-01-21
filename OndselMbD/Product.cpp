@@ -12,6 +12,7 @@
 #include "Product.h"
 #include "Sum.h"
 #include "Constant.h"
+#include "Integral.h"
 
 using namespace MbD;
 
@@ -21,13 +22,10 @@ Symsptr MbD::Product::differentiateWRT(Symsptr var)
 	//	"(xyz)' := x'yz + xy'z + xyz'."
 
 	auto derivatives = std::make_shared<std::vector<Symsptr>>();
-	std::transform(terms->begin(),
-		terms->end(),
-		std::back_inserter(*derivatives),
-		[var](Symsptr term) { 
-			return term->differentiateWRT(var);
-		}
-	);
+	for (const auto& term : *terms) {
+		auto deriv = term->differentiateWRT(var);
+		derivatives->push_back(deriv);
+	}
 	auto derivativeTerms = std::make_shared<std::vector<Symsptr>>();
 	for (int i = 0; i < (int)terms->size(); i++)
 	{
@@ -36,16 +34,20 @@ Symsptr MbD::Product::differentiateWRT(Symsptr var)
 		newTermFunctions->at(i) = derivative;
 		auto newTerm = std::make_shared<Product>();
 		newTerm->terms = newTermFunctions;
-		derivativeTerms->push_back(newTerm);
+		derivativeTerms->push_back(newTerm->simplified());
 	}
 	auto answer = std::make_shared<Sum>();
 	answer->terms = derivativeTerms;
-	return answer;
+	return answer->simplified();
 }
 
 Symsptr MbD::Product::integrateWRT(Symsptr var)
 {
 	//ToDo: Integration by parts
+	auto simple = simplified();
+	auto answer = std::make_shared<Integral>();
+	answer->xx = var;
+	answer->integrand = simple;;
 	auto newTerms = std::make_shared<std::vector<Symsptr>>();
 	double factor = 1.0;
 	for (const auto& term : *terms) {
@@ -57,17 +59,18 @@ Symsptr MbD::Product::integrateWRT(Symsptr var)
 		}
 	}
 	if (factor == 0.0) {
-		return sptrConstant(0.0);
+		answer->expression = sptrConstant(0.0);
 	}
 	if (factor == 1.0) {
 		assert(newTerms->size() == 1);
-		return newTerms->front()->integrateWRT(var);
+		answer->expression = newTerms->front()->integrateWRT(var);
 	}
 	assert(newTerms->size() == 1);
 	auto soleIntegral = newTerms->front()->integrateWRT(var);
-	auto answer = std::make_shared<Product>();
-	answer->terms->push_back(sptrConstant(factor));
-	answer->terms->push_back(soleIntegral);
+	auto integral = std::make_shared<Product>();
+	integral->terms->push_back(sptrConstant(factor));
+	integral->terms->push_back(soleIntegral);
+	answer->expression = integral->simplified();
 	return answer;
 }
 

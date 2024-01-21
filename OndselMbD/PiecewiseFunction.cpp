@@ -7,8 +7,10 @@
  ***************************************************************************/
 
 #include <algorithm>
+#include <cassert>
 
 #include "PiecewiseFunction.h"
+#include "Integral.h"
 
 using namespace MbD;
 
@@ -64,22 +66,28 @@ Symsptr MbD::PiecewiseFunction::differentiateWRTx()
 Symsptr MbD::PiecewiseFunction::integrateWRT(Symsptr var)
 {
 	assert(xx == var);
+	auto simple = simplified();
+	auto answer = std::make_shared<Integral>();
+	answer->xx = var;
+	answer->integrand = simple;
 	auto integrals = std::make_shared<std::vector<Symsptr>>();
-	std::transform(functions->begin(),
-		functions->end(),
-		std::back_inserter(*integrals),
-		[var](auto& func) { return func->integrateWRT(var); }
-	);
+	for (const auto& func : *functions) {
+		integrals->push_back(func->integrateWRT(var));
+	}
 	for (int i = 0; i < (int)transitions->size(); i++)
 	{
 		auto x = transitions->at(i)->getValue();
-		auto fi = integrals->at(i)->getValue(x);
-		auto fi1 = integrals->at(i + 1)->getValue(x);
+		auto oldvalue = var->getValue();
+		var->setValue(x);
+		auto fi = integrals->at(i)->getValue();
+		auto fi1 = integrals->at((size_t)i + 1)->getValue();
+		var->setValue(oldvalue);
 		auto integConstant = fi - fi1;
-		integrals->at(i + 1)->integrationConstant(integConstant);
+		integrals->at((size_t)i + 1)->setIntegrationConstant(integConstant);
 		noop();
 	}
-	return std::make_shared<PiecewiseFunction>(var, integrals, transitions);
+	answer->expression = std::make_shared<PiecewiseFunction>(var, integrals, transitions);
+	return answer;
 }
 
 double MbD::PiecewiseFunction::getValue()
@@ -100,6 +108,11 @@ void MbD::PiecewiseFunction::arguments(Symsptr args)
 	xx = arguments->at(0);
 	functions = arguments->at(1)->getTerms();
 	transitions = arguments->at(2)->getTerms();
+}
+
+Symsptr MbD::PiecewiseFunction::clonesptr()
+{
+	return std::make_shared<PiecewiseFunction>(*this);
 }
 
 std::ostream& MbD::PiecewiseFunction::printOn(std::ostream& s) const

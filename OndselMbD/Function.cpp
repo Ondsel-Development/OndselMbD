@@ -7,6 +7,7 @@
  ***************************************************************************/
  
 #include "Function.h"
+#include <cassert>
 
 using namespace MbD;
 

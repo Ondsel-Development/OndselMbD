@@ -8,6 +8,7 @@
 #include <fstream>	
 
 #include "ASMTJoint.h"
+#include "Joint.h"
 
 using namespace MbD;
 

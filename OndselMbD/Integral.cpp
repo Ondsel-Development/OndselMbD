@@ -1,4 +1,5 @@
 #include "Integral.h"
+#include <cassert>
 
 using namespace MbD;
 
@@ -35,6 +36,21 @@ Symsptr MbD::Integral::simplifyUntil(Symsptr, std::shared_ptr<std::unordered_set
 	answer->integrand = integrand;
 	answer->integrationConstant = integrationConstant;
 	return answer;
+}
+
+void MbD::Integral::setIntegrationConstant(double integConstant)
+{
+	integrationConstant = sptrConstant(integConstant);
+}
+
+double MbD::Integral::getValue()
+{
+	return expression->getValue() + integrationConstant->getValue();
+}
+
+Symsptr MbD::Integral::clonesptr()
+{
+	return std::make_shared<Integral>(*this);
 }
 
 std::ostream& MbD::Integral::printOn(std::ostream& s) const

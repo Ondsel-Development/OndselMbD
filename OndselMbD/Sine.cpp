@@ -30,6 +30,16 @@ Symsptr MbD::Sine::copyWith(Symsptr arg)
 	return std::make_shared<Sine>(arg);
 }
 
+Symsptr MbD::Sine::clonesptr()
+{
+	return std::make_shared<Sine>(*this);
+}
+
+Symsptr MbD::Sine::integrateWRTx()
+{
+	return std::make_shared<Cosine>(xx);
+}
+
 std::ostream& MbD::Sine::printOn(std::ostream& s) const
 {
 	s << "sin(" << *xx << ")";

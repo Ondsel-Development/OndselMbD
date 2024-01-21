@@ -1029,6 +1029,9 @@
     <ClCompile Include="DifferentialAlgebraicEquationSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MBDynOutputMeter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Abs.h">
@@ -2052,6 +2055,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DifferentialAlgebraicEquationSolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynOutputMeter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

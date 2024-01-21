@@ -10,6 +10,7 @@
 #include "Negative.h"
 #include "Power.h"
 #include "Constant.h"
+#include "Ln.h"
 
 using namespace MbD;
 
@@ -27,6 +28,11 @@ Symsptr MbD::Reciprocal::differentiateWRTx()
 	auto two = sptrConstant(2);
 	auto sq = std::make_shared<Power>(xx, two);
 	return std::make_shared<Negative>(sq);
+}
+
+Symsptr MbD::Reciprocal::integrateWRTx()
+{
+	return std::make_shared<Ln>(xx);
 }
 
 Symsptr MbD::Reciprocal::copyWith(Symsptr arg)

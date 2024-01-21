@@ -29,9 +29,7 @@ namespace MbD {
         void readTotalJointFunction(std::vector<std::string>& args);
         void createASMT() override;
         virtual std::shared_ptr<ASMTJoint> asmtClassNew();
-        std::string asmtFormula();
-        std::string asmtFormula(std::string mbdynFormula);
-        std::string asmtFormulaIntegral();
+        virtual void outputLine(int i, std::ostream& os);
 
         std::string jointString, joint_type, node_1_label, node_2_label;
         std::shared_ptr<MBDynMarker> mkr1, mkr2;

@@ -19,7 +19,9 @@ namespace MbD {
         Sine(Symsptr arg);
         double getValue() override;
         Symsptr differentiateWRTx() override;
+        Symsptr integrateWRTx() override;
         Symsptr copyWith(Symsptr arg) override;
+        Symsptr clonesptr() override;
 
         std::ostream& printOn(std::ostream& s) const override;
 

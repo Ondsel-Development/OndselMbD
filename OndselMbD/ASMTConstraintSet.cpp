@@ -49,12 +49,8 @@ void MbD::ASMTConstraintSet::updateFromMbD()
 	auto rImIeO = mbdJoint->frmI->rmeO()->times(mbdUnts->length);
 	auto aFIO = aFIeO;
 	auto aTIO = aTIeO->plusFullColumn(rImIeO->cross(aFIeO));
-	fxs->push_back(aFIO->at(0));
-	fys->push_back(aFIO->at(1));
-	fzs->push_back(aFIO->at(2));
-	txs->push_back(aTIO->at(0));
-	tys->push_back(aTIO->at(1));
-	tzs->push_back(aTIO->at(2));
+	cFIO->push_back(aFIO);
+	cTIO->push_back(aTIO);
 }
 
 void MbD::ASMTConstraintSet::compareResults(AnalysisType)

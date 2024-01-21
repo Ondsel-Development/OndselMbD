@@ -19,9 +19,11 @@ namespace MbD {
         Negative(Symsptr arg);
         double getValue() override;
         Symsptr differentiateWRTx() override;
+        Symsptr integrateWRTx() override;
         Symsptr expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
         Symsptr simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
         Symsptr copyWith(Symsptr arg) override;
+        Symsptr clonesptr() override;
 
         std::ostream& printOn(std::ostream& s) const override;
 

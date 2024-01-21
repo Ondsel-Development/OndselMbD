@@ -1,6 +1,9 @@
 #include "MBDynInitialValue.h"
 #include "ASMTSimulationParameters.h"
 #include "ASMTAssembly.h"
+#include "MBDynSystem.h"
+#include "MBDynControlData.h"
+#include "MBDynOutputMeter.h"
 
 using namespace MbD;
 
@@ -141,6 +144,11 @@ void MbD::MBDynInitialValue::createASMT()
 	simulationParameters->settend(finalTime);	//tstart == tend Initial Conditions only.
 	simulationParameters->sethmin(1.0e-9);
 	simulationParameters->sethmax(1.0);
+	auto outputMeter = root()->controlData->outputMeter;
+	if (outputMeter) {
+		int nstep = stoi(outputMeter->asmtFormula(outputMeter->formula));
+		timeStep *= nstep;
+	}
 	simulationParameters->sethout(timeStep);
 	simulationParameters->seterrorTol(tolerance);
 	simulationParameters->setmaxIter(maxIterations);

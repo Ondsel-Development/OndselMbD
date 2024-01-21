@@ -163,11 +163,17 @@ void MbD::MBDynSystem::runDYNAMIC()
 	asmtAssembly()->outputFile(debugFile1);
 	std::static_pointer_cast<ASMTAssembly>(asmtItem)->runDYNAMIC();
 	outputFiles();
-	//auto debugFile2 = filename.substr(0, filename.find_last_of('.')) + "debug2.asmt";
-	//asmtAssembly()->outputFile(debugFile2);
+	auto debugFile2 = filename.substr(0, filename.find_last_of('.')) + "debug2.asmt";
+	asmtAssembly()->outputFile(debugFile2);
 }
 
 void MbD::MBDynSystem::outputFiles()
+{
+	outputNodesFile();
+	outputJointsFile();
+}
+
+void MbD::MBDynSystem::outputNodesFile()
 {
 	auto movFile = filename.substr(0, filename.find_last_of('.')) + ".mov";
 	auto asmtAsm = asmtAssembly();
@@ -181,6 +187,22 @@ void MbD::MBDynSystem::outputFiles()
 	{
 		for (auto& node : *nodes) {
 			node->outputLine(i, os);
+		}
+	}
+	os.close();
+}
+
+void MbD::MBDynSystem::outputJointsFile()
+{
+	auto jntFile = filename.substr(0, filename.find_last_of('.')) + ".jnt";
+	auto asmtAsm = asmtAssembly();
+	auto& asmtTimes = asmtAsm->times;
+	std::ofstream os(jntFile);
+	os << std::setprecision(std::numeric_limits<double>::max_digits10);
+	for (int i = 1; i < (int)asmtTimes->size(); i++)
+	{
+		for (auto& joint : *joints) {
+			joint->outputLine(i, os);
 		}
 	}
 	os.close();
@@ -311,6 +333,11 @@ std::vector<std::string> MbD::MBDynSystem::collectStatements(std::vector<std::st
 		statements.push_back(ss.str());
 	}
 	return statements;
+}
+
+MBDynSystem* MbD::MBDynSystem::root()
+{
+	return this;
 }
 
 void MbD::MBDynSystem::initialize()

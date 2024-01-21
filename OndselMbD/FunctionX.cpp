@@ -10,6 +10,8 @@
 #include "Constant.h"
 #include "Sum.h"
 #include "Arguments.h"
+#include "Reciprocal.h"
+#include "Integral.h"
 
 using namespace MbD;
 
@@ -63,10 +65,39 @@ Symsptr MbD::FunctionX::differentiateWRT(Symsptr var)
 	if (this == var.get()) return sptrConstant(1.0);
 	auto dfdx = differentiateWRTx();
 	auto dxdvar = xx->differentiateWRT(var);
-	return Symbolic::times(dfdx, dxdvar);
+	auto answer = Symbolic::times(dfdx, dxdvar);
+	return answer->simplified();
+}
+
+Symsptr MbD::FunctionX::integrateWRT(Symsptr var)
+{
+	//Integration is complex. Build up capabilities with time.
+	if (this == var.get()) assert(false);	//ToDo:
+	auto simple = simplified();
+	auto answer = std::make_shared<Integral>();
+	answer->xx = var;
+	answer->integrand = simple;
+	if (xx == var) {
+		answer->expression = integrateWRTx();
+	}
+	else {
+		auto dxdvar = xx->differentiateWRT(var);
+		assert(dxdvar->isConstant());	//ToDo: for other cases.
+		auto integdx = integrateWRTx();
+		auto reciprocal = std::make_shared<Reciprocal>(dxdvar);
+		auto integral = Symbolic::times(integdx, reciprocal);
+		answer->expression = integral->simplified();
+	}
+	return answer;
 }
 
 Symsptr MbD::FunctionX::differentiateWRTx()
+{
+	assert(false);
+	return Symsptr();
+}
+
+Symsptr MbD::FunctionX::integrateWRTx()
 {
 	assert(false);
 	return Symsptr();
@@ -81,21 +112,6 @@ double MbD::FunctionX::getValue()
 {
 	assert(false);
 	return 0.0;
-}
-
-double MbD::FunctionX::getValue(double arg)
-{
-	double answer;
-	if (xx->isVariable()) {
-		auto oldVal = xx->getValue();
-		xx->setValue(arg);
-		answer = getValue();
-		xx->setValue(oldVal);
-	}
-	else {
-		assert(false);
-	}
-	return answer;
 }
 
 bool MbD::FunctionX::isConstant()

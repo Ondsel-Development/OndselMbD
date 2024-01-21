@@ -11,6 +11,7 @@
 #include <string>
 
 #include "Symbolic.h"
+
 namespace MbD {
     class Variable : public Symbolic
     {

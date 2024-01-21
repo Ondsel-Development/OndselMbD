@@ -36,6 +36,7 @@ namespace MbD {
 		FullColumn(typename std::vector<T>::iterator begin, typename std::vector<T>::iterator end) : FullVector<T>(begin, end) {}
 		FullColumn(std::initializer_list<T> list) : FullVector<T>{ list } {}
 		FColsptr<T> plusFullColumn(FColsptr<T> fullCol);
+		std::shared_ptr<FullColumn<T>> operator+(const std::shared_ptr<FullColumn<T>> fullCol);
 		FColsptr<T> plusFullColumntimes(FColsptr<T> fullCol, double factor);
 		FColsptr<T> minusFullColumn(FColsptr<T> fullCol);
 		FColsptr<T> times(T a);
@@ -60,6 +61,26 @@ namespace MbD {
 	};
 	template<typename T>
 	inline FColsptr<T> FullColumn<T>::plusFullColumn(FColsptr<T> fullCol)
+	{
+		int n = (int)this->size();
+		auto answer = std::make_shared<FullColumn<T>>(n);
+		for (int i = 0; i < n; i++) {
+			answer->at(i) = this->at(i) + fullCol->at(i);
+		}
+		return answer;
+	}
+	template<>
+	inline std::shared_ptr<FullColumn<double>> FullColumn<double>::operator+(const std::shared_ptr<FullColumn<double>> fullCol)
+	{
+		int n = (int)this->size();
+		auto answer = std::make_shared<FullColumn<double>>(n);
+		for (int i = 0; i < n; i++) {
+			answer->at(i) = this->at(i) + fullCol->at(i);
+		}
+		return answer;
+	}
+	template<typename T>
+	inline std::shared_ptr<FullColumn<T>> FullColumn<T>::operator+(const std::shared_ptr<FullColumn<T>> fullCol)
 	{
 		int n = (int)this->size();
 		auto answer = std::make_shared<FullColumn<T>>(n);

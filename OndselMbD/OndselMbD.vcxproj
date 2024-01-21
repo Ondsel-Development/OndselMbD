@@ -368,6 +368,7 @@
     <ClCompile Include="MBDynJoint.cpp" />
     <ClCompile Include="MBDynMarker.cpp" />
     <ClCompile Include="MBDynNode.cpp" />
+    <ClCompile Include="MBDynOutputMeter.cpp" />
     <ClCompile Include="MBDynPrismaticJoint.cpp" />
     <ClCompile Include="MBDynReference.cpp" />
     <ClCompile Include="MBDynRevoluteHingeJoint.cpp" />
@@ -710,6 +711,7 @@
     <ClInclude Include="MBDynJoint.h" />
     <ClInclude Include="MBDynMarker.h" />
     <ClInclude Include="MBDynNode.h" />
+    <ClInclude Include="MBDynOutputMeter.h" />
     <ClInclude Include="MBDynPrismaticJoint.h" />
     <ClInclude Include="MBDynReference.h" />
     <ClInclude Include="MBDynRevoluteHingeJoint.h" />

@@ -10,6 +10,8 @@
 #include "MBDynBlock.h"
 
 namespace MbD {
+	class MBDynOutputMeter;
+
 	class MBDynControlData : public MBDynBlock
 	{
 	public:
@@ -20,6 +22,7 @@ namespace MbD {
 		void readOmegaRotates(std::vector<std::string>& lines);
 		void readPrint(std::vector<std::string>& lines);
 		void readInitialStiffness(std::vector<std::string>& lines);
+		void readOutputMeter(std::vector<std::string>& lines);
 		void readStructuralNodes(std::vector<std::string>& lines);
 		void readRigidBodies(std::vector<std::string>& lines);
 		void readJoints(std::vector<std::string>& lines);
@@ -30,6 +33,7 @@ namespace MbD {
 		std::string omegaRotates = "no";
 		std::string print = "none";
 		std::string initialStiffness = "1.0, 1.0";
+		std::shared_ptr<MBDynOutputMeter> outputMeter;
 		int structuralNodes = -1, rigidBodies = -1, joints = -1;
 	};
 }

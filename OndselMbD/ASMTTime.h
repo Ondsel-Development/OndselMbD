@@ -23,6 +23,7 @@ namespace MbD {
         Symsptr simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
         bool isVariable() override;
         void setValue(double val) override;
+        double getValue() override;
 
     };
 }

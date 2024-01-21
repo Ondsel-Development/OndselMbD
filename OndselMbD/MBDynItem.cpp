@@ -16,7 +16,7 @@ using namespace MbD;
 
 MBDynSystem* MbD::MBDynItem::root()
 {
-	return nullptr;
+	return owner->root();
 }
 
 void MbD::MBDynItem::initialize()
@@ -433,6 +433,79 @@ std::string MbD::MBDynItem::readStringOffTop(std::vector<std::string>& args)
 	std::string str;
 	iss >> str;
 	return str;
+}
+
+FRowDsptr MbD::MBDynItem::readRowOfDoubles(std::string& line)
+{
+	return FRowDsptr();
+}
+
+FColDsptr MbD::MBDynItem::readColumnOfDoubles(std::string& line)
+{
+	return FColDsptr();
+}
+
+double MbD::MBDynItem::readDoubleOffTop(std::vector<std::string>& args)
+{
+	auto iss = std::istringstream(args.at(0));
+	args.erase(args.begin());
+	double d;
+	iss >> d;
+	return d;
+}
+
+double MbD::MBDynItem::readDouble(std::string& line)
+{
+	return 0.0;
+}
+
+int MbD::MBDynItem::readInt(std::string& line)
+{
+	return 0;
+}
+
+bool MbD::MBDynItem::readBool(std::string& line)
+{
+	return false;
+}
+
+std::string MbD::MBDynItem::readString(std::string& line)
+{
+	return std::string();
+}
+
+std::string MbD::MBDynItem::asmtFormula(std::string mbdynFormula)
+{
+	auto ss = std::stringstream();
+	std::string drivestr = "model::drive";
+	size_t previousPos = 0;
+	auto pos = mbdynFormula.find(drivestr);
+	ss << mbdynFormula.substr(previousPos, pos - previousPos);
+	while (pos != std::string::npos) {
+		previousPos = pos;
+		pos = mbdynFormula.find('(', pos + 1);
+		previousPos = pos;
+		pos = mbdynFormula.find(',', pos + 1);
+		auto driveName = mbdynFormula.substr(previousPos + 1, pos - previousPos - 1);
+		driveName = readToken(driveName);
+		previousPos = pos;
+		pos = mbdynFormula.find(')', pos + 1);
+		auto varName = mbdynFormula.substr(previousPos + 1, pos - previousPos - 1);
+		varName = readToken(varName);
+		//Insert drive mbdynFormula
+		ss << formulaFromDrive(driveName, varName);
+		previousPos = pos;
+		pos = mbdynFormula.find(drivestr, pos + 1);
+		ss << mbdynFormula.substr(previousPos + 1, pos - previousPos);
+	}
+	return ss.str();
+}
+
+std::string MbD::MBDynItem::asmtFormulaIntegral(std::string mbdynFormula)
+{
+	auto ss = std::stringstream();
+	ss << "integral(time, " << asmtFormula(mbdynFormula) << ")";
+	return ss.str();
 }
 
 void MbD::MBDynItem::readName(std::vector<std::string>& args)

@@ -14,12 +14,12 @@
 #include <ostream>
 
 #include "MbDMath.h"
-#include "System.h"
-#include "Units.h"
-//#include "Constant.h"
 
 namespace MbD {
+	class System;
+	class Units;
 	class Constant;
+	class Variable;
 	class Symbolic;
 	using Symsptr = std::shared_ptr<Symbolic>;
 
@@ -48,13 +48,12 @@ namespace MbD {
 		virtual std::shared_ptr<std::vector<Symsptr>> getTerms();
 		virtual void addTerm(Symsptr trm);
 		virtual double getValue();
-		virtual double getValue(double arg);
 		virtual void setValue(double val);
 		virtual void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits);
 		virtual Symsptr clonesptr();
 		std::shared_ptr<Constant> sptrConstant(double value);
 		virtual bool isVariable();
-		virtual void integrationConstant(double integConstant);
+		virtual void setIntegrationConstant(double integConstant);
 
 		virtual std::ostream& printOn(std::ostream& s) const;
 		friend std::ostream& operator<<(std::ostream& s, const Symbolic& sym)

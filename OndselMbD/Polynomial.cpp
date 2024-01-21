@@ -11,6 +11,7 @@
 #include "Polynomial.h"
 #include "Constant.h"
 #include "Sum.h"
+#include "Integral.h"
 
 using namespace MbD;
 
@@ -78,6 +79,10 @@ Symsptr MbD::Polynomial::differentiateWRTx()
 Symsptr MbD::Polynomial::integrateWRT(Symsptr var)
 {
 	assert(xx == var);
+	auto simple = simplified();
+	auto answer = std::make_shared<Integral>();
+	answer->xx = var;
+	answer->integrand = simple;
 	auto newCoeffs = std::make_shared<std::vector<Symsptr>>();
 	newCoeffs->push_back(sptrConstant(0.0));
 	for (int i = 0; i < (int)coeffs->size(); i++)
@@ -85,7 +90,8 @@ Symsptr MbD::Polynomial::integrateWRT(Symsptr var)
 		auto newCoeff = coeffs->at(i)->getValue() / (i + 1);
 		newCoeffs->push_back(sptrConstant(newCoeff));
 	}
-	return std::make_shared<Polynomial>(var, newCoeffs);
+	answer->expression = std::make_shared<Polynomial>(var, newCoeffs);
+	return answer;
 }
 
 double MbD::Polynomial::getValue()
@@ -99,12 +105,6 @@ double MbD::Polynomial::getValue()
 		xpower *= xvalue;
 	}
 	return answer;
-}
-
-void MbD::Polynomial::integrationConstant(double integConstant)
-{
-	auto coeff0 = coeffs->at(0);
-	coeff0->setValue(coeff0->getValue() + integConstant);
 }
 
 std::ostream& MbD::Polynomial::printOn(std::ostream& s) const

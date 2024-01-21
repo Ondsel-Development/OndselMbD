@@ -11,8 +11,7 @@ void MbD::MBDynDrive::parseMBDyn(std::string line)
 	auto iss = std::istringstream(arguments.at(0));
 	iss >> name;
 	arguments.erase(arguments.begin());
-	assert(arguments.at(0).find("name") != std::string::npos);
-	arguments.erase(arguments.begin());
+	assert(readStringOffTop(arguments) == "name");
 	iss = std::istringstream(arguments.at(0));
 	iss >> driveName;
 	driveName = std::regex_replace(driveName, std::regex("\""), "");
@@ -140,6 +139,16 @@ void MbD::MBDynDrive::readFunction(std::vector<std::string>& args)
 		ss << "piecewise(time, functions(" << f1 << ", " << f2 << ", " << f3 << "), transitions(" << t1 << ", " << t2 << "))";
 		formula = ss.str();
 	}
+	else if (str == "meter") {
+		auto initial_time = readDoubleOffTop(args);
+		assert(initial_time == 0.0);
+		auto final_time = readStringOffTop(args);
+		assert(final_time == "forever");
+		auto steps = readStringOffTop(args);
+		assert(steps == "steps");
+		auto steps_between_spikes = readStringOffTop(args);
+		formula = steps_between_spikes;
+		}
 	else {
 		assert(false);
 	}

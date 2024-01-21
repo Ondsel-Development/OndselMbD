@@ -12,6 +12,7 @@
 #include "CREATE.h"
 #include "GESpMatParPvMarkoFast.h"
 #include "DifferentiatedGeneralSpline.h"
+#include "Numeric.h"
 
 using namespace MbD;
 

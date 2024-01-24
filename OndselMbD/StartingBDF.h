@@ -21,8 +21,8 @@ namespace MbD {
         void initialize() override;
         void initializeLocally() override;
         void formTaylorMatrix() override;
-        void setorder(int o) override;
-        FColDsptr derivativepresentpastpresentDerivativepastDerivative(int n,
+        void setorder(size_t o) override;
+        FColDsptr derivativepresentpastpresentDerivativepastDerivative(size_t n,
             FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast,
             FColDsptr ydot, std::shared_ptr<std::vector<FColDsptr>> ydotpast);
 

@@ -293,6 +293,14 @@ void MbD::ASMTSpatialContainer::createMbD(std::shared_ptr<System> mbdSys, std::s
 	}
 }
 
+void MbD::ASMTSpatialContainer::updateMbDFromPosition3D(FColDsptr vec)
+{
+	position3D = vec;
+	auto mbdPart = std::static_pointer_cast<Part>(mbdObject);
+	auto mbdUnits = this->mbdUnits();
+	mbdPart->qX(rOcmO()->times(1.0 / mbdUnits->length));
+}
+
 FColDsptr MbD::ASMTSpatialContainer::rOcmO()
 {
 	auto& rOPO = position3D;
@@ -464,7 +472,7 @@ void MbD::ASMTSpatialContainer::addMarker(std::shared_ptr<ASMTMarker> marker)
 	refPoint->addMarker(marker);
 }
 
-std::string MbD::ASMTSpatialContainer::generateUniqueMarkerName()
+std::string MbD::ASMTSpatialContainer::generateUniqueMarkerName() const
 {
 	auto aItemList = markerList();
 	auto markerNames = std::vector<std::string>();
@@ -483,17 +491,17 @@ std::string MbD::ASMTSpatialContainer::generateUniqueMarkerName()
 	return ss.str();
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<ASMTMarker>>> MbD::ASMTSpatialContainer::markerList()
+std::shared_ptr<std::vector<std::shared_ptr<ASMTMarker>>> MbD::ASMTSpatialContainer::markerList() const
 {
 	auto markers = std::make_shared<std::vector<std::shared_ptr<ASMTMarker>>>();
 	for (auto& refPoint : *refPoints) {
-		auto refmarkers = refPoint->markers;
+		auto& refmarkers = refPoint->markers;
 		markers->insert(markers->end(), refmarkers->begin(), refmarkers->end());
 	}
 	return markers;
 }
 
-void MbD::ASMTSpatialContainer::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTSpatialContainer::storeOnLevel(std::ofstream& os, size_t level)
 {
 	ASMTSpatialItem::storeOnLevel(os, level);
 	storeOnLevelVelocity(os, level + 1);
@@ -549,7 +557,7 @@ void MbD::ASMTSpatialContainer::setOmega3D(double a, double b, double c)
 	omega3D = std::make_shared<FullColumn<double>>(ListD{ a, b, c });
 }
 
-void MbD::ASMTSpatialContainer::storeOnLevelVelocity(std::ofstream& os, int level)
+void MbD::ASMTSpatialContainer::storeOnLevelVelocity(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "Velocity3D");
 	if (vxs == nullptr || vxs->empty()) {
@@ -561,7 +569,7 @@ void MbD::ASMTSpatialContainer::storeOnLevelVelocity(std::ofstream& os, int leve
 	}
 }
 
-void MbD::ASMTSpatialContainer::storeOnLevelOmega(std::ofstream& os, int level)
+void MbD::ASMTSpatialContainer::storeOnLevelOmega(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "Omega3D");
 	if (omexs == nullptr || omexs->empty()) {
@@ -573,7 +581,7 @@ void MbD::ASMTSpatialContainer::storeOnLevelOmega(std::ofstream& os, int level)
 	}
 }
 
-void MbD::ASMTSpatialContainer::storeOnLevelRefPoints(std::ofstream& os, int level)
+void MbD::ASMTSpatialContainer::storeOnLevelRefPoints(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "RefPoints");
 	for (auto& refPoint : *refPoints)
@@ -582,7 +590,7 @@ void MbD::ASMTSpatialContainer::storeOnLevelRefPoints(std::ofstream& os, int lev
 	}
 }
 
-void MbD::ASMTSpatialContainer::storeOnLevelRefCurves(std::ofstream& os, int level)
+void MbD::ASMTSpatialContainer::storeOnLevelRefCurves(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "RefCurves");
 	for (auto& refCurve : *refCurves)
@@ -591,7 +599,7 @@ void MbD::ASMTSpatialContainer::storeOnLevelRefCurves(std::ofstream& os, int lev
 	}
 }
 
-void MbD::ASMTSpatialContainer::storeOnLevelRefSurfaces(std::ofstream& os, int level)
+void MbD::ASMTSpatialContainer::storeOnLevelRefSurfaces(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "RefSurfaces");
 	for (auto& refSurface : *refSurfaces)
@@ -603,116 +611,116 @@ void MbD::ASMTSpatialContainer::storeOnLevelRefSurfaces(std::ofstream& os, int l
 void MbD::ASMTSpatialContainer::storeOnTimeSeries(std::ofstream& os)
 {
 	os << "X\t";
-	for (int i = 0; i < (int)xs->size(); i++)
+	for (size_t i = 0; i < xs->size(); i++)
 	{
 		os << xs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "Y\t";
-	for (int i = 0; i < (int)ys->size(); i++)
+	for (size_t i = 0; i < ys->size(); i++)
 	{
 		os << ys->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "Z\t";
-	for (int i = 0; i < (int)zs->size(); i++)
+	for (size_t i = 0; i < zs->size(); i++)
 	{
 		os << zs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "Bryantx\t";
-	for (int i = 0; i < (int)bryxs->size(); i++)
+	for (size_t i = 0; i < bryxs->size(); i++)
 	{
 		os << bryxs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "Bryanty\t";
-	for (int i = 0; i < (int)bryys->size(); i++)
+	for (size_t i = 0; i < bryys->size(); i++)
 	{
 		os << bryys->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "Bryantz\t";
-	for (int i = 0; i < (int)bryzs->size(); i++)
+	for (size_t i = 0; i < bryzs->size(); i++)
 	{
 		os << bryzs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "VX\t";
-	for (int i = 0; i < (int)vxs->size(); i++)
+	for (size_t i = 0; i < vxs->size(); i++)
 	{
 		os << vxs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "VY\t";
-	for (int i = 0; i < (int)vys->size(); i++)
+	for (size_t i = 0; i < vys->size(); i++)
 	{
 		os << vys->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "VZ\t";
-	for (int i = 0; i < (int)vzs->size(); i++)
+	for (size_t i = 0; i < vzs->size(); i++)
 	{
 		os << vzs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "OmegaX\t";
-	for (int i = 0; i < (int)omexs->size(); i++)
+	for (size_t i = 0; i < omexs->size(); i++)
 	{
 		os << omexs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "OmegaY\t";
-	for (int i = 0; i < (int)omeys->size(); i++)
+	for (size_t i = 0; i < omeys->size(); i++)
 	{
 		os << omeys->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "OmegaZ\t";
-	for (int i = 0; i < (int)omezs->size(); i++)
+	for (size_t i = 0; i < omezs->size(); i++)
 	{
 		os << omezs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "AX\t";
-	for (int i = 0; i < (int)axs->size(); i++)
+	for (size_t i = 0; i < axs->size(); i++)
 	{
 		os << axs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "AY\t";
-	for (int i = 0; i < (int)ays->size(); i++)
+	for (size_t i = 0; i < ays->size(); i++)
 	{
 		os << ays->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "AZ\t";
-	for (int i = 0; i < (int)azs->size(); i++)
+	for (size_t i = 0; i < azs->size(); i++)
 	{
 		os << azs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "AlphaX\t";
-	for (int i = 0; i < (int)alpxs->size(); i++)
+	for (size_t i = 0; i < alpxs->size(); i++)
 	{
 		os << alpxs->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "AlphaY\t";
-	for (int i = 0; i < (int)alpys->size(); i++)
+	for (size_t i = 0; i < alpys->size(); i++)
 	{
 		os << alpys->at(i) << '\t';
 	}
 	os << std::endl;
 	os << "AlphaZ\t";
-	for (int i = 0; i < (int)alpzs->size(); i++)
+	for (size_t i = 0; i < alpzs->size(); i++)
 	{
 		os << alpzs->at(i) << '\t';
 	}
 	os << std::endl;
 }
 
-FColDsptr MbD::ASMTSpatialContainer::getVelocity3D(size_t i)
+FColDsptr MbD::ASMTSpatialContainer::getVelocity3D(size_t i) const
 {
 	auto vec3 = std::make_shared<FullColumn<double>>(3);
 	vec3->atiput(0, vxs->at(i));
@@ -721,7 +729,7 @@ FColDsptr MbD::ASMTSpatialContainer::getVelocity3D(size_t i)
 	return vec3;
 }
 
-FColDsptr MbD::ASMTSpatialContainer::getOmega3D(size_t i)
+FColDsptr MbD::ASMTSpatialContainer::getOmega3D(size_t i) const
 {
 	auto vec3 = std::make_shared<FullColumn<double>>(3);
 	vec3->atiput(0, omexs->at(i));

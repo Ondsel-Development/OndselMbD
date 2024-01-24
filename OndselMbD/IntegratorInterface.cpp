@@ -49,24 +49,7 @@ void IntegratorInterface::logString(std::string& str)
 	system->logString(str);
 }
 
-void IntegratorInterface::run()
-{
-	this->preRun();
-	this->initializeLocally();
-	this->initializeGlobally();
-	if (hout > (4 * std::numeric_limits<double>::epsilon()) && (direction * tout < (direction * (tend + (0.1 * direction * hout))))) {
-		integrator->run();
-		auto startingintegrator = std::dynamic_pointer_cast<StartingBasicDAEIntegrator>(integrator);
-		auto normalIntegrator = std::make_shared<NormalBasicDAEIntegrator>(startingintegrator);
-		integrator = normalIntegrator;
-		integrator->run();
-	}
-	this->finalize();
-	this->reportStats();
-	this->postRun();
-}
-
-int IntegratorInterface::orderMax()
+size_t IntegratorInterface::orderMax() const
 {
 	return system->orderMax;
 }

@@ -44,7 +44,7 @@ void PosICNewtonRaphson::run()
 void MbD::PosICNewtonRaphson::iterate()
 {
 	//Keep for debugging
-	iterNo = -1;
+	iterNo = SIZE_MAX;
 	this->fillY();
 	this->calcyNorm();
 	yNorms->push_back(yNorm);
@@ -78,7 +78,7 @@ void PosICNewtonRaphson::assignEquationNumbers()
 	auto essentialConstraints = system->essentialConstraints();
 	auto displacementConstraints = system->displacementConstraints();
 	auto perpendicularConstraints = system->perpendicularConstraints();
-	int eqnNo = 0;
+	size_t eqnNo = 0;
 	for (auto& part : *parts) {
 		part->iqX(eqnNo);
 		eqnNo = eqnNo + 3;
@@ -113,7 +113,7 @@ void PosICNewtonRaphson::assignEquationNumbers()
 	nEqns = eqnNo;	//C++ uses index 0.
 	n = nEqns;
 	auto rangelimits = { lastEssenConEqnNo + 1, lastDispConEqnNo + 1, lastEqnNo + 1 };
-	pivotRowLimits = std::make_shared<std::vector<int>>(rangelimits);
+	pivotRowLimits = std::make_shared<std::vector<size_t>>(rangelimits);
 }
 
 bool PosICNewtonRaphson::isConverged()

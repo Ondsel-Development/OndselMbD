@@ -33,7 +33,7 @@ void MbD::ASMTMotion::initMarkers()
 {
 }
 
-void ASMTMotion::storeOnLevel(std::ofstream&, int)
+void ASMTMotion::storeOnLevel(std::ofstream&, size_t)
 {
 	assert(false);
 }

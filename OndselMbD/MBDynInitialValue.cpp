@@ -146,7 +146,7 @@ void MbD::MBDynInitialValue::createASMT()
 	simulationParameters->sethmax(1.0);
 	auto outputMeter = root()->controlData->outputMeter;
 	if (outputMeter) {
-		int nstep = stoi(outputMeter->asmtFormula(outputMeter->formula));
+		size_t nstep = stoi(outputMeter->asmtFormula(outputMeter->formula));
 		timeStep *= nstep;
 	}
 	simulationParameters->sethout(timeStep);

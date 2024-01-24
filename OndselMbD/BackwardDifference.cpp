@@ -11,22 +11,22 @@
 
 using namespace MbD;
 
-FColDsptr MbD::BackwardDifference::derivativepresentpast(int deriv, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast)
+FColDsptr MbD::BackwardDifference::derivativepresentpast(size_t deriv, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast)
 {
 	//"Answer ith derivative given present value and past values."
 
 	if (deriv == 0) { return y->copy(); }
 	auto series = std::make_shared<FullRow<FColDsptr>>(deriv + 1);
 	series->atiput(0, y);
-	for (int i = 1; i < deriv + 1; i++)
+	for (size_t i = 1; i < deriv + 1; i++)
 	{
 		series->atiput(i, (ypast->at(i - 1)));
 	}
 
-	auto& coeffs = operatorMatrix->at((size_t)deriv - 1);
-	int n = (int)coeffs->size();
+	auto& coeffs = operatorMatrix->at(deriv - 1);
+	size_t n = coeffs->size();
 	auto answer = series->at(0)->times(coeffs->at(0));
-	for (int i = 1; i < n; i++) {
+	for (size_t i = 1; i < n; i++) {
 		answer->equalSelfPlusFullVectortimes(series->at(i), coeffs->at(i));
 	}
 	return answer;
@@ -44,7 +44,7 @@ void MbD::BackwardDifference::formTaylorMatrix()
 
 	instantiateTaylorMatrix();
 	formDegenerateTaylorRow(0);
-	for (int i = 1; i < order + 1; i++)
+	for (size_t i = 1; i < order + 1; i++)
 	{
 		formTaylorRowwithTimeNodederivative(i, i - 1, 0);
 	}
@@ -55,13 +55,13 @@ double MbD::BackwardDifference::pvdotpv()
 	return operatorMatrix->at(1)->at(0);
 }
 
-FColDsptr MbD::BackwardDifference::derivativepresentpastpresentDerivativepastDerivative(int n,
+FColDsptr MbD::BackwardDifference::derivativepresentpastpresentDerivativepastDerivative(size_t n,
 	FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast, FColDsptr ydot, std::shared_ptr<std::vector<FColDsptr>> ydotpast)
 {
 	return derivativepresentpast(n, y, ypast);
 }
 
-FColDsptr MbD::BackwardDifference::derivativewith(int deriv, std::shared_ptr<std::vector<FColDsptr>> series)
+FColDsptr MbD::BackwardDifference::derivativewith(size_t deriv, std::shared_ptr<std::vector<FColDsptr>> series)
 {
 	//"Answer ith derivative given present value and past values in series."
 	if (deriv == 0) {

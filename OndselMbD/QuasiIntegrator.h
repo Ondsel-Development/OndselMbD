@@ -21,6 +21,7 @@ namespace MbD {
         void preRun() override;
         void initialize() override;
         void run() override;
+        void reportStats() override;
         void preFirstStep() override;
         void postFirstStep() override;
         void preStep() override;
@@ -34,6 +35,7 @@ namespace MbD {
         void postStep() override;
         void postRun() override;
         virtual void useTrialStepStats(std::shared_ptr<SolverStatistics> stats);
+        void useQuasiStepStats(std::shared_ptr<SolverStatistics> stats) override;
 
     };
 }

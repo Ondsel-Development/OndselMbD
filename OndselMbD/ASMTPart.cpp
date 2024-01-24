@@ -123,7 +123,7 @@ void MbD::ASMTPart::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Un
 	if (isFixed) std::static_pointer_cast<Part>(mbdObject)->asFixed();
 }
 
-void MbD::ASMTPart::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTPart::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "Part");
 	storeOnLevelName(os, level + 1);
@@ -138,7 +138,7 @@ void MbD::ASMTPart::storeOnLevel(std::ofstream& os, int level)
 	storeOnLevelRefSurfaces(os, level + 1);
 }
 
-void MbD::ASMTPart::storeOnLevelMassMarker(std::ofstream& os, int level) const
+void MbD::ASMTPart::storeOnLevelMassMarker(std::ofstream& os, size_t level) const
 {
 	principalMassMarker->storeOnLevel(os, level);
 }

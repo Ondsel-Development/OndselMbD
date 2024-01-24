@@ -29,7 +29,7 @@ double MbD::StableStartingBDF::pvdotpv()
 
 	auto& coeffs = operatorMatrix->at(0);
 	auto sum = 0.0;
-	for (int i = 0; i < order - 1; i++)
+	for (size_t i = 0; i < order - 1; i++)
 	{
 		sum -= coeffs->at(i);
 	}
@@ -47,20 +47,20 @@ void MbD::StableStartingBDF::formTaylorMatrix()
 	//"
 
 	instantiateTaylorMatrix();
-	for (int i = 0; i < order - 1; i++)
+	for (size_t i = 0; i < order - 1; i++)
 	{
 		formTaylorRowwithTimeNodederivative(i, i, 0);
 	}
 	formTaylorRowwithTimeNodederivative(order - 1, order - 2, 1);
 }
 
-void MbD::StableStartingBDF::setorder(int o)
+void MbD::StableStartingBDF::setorder(size_t o)
 {
 	//"order is controlled by iStep."
 	if ((order != o) && (order != o + 1)) throw std::runtime_error("iStep and order must be consistent.");
 }
 
-void MbD::StableStartingBDF::setiStep(int i)
+void MbD::StableStartingBDF::setiStep(size_t i)
 {
 	//"iStep is the current step of interest."
 	//"iStep must increase consecutively."
@@ -75,18 +75,18 @@ void MbD::StableStartingBDF::setiStep(int i)
 	}
 }
 
-FColDsptr MbD::StableStartingBDF::derivativepresentpastpresentDerivativepastDerivative(int deriv,
+FColDsptr MbD::StableStartingBDF::derivativepresentpastpresentDerivativepastDerivative(size_t deriv,
 	FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast,
 	FColDsptr ydot, std::shared_ptr<std::vector<FColDsptr>> ydotpast)
 {
 	if (deriv == 0) return y->clonesptr();
 	auto series = std::make_shared<std::vector<FColDsptr>>(order);
-	for (int j = 0; j < order - 1; j++)
+	for (size_t j = 0; j < order - 1; j++)
 	{
 		series->at(j) = ypast->at(j)->minusFullColumn(y);
 	}
-	series->at((size_t)order - 1) = ydotpast->at((size_t)order - 2);
-	auto coeffs = operatorMatrix->at((size_t)deriv - 1);
+	series->at(order - 1) = ydotpast->at(order - 2);
+	auto& coeffs = operatorMatrix->at(deriv - 1);
 	auto answer = coeffs->dot(series);
 	return std::static_pointer_cast<FullColumn<double>>(answer);
 }

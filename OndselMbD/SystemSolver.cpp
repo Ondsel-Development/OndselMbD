@@ -29,6 +29,7 @@
 #include "VelICKineSolver.h"
 #include "AccICKineNewtonRaphson.h"
 #include "DynIntegrator.h"
+#include "PosICDragNewtonRaphson.h"
 
 using namespace MbD;
 
@@ -165,6 +166,18 @@ void SystemSolver::runBasicKinematic()
 	}
 }
 
+void SystemSolver::runPreDrag()
+{
+	initializeLocally();
+	initializeGlobally();
+	runPosIC();
+}
+
+void MbD::SystemSolver::runDragStep(std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts)
+{
+	runPosICDrag(dragParts);
+}
+
 void SystemSolver::runQuasiKinematic()
 {
 	try {
@@ -206,6 +219,15 @@ void SystemSolver::runVelKine()
 void SystemSolver::runAccKine()
 {
 	icTypeSolver = CREATE<AccKineNewtonRaphson>::With();
+	icTypeSolver->setSystem(this);
+	icTypeSolver->run();
+}
+
+void MbD::SystemSolver::runPosICDrag(std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts)
+{
+	auto newtonRaphson = PosICDragNewtonRaphson::With();
+	newtonRaphson->setdragParts(dragParts);
+	icTypeSolver = newtonRaphson;
 	icTypeSolver->setSystem(this);
 	icTypeSolver->run();
 }
@@ -388,7 +410,7 @@ void SystemSolver::time(double t)
 
 void MbD::SystemSolver::useKineTrialStepStats(std::shared_ptr<SolverStatistics> stats)
 {
-	assert(false);
+	system->useKineTrialStepStats(stats);
 }
 
 void MbD::SystemSolver::useDynTrialStepStats(std::shared_ptr<SolverStatistics> stats)

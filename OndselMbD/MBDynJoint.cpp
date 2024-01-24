@@ -236,7 +236,7 @@ std::shared_ptr<ASMTJoint> MbD::MBDynJoint::asmtClassNew()
 	return std::make_shared<ASMTJoint>();
 }
 
-void MbD::MBDynJoint::outputLine(int i, std::ostream& os)
+void MbD::MBDynJoint::outputLine(size_t i, std::ostream& os)
 {
 	auto id = nodeidAt(name);
 	auto asmtJoint = std::static_pointer_cast<ASMTJoint>(asmtItem);

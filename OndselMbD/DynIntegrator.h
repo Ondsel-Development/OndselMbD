@@ -29,7 +29,7 @@ namespace MbD {
         void fillYdot(FColDsptr ydot);
         void incrementTime(double t) override;
         void interpolateAt(double t) override;
-        int iterMax() override;
+        size_t iterMax() override;
         void postDAECorrector();
         void postDAECorrectorIteration();
         void postDAEFirstStep();

@@ -32,6 +32,6 @@ namespace MbD {
 
         FRowDsptr pGpEI;
         FMatDsptr ppGpEIpEI;
-        int iqEI = -1;
+        size_t iqEI = SIZE_MAX;
     };
 }

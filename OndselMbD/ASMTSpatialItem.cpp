@@ -49,7 +49,7 @@ void MbD::ASMTSpatialItem::readRotationMatrix(std::vector<std::string>& lines)
 	assert(lines[0].find("RotationMatrix") != std::string::npos);
 	lines.erase(lines.begin());
 	rotationMatrix = std::make_shared<FullMatrix<double>>(3, 0);
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto& row = rotationMatrix->at(i);
 		std::istringstream iss(lines[0]);
@@ -94,13 +94,13 @@ void MbD::ASMTSpatialItem::setRotationMatrix(double v11, double v12, double v13,
 		});
 }
 
-void MbD::ASMTSpatialItem::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTSpatialItem::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelPosition(os, level + 1);
 	storeOnLevelRotationMatrix(os, level + 1);
 }
 
-void MbD::ASMTSpatialItem::storeOnLevelPosition(std::ofstream& os, int level)
+void MbD::ASMTSpatialItem::storeOnLevelPosition(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "Position3D");
 	if (xs == nullptr || xs->empty()) {
@@ -112,18 +112,18 @@ void MbD::ASMTSpatialItem::storeOnLevelPosition(std::ofstream& os, int level)
 	}
 }
 
-void MbD::ASMTSpatialItem::storeOnLevelRotationMatrix(std::ofstream& os, int level)
+void MbD::ASMTSpatialItem::storeOnLevelRotationMatrix(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "RotationMatrix");
 	if (xs == nullptr || xs->empty()) {
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			storeOnLevelArray(os, level + 1, *rotationMatrix->at(i));
 		}
 	}
 	else {
 		auto rotMat = getRotationMatrix(0);
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			storeOnLevelArray(os, level + 1, *rotMat->at(i));
 		}

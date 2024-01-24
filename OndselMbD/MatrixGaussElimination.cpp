@@ -10,7 +10,7 @@
 
 using namespace MbD;
 
-void MbD::MatrixGaussElimination::forwardEliminateWithPivot(int p)
+void MbD::MatrixGaussElimination::forwardEliminateWithPivot(size_t p)
 {
 	assert(false);
 }

@@ -31,7 +31,7 @@ namespace MbD {
         //void interpolateAt(double t) override;
         void postRun() override;
         void runInitialConditionTypeSolution() override;
-        void iStep(int i) override;
+        void iStep(size_t i) override;
         void selectOrder() override;
         void checkForDiscontinuity() override;
         double suggestSmallerOrAcceptFirstStepSize(double hnew) override;
@@ -45,8 +45,9 @@ namespace MbD {
         virtual void postDAEOutput();
         void useTrialStepStats(std::shared_ptr<SolverStatistics> stats) override;
         void useDAEStepStats(std::shared_ptr<SolverStatistics> stats) override;
+        void run() override;
 
-        int neqn, ncon;
+        size_t neqn, ncon;
 
     };
 }

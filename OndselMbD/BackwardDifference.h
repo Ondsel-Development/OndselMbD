@@ -15,13 +15,13 @@ namespace MbD {
     {
         //
     public:
-        FColDsptr derivativepresentpast(int order, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast) override;
+        FColDsptr derivativepresentpast(size_t order, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast) override;
         void formTaylorMatrix() override;
         double pvdotpv() override;
-        FColDsptr derivativepresentpastpresentDerivativepastDerivative(int n,
+        FColDsptr derivativepresentpastpresentDerivativepastDerivative(size_t n,
             FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast,
             FColDsptr ydot, std::shared_ptr<std::vector<FColDsptr>> ydotpast);
-        FColDsptr derivativewith(int deriv, std::shared_ptr<std::vector<FColDsptr>> series);
+        FColDsptr derivativewith(size_t deriv, std::shared_ptr<std::vector<FColDsptr>> series);
 
 
     };

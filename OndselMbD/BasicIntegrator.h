@@ -29,7 +29,7 @@ namespace MbD {
         void initialize() override;
         void initializeGlobally() override;
         void initializeLocally() override;
-        void iStep(int i) override;
+        void iStep(size_t i) override;
         void postFirstStep() override;
         void postStep() override;
         void postRun() override;
@@ -43,18 +43,18 @@ namespace MbD {
         void setSystem(Solver* sys) override;
         void logString(std::string& str) override;
         
-        virtual void setorder(int o);
+        virtual void setorder(size_t o);
         virtual void settnew(double t);
         virtual void sett(double t);
         virtual void settime(double t);
-        double tprevious();
-        virtual FColDsptr yDerivat(int _order, double tout);
+        double tprevious() const;
+        virtual FColDsptr yDerivat(size_t _order, double tout);
 
         IntegratorInterface* system;
-        int istep = 0, iTry = 0, maxTry = 0;
+        size_t istep = 0, iTry = 0, maxTry = 0;
         std::shared_ptr<std::vector<double>> tpast;
         double t = 0.0, tnew = 0.0, h = 0.0, hnew = 0.0;
-        int order = 0, orderNew = 0, orderMax = 0;
+        size_t order = 0, orderNew = 0, orderMax = 0;
         std::shared_ptr<LinearMultiStepMethod> opBDF;
         bool _continue = false;
     };

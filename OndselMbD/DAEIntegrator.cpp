@@ -87,7 +87,7 @@ void MbD::DAEIntegrator::runInitialConditionTypeSolution()
 	assert(false);
 }
 
-void MbD::DAEIntegrator::iStep(int i)
+void MbD::DAEIntegrator::iStep(size_t i)
 {
 	assert(false);
 }
@@ -115,11 +115,11 @@ FColDsptr MbD::DAEIntegrator::integrationRelativeTolerance()
 
 	auto relTol = system->integrationRelativeTolerance();
 	auto col = std::make_shared<FullColumn<double>>(neqn);
-	for (int i = 0; i < neqn - ncon; i++)
+	for (size_t i = 0; i < neqn - ncon; i++)
 	{
 		col->atiput(i, relTol);
 	}
-	for (int i = neqn - ncon; i < neqn; i++)
+	for (size_t i = neqn - ncon; i < neqn; i++)
 	{
 		col->atiput(i, std::numeric_limits<double>::min());
 	}
@@ -130,11 +130,11 @@ FColDsptr MbD::DAEIntegrator::integrationAbsoluteTolerance()
 {
 	auto absTol = system->integrationAbsoluteTolerance();
 	auto col = std::make_shared<FullColumn<double>>(neqn);
-	for (int i = 0; i < neqn - ncon; i++)
+	for (size_t i = 0; i < neqn - ncon; i++)
 	{
 		col->atiput(i, absTol);
 	}
-	for (int i = neqn - ncon; i < neqn; i++)
+	for (size_t i = neqn - ncon; i < neqn; i++)
 	{
 		col->atiput(i, std::numeric_limits<double>::min());
 	}
@@ -145,7 +145,7 @@ FColDsptr MbD::DAEIntegrator::correctorRelativeTolerance()
 {
 	auto corRelTol = system->integrationRelativeTolerance();
 	auto col = std::make_shared<FullColumn<double>>(neqn);
-	for (int i = 0; i < neqn; i++)
+	for (size_t i = 0; i < neqn; i++)
 	{
 		col->atiput(i, corRelTol);
 	}
@@ -156,7 +156,7 @@ FColDsptr MbD::DAEIntegrator::correctorAbsoluteTolerance()
 {
 	auto corAbsTol = system->integrationRelativeTolerance();
 	auto col = std::make_shared<FullColumn<double>>(neqn);
-	for (int i = 0; i < neqn; i++)
+	for (size_t i = 0; i < neqn; i++)
 	{
 		col->atiput(i, corAbsTol);
 	}
@@ -194,4 +194,21 @@ void MbD::DAEIntegrator::useTrialStepStats(std::shared_ptr<SolverStatistics> sta
 void MbD::DAEIntegrator::useDAEStepStats(std::shared_ptr<SolverStatistics> stats)
 {
 	system->useDAEStepStats(stats);
+}
+
+void MbD::DAEIntegrator::run()
+{
+	this->preRun();
+	this->initializeLocally();
+	this->initializeGlobally();
+	if (hout > (4 * std::numeric_limits<double>::epsilon()) && (direction * tout < (direction * (tend + (0.1 * direction * hout))))) {
+		integrator->run();
+		auto startingintegrator = std::dynamic_pointer_cast<StartingBasicDAEIntegrator>(integrator);
+		auto normalIntegrator = std::make_shared<NormalBasicDAEIntegrator>(startingintegrator);
+		integrator = normalIntegrator;
+		integrator->run();
+	}
+	this->finalize();
+	this->reportStats();
+	this->postRun();
 }

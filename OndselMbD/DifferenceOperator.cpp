@@ -18,7 +18,7 @@ using namespace MbD;
 
 FRowDsptr DifferenceOperator::OneOverFactorials = []() {
 	auto oneOverFactorials = std::make_shared<FullRow<double>>(10);
-	for (int i = 0; i < (int)oneOverFactorials->size(); i++)
+	for (size_t i = 0; i < oneOverFactorials->size(); i++)
 	{
 		oneOverFactorials->at(i) = 1.0 / std::tgamma(i + 1);
 	}
@@ -53,12 +53,12 @@ void MbD::DifferenceOperator::initializeLocally()
 	assert(false);
 }
 
-void DifferenceOperator::setiStep(int i)
+void DifferenceOperator::setiStep(size_t i)
 {
 	iStep = i;
 }
 
-void DifferenceOperator::setorder(int o)
+void DifferenceOperator::setorder(size_t o)
 {
 	order = o;
 }
@@ -75,21 +75,21 @@ void DifferenceOperator::instantiateTaylorMatrix()
 	}
 }
 
-void DifferenceOperator::formTaylorRowwithTimeNodederivative(int i, int ii, int k)
+void DifferenceOperator::formTaylorRowwithTimeNodederivative(size_t i, size_t ii, size_t k)
 {
 	//| rowi hi hipower aij |
 	auto& rowi = taylorMatrix->at(i);
-	for (int j = 0; j < k; j++)
+	for (size_t j = 0; j < k; j++)
 	{
 		rowi->at(j) = 0.0;
 	}
 	rowi->at(k) = 1.0;
 	auto hi = timeNodes->at(ii) - time;
 	auto hipower = 1.0;
-	for (int j = k + 1; j < order + 1; j++)
+	for (size_t j = k + 1; j < order + 1; j++)
 	{
 		hipower = hipower * hi;
-		auto aij = hipower * OneOverFactorials->at((size_t)j - k);
+		auto aij = hipower * OneOverFactorials->at(j - k);
 		rowi->atiput(j, aij);
 	}
 }
@@ -99,52 +99,52 @@ void DifferenceOperator::settime(double t)
 	time = t;
 }
 
-void MbD::DifferenceOperator::formDegenerateTaylorRow(int i)
+void MbD::DifferenceOperator::formDegenerateTaylorRow(size_t i) const
 {
 	auto& rowi = taylorMatrix->at(i);
 	rowi->atiput(0, 1.0);
-	for (int i = 1; i < order + 1; i++)
+	for (size_t i = 1; i < order + 1; i++)
 	{
 		rowi->atiput(i, 0.0);
 	}
 }
 
-double MbD::DifferenceOperator::currentStepSize()
+double MbD::DifferenceOperator::currentStepSize() const
 {
 	return time - timeNodes->at(1);
 }
 
-int MbD::DifferenceOperator::direction()
+size_t MbD::DifferenceOperator::direction() const
 {
 	return timeNodes->at(1) < time ? 1 : -1;
 }
 
-bool MbD::DifferenceOperator::isConstantStepFor(int nsteps)
+bool MbD::DifferenceOperator::isConstantStepFor(size_t nsteps) const
 {
 	auto nPastNodes = timeNodes->size();
 	if (nPastNodes < nsteps) return false;
 	auto dt = time - timeNodes->at(1);
 	auto tol = std::abs(1.0e-6 * dt);
-	for (int i = 1; i < nsteps; i++)
+	for (size_t i = 1; i < nsteps; i++)
 	{
-		auto dti = timeNodes->at((size_t)i - 1)
+		auto dti = timeNodes->at(i - 1)
 			- timeNodes->at(i);
 		if (std::abs(dti - dt) > tol) return false;
 	}
 	return true;
 }
 
-bool MbD::DifferenceOperator::isDecreasingStepFor(int nsteps)
+bool MbD::DifferenceOperator::isDecreasingStepFor(size_t nsteps) const
 {
 	auto nPastNodes = timeNodes->size();
 	if (nPastNodes < nsteps) return false;
 	auto oneMinusTolFactor = 1.0 - 1.0e-6;
 	auto dtPast = time - timeNodes->at(1);
 	dtPast = std::abs(dtPast);
-	for (int i = 1; i < nsteps; i++)
+	for (size_t i = 1; i < nsteps; i++)
 	{
 		auto dtNow = dtPast;
-		dtPast = timeNodes->at((size_t)i - 1) - timeNodes->at(i);
+		dtPast = timeNodes->at(i - 1) - timeNodes->at(i);
 		dtPast = std::abs(dtPast);
 
 		if (dtNow > (oneMinusTolFactor * dtPast)) return false;
@@ -152,17 +152,17 @@ bool MbD::DifferenceOperator::isDecreasingStepFor(int nsteps)
 	return true;
 }
 
-bool MbD::DifferenceOperator::isIncreasingStepFor(int nsteps)
+bool MbD::DifferenceOperator::isIncreasingStepFor(size_t nsteps) const
 {
 	auto nPastNodes = timeNodes->size();
-	if (nPastNodes < ((size_t)nsteps + 1)) return false;
+	if (nPastNodes < (nsteps + 1)) return false;
 	auto onePlusTolFactor = 1.0 + 1.0e-6;
 	auto dtPast = time - timeNodes->at(1);
 	dtPast = std::abs(dtPast);
-	for (int i = 1; i < nsteps + 1; i++)
+	for (size_t i = 1; i < nsteps + 1; i++)
 	{
 		auto dtNow = dtPast;
-		dtPast = timeNodes->at((size_t)i - 1) - timeNodes->at(i);
+		dtPast = timeNodes->at(i - 1) - timeNodes->at(i);
 		dtPast = std::abs(dtPast);
 
 		if (dtNow > (onePlusTolFactor * dtPast)) return false;
@@ -178,7 +178,7 @@ FColDsptr MbD::DifferenceOperator::valueWith(std::shared_ptr<std::vector<FColDsp
 	return derivativewith(0, ypast);
 }
 
-FColDsptr MbD::DifferenceOperator::derivativewith(int deriv, std::shared_ptr<std::vector<FColDsptr>> series)
+FColDsptr MbD::DifferenceOperator::derivativewith(size_t deriv, std::shared_ptr<std::vector<FColDsptr>> series) const
 {
 	//"Answer ith derivative given past values in series."
 	auto& coeffs = operatorMatrix->at(deriv);
@@ -186,7 +186,7 @@ FColDsptr MbD::DifferenceOperator::derivativewith(int deriv, std::shared_ptr<std
 	return std::static_pointer_cast<FullColumn<double>>(answer);
 }
 
-FColDsptr MbD::DifferenceOperator::derivativeatpresentpast(int n, double t, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast)
+FColDsptr MbD::DifferenceOperator::derivativeatpresentpast(size_t n, double t, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast)
 {
 	assert(false);
 	return FColDsptr();

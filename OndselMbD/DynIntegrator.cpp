@@ -33,7 +33,7 @@ void MbD::DynIntegrator::assignEquationNumbers()
 	//auto contactEndFrames = system->contactEndFrames();
 	//auto uHolders = system->uHolders();
 	auto constraints = system->allConstraints();
-	ncon = (int)constraints->size();
+	ncon = constraints->size();
 	auto eqnNo = 0;
 	for (auto& part : *parts) {
 		part->ipX = eqnNo;
@@ -161,7 +161,7 @@ void MbD::DynIntegrator::run()
 	try {
 		try {
 			try {
-				IntegratorInterface::run();
+				DAEIntegrator::run();
 			}
 			catch (SingularMatrixError ex) {
 				std::stringstream ss;
@@ -216,7 +216,7 @@ void MbD::DynIntegrator::interpolateAt(double t)
 	assert(false);
 }
 
-int MbD::DynIntegrator::iterMax()
+size_t MbD::DynIntegrator::iterMax()
 {
 	return system->iterMaxDyn;
 }

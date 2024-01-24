@@ -24,7 +24,6 @@ namespace MbD {
         void initialize() override;
 
         EndFrmsptr frmI, frmJ;
-        double aConstant;
     };
 }
 

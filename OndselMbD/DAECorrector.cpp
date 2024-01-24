@@ -20,7 +20,7 @@ using namespace MbD;
 void MbD::DAECorrector::iterate()
 {
 	//Keep for debugging
-	iterNo = -1;
+	iterNo = SIZE_MAX;
 	this->fillY();
 	this->calcyNorm();
 	yNorms->push_back(yNorm);
@@ -136,10 +136,10 @@ void MbD::DAECorrector::outputSpreadsheet()
 {
 	std::ofstream os("../testapp/spreadsheetcpp.csv");
 	os << std::setprecision(std::numeric_limits<double>::max_digits10);
-	for (int i = 0; i < pypx->nrow(); i++)
+	for (size_t i = 0; i < pypx->nrow(); i++)
 	{
 		auto rowi = pypx->at(i);
-		for (int j = 0; j < pypx->ncol(); j++)
+		for (size_t j = 0; j < pypx->ncol(); j++)
 		{
 			if (j > 0) os << '\t';
 			if (rowi->find(j) == rowi->end()) {

@@ -27,7 +27,7 @@ namespace MbD {
         void handleSingularMatrix() override;
         void lookForRedundantConstraints();
 
-        std::shared_ptr<std::vector<int>> pivotRowLimits;
+        std::shared_ptr<std::vector<size_t>> pivotRowLimits;
     };
 }
 

@@ -24,7 +24,7 @@ FColDsptr GESpMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCo
 {
 	this->preSolvewithsaveOriginal(spMat, fullCol, saveOriginal);
 	//std::cout << *matrixA << std::endl;
-	for (int p = 0; p < m; p++)
+	for (size_t p = 0; p < m; p++)
 	{
 		this->doPivoting(p);
 		this->forwardEliminateWithPivot(p);
@@ -50,7 +50,7 @@ void GESpMat::preSolvewithsaveOriginal(SpMatDsptr, FColDsptr, bool)
 	assert(false);
 }
 
-double GESpMat::getmatrixArowimaxMagnitude(int i)
+double GESpMat::getmatrixArowimaxMagnitude(size_t i)
 {
 	return matrixA->at(i)->maxMagnitude();
 }

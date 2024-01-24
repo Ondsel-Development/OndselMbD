@@ -22,7 +22,7 @@ void MbD::Extrapolator::formTaylorMatrix()
 	//"
 
 	instantiateTaylorMatrix();
-	for (int i = 0; i < order + 1; i++)
+	for (size_t i = 0; i < order + 1; i++)
 	{
 		this->formTaylorRowwithTimeNodederivative(i, i, 0);
 	}

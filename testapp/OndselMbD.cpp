@@ -49,16 +49,16 @@ int main()
 	MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCase9orig.mbd");	//SimulationStoppingError
 	MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCase8orig.mbd");	//Incompatible geometry at t=3.15
 	MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCase5orig.mbd");	//Test Product::integrateWRT
-	ASMTAssembly::readWriteFile("../testapp/Gears.asmt");
-	ASMTAssembly::readWriteFile("../testapp/anglejoint.asmt");
-	ASMTAssembly::readWriteFile("../testapp/constvel.asmt");
-	ASMTAssembly::readWriteFile("../testapp/rackscrew.asmt");
-	ASMTAssembly::readWriteFile("../testapp/planarbug.asmt");
+	ASMTAssembly::readWriteFile("../testapp/ASMT/Gears.asmt");
+	ASMTAssembly::readWriteFile("../testapp/ASMT/anglejoint.asmt");
+	ASMTAssembly::readWriteFile("../testapp/ASMT/constvel.asmt");
+	ASMTAssembly::readWriteFile("../testapp/ASMT/rackscrew.asmt");
+	ASMTAssembly::readWriteFile("../testapp/ASMT/planarbug.asmt");
 	MBDynSystem::runDynFile("../testapp/MBDyn/InitialConditions.mbd");
 	MBDynSystem::runDynFile("../testapp/MBDyn/SphericalHinge.mbd");
 	ASMTAssembly::runDynFile("../testapp/ASMT/cirpendu2.asmt");	//Under constrained. Testing ICKine.
 	ASMTAssembly::runDynFile("../testapp/ASMT/quasikine.asmt");	//Under constrained. Testing ICKine.
-	ASMTAssembly::readWriteFile("../testapp/piston.asmt");
+	ASMTAssembly::readWriteFile("../testapp/ASMT/piston.asmt");
 	//MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCaseDebug2.mbd");
 	//return 0;
 	MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCase2.mbd");

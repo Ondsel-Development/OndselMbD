@@ -84,13 +84,13 @@ void MbD::ASMTSimulationParameters::seterrorTol(double tol)
 	intRelTol = tol;
 }
 
-void MbD::ASMTSimulationParameters::setmaxIter(int maxIter)
+void MbD::ASMTSimulationParameters::setmaxIter(size_t maxIter)
 {
 	iterMaxPosKine = maxIter;
 	iterMaxAccKine = maxIter;
 }
 
-void MbD::ASMTSimulationParameters::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTSimulationParameters::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "SimulationParameters");
 	storeOnLevelString(os, level + 1, "tstart");

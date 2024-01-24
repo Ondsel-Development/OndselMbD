@@ -27,10 +27,10 @@ namespace MbD {
         virtual void preStep();
         virtual void postStep();
         virtual void runInitialConditionTypeSolution();
-        virtual void iStep(int i);
+        virtual void iStep(size_t i);
         virtual void selectOrder();
         virtual void selectStepSize();
-        virtual int iterMax();
+        virtual size_t iterMax();
 
         double direction = 1;
     };

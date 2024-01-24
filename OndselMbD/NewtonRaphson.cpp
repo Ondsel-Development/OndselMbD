@@ -28,9 +28,9 @@ void NewtonRaphson::initialize()
 
 void NewtonRaphson::initializeLocally()
 {
-	iterNo = -1;	//Used for zero indexing
-	nDivergence = 0;
-	nBackTracking = 0;
+	iterNo = SIZE_MAX;
+	nDivergence = SIZE_MAX;
+	nBackTracking = SIZE_MAX;
 	dxNorms->clear();
 	yNorms->clear();
 	yNormOld = std::numeric_limits<double>::max();
@@ -53,9 +53,41 @@ void NewtonRaphson::setSystem(Solver* sys)
 	system = static_cast<SystemSolver*>(sys);
 }
 
-void MbD::NewtonRaphson::iterate()
+void NewtonRaphson::iterate()
 {
-	assert(false);
+	//"
+	//	Do not skip matrix solution even when yNorm is very small.
+	//	This avoids unexpected behaviors when convergence is still
+	//	possible.
+
+	//	Do not skip redundant constraint removal even when yNorm is
+	//	zero.
+	//	"
+
+	iterNo = SIZE_MAX;
+	this->fillY();
+	this->calcyNorm();
+	yNorms->push_back(yNorm);
+
+	while (true) {
+		this->incrementIterNo();
+		this->fillPyPx();
+		this->solveEquations();
+		this->calcDXNormImproveRootCalcYNorm();
+		if (this->isConverged()) {
+			//std::cout << "iterNo = " << iterNo << std::endl;
+			break;
+		}
+	}
+}
+
+void NewtonRaphson::incrementIterNo()
+{
+	iterNo++;
+	if (iterNo > iterMax) {
+		this->reportStats();
+		throw MaximumIterationError("");
+	}
 }
 
 void MbD::NewtonRaphson::fillY()
@@ -80,15 +112,6 @@ void MbD::NewtonRaphson::calcdxNorm()
 void MbD::NewtonRaphson::solveEquations()
 {
 	assert(false);
-}
-
-void NewtonRaphson::incrementIterNo()
-{
-	iterNo++;
-	if (iterNo >= iterMax) {
-		this->reportStats();
-		throw MaximumIterationError("");
-	}
 }
 
 void MbD::NewtonRaphson::updatexold()
@@ -127,7 +150,7 @@ bool NewtonRaphson::isConvergedToNumericalLimit()
 	auto nDivergenceMax = 3;
 	auto dxNormIterNo = dxNorms->at(iterNo);
 	if (iterNo > 0) {
-		auto dxNormIterNoOld = dxNorms->at(iterNo - 1);
+		auto dxNormIterNoOld = dxNorms->at(iterNo);
 		auto farTooLargeError = dxNormIterNo > tooLargeTol;
 		auto worthIterating = dxNormIterNo > (smallEnoughTol * pow(10.0, (iterNo / iterMax) * nDecade));
 		bool stillConverging;

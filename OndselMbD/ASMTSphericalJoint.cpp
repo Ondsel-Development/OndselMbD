@@ -22,7 +22,7 @@ std::shared_ptr<Joint> MbD::ASMTSphericalJoint::mbdClassNew()
     return CREATE<SphericalJoint>::With();
 }
 
-void MbD::ASMTSphericalJoint::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTSphericalJoint::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "SphericalJoint");
 	storeOnLevelString(os, level + 1, "Name");

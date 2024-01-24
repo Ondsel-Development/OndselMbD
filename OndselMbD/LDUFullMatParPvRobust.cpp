@@ -14,7 +14,7 @@ using namespace MbD;
 
 #include "LDUFullMatParPvRobust.h"
 
-void MbD::LDUFullMatParPvRobust::doPivoting(int p)
+void MbD::LDUFullMatParPvRobust::doPivoting(size_t p)
 {
 	try {
 		LDUFullMatParPv::doPivoting(p);

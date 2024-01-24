@@ -33,7 +33,7 @@ MbD::Polynomial::Polynomial(Symsptr var, std::shared_ptr<std::vector<Symsptr>> c
 Symsptr MbD::Polynomial::expandUntil(Symsptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
 {
 	auto newCoeffs = std::make_shared<std::vector<Symsptr>>();
-	for (int i = 0; i < (int)coeffs->size(); i++)
+	for (size_t i = 0; i < coeffs->size(); i++)
 	{
 		auto coeff = coeffs->at(i);
 		auto newCoeff = coeff->expandUntil(coeff, set);
@@ -45,7 +45,7 @@ Symsptr MbD::Polynomial::expandUntil(Symsptr, std::shared_ptr<std::unordered_set
 Symsptr MbD::Polynomial::simplifyUntil(Symsptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
 {
 	auto newCoeffs = std::make_shared<std::vector<Symsptr>>();
-	for (int i = 0; i < (int)coeffs->size(); i++)
+	for (size_t i = 0; i < coeffs->size(); i++)
 	{
 		auto coeff = coeffs->at(i);
 		auto newCoeff = coeff->simplifyUntil(coeff, set);
@@ -59,7 +59,7 @@ Symsptr MbD::Polynomial::differentiateWRTx()
 	//Differentiate powers
 	if (coeffs->size() == 1) return sptrConstant(0.0);
 	auto newCoeffs = std::make_shared<std::vector<Symsptr>>();
-	for (int i = 1; i < (int)coeffs->size(); i++)
+	for (size_t i = 1; i < coeffs->size(); i++)
 	{
 		auto newCoeff = i * coeffs->at(i)->getValue();
 		newCoeffs->push_back(sptrConstant(newCoeff));
@@ -85,7 +85,7 @@ Symsptr MbD::Polynomial::integrateWRT(Symsptr var)
 	answer->integrand = simple;
 	auto newCoeffs = std::make_shared<std::vector<Symsptr>>();
 	newCoeffs->push_back(sptrConstant(0.0));
-	for (int i = 0; i < (int)coeffs->size(); i++)
+	for (size_t i = 0; i < coeffs->size(); i++)
 	{
 		auto newCoeff = coeffs->at(i)->getValue() / (i + 1);
 		newCoeffs->push_back(sptrConstant(newCoeff));
@@ -99,12 +99,17 @@ double MbD::Polynomial::getValue()
 	auto xvalue = xx->getValue();
 	auto xpower = 1.0;
 	auto answer = 0.0;
-	for (int i = 0; i < (int)coeffs->size(); i++)
+	for (size_t i = 0; i < coeffs->size(); i++)
 	{
 		answer += coeffs->at(i)->getValue() * xpower;
 		xpower *= xvalue;
 	}
 	return answer;
+}
+
+Symsptr MbD::Polynomial::clonesptr()
+{
+	return std::make_shared<Polynomial>(*this);
 }
 
 std::ostream& MbD::Polynomial::printOn(std::ostream& s) const
@@ -113,7 +118,7 @@ std::ostream& MbD::Polynomial::printOn(std::ostream& s) const
 	s << *xx << ", ";
 	s << "coeffs{";
 	s << *coeffs->at(0);
-	for (int i = 1; i < (int)coeffs->size(); i++)
+	for (size_t i = 1; i < coeffs->size(); i++)
 	{
 		s << ", " << *coeffs->at(i);
 	}

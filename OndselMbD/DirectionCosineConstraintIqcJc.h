@@ -15,7 +15,7 @@ namespace MbD {
 	{
 		//pGpEI ppGpEIpEI iqEI 
 	public:
-		DirectionCosineConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj);
+		DirectionCosineConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj);
 
 		void addToJointTorqueI(FColDsptr col) override;
 		void calcPostDynCorrectorIteration() override;
@@ -31,7 +31,7 @@ namespace MbD {
 
 		FRowDsptr pGpEI;
 		FMatDsptr ppGpEIpEI;
-		int iqEI = -1;
+		size_t iqEI = SIZE_MAX;
 	};
 }
 

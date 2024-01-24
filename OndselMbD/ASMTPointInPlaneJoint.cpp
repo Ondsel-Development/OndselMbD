@@ -44,7 +44,7 @@ void MbD::ASMTPointInPlaneJoint::createMbD(std::shared_ptr<System> mbdSys, std::
 	pointInPlaneJoint->offset = offset;
 }
 
-void MbD::ASMTPointInPlaneJoint::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTPointInPlaneJoint::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "PointInPlaneJoint");
 	storeOnLevelString(os, level + 1, "Name");

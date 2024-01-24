@@ -26,6 +26,7 @@ namespace MbD {
 		//
 	public:
 		void preMbDrun(std::shared_ptr<System> mbdSys);
+		void updateFromMbD();
 		void outputFor(AnalysisType type);
 		void logString(std::string& str);
 		void logString(double value);
@@ -33,6 +34,7 @@ namespace MbD {
 		void runPiston();
 		void postMbDrun();
 		void useDynTrialStepStats(std::shared_ptr<SolverStatistics> stats);
+		void useKineTrialStepStats(std::shared_ptr<SolverStatistics> stats);
 
 		CADSystem* cadSystem;
 		ASMTAssembly* asmtAssembly;

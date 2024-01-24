@@ -48,7 +48,7 @@ namespace MbD {
 		void prePosIC() override;
 		void prePosKine() override;
 		void reactivateRedundantConstraints() override;
-		void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos) override;
+		void removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos) override;
 		void setConstant(double value);
 		void setqsudotlam(FColDsptr col) override;
 		void setqsuddotlam(FColDsptr col) override;
@@ -59,7 +59,7 @@ namespace MbD {
 		void setpqsumuddot(FColDsptr col) override;
 		void fillDynError(FColDsptr col) override;
 
-		int iG = -1;
+		size_t iG = SIZE_MAX;
 		double aG = 0.0;		//Constraint function
 		double aConstant = 0.0;
 		double lam = 0.0;		//Lambda is Lagrange Multiplier

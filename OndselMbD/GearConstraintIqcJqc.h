@@ -39,7 +39,7 @@ namespace MbD {
 
 		FRowDsptr pGpXJ, pGpEJ;
 		FMatDsptr ppGpXIpXJ, ppGpXIpEJ, ppGpEIpXJ, ppGpEIpEJ, ppGpXJpXJ, ppGpXJpEJ, ppGpEJpEJ;
-		int iqXJ, iqEJ;
+		size_t iqXJ, iqEJ;
 
 	};
 }

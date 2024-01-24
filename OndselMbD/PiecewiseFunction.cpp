@@ -74,16 +74,16 @@ Symsptr MbD::PiecewiseFunction::integrateWRT(Symsptr var)
 	for (const auto& func : *functions) {
 		integrals->push_back(func->integrateWRT(var));
 	}
-	for (int i = 0; i < (int)transitions->size(); i++)
+	for (size_t i = 0; i < transitions->size(); i++)
 	{
 		auto x = transitions->at(i)->getValue();
 		auto oldvalue = var->getValue();
 		var->setValue(x);
 		auto fi = integrals->at(i)->getValue();
-		auto fi1 = integrals->at((size_t)i + 1)->getValue();
+		auto fi1 = integrals->at(i + 1)->getValue();
 		var->setValue(oldvalue);
 		auto integConstant = fi - fi1;
-		integrals->at((size_t)i + 1)->setIntegrationConstant(integConstant);
+		integrals->at(i + 1)->setIntegrationConstant(integConstant);
 		noop();
 	}
 	answer->expression = std::make_shared<PiecewiseFunction>(var, integrals, transitions);
@@ -93,7 +93,7 @@ Symsptr MbD::PiecewiseFunction::integrateWRT(Symsptr var)
 double MbD::PiecewiseFunction::getValue()
 {
 	auto xval = xx->getValue();
-	for (int i = 0; i < (int)transitions->size(); i++)
+	for (size_t i = 0; i < transitions->size(); i++)
 	{
 		if (xval < transitions->at(i)->getValue()) {
 			return functions->at(i)->getValue();
@@ -120,14 +120,14 @@ std::ostream& MbD::PiecewiseFunction::printOn(std::ostream& s) const
 	s << "PiecewiseFunction(" << *xx << ", " << std::endl;
 	s << "functions{" << std::endl;
 	s << *functions->at(0) << std::endl;
-	for (int i = 1; i < (int)functions->size(); i++)
+	for (size_t i = 1; i < functions->size(); i++)
 	{
 		s << *functions->at(i) << std::endl;
 	}
 	s << "}, " << std::endl;
 	s << "transitions{" << std::endl;
 	s << *transitions->at(0) << std::endl;
-	for (int i = 1; i < (int)transitions->size(); i++)
+	for (size_t i = 1; i < transitions->size(); i++)
 	{
 		s << *transitions->at(i) << std::endl;
 	}

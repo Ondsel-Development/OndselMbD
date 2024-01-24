@@ -36,7 +36,7 @@ std::shared_ptr<ASMTJoint> MbD::MBDynAxialRotationJoint::asmtClassNew()
 	return std::make_shared<ASMTRevoluteJoint>();
 }
 
-void MbD::MBDynAxialRotationJoint::outputLine(int i, std::ostream& os)
+void MbD::MBDynAxialRotationJoint::outputLine(size_t i, std::ostream& os)
 {
 	auto id = nodeidAt(name);
 	auto asmtJoint = std::static_pointer_cast<ASMTJoint>(asmtItem);

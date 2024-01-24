@@ -24,7 +24,7 @@ void MbD::AccKineNewtonRaphson::run()
 void MbD::AccKineNewtonRaphson::iterate()
 {
 	//Keep for debugging
-	iterNo = -1;
+	iterNo = SIZE_MAX;
 	this->fillY();
 	this->calcyNorm();
 	yNorms->push_back(yNorm);

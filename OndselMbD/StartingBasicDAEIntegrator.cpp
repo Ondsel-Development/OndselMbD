@@ -27,7 +27,7 @@ void MbD::StartingBasicDAEIntegrator::initializeLocally()
 	startingBDF->initializeLocally();
 }
 
-FColDsptr MbD::StartingBasicDAEIntegrator::yDerivat(int n, double time)
+FColDsptr MbD::StartingBasicDAEIntegrator::yDerivat(size_t n, double time)
 {
 	return startingBDF->derivativeatpresentpastpresentDerivativepastDerivative(n, time, y, ypast, ydot, ydotpast);
 }
@@ -43,7 +43,7 @@ void MbD::StartingBasicDAEIntegrator::calcOperatorMatrix()
 	startingBDF->calcOperatorMatrix();
 }
 
-void MbD::StartingBasicDAEIntegrator::setorder(int o)
+void MbD::StartingBasicDAEIntegrator::setorder(size_t o)
 {
 	BasicDAEIntegrator::setorder(o);
 	startingBDF->setorder(o + 1);
@@ -55,13 +55,13 @@ void MbD::StartingBasicDAEIntegrator::settime(double t)
 	startingBDF->settime(t);
 }
 
-void MbD::StartingBasicDAEIntegrator::iStep(int i)
+void MbD::StartingBasicDAEIntegrator::iStep(size_t i)
 {
 	BasicDAEIntegrator::iStep(i);
 	startingBDF->setiStep(i);
 }
 
-FColDsptr MbD::StartingBasicDAEIntegrator::yDeriv(int order)
+FColDsptr MbD::StartingBasicDAEIntegrator::yDeriv(size_t order)
 {
 	return startingBDF->derivativepresentpastpresentDerivativepastDerivative(order, y, ypast, ydot, ydotpast);
 }

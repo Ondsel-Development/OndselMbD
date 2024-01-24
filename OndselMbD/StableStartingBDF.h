@@ -22,12 +22,12 @@ namespace MbD {
 		void initializeLocally() override;
 		double pvdotpv() override;
 		void formTaylorMatrix() override;
-		void setorder(int o) override;
-		void setiStep(int i) override;
-		FColDsptr derivativepresentpastpresentDerivativepastDerivative(int n,
+		void setorder(size_t o) override;
+		void setiStep(size_t i) override;
+		FColDsptr derivativepresentpastpresentDerivativepastDerivative(size_t n,
 			FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast,
 			FColDsptr ydot, std::shared_ptr<std::vector<FColDsptr>> ydotpast);
-		FColDsptr derivativewith(int deriv, std::shared_ptr<std::vector<FColDsptr>> series);
+		FColDsptr derivativewith(size_t deriv, std::shared_ptr<std::vector<FColDsptr>> series);
 
 
 	};

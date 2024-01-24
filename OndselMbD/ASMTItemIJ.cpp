@@ -86,7 +86,7 @@ void MbD::ASMTItemIJ::readTZonIs(std::vector<std::string>& lines)
 	lines.erase(lines.begin());
 }
 
-void MbD::ASMTItemIJ::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTItemIJ::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level + 1, "MarkerI");
 	storeOnLevelString(os, level + 2, markerI);
@@ -96,39 +96,39 @@ void MbD::ASMTItemIJ::storeOnLevel(std::ofstream& os, int level)
 
 void MbD::ASMTItemIJ::storeOnTimeSeries(std::ofstream& os)
 {
-	auto n = (int)cFIO->size();
+	auto n = cFIO->size();
 	os << "FXonI\t";
-	for (int i = 0; i < n; i++)
+	for (size_t i = 0; i < n; i++)
 	{
 		os << cFIO->at(i)-> at(0) << '\t';
 	}
 	os << std::endl;
 	os << "FYonI\t";
-	for (int i = 0; i < n; i++)
+	for (size_t i = 0; i < n; i++)
 	{
 		os << cFIO->at(i)->at(1) << '\t';
 	}
 	os << std::endl;
 	os << "FZonI\t";
-	for (int i = 0; i < n; i++)
+	for (size_t i = 0; i < n; i++)
 	{
 		os << cFIO->at(i)->at(2) << '\t';
 	}
 	os << std::endl;
 	os << "TXonI\t";
-	for (int i = 0; i < n; i++)
+	for (size_t i = 0; i < n; i++)
 	{
 		os << cTIO->at(i)->at(0) << '\t';
 	}
 	os << std::endl;
 	os << "TYonI\t";
-	for (int i = 0; i < n; i++)
+	for (size_t i = 0; i < n; i++)
 	{
 		os << cTIO->at(i)->at(1) << '\t';
 	}
 	os << std::endl;
 	os << "TZonI\t";
-	for (int i = 0; i < n; i++)
+	for (size_t i = 0; i < n; i++)
 	{
 		os << cTIO->at(i)->at(2) << '\t';
 	}

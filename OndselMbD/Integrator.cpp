@@ -56,7 +56,7 @@ void MbD::Integrator::runInitialConditionTypeSolution()
     assert(false);
 }
 
-void MbD::Integrator::iStep(int i)
+void MbD::Integrator::iStep(size_t i)
 {
     assert(false);
 }
@@ -71,7 +71,7 @@ void MbD::Integrator::selectStepSize()
     assert(false);
 }
 
-int MbD::Integrator::iterMax()
+size_t MbD::Integrator::iterMax()
 {
     assert(false);
     return 0;

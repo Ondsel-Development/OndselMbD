@@ -13,11 +13,11 @@ namespace MbD {
 	class SolverStatistics
 	{
 	public:
-		int iterNo = -1;
-		int corIterNo = -1;
+		size_t iterNo = SIZE_MAX;
+		size_t corIterNo = SIZE_MAX;
 		double h = std::numeric_limits<double>::min();
-		int istep = -1;
-		int order = -1;
+		size_t istep = SIZE_MAX;
+		size_t order = SIZE_MAX;
 		double t = std::numeric_limits<double>::min();
 		double truncError = std::numeric_limits<double>::min();
 	};

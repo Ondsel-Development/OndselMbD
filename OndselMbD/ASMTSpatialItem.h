@@ -28,9 +28,9 @@ namespace MbD {
 		void setRotationMatrix(double v11, double v12, double v13,
 			double v21, double v22, double v23,
 			double v31, double v32, double v33);
-		void storeOnLevel(std::ofstream& os, int level) override;
-		void storeOnLevelPosition(std::ofstream& os, int level);
-		void storeOnLevelRotationMatrix(std::ofstream& os, int level);
+		void storeOnLevel(std::ofstream& os, size_t level) override;
+		void storeOnLevelPosition(std::ofstream& os, size_t level);
+		void storeOnLevelRotationMatrix(std::ofstream& os, size_t level);
 		FColDsptr getPosition3D(size_t i);
 		FMatDsptr getRotationMatrix(size_t i);
 

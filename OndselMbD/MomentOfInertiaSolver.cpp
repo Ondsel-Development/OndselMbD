@@ -15,7 +15,7 @@ void MbD::MomentOfInertiaSolver::example1()
 
 	auto rpPp = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 1 });
 	auto rotAxis = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 1 });
-	auto aApP = std::make_shared<EulerParameters<double>>(rotAxis, OS_M_PI*10/180)->aA;
+	auto aApP = std::make_shared<EulerParameters<double>>(rotAxis, OS_M_PI*10/180)->aA;	//Make copy of aA
 	auto solver = std::make_shared<MomentOfInertiaSolver>();
 	solver->setm(4.0);
 	solver->setJPP(aJpp);
@@ -41,15 +41,15 @@ void MbD::MomentOfInertiaSolver::example1()
 	std::cout << *solver->getAPp() << std::endl;
 }
 
-void MbD::MomentOfInertiaSolver::doFullPivoting(int p)
+void MbD::MomentOfInertiaSolver::doFullPivoting(size_t p) const
 {
 	double max = 0.0;
 	auto pivotRow = p;
 	auto pivotCol = p;
-	for (int i = p; i < 3; i++)
+	for (size_t i = p; i < 3; i++)
 	{
-		auto rowi = aJcmPcopy->at(i);
-		for (int j = p; j < 3; j++)
+		auto& rowi = aJcmPcopy->at(i);
+		for (size_t j = p; j < 3; j++)
 		{
 			auto aij = rowi->at(j);
 			if (aij != 0.0) {
@@ -72,18 +72,18 @@ void MbD::MomentOfInertiaSolver::doFullPivoting(int p)
 	}
 }
 
-void MbD::MomentOfInertiaSolver::forwardEliminateWithPivot(int p)
+void MbD::MomentOfInertiaSolver::forwardEliminateWithPivot(size_t p)
 {
-	auto rowp = aJcmPcopy->at(p);
+	auto& rowp = aJcmPcopy->at(p);
 	auto app = rowp->at(p);
-	for (int i = p + 1; i < 3; i++)
+	for (size_t i = p + 1; i < 3; i++)
 	{
-		auto rowi = aJcmPcopy->at(i);
+		auto& rowi = aJcmPcopy->at(i);
 		auto aip = rowi->at(p);
 		if (aip != 0) {
 			rowi->atiput(p, 0.0);
 			auto factor = aip / app;
-			for (int j = p + 1; j < 3; j++)
+			for (size_t j = p + 1; j < 3; j++)
 			{
 				rowi->atiminusNumber(j, factor * rowp->at(j));
 			}
@@ -117,12 +117,12 @@ void MbD::MomentOfInertiaSolver::preSolvewithsaveOriginal(SpMatDsptr, FColDsptr,
 {
 }
 
-double MbD::MomentOfInertiaSolver::getmatrixArowimaxMagnitude(int)
+double MbD::MomentOfInertiaSolver::getmatrixArowimaxMagnitude(size_t)
 {
 	return 0.0;
 }
 
-void MbD::MomentOfInertiaSolver::doPivoting(int)
+void MbD::MomentOfInertiaSolver::doPivoting(size_t)
 {
 }
 
@@ -151,17 +151,17 @@ void MbD::MomentOfInertiaSolver::setrPcmP(FColDsptr col)
 	rPcmP = col;
 }
 
-FMatDsptr MbD::MomentOfInertiaSolver::getJoo()
+FMatDsptr MbD::MomentOfInertiaSolver::getJoo() const
 {
 	return aJoo;
 }
 
-DiagMatDsptr MbD::MomentOfInertiaSolver::getJpp()
+DiagMatDsptr MbD::MomentOfInertiaSolver::getJpp() const
 {
 	return aJpp;
 }
 
-FMatDsptr MbD::MomentOfInertiaSolver::getAPp()
+FMatDsptr MbD::MomentOfInertiaSolver::getAPp() const
 {
 	return aAPp;
 }
@@ -183,7 +183,7 @@ void MbD::MomentOfInertiaSolver::calcJoo()
 	}
 	auto rocmPtilde = FullMatrix<double>::tildeMatrix(rPcmP->minusFullColumn(rPoP));
 	auto rPoPtilde = FullMatrix<double>::tildeMatrix(rPoP);
-	auto term1 = aJPP;
+	auto& term1 = aJPP;
 	auto term21 = rPoPtilde->timesFullMatrix(rPoPtilde);
 	auto term22 = rPoPtilde->timesFullMatrix(rocmPtilde);
 	auto term23 = term22->transpose();
@@ -250,22 +250,22 @@ FColDsptr MbD::MomentOfInertiaSolver::eigenvectorFor(double lam)
 
 	double e0, e1, e2;
 	aJcmPcopy = aJcmP->copy();
-	colOrder = std::make_shared<FullRow<int>>(3);
+	colOrder = std::make_shared<FullRow<size_t>>(3);
 	auto eigenvector = std::make_shared<FullColumn<double>>(3);
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		colOrder->atiput(i, i);
 		aJcmPcopy->atijminusNumber(i, i, lam);
 	}
-	for (int p = 0; p < 3; p++)
+	for (size_t p = 0; p < 3; p++)
 	{
 		doFullPivoting(p);
 		forwardEliminateWithPivot(p);
 	}
 
-	auto row0 = aJcmPcopy->at(0);
-	auto row1 = aJcmPcopy->at(1);
-	auto row2 = aJcmPcopy->at(2);
+	auto& row0 = aJcmPcopy->at(0);
+	auto& row1 = aJcmPcopy->at(1);
+	auto& row2 = aJcmPcopy->at(2);
 	auto norm0 = row0->length();
 	//auto aaaa = row2->length();
 	if ((row2->length() / norm0) > 1.0e-5) throw std::runtime_error("3rd row should be very small.");
@@ -283,7 +283,7 @@ FColDsptr MbD::MomentOfInertiaSolver::eigenvectorFor(double lam)
 
 
 	auto dum = std::make_shared<FullColumn<double>>(ListD{ e0, e1, e2 });
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		eigenvector->atiput(colOrder->at(i), dum->at(i));
 	}

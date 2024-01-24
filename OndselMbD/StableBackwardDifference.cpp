@@ -20,7 +20,7 @@ void StableBackwardDifference::formTaylorMatrix()
 	//|	(t3 - t)	(t3 - t) ^ 2 / 2!	(t3 - t) ^ 3 / 3!|	|qddd(t)|	|q(t3) - q(t)	|
 
 	this->instantiateTaylorMatrix();
-	for (int i = 0; i < order; i++)
+	for (size_t i = 0; i < order; i++)
 	{
 		this->formTaylorRowwithTimeNodederivative(i, i, 0);
 	}
@@ -32,7 +32,7 @@ double MbD::StableBackwardDifference::pvdotpv()
 
 	auto& coeffs = operatorMatrix->at(0);
 	auto sum = 0.0;
-	for (int i = 0; i < order; i++)
+	for (size_t i = 0; i < order; i++)
 	{
 		sum -= coeffs->at(i);
 	}
@@ -40,14 +40,14 @@ double MbD::StableBackwardDifference::pvdotpv()
 }
 
 FColDsptr MbD::StableBackwardDifference::derivativepresentpastpresentDerivativepastDerivative(
-	int, FColDsptr, std::shared_ptr<std::vector<FColDsptr>>, FColDsptr,
+	size_t, FColDsptr, std::shared_ptr<std::vector<FColDsptr>>, FColDsptr,
 	std::shared_ptr<std::vector<FColDsptr>>)
 {
 	assert(false);
 	return FColDsptr();
 }
 
-FColDsptr MbD::StableBackwardDifference::derivativeatpresentpastpresentDerivativepastDerivative(int n, double t, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast, FColDsptr ydot, std::shared_ptr<std::vector<FColDsptr>> ydotpast)
+FColDsptr MbD::StableBackwardDifference::derivativeatpresentpastpresentDerivativepastDerivative(size_t n, double t, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast, FColDsptr ydot, std::shared_ptr<std::vector<FColDsptr>> ydotpast)
 {
 	//"Interpolate or extrapolate."
 	//"dfdt(t) = df0dt + d2f0dt2*(t - t0) + d3f0dt3*(t - t0)^2 / 2! + ..."
@@ -56,7 +56,7 @@ FColDsptr MbD::StableBackwardDifference::derivativeatpresentpastpresentDerivativ
 	if (t != time) {
 		auto dt = t - time;
 		auto dtpower = 1.0;
-		for (int i = n + 1; i < order; i++)
+		for (size_t i = n + 1; i < order; i++)
 		{
 			auto diydti = derivativepresentpastpresentDerivativepastDerivative(i, y, ypast, ydot, ydotpast);
 			dtpower = dtpower * dt;
@@ -73,29 +73,29 @@ void StableBackwardDifference::instantiateTaylorMatrix()
 	}
 }
 
-void StableBackwardDifference::formTaylorRowwithTimeNodederivative(int i, int ii, int k)
+void StableBackwardDifference::formTaylorRowwithTimeNodederivative(size_t i, size_t ii, size_t k)
 {
 	//| rowi hi hipower aij |
 	auto& rowi = taylorMatrix->at(i);
 	if (k > 0) {
-		for (int j = 0; j < k - 2; j++)
+		for (int j = 0; j < (int)k - 2; j++)	//Use int because of subtraction
 		{
 			rowi->at(j) = 0.0;
 		}
-		rowi->at((size_t)k - 1) = 1.0;
+		rowi->at(k - 1) = 1.0;
 	}
 
 	auto hi = timeNodes->at(ii) - time;
 	auto hipower = 1.0;
-	for (int j = k; j < order; j++)
+	for (size_t j = k; j < order; j++)
 	{
 		hipower *= hi;
-		auto aij = hipower * OneOverFactorials->at((size_t)(j - k + 1));
+		auto aij = hipower * OneOverFactorials->at(j - k + 1);
 		rowi->at(j) = aij;
 	}
 }
 
-FColDsptr MbD::StableBackwardDifference::derivativepresentpast(int deriv, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast)
+FColDsptr MbD::StableBackwardDifference::derivativepresentpast(size_t deriv, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast)
 {
 	//"Answer ith derivative given present value and past values."
 
@@ -105,16 +105,17 @@ FColDsptr MbD::StableBackwardDifference::derivativepresentpast(int deriv, FColDs
 	else {
 		if (deriv <= order) {
 			auto series = std::make_shared<std::vector<FColDsptr>>(order);
-			for (int i = 0; i < order; i++)
+			for (size_t i = 0; i < order; i++)
 			{
 				series->at(i) = ypast->at(i)->minusFullColumn(y);
 			}
-			auto& coeffs = operatorMatrix->at((size_t)deriv - 1);
+			auto& coeffs = operatorMatrix->at(deriv - 1);
 			auto answer = coeffs->dot(series);
 			return std::static_pointer_cast<FullColumn<double>>(answer);
 		}
 		else {
-			return std::make_shared<FullColumn<double>>(y->size(), 0.0);
+            auto ySize = y->size();
+			return std::make_shared<FullColumn<double>>(ySize, 0.0);
 		}
 	}
 }

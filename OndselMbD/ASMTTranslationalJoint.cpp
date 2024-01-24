@@ -22,7 +22,7 @@ std::shared_ptr<Joint> MbD::ASMTTranslationalJoint::mbdClassNew()
     return CREATE<TranslationalJoint>::With();
 }
 
-void MbD::ASMTTranslationalJoint::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTTranslationalJoint::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "TranslationalJoint");
 	storeOnLevelString(os, level + 1, "Name");

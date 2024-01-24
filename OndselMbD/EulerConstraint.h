@@ -33,7 +33,7 @@ namespace MbD {
 		void fillpFpydot(SpMatDsptr mat) override;
 
 		FRowDsptr pGpE;		//partial derivative of G wrt pE
-		int iqE = -1;
+		size_t iqE = SIZE_MAX;
 	};
 }
 

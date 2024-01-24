@@ -38,8 +38,10 @@ namespace MbD {
 		static void runSinglePendulumSuperSimplified2();
 		static void runSinglePendulumSimplified();
 		static void runSinglePendulum();
+		static std::shared_ptr<ASMTAssembly> assemblyFromFile(const char* chars);
 		static void runFile(const char* chars);
 		static void runDynFile(const char* chars);
+		static void runDraggingTest();
 		static std::vector<std::string> linesFromFile(const char* chars);
 		static void readWriteFile(const char* chars);
 		static void readWriteDynFile(const char* chars);
@@ -71,8 +73,6 @@ namespace MbD {
 		void readMotionSeries(std::vector<std::string>& lines);
 
 		void outputFor(AnalysisType type);
-		void logString(std::string& str);
-		void logString(double value);
 		void preMbDrun(std::shared_ptr<System> mbdSys);
 		void postMbDrun();
 		void calcCharacteristicDimensions();
@@ -84,11 +84,14 @@ namespace MbD {
 		void deleteMbD() override;
 		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
 		void outputFile(std::string filename);
-		void storeOnLevel(std::ofstream& os, int level) override;
+		void storeOnLevel(std::ofstream& os, size_t level) override;
 
 		/* This function performs a one shot solve of the assembly.*/
 		void solve();
 
+		void runPreDrag();
+		void runDragStep(std::shared_ptr<std::vector<std::shared_ptr<ASMTPart>>> dragParts) const;
+		void runPostDrag();
 		void runKINEMATIC();
 		void runDYNAMIC();
 		void initprincipalMassMarker();
@@ -110,14 +113,14 @@ namespace MbD {
 		void setSimulationParameters(std::shared_ptr<ASMTSimulationParameters> simulationParameters);
 		std::shared_ptr<ASMTPart> partNamed(std::string partName) const;
 		std::shared_ptr<ASMTPart> partPartialNamed(std::string partialName) const;
-		void storeOnLevelNotes(std::ofstream& os, int level);
-		void storeOnLevelParts(std::ofstream& os, int level);
-		void storeOnLevelKinematicIJs(std::ofstream& os, int level);
-		void storeOnLevelConstraintSets(std::ofstream& os, int level);
-		void storeOnLevelForceTorques(std::ofstream& os, int level);
-		void storeOnLevelJoints(std::ofstream& os, int level);
-		void storeOnLevelMotions(std::ofstream& os, int level);
-		void storeOnLevelGeneralConstraintSets(std::ofstream& os, int level);
+		void storeOnLevelNotes(std::ofstream& os, size_t level);
+		void storeOnLevelParts(std::ofstream& os, size_t level);
+		void storeOnLevelKinematicIJs(std::ofstream& os, size_t level);
+		void storeOnLevelConstraintSets(std::ofstream& os, size_t level);
+		void storeOnLevelForceTorques(std::ofstream& os, size_t level);
+		void storeOnLevelJoints(std::ofstream& os, size_t level);
+		void storeOnLevelMotions(std::ofstream& os, size_t level);
+		void storeOnLevelGeneralConstraintSets(std::ofstream& os, size_t level);
 		void storeOnTimeSeries(std::ofstream& os) override;
 		void setFilename(std::string filename);
 		void updateFromInputState() override;
@@ -137,6 +140,7 @@ namespace MbD {
 		std::shared_ptr<std::vector<double>> times = std::make_shared<std::vector<double>>();
 		std::shared_ptr<ASMTTime> asmtTime = std::make_shared<ASMTTime>();
 		std::shared_ptr<Units> mbdUnits = std::make_shared<Units>();
+		std::shared_ptr<System> mbdSystem;
 		MBDynSystem* mbdynItem = nullptr;
 	};
 }

@@ -22,7 +22,7 @@ std::shared_ptr<Joint> MbD::ASMTNoRotationJoint::mbdClassNew()
     return CREATE<NoRotationJoint>::With();
 }
 
-void MbD::ASMTNoRotationJoint::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTNoRotationJoint::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "NoRotationJoint");
 	storeOnLevelString(os, level + 1, "Name");

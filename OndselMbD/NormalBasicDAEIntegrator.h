@@ -22,13 +22,13 @@ namespace MbD {
         NormalBasicDAEIntegrator(std::shared_ptr<StartingBasicDAEIntegrator> startingBasicDAEIntegrator);
         void initialize() override;
         void initializeLocally() override;
-        FColDsptr yDerivat(int _order, double tout) override;
+        FColDsptr yDerivat(size_t _order, double tout) override;
         std::shared_ptr<LinearMultiStepMethod> correctorBDF() override;
         void calcOperatorMatrix() override;
         void settime(double t) override;
-        void iStep(int i) override;
-        void setorder(int o) override;
-        FColDsptr yDeriv(int order);
+        void iStep(size_t i) override;
+        void setorder(size_t o) override;
+        FColDsptr yDeriv(size_t order);
         FColDsptr dyOrderPlusOnedt() override;
         void run() override;
         void selectOrder() override;

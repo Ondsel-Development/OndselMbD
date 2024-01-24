@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include <memory>
 
 #include "QuasiIntegrator.h"
@@ -39,7 +39,15 @@ void QuasiIntegrator::run()
 	try {
 		try {
 			try {
-				IntegratorInterface::run();
+				this->preRun();
+				this->initializeLocally();
+				this->initializeGlobally();
+				if (hout > (4 * std::numeric_limits<double>::epsilon()) && (direction * tout < (direction * (tend + (0.1 * direction * hout))))) {
+					integrator->run();
+				}
+				this->finalize();
+				this->reportStats();
+				this->postRun();
 			}
 			catch (SingularMatrixError ex) {
 				std::stringstream ss;
@@ -72,6 +80,11 @@ void QuasiIntegrator::run()
 		throw SimulationStoppingError("");
 	}
 
+}
+
+void MbD::QuasiIntegrator::reportStats()
+{
+	//Do nothing
 }
 
 void QuasiIntegrator::preFirstStep()
@@ -113,17 +126,17 @@ void QuasiIntegrator::checkForDiscontinuity()
 	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { tstartNew = item->checkForDynDiscontinuityBetweenand(tprevious, tstartNew); });
 	if ((direction * tstartNew) > (direction * t)) {
 		//"No discontinuity in step"
-			return;
+		return;
 	}
 	else {
 		this->checkForOutputThrough(tstartNew);
-			this->interpolateAt(tstartNew);
-			system->tstartPastsAddFirst(tstart);
-			system->tstart = tstartNew;
-			system->toutFirst = tout;
-			auto discontinuityTypes = std::make_shared<std::vector<DiscontinuityType>>();
-			system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->discontinuityAtaddTypeTo(tstartNew, discontinuityTypes); });
-			this->throwDiscontinuityError("", discontinuityTypes);
+		this->interpolateAt(tstartNew);
+		system->tstartPastsAddFirst(tstart);
+		system->tstart = tstartNew;
+		system->toutFirst = tout;
+		auto discontinuityTypes = std::make_shared<std::vector<DiscontinuityType>>();
+		system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->discontinuityAtaddTypeTo(tstartNew, discontinuityTypes); });
+		this->throwDiscontinuityError("", discontinuityTypes);
 	}
 }
 
@@ -214,5 +227,10 @@ void QuasiIntegrator::postRun()
 
 void MbD::QuasiIntegrator::useTrialStepStats(std::shared_ptr<SolverStatistics> stats)
 {
-	assert(false);
+	system->useDynTrialStepStats(stats);
+}
+
+void MbD::QuasiIntegrator::useQuasiStepStats(std::shared_ptr<SolverStatistics> stats)
+{
+	//Do Nothing
 }

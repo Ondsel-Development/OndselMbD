@@ -16,7 +16,7 @@ namespace MbD {
     {
         //riIeJeIe
     public:
-        TranslationConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, int axisi);
+        TranslationConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi);
 
         void calcPostDynCorrectorIteration() override;
         void initialize() override;
@@ -35,7 +35,7 @@ namespace MbD {
         void preDynOutput() override;
 		void postDynOutput() override;
 
-        int axisI;
+        size_t axisI;
         std::shared_ptr<DispCompIecJecKec> riIeJeIe;
         //ToDo: Use DispCompIecJecIe instead of DispCompIecJecKec
     };

@@ -228,7 +228,7 @@ double MbD::BasicDAEIntegrator::selectBasicStepSize()
 		hdum = std::pow(dum, 1.0 / order);
 	}
 	else {
-		coeff = DifferenceOperator::OneOverFactorials->at((size_t)order + 1);
+		coeff = DifferenceOperator::OneOverFactorials->at(order + 1);
 		yndot = dyOrderPlusOnedt();
 		yndotNorm = std::max(integErrorNormFromwrt(yndot, y), 1.0e-15);
 		dum = conservativeFactor / (coeff * yndotNorm);
@@ -252,7 +252,7 @@ double MbD::BasicDAEIntegrator::rmswrtrelativeTolabsoluteTol(FColDsptr vector, F
 	auto n = baseVector->size();
 	auto count = 0;
 	auto sumOfSquares = 0.0;
-	for (int i = 0; i < n; i++)
+	for (size_t i = 0; i < n; i++)
 	{
 		auto relToli = relativeTol->at(i);
 		if (relToli != std::numeric_limits<double>::min()) {
@@ -287,18 +287,18 @@ void MbD::BasicDAEIntegrator::incrementTime()
 	BasicIntegrator::incrementTime();
 	ypast->insert(ypast->begin(), y);
 	ydotpast->insert(ydotpast->begin(), ydot);
-	if ((int)ypast->size() > (orderMax + 1)) {
+	if (ypast->size() > (orderMax + 1)) {
 		ypast->pop_back();
 		ydotpast->pop_back();
 	}
 }
 
-void MbD::BasicDAEIntegrator::correctValuesAtFirstStep()
+void MbD::BasicDAEIntegrator::correctValuesAtFirstStep() const
 {
 	newtonRaphson->run();
 }
 
-void MbD::BasicDAEIntegrator::correctValuesAtNextStep()
+void MbD::BasicDAEIntegrator::correctValuesAtNextStep() const
 {
 	newtonRaphson->run();
 }
@@ -322,7 +322,7 @@ FColDsptr MbD::BasicDAEIntegrator::fillF()
 	return aF;
 }
 
-int MbD::BasicDAEIntegrator::iterMax()
+size_t MbD::BasicDAEIntegrator::iterMax()
 {
 	return system->iterMax();
 }
@@ -352,7 +352,7 @@ void MbD::BasicDAEIntegrator::calcOperatorMatrix()
 	extrapolator->calcOperatorMatrix();
 }
 
-void MbD::BasicDAEIntegrator::setorder(int o)
+void MbD::BasicDAEIntegrator::setorder(size_t o)
 {
 	BasicIntegrator::setorder(o);
 	extrapolator->setorder(o - 1);
@@ -364,7 +364,7 @@ void MbD::BasicDAEIntegrator::settime(double t)
 	extrapolator->settime(t);
 }
 
-void MbD::BasicDAEIntegrator::iStep(int i)
+void MbD::BasicDAEIntegrator::iStep(size_t i)
 {
 	BasicIntegrator::iStep(i);
 	extrapolator->setiStep(i);
@@ -383,7 +383,7 @@ void MbD::BasicDAEIntegrator::updateForDAECorrector()
 	system->updateForDAECorrector();
 }
 
-FColDsptr MbD::BasicDAEIntegrator::yDeriv(int order)
+FColDsptr MbD::BasicDAEIntegrator::yDeriv(size_t order)
 {
 	assert(false);
 	return FColDsptr();
@@ -393,7 +393,7 @@ void MbD::BasicDAEIntegrator::calcTruncError()
 {
 	//"Calculate the leading term of truncation error in Taylor series."
 
-	auto factor = DifferenceOperator::OneOverFactorials->at((size_t)order + 1);
+	auto factor = DifferenceOperator::OneOverFactorials->at(order + 1);
 	auto yndot = dyOrderPlusOnedt();
 	auto yndotNorm = integErrorNormFromwrt(yndot, y);
 	auto hpower = std::pow(h, order + 1);
@@ -406,13 +406,13 @@ FColDsptr MbD::BasicDAEIntegrator::dyOrderPlusOnedt()
 	return FColDsptr();
 }
 
-bool MbD::BasicDAEIntegrator::isConvergedForand(int iterNo, std::shared_ptr<std::vector<double>> dyNorms)
+bool MbD::BasicDAEIntegrator::isConvergedForand(size_t iterNo, std::shared_ptr<std::vector<double>> dyNorms) const
 {
 	auto dyNormIterNo = dyNorms->at(iterNo);
 	auto smallEnoughTol = 4 * std::numeric_limits<double>::epsilon() / corAbsTol->at(0);
 	auto smallEnough = dyNormIterNo < smallEnoughTol;
 	if (iterNo == 0) return smallEnough;
-	auto rho = dyNormIterNo / dyNorms->at((size_t)iterNo - 1);
+	auto rho = dyNormIterNo / dyNorms->at(iterNo - 1);
 	return smallEnough || (rho < 1.0 && (rho * dyNormIterNo / (1.0 - rho) < 0.33));
 }
 
@@ -459,7 +459,7 @@ void MbD::BasicDAEIntegrator::correct()
 	}
 }
 
-bool MbD::BasicDAEIntegrator::isRedoingStep()
+bool MbD::BasicDAEIntegrator::isRedoingStep() const
 {
 	if (iTry > 100) {
 		throw TooManyTriesError("");
@@ -524,7 +524,7 @@ void MbD::BasicDAEIntegrator::selectStepSizeNormal()
 	}
 }
 
-void MbD::BasicDAEIntegrator::useDAECorrectorStats(std::shared_ptr<SolverStatistics> stats)
+void MbD::BasicDAEIntegrator::useDAECorrectorStats(std::shared_ptr<SolverStatistics> stats) const
 {
 	statistics->corIterNo = stats->iterNo;
 }

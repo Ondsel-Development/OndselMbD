@@ -27,6 +27,19 @@ void MbD::ExternalSystem::preMbDrun(std::shared_ptr<System> mbdSys)
 	}
 }
 
+void MbD::ExternalSystem::updateFromMbD()
+{
+	if (cadSystem) {
+		cadSystem->updateFromMbD();
+	}
+	else if (asmtAssembly) {
+		asmtAssembly->updateFromMbD();
+	}
+	else {
+		assert(false);
+	}
+}
+
 void MbD::ExternalSystem::outputFor(AnalysisType type)
 {
 	if (cadSystem) {
@@ -75,4 +88,9 @@ void MbD::ExternalSystem::useDynTrialStepStats(std::shared_ptr<SolverStatistics>
 	auto str = ss.str();
 	logString(str);
 
+}
+
+void MbD::ExternalSystem::useKineTrialStepStats(std::shared_ptr<SolverStatistics> stats)
+{
+	useDynTrialStepStats(stats);
 }

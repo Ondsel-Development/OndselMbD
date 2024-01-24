@@ -82,12 +82,12 @@ void MbD::MatrixSolver::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr ful
 	assert(false);
 }
 
-void MbD::MatrixSolver::doPivoting(int p)
+void MbD::MatrixSolver::doPivoting(size_t p)
 {
 	assert(false);
 }
 
-void MbD::MatrixSolver::forwardEliminateWithPivot(int p)
+void MbD::MatrixSolver::forwardEliminateWithPivot(size_t p)
 {
 	assert(false);
 }
@@ -102,11 +102,11 @@ void MbD::MatrixSolver::postSolve()
 	assert(false);
 }
 
-void MatrixSolver::findScalingsForRowRange(int begin, int end)
+void MatrixSolver::findScalingsForRowRange(size_t begin, size_t end)
 {
 	//"Row element * scaling <= 1.0."
 	rowScalings = std::make_shared<FullColumn<double>>(m);
-	for (int i = begin; i < end; i++)
+	for (size_t i = begin; i < end; i++)
 	{
 		double maxRowMagnitude = this->getmatrixArowimaxMagnitude(i);
 		if (maxRowMagnitude == 0.0) throwSingularMatrixError("");
@@ -114,7 +114,7 @@ void MatrixSolver::findScalingsForRowRange(int begin, int end)
 	}
 }
 
-double MbD::MatrixSolver::getmatrixArowimaxMagnitude(int i)
+double MbD::MatrixSolver::getmatrixArowimaxMagnitude(size_t i)
 {
 	assert(false);
 	return 0.0;
@@ -125,7 +125,7 @@ void MatrixSolver::throwSingularMatrixError(const char* chars)
 	throw SingularMatrixError(chars);
 }
 
-void MatrixSolver::throwSingularMatrixError(const char* chars, std::shared_ptr<FullColumn<int>> redunEqnNos)
+void MatrixSolver::throwSingularMatrixError(const char* chars, std::shared_ptr<FullColumn<size_t>> redunEqnNos)
 {
 	throw SingularMatrixError(chars, redunEqnNos);
 }

@@ -31,7 +31,7 @@ void EulerConstraint::calcPostDynCorrectorIteration()
 {
 	auto& qE = static_cast<PartFrame*>(owner)->qE;
 	aG = qE->sumOfSquares() - 1.0;
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		pGpE->at(i) = 2.0 * qE->at(i);
 	}
@@ -54,7 +54,7 @@ void EulerConstraint::fillPosICJacob(SpMatDsptr mat)
 	mat->atijplusFullRow(iG, iqE, pGpE);
 	mat->atijplusFullColumn(iqE, iG, pGpE->transpose());
 	auto twolam = 2.0 * lam;
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto ii = iqE + i;
 		mat->atijplusNumber(ii, ii, twolam);
@@ -89,7 +89,7 @@ void MbD::EulerConstraint::fillpFpy(SpMatDsptr mat)
 	//"ppGpEpE is a diag(2,2,2,2)."
 	mat->atijplusFullRow(iG, iqE, pGpE);
 	auto twolam = 2.0 * lam;
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto ii = iqE + i;
 		mat->atijplusNumber(ii, ii, twolam);

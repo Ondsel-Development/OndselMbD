@@ -22,7 +22,7 @@ std::shared_ptr<Joint> MbD::ASMTFixedJoint::mbdClassNew()
     return CREATE<FixedJoint>::With();
 }
 
-void MbD::ASMTFixedJoint::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTFixedJoint::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "FixedJoint");
 	storeOnLevelString(os, level + 1, "Name");

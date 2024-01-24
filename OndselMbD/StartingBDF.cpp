@@ -36,20 +36,20 @@ void MbD::StartingBDF::formTaylorMatrix()
 
 	instantiateTaylorMatrix();
 	formDegenerateTaylorRow(0);
-	for (int i = 1; i < order; i++)
+	for (size_t i = 1; i < order; i++)
 	{
 		formTaylorRowwithTimeNodederivative(i, i - 1, 0);
 	}
 	formTaylorRowwithTimeNodederivative(order + 1, order - 1, 1);
 }
 
-void MbD::StartingBDF::setorder(int o)
+void MbD::StartingBDF::setorder(size_t o)
 {
 	//"order is controlled by iStep."
 	if (order != o) throw std::runtime_error("iStep and order must be consistent.");
 }
 
-FColDsptr MbD::StartingBDF::derivativepresentpastpresentDerivativepastDerivative(int n, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast, FColDsptr ydot, std::shared_ptr<std::vector<FColDsptr>> ydotpast)
+FColDsptr MbD::StartingBDF::derivativepresentpastpresentDerivativepastDerivative(size_t n, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast, FColDsptr ydot, std::shared_ptr<std::vector<FColDsptr>> ydotpast)
 {
 	assert(false);
 	return FColDsptr();

@@ -81,7 +81,7 @@ void MbD::NormalBasicDAEIntegrator::initializeLocally()
 	assert(false);
 }
 
-FColDsptr MbD::NormalBasicDAEIntegrator::yDerivat(int n, double time)
+FColDsptr MbD::NormalBasicDAEIntegrator::yDerivat(size_t n, double time)
 {
 	return opBDF->derivativeatpresentpast(n, time, y, ypast);
 }
@@ -103,19 +103,19 @@ void MbD::NormalBasicDAEIntegrator::settime(double t)
 	opBDFhigher->settime(t);
 }
 
-void MbD::NormalBasicDAEIntegrator::iStep(int i)
+void MbD::NormalBasicDAEIntegrator::iStep(size_t i)
 {
 	BasicDAEIntegrator::iStep(i);
 	opBDFhigher->setiStep(i);
 }
 
-void MbD::NormalBasicDAEIntegrator::setorder(int o)
+void MbD::NormalBasicDAEIntegrator::setorder(size_t o)
 {
 	BasicDAEIntegrator::setorder(o);
 	opBDFhigher->setorder(o + 1);
 }
 
-FColDsptr MbD::NormalBasicDAEIntegrator::yDeriv(int deriv)
+FColDsptr MbD::NormalBasicDAEIntegrator::yDeriv(size_t deriv)
 {
 	return opBDF->derivativepresentpast(deriv, y, ypast);
 }
@@ -152,7 +152,7 @@ void MbD::NormalBasicDAEIntegrator::selectOrderNormal()
 
 	auto errorTrunc = std::make_shared<FullVector<double>>();
 	auto nterm = 3;
-	int istart;
+	size_t istart;
 	FColDsptr yndot;
 	double yndotNorm, hpower;
 	if (order > nterm) {
@@ -161,7 +161,7 @@ void MbD::NormalBasicDAEIntegrator::selectOrderNormal()
 	else {
 		istart = 1;
 	}
-	for (int i = istart; i < order; i++)
+	for (size_t i = istart; i < order; i++)
 	{
 		yndot = yDeriv(i);
 		yndotNorm = integErrorNormFromwrt(yndot, y);

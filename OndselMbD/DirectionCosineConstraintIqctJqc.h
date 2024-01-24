@@ -15,7 +15,7 @@ namespace MbD {
 	{
 		//pGpt ppGpEIpt ppGpEJpt ppGptpt 
 	public:
-		DirectionCosineConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj);
+		DirectionCosineConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj);
 
 		void fillAccICIterError(FColDsptr col) override;
 		void fillVelICError(FColDsptr col) override;

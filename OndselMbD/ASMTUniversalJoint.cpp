@@ -22,7 +22,7 @@ std::shared_ptr<Joint> MbD::ASMTUniversalJoint::mbdClassNew()
     return CREATE<UniversalJoint>::With();
 }
 
-void MbD::ASMTUniversalJoint::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTUniversalJoint::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "UniversalJoint");
 	storeOnLevelString(os, level + 1, "Name");

@@ -48,12 +48,11 @@ namespace MbD {
 		virtual std::shared_ptr<ASMTAssembly> asmtAssembly();
 		virtual std::string formulaFromDrive(std::string driveName, std::string varName);
 		void logString(std::string& str);
-		std::string readStringOffTop(std::vector<std::string>& args);
 		FRowDsptr readRowOfDoubles(std::string& line);
 		FColDsptr readColumnOfDoubles(std::string& line);
 		double readDoubleOffTop(std::vector<std::string>& args);
 		double readDouble(std::string& line);
-		int readInt(std::string& line);
+		size_t readInt(std::string& line);
 		bool readBool(std::string& line);
 		std::string readString(std::string& line);
 		std::string asmtFormula(std::string mbdynFormula);
@@ -65,6 +64,7 @@ namespace MbD {
 		FMatDsptr readOrientation(std::vector<std::string>& args);
 		FMatDsptr readBasicOrientation(std::vector<std::string>& args);
 		std::string popOffTop(std::vector<std::string>& args);
+		std::string readStringOffTop(std::vector<std::string>& args);
 		void readName(std::vector<std::string>& args);
 		std::string readJointTypeOffTop(std::vector<std::string>& args);
 		std::string readToken(std::string& line);

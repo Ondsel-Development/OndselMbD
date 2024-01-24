@@ -28,7 +28,7 @@ void MbD::PosKineNewtonRaphson::run()
 void MbD::PosKineNewtonRaphson::iterate()
 {
 	//Keep for debugging
-	iterNo = -1;
+	iterNo = SIZE_MAX;
 	this->fillY();
 	this->calcyNorm();
 	yNorms->push_back(yNorm);
@@ -75,7 +75,7 @@ void PosKineNewtonRaphson::assignEquationNumbers()
 	//auto contactEndFrames = system->contactEndFrames();
 	//auto uHolders = system->uHolders();
 	auto constraints = system->allConstraints();
-	int varNo = 0;
+	size_t varNo = 0;
 	for (auto& part : *parts) {
 		part->iqX(varNo);
 		varNo = varNo + 3;

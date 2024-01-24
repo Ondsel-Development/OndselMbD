@@ -22,7 +22,7 @@ std::shared_ptr<Joint> MbD::ASMTPointInLineJoint::mbdClassNew()
     return CREATE<PointInLineJoint>::With();
 }
 
-void MbD::ASMTPointInLineJoint::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTPointInLineJoint::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "PointInLineJoint");
 	storeOnLevelString(os, level + 1, "Name");

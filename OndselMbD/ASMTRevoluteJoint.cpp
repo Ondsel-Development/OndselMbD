@@ -22,7 +22,7 @@ std::shared_ptr<Joint> MbD::ASMTRevoluteJoint::mbdClassNew()
 	return CREATE<RevoluteJoint>::With();
 }
 
-void MbD::ASMTRevoluteJoint::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTRevoluteJoint::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "RevoluteJoint");
 	storeOnLevelString(os, level + 1, "Name");

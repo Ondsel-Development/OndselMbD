@@ -87,10 +87,12 @@ void BasicQuasiIntegrator::selectStepSize()
 
 void MbD::BasicQuasiIntegrator::postFirstStep()
 {
-	assert(false);
+	t = tnew;
+	system->postFirstStep();
 }
 
 void MbD::BasicQuasiIntegrator::postStep()
 {
-	assert(false);
+	t = tnew;
+	system->postStep();
 }

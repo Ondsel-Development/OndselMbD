@@ -22,7 +22,7 @@ std::shared_ptr<Joint> MbD::ASMTCylindricalJoint::mbdClassNew()
     return CREATE<CylindricalJoint>::With();
 }
 
-void MbD::ASMTCylindricalJoint::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTCylindricalJoint::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "CylindricalJoint");
 	storeOnLevelString(os, level + 1, "Name");

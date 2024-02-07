@@ -30,7 +30,7 @@ void sharedptrTest();
 
 int main()
 {
-	MBDynSystem::runDynFile("../testapp/MBDyn/bug.mbd");
+	MBDynSystem::runDynFile("../testapp/MBDyn/penduRod5deg2.mbd");
 	MBDynSystem::runDynFile("../testapp/MBDyn/penduBeam.mbd");
 	MBDynSystem::runDynFile("../testapp/MBDyn/penduRod5deg.mbd");
 	MBDynSystem::runDynFile("../testapp/MBDyn/penduRod90deg.mbd");

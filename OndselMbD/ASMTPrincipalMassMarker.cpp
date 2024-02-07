@@ -96,3 +96,10 @@ void MbD::ASMTPrincipalMassMarker::storeOnLevel(std::ofstream& os, size_t level)
 	storeOnLevelString(os, level + 1, "Density");
 	storeOnLevelDouble(os, level + 2, density);
 }
+
+void MbD::ASMTPrincipalMassMarker::zeroMass()
+{
+	mass = 0.0;
+	density = 0.0;
+	momentOfInertias = std::make_shared<DiagonalMatrix<double>>(ListD{ 0.0, 0.0, 0.0 });
+}

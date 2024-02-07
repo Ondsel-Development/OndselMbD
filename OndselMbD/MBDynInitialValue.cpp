@@ -150,7 +150,7 @@ void MbD::MBDynInitialValue::createASMT()
 		timeStep *= nstep;
 	}
 	simulationParameters->sethout(timeStep);
-	simulationParameters->seterrorTol(tolerance);
+	simulationParameters->seterrorTol(std::min(1.0e-8, tolerance));	//OndselMbD needs a tighter tolerance
 	simulationParameters->setmaxIter(maxIterations);
 	asmtAssembly()->setSimulationParameters(simulationParameters);
 }

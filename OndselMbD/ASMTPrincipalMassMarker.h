@@ -25,6 +25,7 @@ namespace MbD {
 		// Overloads to simplify syntax.
 		void setMomentOfInertias(double a, double b, double c);
 		void storeOnLevel(std::ofstream& os, size_t level) override;
+		void zeroMass();
 
 		double mass = 1.0;
 		double density = 10.0;

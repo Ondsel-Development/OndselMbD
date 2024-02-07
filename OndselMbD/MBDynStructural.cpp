@@ -79,6 +79,7 @@ void MbD::MBDynStructural::readOmega(std::vector<std::string>& args)
 void MbD::MBDynStructural::createASMT()
 {
 	auto asmtPart = std::make_shared<ASMTPart>();
+	asmtPart->principalMassMarker->zeroMass();
 	asmtItem = asmtPart;
 	asmtPart->setName(name);
 	asmtPart->setPosition3D(rOfO);

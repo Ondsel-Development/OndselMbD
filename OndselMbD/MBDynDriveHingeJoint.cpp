@@ -37,5 +37,6 @@ void MbD::MBDynDriveHingeJoint::createASMT()
 
 std::shared_ptr<ASMTJoint> MbD::MBDynDriveHingeJoint::asmtClassNew()
 {
+	assert(false);
 	return std::make_shared<ASMTJoint>();
 }

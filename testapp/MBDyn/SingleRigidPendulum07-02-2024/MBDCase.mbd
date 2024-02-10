@@ -13,7 +13,7 @@
      final time: 4.0;
      time step: 0.0001;
      max iterations: 100;
-     tolerance: 1e-08;
+     tolerance: 1e-06;
      derivatives tolerance: 0.0001;
      derivatives max iterations: 100;
      derivatives coefficient: auto;
@@ -28,7 +28,7 @@
      omega rotates: no;
      print: none;
      initial stiffness: 1.0, 1.0;
-     output meter: string, "model::drive(10000, Time)"; #<meter>
+     output meter: string, "model::drive(10000, Time)"; #<meter drive>
      structural nodes: 2;
      rigid bodies: 1;
      joints: 2;
@@ -42,8 +42,8 @@
 
          #body: 2
              set: integer body_2 = 2; #body label
-             set: real mass_2 = 0.0024818581963359; #mass [kg]
-             set: real volume_2 = 3.1415926535897927e-07; #volume [m^3]
+             set: real mass_2 = 0.7303387501225953; #mass [kg]
+             set: real volume_2 = 9.244794305349308e-05; #volume [m^3]
 
      #Nodes
 
@@ -66,9 +66,9 @@
      #Nodes: initial conditions
 
          #node: 1
-             set: real Px_1 = -5.654319433712921e-19; #X component of the absolute position [m]
-             set: real Py_1 = -1.8323016715005026e-20; #Y component of the absolute position [m]
-             set: real Pz_1 = 0.005; #Z component of the absolute position [m]
+             set: real Px_1 = -2.0586748800433875e-18; #X component of the absolute position [m]
+             set: real Py_1 = 3.12244057770133e-19; #Y component of the absolute position [m]
+             set: real Pz_1 = 0.009999999999999997; #Z component of the absolute position [m]
 
              set: real Vx_1 = 0.0; #X component of the absolute velocity [m/s]
              set: real Vy_1 = 0.0; #Y component of the absolute velocity [m/s]
@@ -79,9 +79,9 @@
              set: real Wz_1 = 0.0; #Z component of the absolute angular velocity [rad/s]
 
          #node: 2
-             set: real Px_2 = 0.0215577871373829; #X component of the absolute position [m]
-             set: real Py_2 = -0.04980973490458729; #Y component of the absolute position [m]
-             set: real Pz_2 = 0.0044; #Z component of the absolute position [m]
+             set: real Px_2 = 0.059743460000000054; #X component of the absolute position [m]
+             set: real Py_2 = -3.9735044185646646e-19; #Y component of the absolute position [m]
+             set: real Pz_2 = 0.010000000000000002; #Z component of the absolute position [m]
 
              set: real Vx_2 = 0.0; #X component of the absolute velocity [m/s]
              set: real Vy_2 = 0.0; #Y component of the absolute velocity [m/s]
@@ -97,12 +97,12 @@
      #Moments of inertia and relative center of mass
 
          #body 2: 
-             set: real Ixx_2 = 2.0688356470000002e-06; #moment of inertia [kg*m^2]
-             set: real Iyy_2 = 2.0688356470000002e-06; #moment of inertia [kg*m^2]
-             set: real Izz_2 = 0.; #moment of inertia [kg*m^2]
+             set: real Ixx_2 = 0.00112651559374; #moment of inertia around first axis of inertia [kg*m^2]
+             set: real Iyy_2 = 0.0010428821160760001; #moment of inertia around second axis of inertiae [kg*m^2]
+             set: real Izz_2 = 0.000132322727723; #moment of inertia around third axis of inertia [kg*m^2]
 
              set: real Rx_2 = 0.0; #X component of the relative center of mass [m]
-             set: real Ry_2 = 7.105427357601002e-18; #Y component of the relative center of mass [m]
+             set: real Ry_2 = 0.0; #Y component of the relative center of mass [m]
              set: real Rz_2 = 0.0; #Z component of the relative center of mass [m]
 
  #-----------------------------------------------------------------------------
@@ -120,7 +120,7 @@
      structural: structural_node_2,
                  dynamic,
                  Px_2, Py_2, Pz_2, #<absolute_position> [m]
-                 3, 0.0, 0.0, 1.0, 2, -0.08715574274765799, 0.9961946980917455, 0.0, #<absolute_orientation_matrix>
+                 3, 0.0, 0.0, 1.0, 2, 0.0, 1.0, 0.0, #<absolute_orientation_matrix>
                  Vx_2, Vy_2, Vz_2, #<absolute_velocity> [m/s]
                  Wx_2, Wy_2, Wz_2; #<absolute_angular_velocity> [rad/s]
 
@@ -139,7 +139,7 @@
                mass_2, #<mass> [kg]
                Rx_2, Ry_2, Rz_2, #<relative_center_of_mass> [m]
                diag, Ixx_2, Iyy_2, Izz_2, #<inertia matrix> [kg*m^2]
-               orientation, 3, -0.0025017800805991197, 1.0040387149390348, 1.3877787807814457e-17, 2, -0.01992389396183491, 0.0017431148549531597, 1.0; 
+               orientation, 3, 1.0, 7.703719777548943e-34, 0.0, 2, 0.0, 1.0, 0.0; 
 
      #-----------------------------------------------------------------------------
      # [Joints]
@@ -147,24 +147,32 @@
      joint: joint_1,
          clamp,
          structural_node_1, #<node_label>
-             -5.654319433712921e-19, -1.8323016715005026e-20, 0.005, #<absolute_pin_position> [m]
+             -2.0586748800433875e-18, 3.12244057770133e-19, 0.009999999999999997, #<absolute_pin_position> [m]
              3, 0.0, 0.0, 1.0, 2, 0.0, 1.0, 0.0; #<absolute_orientation_matrix> 
 
      joint: joint_2,
-         revolute hinge,
-         structural_node_1, #<action_entity_label>
-             position, 5.654319433712921e-19, -2.7755575615628914e-20, 0.0, #<relative_position_1> [m]
-             orientation, 3, 0.0, 0.0, 1.0, 2, guess, #<relative_pin_orientation_matrix_1>
+         total joint,
+         structural_node_1, #<base_entity_label>
+             position, 5.6113885588438885e-18, -2.2805214506939193e-19, 1.7763568394002505e-18, #<relative_position_1> [m]
+             position orientation, 3, 0.0, 0.0, 1.0, 2, 0.0, 1.0, 0.0, #<relative_pin_orientation_matrix_1>
+             rotation orientation, 3, 0.0, 0.0, 1.0, 2, 0.0, 1.0, 0.0, #<relative_pin_orientation_matrix_1>
          structural_node_2, #<action_entity_label>
-            position, -3.552713678800501e-18, 0.05000000000000002, 0.0, #<relative_position_2> [m]
-            orientation, 3, 0.0, -0.0, 1.0, 2, guess; #<relative_pin_orientation_matrix_2>
+             position, -0.059743460000000054, 4.815423545572076e-19, -3.552713678800501e-18, #<relative_position_2> [m]
+             position orientation, 3, 0.0, 0.0, 1.0, 2, 0.0, 1.0, 0.0, #<relative_pin_orientation_matrix_2>
+             rotation orientation, 3, 0.0, 0.0, 1.0, 2, 0.0, 1.0, 0.0, #<relative_pin_orientation_matrix_2>
+         position constraint,
+             active, active, active,
+             null,
+         orientation constraint,
+             active, active, inactive,
+             null;
 
      #-----------------------------------------------------------------------------
      # [Drive callers]
 
      drive caller: 10000, name,"drive:10000", meter, 0.0, forever, steps, 400; #<meter_drive for output_meter>
 
-         gravity: uniform, 0.0, -1.0, 0.0, string, "9.807"; #<gravity_acceleration> [m/s^2]
+     gravity: uniform, 0.0, -1.0, 0.0, string, "9.81"; #<gravity_acceleration> [m/s^2]
 
  end: elements;
 

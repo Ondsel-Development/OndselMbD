@@ -34,8 +34,6 @@ using namespace MbD;
 
 std::shared_ptr<MBDynJoint> MbD::MBDynJoint::newJoint(std::string statement)
 {
-	//std::shared_ptr<MBDynJoint> joint;
-	//std::vector<std::string> tokens{ "total", "joint" };
 	std::vector<std::string> tokens;
 	tokens = { "axial", "rotation" };
 	if (lineHasTokens(statement, tokens)) {

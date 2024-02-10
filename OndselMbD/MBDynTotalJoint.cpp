@@ -12,6 +12,14 @@
 #include "ASMTAssembly.h"
 #include "ASMTJoint.h"
 #include "ASMTGeneralMotion.h"
+#include "ASMTRevoluteJoint.h"
+#include "ASMTCylindricalJoint.h"
+#include "ASMTSphericalJoint.h"
+#include "ASMTFixedJoint.h"
+#include "ASMTTranslationalJoint.h"
+#include "ASMTPointInLineJoint.h"
+#include "ASMTPointInPlaneJoint.h"
+#include "ASMTNoRotationJoint.h"
 
 using namespace MbD;
 
@@ -106,18 +114,113 @@ void MbD::MBDynTotalJoint::readOrientationFormulas(std::vector<std::string>& arg
 
 void MbD::MBDynTotalJoint::createASMT()
 {
-	mkr1->createASMT();
-	if (mkr2) mkr2->createASMT();
-	auto asmtAsm = asmtAssembly();
-	auto asmtMotion = std::make_shared<ASMTGeneralMotion>();
-	asmtItem = asmtMotion;
-	asmtMotion->setName(name);
-	asmtMotion->setMarkerI(mkr1->asmtItem->fullName(""));
-	asmtMotion->setMarkerJ(mkr2->asmtItem->fullName(""));
-	asmtAsm->addMotion(asmtMotion);
-	for (size_t i = 0; i < 3; i++)
-	{
-		asmtMotion->rIJI->atiput(i, asmtFormula(positionFormulas.at(i)));
-		asmtMotion->angIJJ->atiput(i, asmtFormula(orientationFormulas.at(i)));
+	if (hasDOF() && !hasFormulas()) {
+		MBDynJoint::createASMT();
 	}
+	else if (!hasDOF() && hasFormulas()) {
+		mkr1->createASMT();
+		if (mkr2) mkr2->createASMT();
+		auto asmtAsm = asmtAssembly();
+		auto asmtMotion = std::make_shared<ASMTGeneralMotion>();
+		asmtItem = asmtMotion;
+		asmtMotion->setName(name);
+		asmtMotion->setMarkerI(mkr1->asmtItem->fullName(""));
+		asmtMotion->setMarkerJ(mkr2->asmtItem->fullName(""));
+		asmtAsm->addMotion(asmtMotion);
+		for (size_t i = 0; i < 3; i++)
+		{
+			asmtMotion->rIJI->atiput(i, asmtFormula(positionFormulas.at(i)));
+			asmtMotion->angIJJ->atiput(i, asmtFormula(orientationFormulas.at(i)));
+		}
+	}
+	else {
+		assert(false);
+	}
+}
+
+bool MbD::MBDynTotalJoint::hasDOF()
+{
+	auto it = std::find_if(positionConstraints.begin(), positionConstraints.end(), [](std::string str) {return str == "inactive"; });
+	if (it != positionConstraints.end()) return true;
+	it = std::find_if(orientationConstraints.begin(), orientationConstraints.end(), [](std::string str) {return str == "inactive"; });
+	if (it != orientationConstraints.end()) return true;
+	return false;
+}
+
+bool MbD::MBDynTotalJoint::hasFormulas()
+{
+	auto it = std::find_if(positionFormulas.begin(), positionFormulas.end(), [](std::string str) {return str != ""; });
+	if (it != positionFormulas.end()) return true;
+	it = std::find_if(orientationFormulas.begin(), orientationFormulas.end(), [](std::string str) {return str != ""; });
+	if (it != orientationFormulas.end()) return true;
+	return false;
+}
+
+std::shared_ptr<ASMTJoint> MbD::MBDynTotalJoint::asmtClassNew()
+{
+	if (
+		positionConstraints[0] == "active" &&
+		positionConstraints[1] == "active" &&
+		positionConstraints[2] == "active" &&
+		orientationConstraints[0] == "active" &&
+		orientationConstraints[1] == "active" &&
+		orientationConstraints[2] == "active"
+		)	return std::make_shared<ASMTFixedJoint>();
+	if (
+		positionConstraints[0] == "active" &&
+		positionConstraints[1] == "active" &&
+		positionConstraints[2] == "inactive" &&
+		orientationConstraints[0] == "active" &&
+		orientationConstraints[1] == "active" &&
+		orientationConstraints[2] == "active"
+		)	return std::make_shared<ASMTTranslationalJoint>();
+	if (
+		positionConstraints[0] == "active" &&
+		positionConstraints[1] == "active" &&
+		positionConstraints[2] == "active" &&
+		orientationConstraints[0] == "active" &&
+		orientationConstraints[1] == "active" &&
+		orientationConstraints[2] == "inactive"
+		)	return std::make_shared<ASMTRevoluteJoint>();
+	if (
+		positionConstraints[0] == "active" &&
+		positionConstraints[1] == "active" &&
+		positionConstraints[2] == "inactive" &&
+		orientationConstraints[0] == "active" &&
+		orientationConstraints[1] == "active" &&
+		orientationConstraints[2] == "inactive"
+		)	return std::make_shared<ASMTCylindricalJoint>();
+	if (
+		positionConstraints[0] == "active" &&
+		positionConstraints[1] == "active" &&
+		positionConstraints[2] == "active" &&
+		orientationConstraints[0] == "inactive" &&
+		orientationConstraints[1] == "inactive" &&
+		orientationConstraints[2] == "inactive"
+		)	return std::make_shared<ASMTSphericalJoint>();
+	if (
+		positionConstraints[0] == "inactive" &&
+		positionConstraints[1] == "inactive" &&
+		positionConstraints[2] == "inactive" &&
+		orientationConstraints[0] == "active" &&
+		orientationConstraints[1] == "active" &&
+		orientationConstraints[2] == "active"
+		)	return std::make_shared<ASMTNoRotationJoint>();
+	if (
+		positionConstraints[0] == "active" &&
+		positionConstraints[1] == "active" &&
+		positionConstraints[2] == "inactive" &&
+		orientationConstraints[0] == "inactive" &&
+		orientationConstraints[1] == "inactive" &&
+		orientationConstraints[2] == "inactive"
+		)	return std::make_shared<ASMTPointInLineJoint>();
+	if (
+		positionConstraints[0] == "inactive" &&
+		positionConstraints[1] == "inactive" &&
+		positionConstraints[2] == "active" &&
+		orientationConstraints[0] == "inactive" &&
+		orientationConstraints[1] == "inactive" &&
+		orientationConstraints[2] == "inactive"
+		)	return std::make_shared<ASMTPointInPlaneJoint>();
+	assert(false);
 }

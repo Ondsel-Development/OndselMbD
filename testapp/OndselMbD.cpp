@@ -30,9 +30,9 @@ void sharedptrTest();
 
 int main()
 {
+	MBDynSystem::runDynFile("../testapp/MBDyn/SingleRigidPendulum07-02-2024/MBDCaseOndsel.mbd");
 	MBDynSystem::runDynFile("../testapp/MBDyn/penduRod5deg2.mbd");
 	MBDynSystem::runDynFile("../testapp/MBDyn/penduBeam.mbd");
-	MBDynSystem::runDynFile("../testapp/MBDyn/penduRod5deg.mbd");
 	MBDynSystem::runDynFile("../testapp/MBDyn/penduRod90deg.mbd");
 	MBDynSystem::runDynFile("../testapp/MBDyn/penduPointMass8.mbd");
 	ASMTAssembly::readWriteDynFile("../testapp/ASMT/rotatingCrank2.asmt");

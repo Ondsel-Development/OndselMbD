@@ -11,13 +11,15 @@
 #include "DifferenceOperator.h"
 
 namespace MbD {
-    class Extrapolator : public DifferenceOperator
-    {
-        //
-    public:
-        void formTaylorMatrix() override;
+	class Extrapolator : public DifferenceOperator
+	{
+		//
+	public:
+		static std::shared_ptr<Extrapolator> With();
+		
+		void formTaylorMatrix() override;
 
 
-    };
+	};
 }
 

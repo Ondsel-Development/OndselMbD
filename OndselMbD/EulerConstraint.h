@@ -8,8 +8,8 @@
  
 #pragma once
 
-#include <memory>
-#include <vector>
+//#include <memory>
+//#include <vector>
 
 #include "Constraint.h"
 #include "FullRow.h"	//FRowDsptr is defined
@@ -19,9 +19,12 @@ namespace MbD {
 	{
 		//pGpE iqE 
 	public:
-		EulerConstraint();
+		EulerConstraint() {}
 		EulerConstraint(const char* str);
+		static std::shared_ptr<EulerConstraint> With();
+		static std::shared_ptr<EulerConstraint> With(const char* str);
 		void initialize() override;
+
 		void calcPostDynCorrectorIteration() override;
 		void useEquationNumbers() override;
 		void fillPosICError(FColDsptr col) override;

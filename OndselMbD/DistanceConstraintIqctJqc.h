@@ -11,16 +11,19 @@
 #include "DistanceConstraintIqcJqc.h"
 
 namespace MbD {
-    class DistanceConstraintIqctJqc : public DistanceConstraintIqcJqc
-    {
-        //pGpt ppGpXIpt ppGpEIpt ppGpXJpt ppGpEJpt ppGptpt 
-    public:
-        DistanceConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj);
-        ConstraintType type() override;
+	class DistanceConstraintIqctJqc : public DistanceConstraintIqcJqc
+	{
+		//pGpt ppGpXIpt ppGpEIpt ppGpXJpt ppGpEJpt ppGptpt 
+	public:
+		DistanceConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj);
+		static std::shared_ptr<DistanceConstraintIqctJqc> With(EndFrmsptr frmi, EndFrmsptr frmj);
+		
+		void fillVelICError(FColDsptr col) override;
+		ConstraintType type() override;
 
-        double pGpt, ppGptpt;
-        FRowDsptr ppGpXIpt, ppGpEIpt, ppGpXJpt, ppGpEJpt;
-            
-    };
+		double pGpt, ppGptpt;
+		FRowDsptr ppGpXIpt, ppGpEIpt, ppGpXJpt, ppGpEJpt;
+			
+	};
 }
 

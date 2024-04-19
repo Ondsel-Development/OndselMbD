@@ -11,18 +11,20 @@
 #include "FunctionX.h"
 
 namespace MbD {
-    class Log10 : public FunctionX
-    {
-        //
-    public:
-        Log10() = default;
-        Log10(Symsptr arg);
-        double getValue() override;
-        Symsptr copyWith(Symsptr arg) override;
+	class Log10 : public FunctionX
+	{
+		//
+	public:
+		Log10() = default;
+		Log10(Symsptr arg);
+		static std::shared_ptr<Log10> With();
+		
+		double getValue() override;
+		Symsptr copyWith(Symsptr arg) override;
 
-        std::ostream& printOn(std::ostream& s) const override;
+		std::ostream& printOn(std::ostream& s) const override;
 
 
-    };
+	};
 }
 

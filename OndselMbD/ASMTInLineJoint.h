@@ -11,10 +11,11 @@
 #include "ASMTJoint.h"
 
 namespace MbD {
-    class ASMTInLineJoint : public ASMTJoint
-    {
-        //
-    public:
+	class ASMTInLineJoint : public ASMTJoint
+	{
+		//
+	public:
+		static std::shared_ptr<ASMTInLineJoint> With();
 
-    };
+	};
 }

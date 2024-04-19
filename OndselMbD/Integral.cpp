@@ -8,6 +8,13 @@ MbD::Integral::Integral(Symsptr, Symsptr)
 	assert(false);
 }
 
+std::shared_ptr<Integral> MbD::Integral::With()
+{
+	auto inst = std::make_shared<Integral>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::Integral::arguments(Symsptr args)
 {
 	auto arguments = args->getTerms();

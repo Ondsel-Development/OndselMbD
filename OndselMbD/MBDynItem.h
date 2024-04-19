@@ -7,7 +7,21 @@
  ***************************************************************************/
 
 #pragma once
-#include "CREATE.h"
+
+//#include <memory>
+//#include <iostream>
+//#include <vector>
+//#include <string>
+//#include <memory>
+//#include <cassert>
+//#include <algorithm>
+//#include <iterator>
+//#include <map>
+
+#include "Symbolic.h"
+#include "FullColumn.h"
+#include "FullRow.h"
+#include "FullMatrix.h"
 
 namespace MbD {
 	class MBDynSystem;
@@ -19,21 +33,25 @@ namespace MbD {
 	class MBDynDrive;
 	class ASMTAssembly;
 
-	class MBDynItem
+	class MBDynItem : public std::enable_shared_from_this<MBDynItem>
 	{
 		//
 	public:
-		virtual ~MBDynItem() {}
+		//virtual ~MBDynItem() {}
+		static std::shared_ptr<MBDynItem> With();
+		virtual void initialize();
+
 		virtual MBDynSystem* root();
 
-		virtual void initialize();
 		void noop();
-		//void setName(std::string str);
 		virtual void parseMBDyn(std::vector<std::string>& lines);
 		virtual void parseMBDyn(std::string line);
+		virtual void readFunction(std::vector<std::string>& args);
 		static std::vector<std::string> collectArgumentsFor(std::string title, std::string& statement);
-		std::vector<std::string>::iterator findLineWith(std::vector<std::string>& lines, std::vector<std::string>& tokens);
+		static std::vector<std::string>::iterator findLineWith(std::vector<std::string>& lines, std::vector<std::string>& tokens);
+		static bool lineHasToken(const std::string& line, const std::string& token);
 		static bool lineHasTokens(const std::string& line, std::vector<std::string>& tokens);
+		static bool lineHasTokens(int n, ...);
 		virtual std::shared_ptr<std::vector<std::shared_ptr<MBDynNode>>> mbdynNodes();
 		virtual std::shared_ptr<std::vector<std::shared_ptr<MBDynBody>>> mbdynBodies();
 		virtual std::shared_ptr<std::vector<std::shared_ptr<MBDynJoint>>> mbdynJoints();
@@ -43,7 +61,7 @@ namespace MbD {
 		virtual std::shared_ptr<std::map<std::string, std::shared_ptr<MBDynReference>>> mbdynReferences();
 		virtual void createASMT();
 		virtual std::shared_ptr<MBDynNode> nodeAt(std::string nodeName);
-		virtual int nodeidAt(std::string nodeName);
+		virtual int labelIDat(std::string nodeName);
 		virtual std::shared_ptr<MBDynBody> bodyWithNode(std::string nodeName);
 		virtual std::shared_ptr<ASMTAssembly> asmtAssembly();
 		virtual std::string formulaFromDrive(std::string driveName, std::string varName);
@@ -65,11 +83,11 @@ namespace MbD {
 		FMatDsptr readBasicOrientation(std::vector<std::string>& args);
 		std::string popOffTop(std::vector<std::string>& args);
 		std::string readStringOffTop(std::vector<std::string>& args);
-		void readName(std::vector<std::string>& args);
+		void readLabel(std::vector<std::string>& args);
 		std::string readJointTypeOffTop(std::vector<std::string>& args);
 		std::string readToken(std::string& line);
 
-		std::string name;
+		std::string label;
 		MBDynItem* owner = nullptr;
 		std::shared_ptr<ASMTItem> asmtItem;
 		std::vector<std::string> arguments;

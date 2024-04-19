@@ -11,25 +11,26 @@
 #include "AtPointConstraintIqcJqc.h"
 
 namespace MbD {
-    class AtPointConstraintIqctJqc : public AtPointConstraintIqcJqc
-    {
-        //pGpt ppGpEIpt ppGptpt 
-    public:
-        AtPointConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi);
+	class AtPointConstraintIqctJqc : public AtPointConstraintIqcJqc
+	{
+		//pGpt ppGpEIpt ppGptpt 
+	public:
+		AtPointConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisO) : AtPointConstraintIqcJqc(frmi, frmj, axisO) {}
+		static std::shared_ptr<AtPointConstraintIqctJqc> With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisO);
 
-        void calcPostDynCorrectorIteration() override;
-        void fillAccICIterError(FColDsptr col) override;
-        void fillVelICError(FColDsptr col) override;
-        void initializeGlobally() override;
-        void initriIeJeO() override;
-        void preAccIC() override;
-        void preVelIC() override;
-        ConstraintType type() override;
+		void calcPostDynCorrectorIteration() override;
+		void fillAccICIterError(FColDsptr col) override;
+		void fillVelICError(FColDsptr col) override;
+		void initializeGlobally() override;
+		void initriIeJeO() override;
+		void preAccIC() override;
+		void preVelIC() override;
+		ConstraintType type() override;
 
-        double pGpt;
-        FRowDsptr ppGpEIpt;
-        double ppGptpt;
+		double pGpt;
+		FRowDsptr ppGpEIpt;
+		double ppGptpt;
 
-    };
+	};
 }
 

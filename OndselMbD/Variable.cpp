@@ -5,6 +5,8 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
+
+#include <cassert>
  
 #include "Variable.h"
 
@@ -20,12 +22,16 @@ Variable::Variable(const char* str) : name(str)
 	value = 0.0;
 }
 
-Variable::Variable(double val) : value(val)
+std::shared_ptr<Variable> MbD::Variable::With(const char* str)
 {
+	auto inst = std::make_shared<Variable>(str);
+	inst->initialize();
+	return inst;
 }
 
 void Variable::initialize()
 {
+	assert(false);
 }
 
 void Variable::setName(std::string str)

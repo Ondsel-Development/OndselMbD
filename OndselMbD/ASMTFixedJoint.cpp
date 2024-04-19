@@ -14,12 +14,14 @@ using namespace MbD;
 
 std::shared_ptr<ASMTFixedJoint> MbD::ASMTFixedJoint::With()
 {
-	return std::make_shared<ASMTFixedJoint>();
+	auto inst = std::make_shared<ASMTFixedJoint>();
+	inst->initialize();
+	return inst;
 }
 
 std::shared_ptr<Joint> MbD::ASMTFixedJoint::mbdClassNew()
 {
-    return CREATE<FixedJoint>::With();
+	return FixedJoint::With();
 }
 
 void MbD::ASMTFixedJoint::storeOnLevel(std::ofstream& os, size_t level)

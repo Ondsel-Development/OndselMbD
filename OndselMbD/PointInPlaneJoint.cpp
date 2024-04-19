@@ -11,12 +11,23 @@
 
 using namespace MbD;
 
-MbD::PointInPlaneJoint::PointInPlaneJoint()
-{
-}
-
 MbD::PointInPlaneJoint::PointInPlaneJoint(const char*)
 {
+	assert(false);
+}
+
+std::shared_ptr<PointInPlaneJoint> MbD::PointInPlaneJoint::With()
+{
+	auto inst = std::make_shared<PointInPlaneJoint>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<PointInPlaneJoint> MbD::PointInPlaneJoint::With(const char* str)
+{
+	auto inst = std::make_shared<PointInPlaneJoint>(str);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::PointInPlaneJoint::initializeGlobally()

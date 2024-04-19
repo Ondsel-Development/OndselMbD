@@ -8,8 +8,16 @@
  
 #include "ExpressionX.h"
 #include "Constant.h"
+#include <cassert>
 
 using namespace MbD;
+
+std::shared_ptr<ExpressionX> MbD::ExpressionX::With()
+{
+	auto inst = std::make_shared<ExpressionX>();
+	inst->initialize();
+	return inst;
+}
 
 void MbD::ExpressionX::xexpression(Symsptr arg, Symsptr func)
 {

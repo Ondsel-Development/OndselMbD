@@ -14,6 +14,7 @@ namespace MbD {
 	class Functions : public Arguments
 	{
 	public:
+		static std::shared_ptr<Functions> With();
 
 	};
 }

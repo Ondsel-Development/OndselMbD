@@ -15,17 +15,19 @@ namespace MbD {
 	{
 		//
 	public:
-        void firstStep() override;
-        bool isRedoingFirstStep();
-        void nextStep() override;
-        void reportStepStats();
-        void reportTrialStepStats();
-        void runInitialConditionTypeSolution() override;
-        void selectFirstStepSize();
-        void selectStepSize() override;
-        void postFirstStep();
-        void postStep();
-    
-    };
+		static std::shared_ptr<BasicQuasiIntegrator> With();
+		
+		void firstStep() override;
+		bool isRedoingFirstStep();
+		void nextStep() override;
+		void reportStepStats();
+		void reportTrialStepStats();
+		void runInitialConditionTypeSolution() override;
+		void selectFirstStepSize();
+		void selectStepSize() override;
+		void postFirstStep();
+		void postStep();
+	
+	};
 }
 

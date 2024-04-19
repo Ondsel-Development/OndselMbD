@@ -14,10 +14,12 @@ using namespace MbD;
 
 std::shared_ptr<ASMTCylSphJoint> MbD::ASMTCylSphJoint::With()
 {
-    return std::make_shared<ASMTCylSphJoint>();
+	auto inst = std::make_shared<ASMTCylSphJoint>();
+	inst->initialize();
+	return inst;
 }
 
 std::shared_ptr<Joint> MbD::ASMTCylSphJoint::mbdClassNew()
 {
-    return CREATE<CylSphJoint>::With();
+	return CylSphJoint::With();
 }

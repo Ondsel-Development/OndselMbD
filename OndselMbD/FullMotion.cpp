@@ -7,17 +7,30 @@
  ***************************************************************************/
  
 #include "FullMotion.h"
-#include "CREATE.h"
 #include "System.h"
+#include "TranslationConstraintIJ.h"
+#include "DirectionCosineConstraintIJ.h"
+#include "EndFrameqct.h"
 
 using namespace MbD;
 
-MbD::FullMotion::FullMotion()
-{
-}
-
 MbD::FullMotion::FullMotion(const char*)
 {
+	assert(false);
+}
+
+std::shared_ptr<FullMotion> MbD::FullMotion::With()
+{
+	auto inst = std::make_shared<FullMotion>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<FullMotion> MbD::FullMotion::With(const char* str)
+{
+	auto inst = std::make_shared<FullMotion>(str);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::FullMotion::connectsItoJ(EndFrmsptr frmi, EndFrmsptr frmj)
@@ -30,12 +43,12 @@ void MbD::FullMotion::initializeGlobally()
 {
 	if (constraints->empty()) {
 		initMotions();
-		addConstraint(CREATE<TranslationConstraintIJ>::ConstraintWith(frmI, frmJ, 0));
-		addConstraint(CREATE<TranslationConstraintIJ>::ConstraintWith(frmI, frmJ, 1));
-		addConstraint(CREATE<TranslationConstraintIJ>::ConstraintWith(frmI, frmJ, 2));
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 1, 0));
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 0));
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 1));
+		addConstraint(TranslationConstraintIJ::With(frmI, frmJ, 0));
+		addConstraint(TranslationConstraintIJ::With(frmI, frmJ, 1));
+		addConstraint(TranslationConstraintIJ::With(frmI, frmJ, 2));
+		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 1, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 1));
 		this->root()->hasChanged = true;
 	}
 	else {

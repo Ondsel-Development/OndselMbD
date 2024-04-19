@@ -12,6 +12,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<MBDynClampJoint> MbD::MBDynClampJoint::With()
+{
+	auto inst = std::make_shared<MBDynClampJoint>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MBDynClampJoint::parseMBDyn(std::string statement)
 {
 	MBDynJoint::parseMBDyn(statement);

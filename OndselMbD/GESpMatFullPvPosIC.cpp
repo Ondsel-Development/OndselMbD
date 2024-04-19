@@ -15,6 +15,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<GESpMatFullPvPosIC> MbD::GESpMatFullPvPosIC::With()
+{
+	auto inst = std::make_shared<GESpMatFullPvPosIC>();
+	inst->initialize();
+	return inst;
+}
+
 void GESpMatFullPvPosIC::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
 	GESpMatFullPv::preSolvewithsaveOriginal(spMat, fullCol, saveOriginal);

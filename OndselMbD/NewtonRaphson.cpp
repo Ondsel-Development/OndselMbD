@@ -16,6 +16,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<NewtonRaphson> MbD::NewtonRaphson::With()
+{
+	auto inst = std::make_shared<NewtonRaphson>();
+	inst->initialize();
+	return inst;
+}
+
 void NewtonRaphson::initialize()
 {
 	dxNorms = std::make_shared<std::vector<double>>();
@@ -66,14 +73,14 @@ void NewtonRaphson::iterate()
 
 	iterNo = SIZE_MAX;
 	this->fillY();
-	this->calcyNorm();
+	calcyNorm();
 	yNorms->push_back(yNorm);
 
 	while (true) {
-		this->incrementIterNo();
-		this->fillPyPx();
-		this->solveEquations();
-		this->calcDXNormImproveRootCalcYNorm();
+		incrementIterNo();
+		fillPyPx();
+		solveEquations();
+		calcDXNormImproveRootCalcYNorm();
 		if (this->isConverged()) {
 			//std::cout << "iterNo = " << iterNo << std::endl;
 			break;
@@ -92,35 +99,43 @@ void NewtonRaphson::incrementIterNo()
 
 void MbD::NewtonRaphson::fillY()
 {
+	//Subclasses must implement.
+	assert(false);
 }
 
 void MbD::NewtonRaphson::fillPyPx()
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
 void MbD::NewtonRaphson::calcyNorm()
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
 void MbD::NewtonRaphson::calcdxNorm()
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
 void MbD::NewtonRaphson::solveEquations()
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
 void MbD::NewtonRaphson::updatexold()
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
 void MbD::NewtonRaphson::xEqualxoldPlusdx()
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
@@ -136,6 +151,7 @@ void NewtonRaphson::askSystemToUpdate()
 
 void MbD::NewtonRaphson::passRootToSystem()
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
@@ -171,14 +187,14 @@ bool NewtonRaphson::isConvergedToNumericalLimit()
 
 void NewtonRaphson::calcDXNormImproveRootCalcYNorm()
 {
-	this->calcdxNorm();
+	calcdxNorm();
 	dxNorms->push_back(dxNorm);
 	this->updatexold();
 	this->xEqualxoldPlusdx();
 	this->passRootToSystem();
 	this->askSystemToUpdate();
 	this->fillY();
-	this->calcyNorm();
+	calcyNorm();
 	yNorms->push_back(yNorm);
 	yNormOld = yNorm;
 }

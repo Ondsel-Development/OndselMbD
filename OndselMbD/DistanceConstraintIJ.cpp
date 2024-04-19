@@ -14,15 +14,22 @@ using namespace MbD;
 
 MbD::DistanceConstraintIJ::DistanceConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj)
 {
+	assert(false);
 }
 
 std::shared_ptr<DistanceConstraintIJ> MbD::DistanceConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	assert(frmi->isEndFrameqc());
 	assert(frmj->isEndFrameqc());
-	auto distCon = std::make_shared<DistanceConstraintIqcJqc>(frmi, frmj);
-	distCon->init_distIeJe();
-	return distCon;
+	auto inst = std::make_shared<DistanceConstraintIqcJqc>(frmi, frmj);
+	inst->init_distIeJe();
+	return inst;
+}
+
+void MbD::DistanceConstraintIJ::initialize()
+{
+	ConstraintIJ::initialize();
+	this->init_distIeJe();
 }
 
 void MbD::DistanceConstraintIJ::calcPostDynCorrectorIteration()
@@ -33,12 +40,6 @@ aG = distIeJe->value() - aConstant;
 void MbD::DistanceConstraintIJ::init_distIeJe()
 {
 	assert(false);
-}
-
-void MbD::DistanceConstraintIJ::initialize()
-{
-	ConstraintIJ::initialize();
-	this->init_distIeJe();
 }
 
 void MbD::DistanceConstraintIJ::initializeGlobally()

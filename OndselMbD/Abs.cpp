@@ -6,17 +6,27 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
+//#include <cassert>
+
 #include "Abs.h"
 
 using namespace MbD;
 
 MbD::Abs::Abs(Symsptr arg) : FunctionX(arg)
 {
+	assert(false);
+}
+
+std::shared_ptr<Abs> MbD::Abs::With()
+{
+	auto inst = std::make_shared<Abs>();
+	inst->initialize();
+	return inst;
 }
 
 double MbD::Abs::getValue()
 {
-    return std::abs(xx->getValue());
+	return std::abs(xx->getValue());
 }
 
 Symsptr MbD::Abs::copyWith(Symsptr arg)

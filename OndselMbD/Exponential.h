@@ -11,18 +11,20 @@
 #include "FunctionX.h"
 
 namespace MbD {
-    class Exponential : public FunctionX
-    {
-        //
-    public:
-        Exponential() = default;
-        Exponential(Symsptr arg);
-        double getValue() override;
-        Symsptr copyWith(Symsptr arg) override;
+	class Exponential : public FunctionX
+	{
+		//
+	public:
+		Exponential() = default;
+		Exponential(Symsptr arg);
+		static std::shared_ptr<Exponential> With();
+		
+		double getValue() override;
+		Symsptr copyWith(Symsptr arg) override;
 
-        std::ostream& printOn(std::ostream& s) const override;
+		std::ostream& printOn(std::ostream& s) const override;
 
 
-    };
+	};
 }
 

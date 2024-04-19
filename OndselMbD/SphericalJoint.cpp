@@ -7,17 +7,27 @@
  ***************************************************************************/
  
 #include "SphericalJoint.h"
-#include "CREATE.h"
 #include "System.h"
 
 using namespace MbD;
 
-MbD::SphericalJoint::SphericalJoint()
-{
-}
-
 MbD::SphericalJoint::SphericalJoint(const char* str) : AtPointJoint(str)
 {
+	assert(false);
+}
+
+std::shared_ptr<SphericalJoint> MbD::SphericalJoint::With()
+{
+	auto inst = std::make_shared<SphericalJoint>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<SphericalJoint> MbD::SphericalJoint::With(const char* str)
+{
+	auto inst = std::make_shared<SphericalJoint>(str);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::SphericalJoint::initializeGlobally()

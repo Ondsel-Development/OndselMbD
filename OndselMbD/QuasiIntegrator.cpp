@@ -11,7 +11,6 @@
 #include "QuasiIntegrator.h"
 #include "Item.h"
 #include "SystemSolver.h"
-#include "CREATE.h"
 #include "BasicQuasiIntegrator.h"
 #include "SingularMatrixError.h"
 #include "SimulationStoppingError.h"
@@ -22,16 +21,23 @@
 
 using namespace MbD;
 
-void QuasiIntegrator::preRun()
+std::shared_ptr<QuasiIntegrator> MbD::QuasiIntegrator::With()
 {
-	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->preDyn(); });
+	auto inst = std::make_shared<QuasiIntegrator>();
+	inst->initialize();
+	return inst;
 }
 
 void QuasiIntegrator::initialize()
 {
 	Solver::initialize();
-	integrator = CREATE<BasicQuasiIntegrator>::With();
+	integrator = BasicQuasiIntegrator::With();
 	integrator->setSystem(this);
+}
+
+void QuasiIntegrator::preRun()
+{
+	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->preDyn(); });
 }
 
 void QuasiIntegrator::run()

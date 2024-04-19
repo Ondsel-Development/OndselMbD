@@ -7,17 +7,27 @@
  ***************************************************************************/
  
 #include "PointInLineJoint.h"
-#include "CREATE.h"
 #include "System.h"
 
 using namespace MbD;
 
-MbD::PointInLineJoint::PointInLineJoint()
-{
-}
-
 MbD::PointInLineJoint::PointInLineJoint(const char* str) : InLineJoint(str)
 {
+	assert(false);
+}
+
+std::shared_ptr<PointInLineJoint> MbD::PointInLineJoint::With()
+{
+	auto inst = std::make_shared<PointInLineJoint>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<PointInLineJoint> MbD::PointInLineJoint::With(const char* str)
+{
+	auto inst = std::make_shared<PointInLineJoint>(str);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::PointInLineJoint::initializeGlobally()

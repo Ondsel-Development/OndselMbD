@@ -11,19 +11,19 @@
 #include "ASMTMotion.h"
 
 namespace MbD {
-    class ASMTAllowRotation : public ASMTMotion
-    {
-        //
-    public:
-        static std::shared_ptr<ASMTAllowRotation> With();
-        void parseASMT(std::vector<std::string>& lines) override;
-        void readMotionJoint(std::vector<std::string>& lines);
-        void initMarkers() override;
-        std::shared_ptr<Joint> mbdClassNew() override;
-        void setMotionJoint(std::string motionJoint);
-        void storeOnLevel(std::ofstream& os, size_t level) override;
-        void storeOnTimeSeries(std::ofstream& os) override;
+	class ASMTAllowRotation : public ASMTMotion
+	{
+		//
+	public:
+		static std::shared_ptr<ASMTAllowRotation> With();
+		void parseASMT(std::vector<std::string>& lines) override;
+		void readMotionJoint(std::vector<std::string>& lines);
+		void initMarkers() override;
+		std::shared_ptr<Joint> mbdClassNew() override;
+		void setMotionJoint(std::string motionJoint);
+		void storeOnLevel(std::ofstream& os, size_t level) override;
+		void storeOnTimeSeries(std::ofstream& os) override;
 
-        std::string motionJoint, rotationZ;
-    };
+		std::string motionJoint, rotationZ;
+	};
 }

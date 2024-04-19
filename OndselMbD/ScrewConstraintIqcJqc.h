@@ -11,11 +11,12 @@
 #include "ScrewConstraintIqcJc.h"
 
 namespace MbD {
-    class ScrewConstraintIqcJqc : public ScrewConstraintIqcJc
-    {
-        //pGpXJ pGpEJ ppGpEIpXJ ppGpEIpEJ ppGpEJpEJ iqXJ iqEJ 
-    public:
+	class ScrewConstraintIqcJqc : public ScrewConstraintIqcJc
+	{
+		//pGpXJ pGpEJ ppGpEIpXJ ppGpEIpEJ ppGpEJpEJ iqXJ iqEJ 
+	public:
 		ScrewConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj);
+		static std::shared_ptr<ScrewConstraintIqcJqc> With(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void initzIeJeIe() override;
 		void initthezIeJe() override;
@@ -40,6 +41,6 @@ namespace MbD {
 		size_t iqXJ = SIZE_MAX, iqEJ = SIZE_MAX;
 
 
-    };
+	};
 }
 

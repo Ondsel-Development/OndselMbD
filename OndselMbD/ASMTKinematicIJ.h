@@ -11,12 +11,13 @@
 #include "ASMTItemIJ.h"
 
 namespace MbD {
-    class ASMTKinematicIJ : public ASMTItemIJ
-    {
-        //
-    public:
+	class ASMTKinematicIJ : public ASMTItemIJ
+	{
+		//
+	public:
+		static std::shared_ptr<ASMTKinematicIJ> With();
 
 
-    };
+	};
 }
 

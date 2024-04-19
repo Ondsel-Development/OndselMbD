@@ -9,18 +9,19 @@
 #include "TranslationConstraintIqcJc.h"
 #include "DispCompIeqcJecKeqc.h"
 #include "EndFrameqc.h"
-#include "CREATE.h"
 
 using namespace MbD;
 
-TranslationConstraintIqcJc::TranslationConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi) :
-	TranslationConstraintIJ(frmi, frmj, axisi)
+std::shared_ptr<TranslationConstraintIqcJc> MbD::TranslationConstraintIqcJc::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi)
 {
+	auto inst = std::make_shared<TranslationConstraintIqcJc>(frmi, frmj, axisi);
+	inst->initialize();
+	return inst;
 }
 
 void TranslationConstraintIqcJc::initriIeJeIe()
 {
-    riIeJeIe = CREATE<DispCompIeqcJecKeqc>::With(frmI, frmJ, frmI, axisI);
+	riIeJeIe = DispCompIeqcJecKeqc::With(frmI, frmJ, frmI, axisI);
 }
 
 void TranslationConstraintIqcJc::calcPostDynCorrectorIteration()
@@ -31,9 +32,9 @@ void TranslationConstraintIqcJc::calcPostDynCorrectorIteration()
 	pGpEI = (riIeqJeIeq->pvaluepEI())->plusFullRow(riIeqJeIeq->pvaluepEK());
 	ppGpXIpEI = riIeqJeIeq->ppvaluepXIpEK();
 	ppGpEIpEI = riIeqJeIeq->ppvaluepEIpEI()
-            ->plusFullMatrix(riIeqJeIeq->ppvaluepEIpEK())
-            ->plusFullMatrix((riIeqJeIeq->ppvaluepEIpEK()->
-                transpose()->plusFullMatrix(riIeqJeIeq->ppvaluepEKpEK())));
+			->plusFullMatrix(riIeqJeIeq->ppvaluepEIpEK())
+			->plusFullMatrix((riIeqJeIeq->ppvaluepEIpEK()->
+				transpose()->plusFullMatrix(riIeqJeIeq->ppvaluepEKpEK())));
 }
 
 void TranslationConstraintIqcJc::useEquationNumbers()
@@ -45,57 +46,57 @@ void TranslationConstraintIqcJc::useEquationNumbers()
 
 void MbD::TranslationConstraintIqcJc::fillpFpy(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqXI, pGpXI);
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullRow(iG, iqXI, pGpXI);
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
 	auto ppGpXIpEIlam = ppGpXIpEI->times(lam);
-	mat->atijplusFullMatrix(iqXI, iqEI, ppGpXIpEIlam);
-	mat->atijplusTransposeFullMatrix(iqEI, iqXI, ppGpXIpEIlam);
-	mat->atijplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
+	mat->atandplusFullMatrix(iqXI, iqEI, ppGpXIpEIlam);
+	mat->atandplusTransposeFullMatrix(iqEI, iqXI, ppGpXIpEIlam);
+	mat->atandplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
 }
 
 void MbD::TranslationConstraintIqcJc::fillpFpydot(SpMatDsptr mat)
 {
-	mat->atijplusFullColumn(iqXI, iG, pGpXI->transpose());
-	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
+	mat->atandplusFullColumn(iqXI, iG, pGpXI->transpose());
+	mat->atandplusFullColumn(iqEI, iG, pGpEI->transpose());
 }
 
 void TranslationConstraintIqcJc::fillPosICError(FColDsptr col)
 {
 	Constraint::fillPosICError(col);
-	col->atiplusFullVectortimes(iqXI, pGpXI, lam);
-	col->atiplusFullVectortimes(iqEI, pGpEI, lam);
+	col->atplusFullVectortimes(iqXI, pGpXI, lam);
+	col->atplusFullVectortimes(iqEI, pGpEI, lam);
 }
 
 void TranslationConstraintIqcJc::fillPosICJacob(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqXI, pGpXI);
-	mat->atijplusFullColumn(iqXI, iG, pGpXI->transpose());
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
-	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
+	mat->atandplusFullRow(iG, iqXI, pGpXI);
+	mat->atandplusFullColumn(iqXI, iG, pGpXI->transpose());
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullColumn(iqEI, iG, pGpEI->transpose());
 	auto ppGpXIpEIlam = ppGpXIpEI->times(lam);
-	mat->atijplusFullMatrix(iqXI, iqEI, ppGpXIpEIlam);
-	mat->atijplusTransposeFullMatrix(iqEI, iqXI, ppGpXIpEIlam);
-	mat->atijplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
+	mat->atandplusFullMatrix(iqXI, iqEI, ppGpXIpEIlam);
+	mat->atandplusTransposeFullMatrix(iqEI, iqXI, ppGpXIpEIlam);
+	mat->atandplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
 }
 
 void TranslationConstraintIqcJc::fillPosKineJacob(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqXI, pGpXI);
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullRow(iG, iqXI, pGpXI);
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
 }
 
 void TranslationConstraintIqcJc::fillVelICJacob(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqXI, pGpXI);
-	mat->atijplusFullColumn(iqXI, iG, pGpXI->transpose());
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
-	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
+	mat->atandplusFullRow(iG, iqXI, pGpXI);
+	mat->atandplusFullColumn(iqXI, iG, pGpXI->transpose());
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullColumn(iqEI, iG, pGpEI->transpose());
 }
 
 void TranslationConstraintIqcJc::fillAccICIterError(FColDsptr col)
 {
-	col->atiplusFullVectortimes(iqXI, pGpXI, lam);
-	col->atiplusFullVectortimes(iqEI, pGpEI, lam);
+	col->atplusFullVectortimes(iqXI, pGpXI, lam);
+	col->atplusFullVectortimes(iqEI, pGpEI, lam);
 	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
 	auto qXdotI = efrmIqc->qXdot();
 	auto qEdotI = efrmIqc->qEdot();
@@ -103,7 +104,7 @@ void TranslationConstraintIqcJc::fillAccICIterError(FColDsptr col)
 	sum += pGpEI->timesFullColumn(efrmIqc->qEddot());
 	sum += 2.0 * (qXdotI->transposeTimesFullColumn(ppGpXIpEI->timesFullColumn(qEdotI)));
 	sum += qEdotI->transposeTimesFullColumn(ppGpEIpEI->timesFullColumn(qEdotI));
-	col->atiplusNumber(iG, sum);
+	col->atplusNumber(iG, sum);
 }
 
 void TranslationConstraintIqcJc::addToJointForceI(FColDsptr col)
@@ -121,7 +122,7 @@ void TranslationConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 		for (size_t i = 0; i < 4; i++)
 		{
 			auto dum = cForceT->timesFullColumn(pAOIppEI->at(i)->timesFullColumn(rIpIeIp));
-			fpAOIppEIrIpIeIp->atiput(i, dum);
+			fpAOIppEIrIpIeIp->atput(i, dum);
 		}
 		auto lampGpE = pGpEI->transpose()->times(lam);
 		auto c2Torque = aBOIp->timesFullColumn(lampGpE->minusFullColumn(fpAOIppEIrIpIeIp));

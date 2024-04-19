@@ -14,6 +14,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<KineIntegrator> MbD::KineIntegrator::With()
+{
+	auto inst = std::make_shared<KineIntegrator>();
+	inst->initialize();
+	return inst;
+}
+
 void KineIntegrator::preRun()
 {
 	system->Solver::logString("MbD: Starting kinematic analysis.");

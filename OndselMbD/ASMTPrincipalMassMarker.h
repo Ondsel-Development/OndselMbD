@@ -15,8 +15,10 @@ namespace MbD {
 	{
 		//
 	public:
-		ASMTPrincipalMassMarker();
+		ASMTPrincipalMassMarker() {}
 		static std::shared_ptr<ASMTPrincipalMassMarker> With();
+		void initialize() override;
+
 		void parseASMT(std::vector<std::string>& lines) override;
 		void setMass(double mass);
 		void setDensity(double density);
@@ -29,7 +31,7 @@ namespace MbD {
 
 		double mass = 1.0;
 		double density = 10.0;
-		DiagMatDsptr momentOfInertias = std::make_shared<DiagonalMatrix<double>>(ListD{ 1.0, 2.0, 3.0 });
+		DiagMatDsptr momentOfInertias = DiagonalMatrix<double>::With(ListD{ 1.0, 2.0, 3.0 });
 
 	};
 }

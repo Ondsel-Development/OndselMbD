@@ -11,14 +11,15 @@
 #include "ASMTJoint.h"
 
 namespace MbD {
-    class ASMTNoRotationJoint : public ASMTJoint
-    {
-        //
-    public:
-        static std::shared_ptr<ASMTNoRotationJoint> With();
-        std::shared_ptr<Joint> mbdClassNew() override;
-        void storeOnLevel(std::ofstream& os, size_t level) override;
-        void storeOnTimeSeries(std::ofstream& os) override;
+	class ASMTNoRotationJoint : public ASMTJoint
+	{
+		//
+	public:
+		static std::shared_ptr<ASMTNoRotationJoint> With();
 
-    };
+		std::shared_ptr<Joint> mbdClassNew() override;
+		void storeOnLevel(std::ofstream& os, size_t level) override;
+		void storeOnTimeSeries(std::ofstream& os) override;
+
+	};
 }

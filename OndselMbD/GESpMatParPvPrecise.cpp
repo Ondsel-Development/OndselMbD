@@ -13,6 +13,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<GESpMatParPvPrecise> MbD::GESpMatParPvPrecise::With()
+{
+	auto inst = std::make_shared<GESpMatParPvPrecise>();
+	inst->initialize();
+	return inst;
+}
+
 void GESpMatParPvPrecise::doPivoting(size_t p)
 {
 	//"Search from bottom to top."

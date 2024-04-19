@@ -13,6 +13,8 @@ namespace MbD {
 	class MBDynBlock : public MBDynItem
 	{
 	public:
+		static std::shared_ptr<MBDynBlock> With();
+
 
 	};
 }

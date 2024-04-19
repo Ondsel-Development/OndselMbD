@@ -20,7 +20,9 @@ namespace MbD {
 	{
 		//y ydot dy ypast ydotpast aF pFpy pFpydot alp aG extrapolator newtonRaphson corAbsTol corRelTol corOK integAbsTol integRelTol truncError 
 	public:
+		static std::shared_ptr<BasicDAEIntegrator> With();
 		void initialize() override;
+		
 		void initializeGlobally() override;
 		void firstStep() override;
 		bool isRedoingFirstStep();

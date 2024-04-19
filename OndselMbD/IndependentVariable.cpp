@@ -5,14 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
+#include <cassert>
+
 #include "IndependentVariable.h"
 #include "Constant.h"
 
 using namespace MbD;
 
-IndependentVariable::IndependentVariable()
+std::shared_ptr<IndependentVariable> MbD::IndependentVariable::With()
 {
+	auto inst = std::make_shared<IndependentVariable>();
+	inst->initialize();
+	return inst;
 }
 
 Symsptr MbD::IndependentVariable::differentiateWRT(Symsptr var)

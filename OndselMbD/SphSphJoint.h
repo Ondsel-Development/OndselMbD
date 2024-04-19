@@ -15,8 +15,11 @@ namespace MbD {
 	{
 		//
 	public:
-		SphSphJoint();
+		SphSphJoint() {}
 		SphSphJoint(const char* str);
+		static std::shared_ptr<SphSphJoint> With();
+		static std::shared_ptr<SphSphJoint> With(const char* str);
+
 		void initializeGlobally() override;
 
 	};

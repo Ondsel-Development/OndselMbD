@@ -13,6 +13,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<BasicQuasiIntegrator> MbD::BasicQuasiIntegrator::With()
+{
+	auto inst = std::make_shared<BasicQuasiIntegrator>();
+	inst->initialize();
+	return inst;
+}
+
 void BasicQuasiIntegrator::firstStep()
 {
 	istep = 0;

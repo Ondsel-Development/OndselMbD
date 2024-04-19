@@ -11,27 +11,31 @@
 #include "DistIeqcJec.h"
 
 namespace MbD {
-    class DistIeqcJeqc : public DistIeqcJec
-    {
-        //prIeJepXJ prIeJepEJ pprIeJepXIpXJ pprIeJepEIpXJ pprIeJepXJpXJ pprIeJepXIpEJ pprIeJepEIpEJ pprIeJepXJpEJ pprIeJepEJpEJ prIeJeOpEJT 
-    public:
-        DistIeqcJeqc();
-        DistIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj);
-        
-        void calcPrivate() override;
-        void initialize() override;
-        FMatDsptr ppvaluepEIpEJ() override;
-        FMatDsptr ppvaluepEIpXJ() override;
-        FMatDsptr ppvaluepEJpEJ() override;
-        FMatDsptr ppvaluepXIpEJ() override;
-        FMatDsptr ppvaluepXIpXJ() override;
-        FMatDsptr ppvaluepXJpEJ() override;
-        FMatDsptr ppvaluepXJpXJ() override;
-        FRowDsptr pvaluepEJ() override;
-        FRowDsptr pvaluepXJ() override;
+	class DistIeqcJeqc : public DistIeqcJec
+	{
+		//prIeJepXJ prIeJepEJ pprIeJepXIpXJ pprIeJepEIpXJ pprIeJepXJpXJ pprIeJepXIpEJ pprIeJepEIpEJ pprIeJepXJpEJ pprIeJepEJpEJ prIeJeOpEJT 
+	public:
+		DistIeqcJeqc() {}
+		DistIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj);
+		static std::shared_ptr<DistIeqcJeqc> With();
+		static std::shared_ptr<DistIeqcJeqc> With(EndFrmsptr frmi, EndFrmsptr frmj);
+		void initialize() override;
 
-        FRowDsptr prIeJepXJ, prIeJepEJ;
-        FMatDsptr pprIeJepXIpXJ, pprIeJepEIpXJ, pprIeJepXJpXJ, pprIeJepXIpEJ, pprIeJepEIpEJ, pprIeJepXJpEJ, pprIeJepEJpEJ, prIeJeOpEJT;
-    };
+		void calcPrivate() override;
+		FMatDsptr ppvaluepEIpEJ() override;
+		FMatDsptr ppvaluepEIpXJ() override;
+		FMatDsptr ppvaluepEJpEJ() override;
+		FMatDsptr ppvaluepXIpEJ() override;
+		FMatDsptr ppvaluepXIpXJ() override;
+		FMatDsptr ppvaluepXJpEJ() override;
+		FMatDsptr ppvaluepXJpXJ() override;
+		FMatDsptr puIeJeOpEJ() override;
+		FMatDsptr puIeJeOpXJ() override;
+		FRowDsptr pvaluepEJ() override;
+		FRowDsptr pvaluepXJ() override;
+
+		FRowDsptr prIeJepXJ, prIeJepEJ;
+		FMatDsptr pprIeJepXIpXJ, pprIeJepEIpXJ, pprIeJepXJpXJ, pprIeJepXIpEJ, pprIeJepEIpEJ, pprIeJepXJpEJ, pprIeJepEJpEJ, prIeJeOpEJT;
+	};
 }
 

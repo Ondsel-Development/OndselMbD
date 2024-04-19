@@ -9,15 +9,23 @@
 
 using namespace MbD;
 
+std::shared_ptr<MBDynBody> MbD::MBDynBody::With()
+{
+	auto inst = std::make_shared<MBDynBody>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MBDynBody::initialize()
 {
+	assert(false);
 }
 
 void MbD::MBDynBody::parseMBDyn(std::string line)
 {
 	bodyString = line;
 	arguments = collectArgumentsFor("body", line);
-	name = readStringOffTop(arguments);
+	readLabel(arguments);
 	nodeName = readStringOffTop(arguments);
 	readMass(arguments);
 	rPcmP = readPosition(arguments);
@@ -39,7 +47,7 @@ void MbD::MBDynBody::readInertiaMatrix(std::vector<std::string>& args)
 {
 	auto parser = std::make_shared<SymbolicParser>();
 	parser->variables = mbdynVariables();
-	aJmat = std::make_shared<FullMatrix<double>>(3, 3);
+	aJmat = FullMatrix<double>::With(3, 3);
 	auto str = args.at(0);	//Must copy string
 	if (str.find("diag") != std::string::npos) {
 		args.erase(args.begin());
@@ -62,7 +70,7 @@ void MbD::MBDynBody::readInertiaMatrix(std::vector<std::string>& args)
 
 void MbD::MBDynBody::createASMT()
 {
-	auto asmtMassMarker = std::make_shared<ASMTPrincipalMassMarker>();
+	auto asmtMassMarker = ASMTPrincipalMassMarker::With();
 	asmtItem = asmtMassMarker;
 	asmtMassMarker->setMass(mass);
 	if (aJmat->isDiagonalToWithin(1.0e-6)) {

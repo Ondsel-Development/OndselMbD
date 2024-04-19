@@ -15,8 +15,11 @@ namespace MbD {
 	{
 		//
 	public:
-		PointInLineJoint();
+		PointInLineJoint() {}
 		PointInLineJoint(const char* str);
+		static std::shared_ptr<PointInLineJoint> With();
+		static std::shared_ptr<PointInLineJoint> With(const char* str);
+
 		void initializeGlobally() override;
 
 	};

@@ -7,13 +7,37 @@
  ***************************************************************************/
 
 #include "ASMTItem.h"
-#include "CREATE.h"
 #include "ASMTSpatialContainer.h"
 #include "ASMTAssembly.h"
 #include "Constant.h"
 #include <algorithm>
 
 using namespace MbD;
+
+std::shared_ptr<ASMTItem> MbD::ASMTItem::With()
+{
+	auto inst = std::make_shared<ASMTItem>();
+	inst->initialize();
+	return inst;
+}
+
+void MbD::ASMTItem::initialize()
+{
+	//Subclass responsibility.
+	assert(false);
+}
+
+void MbD::ASMTItem::initializeGlobally()
+{
+	//Subclass responsibility.
+	assert(false);
+}
+
+void MbD::ASMTItem::initializeLocally()
+{
+	//Subclass responsibility.
+	assert(false);
+}
 
 ASMTAssembly* MbD::ASMTItem::root()
 {
@@ -28,11 +52,6 @@ ASMTSpatialContainer* MbD::ASMTItem::partOrAssembly()
 ASMTPart* MbD::ASMTItem::part()
 {
 	return owner->part();
-}
-
-void MbD::ASMTItem::initialize()
-{
-	assert(false);
 }
 
 void MbD::ASMTItem::noop()
@@ -76,7 +95,7 @@ std::string MbD::ASMTItem::readStringOffTop(std::vector<std::string>& args)
 FRowDsptr MbD::ASMTItem::readRowOfDoubles(std::string& line)
 {
 	std::istringstream iss(line);
-	auto readRowOfDoubles = std::make_shared<FullRow<double>>();
+	auto readRowOfDoubles = FullRow<double>::With();
 	double d;
 	while (iss >> d) {
 		readRowOfDoubles->push_back(d);
@@ -87,7 +106,7 @@ FRowDsptr MbD::ASMTItem::readRowOfDoubles(std::string& line)
 FColDsptr MbD::ASMTItem::readColumnOfDoubles(std::string& line)
 {
 	std::istringstream iss(line);
-	auto readColumnOfDoubles = std::make_shared<FullColumn<double>>();
+	auto readColumnOfDoubles = FullColumn<double>::With();
 	double d;
 	while (iss >> d) {
 		readColumnOfDoubles->push_back(d);

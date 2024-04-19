@@ -7,25 +7,38 @@
  ***************************************************************************/
  
 #pragma once
-#include "CREATE.h"
+
+#include "FullColumn.h"
+#include "FullRow.h"
+#include "FullMatrix.h"
+#include "DiagonalMatrix.h"
+#include "SparseMatrix.h"
+#include "enum.h"
 
 namespace MbD {
 	class ASMTAssembly;
 	class Units;
 	class ASMTSpatialContainer;
 	class ASMTPart;
+	class System;
+	class Constant;
+	class Item;
 
-	class ASMTItem
+	class ASMTItem : public std::enable_shared_from_this<ASMTItem>
 	{
 		//
 	public:
 		ASMTItem() {}
-		virtual ~ASMTItem() {}
+		//virtual ~ASMTItem() {}
+		static std::shared_ptr<ASMTItem> With();
+		virtual void initialize();
+		virtual void initializeGlobally();
+		virtual void initializeLocally();
+
 		virtual ASMTAssembly* root();
 		virtual ASMTSpatialContainer* partOrAssembly();
 		virtual ASMTPart* part();
 
-		virtual void initialize();
 		void noop();
 		virtual std::string classname();
 		void setName(std::string str);
@@ -68,15 +81,5 @@ namespace MbD {
 		ASMTItem* owner = nullptr;
 		std::shared_ptr<Item> mbdObject;
 	};
-	//template<typename T>
-	//inline void ASMTItem::storeOnLevelArray(std::ofstream& os, size_t level, std::vector<T> array)
-	//{
-	//	storeOnLevelTabs(os, level);
-	//	for (size_t i = 0; i < array.size(); i++)
-	//	{
-	//		os << array[i] << '\t';
-	//	}
-	//	//os << std::endl;
-	//}
 }
 

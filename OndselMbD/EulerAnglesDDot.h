@@ -23,6 +23,8 @@ namespace MbD {
 		//aEulerAnglesDot cAddot aAddot alpF alpf 
 	public:
 		EulerAnglesDDot() : EulerArray<T>(3) {}
+		static std::shared_ptr<EulerAnglesDDot<T>> With();
+		
 		void calc() override;
 
 		EulerAnglesDot<T>* aEulerAnglesDot; //Use raw pointer to point backwards
@@ -31,6 +33,16 @@ namespace MbD {
 		FColDsptr alpF, alpf;
 		void aEulerAngles(EulerAngles<T>* eulerAngles);
 	};
+
+	template<typename T>
+	inline std::shared_ptr<EulerAnglesDDot<T>> EulerAnglesDDot<T>::With()
+	{
+		assert(false);
+		auto inst = std::make_shared<EulerAnglesDDot<T>>();
+		inst->initialize();
+		return inst;
+	}
+
 	template<typename T>
 	inline void EulerAnglesDDot<T>::calc()
 	{
@@ -47,13 +59,13 @@ namespace MbD {
 			auto angleDot = aEulerAnglesDot->at(i)->getValue();
 			auto angleDDot = this->at(i)->getValue();
 			if (axis == 1) {
-				cAddot->atiput(i, FullMatrix<double>::rotatexrotDotrotDDot(angle, angleDot, angleDDot));
+				cAddot->atput(i, FullMatrix<double>::rotatexrotDotrotDDot(angle, angleDot, angleDDot));
 			}
 			else if (axis == 2) {
-				cAddot->atiput(i, FullMatrix<double>::rotateyrotDotrotDDot(angle, angleDot, angleDDot));
+				cAddot->atput(i, FullMatrix<double>::rotateyrotDotrotDDot(angle, angleDot, angleDDot));
 			}
 			else if (axis == 3) {
-				cAddot->atiput(i, FullMatrix<double>::rotatezrotDotrotDDot(angle, angleDot, angleDDot));
+				cAddot->atput(i, FullMatrix<double>::rotatezrotDotrotDDot(angle, angleDot, angleDDot));
 			}
 			else {
 				throw std::runtime_error("Euler angle rotation order must be any permutation of 1,2,3 without consecutive repeats.");
@@ -80,10 +92,11 @@ namespace MbD {
 		auto term8 = phiA->timesFullMatrix(theA->timesFullMatrix(psiAddot));
 
 		aAddot = term->plusFullMatrix(term1)->plusFullMatrix(term2)
-                ->plusFullMatrix(term3)->plusFullMatrix(term4)
-			    ->plusFullMatrix(term5)->plusFullMatrix(term6)
-                ->plusFullMatrix(term7)->plusFullMatrix(term8);
+				->plusFullMatrix(term3)->plusFullMatrix(term4)
+				->plusFullMatrix(term5)->plusFullMatrix(term6)
+				->plusFullMatrix(term7)->plusFullMatrix(term8);
 	}
+
 	template<typename T>
 	inline void EulerAnglesDDot<T>::aEulerAngles(EulerAngles<T>* eulerAngles)
 	{

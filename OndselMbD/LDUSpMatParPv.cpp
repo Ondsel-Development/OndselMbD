@@ -7,3 +7,12 @@
  ***************************************************************************/
  
 #include "LDUSpMatParPv.h"
+
+using namespace MbD;
+
+std::shared_ptr<LDUSpMatParPv> MbD::LDUSpMatParPv::With()
+{
+	auto inst = std::make_shared<LDUSpMatParPv>();
+	inst->initialize();
+	return inst;
+}

@@ -11,25 +11,27 @@
 #include "SystemNewtonRaphson.h"
 
 namespace MbD {
-    class AccNewtonRaphson : public SystemNewtonRaphson
-    {
-        //
-    public:
-        void askSystemToUpdate() override;
-        void assignEquationNumbers() override;
-        void fillPyPx() override;
-        void fillY() override;
-        void incrementIterNo() override;
-        void initializeGlobally() override;
-        void logSingularMatrixMessage();
-        void passRootToSystem() override;
-        void postRun() override;
-        void preRun() override;
-        void handleSingularMatrix() override;
-        void run() override;
+	class AccNewtonRaphson : public SystemNewtonRaphson
+	{
+		//
+	public:
+		static std::shared_ptr<AccNewtonRaphson> With();
+
+		void askSystemToUpdate() override;
+		void assignEquationNumbers() override;
+		void fillPyPx() override;
+		void fillY() override;
+		void incrementIterNo() override;
+		void initializeGlobally() override;
+		void logSingularMatrixMessage();
+		void passRootToSystem() override;
+		void postRun() override;
+		void preRun() override;
+		void handleSingularMatrix() override;
+		void run() override;
 		void iterate() override;
 
 
-    };
+	};
 }
 

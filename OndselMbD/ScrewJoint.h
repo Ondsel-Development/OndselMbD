@@ -15,8 +15,11 @@ namespace MbD {
 	{
 		//
 	public:
-		ScrewJoint();
+		ScrewJoint() {}
 		ScrewJoint(const char* str);
+		static std::shared_ptr<ScrewJoint> With();
+		static std::shared_ptr<ScrewJoint> With(const char* str);
+
 		//void initializeLocally() override;
 		void initializeGlobally() override;
 		void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ) override;

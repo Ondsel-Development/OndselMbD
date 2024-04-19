@@ -7,26 +7,29 @@
  ***************************************************************************/
  
 #include "Orientation.h"
-#include "CREATE.h"
 #include "System.h"
 
 using namespace MbD;
 
-MbD::Orientation::Orientation()
-{
-}
-
 MbD::Orientation::Orientation(const char*)
 {
+	assert(false);
+}
+
+std::shared_ptr<Orientation> MbD::Orientation::With(const char* str)
+{
+	auto inst = std::make_shared<Orientation>(str);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::Orientation::initializeGlobally()
 {
 	if (constraints->empty()) {
 		initMotions();
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 1, 0));
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 0));
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 1));
+		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 1, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 1));
 		this->root()->hasChanged = true;
 	}
 	else {

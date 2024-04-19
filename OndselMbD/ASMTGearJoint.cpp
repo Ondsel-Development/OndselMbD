@@ -14,12 +14,14 @@ using namespace MbD;
 
 std::shared_ptr<ASMTGearJoint> MbD::ASMTGearJoint::With()
 {
-	return std::make_shared<ASMTGearJoint>();
+	auto inst = std::make_shared<ASMTGearJoint>();
+	inst->initialize();
+	return inst;
 }
 
 std::shared_ptr<Joint> MbD::ASMTGearJoint::mbdClassNew()
 {
-    return CREATE<GearJoint>::With();
+	return GearJoint::With();
 }
 
 void MbD::ASMTGearJoint::parseASMT(std::vector<std::string>& lines)

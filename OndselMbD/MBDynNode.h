@@ -10,12 +10,14 @@
 #include "MBDynItem.h"
 
 namespace MbD {
-    class MBDynNode : public MBDynItem
-    {
-    public:
-        void initialize() override;
-        void parseMBDyn(std::vector<std::string>& lines) override;
-        void outputLine(size_t i, std::ostream& os);
+	class MBDynNode : public MBDynItem
+	{
+	public:
+		static std::shared_ptr<MBDynNode> With();
+		void initialize() override;
 
-    };
+		void parseMBDyn(std::vector<std::string>& lines) override;
+		void outputLine(size_t i, std::ostream& os);
+
+	};
 }

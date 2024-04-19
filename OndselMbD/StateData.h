@@ -15,8 +15,10 @@ namespace MbD {
 	{
 		//
 	public:
-		StateData();
+		StateData() {}
+		static std::shared_ptr<StateData> With();
 		void initialize() override;
+
 
 
 	};

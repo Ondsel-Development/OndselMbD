@@ -28,6 +28,13 @@ void ICKineIntegrator::selectOrder()
 	assert(false);
 }
 
+std::shared_ptr<ICKineIntegrator> MbD::ICKineIntegrator::With()
+{
+	auto inst = std::make_shared<ICKineIntegrator>();
+	inst->initialize();
+	return inst;
+}
+
 void ICKineIntegrator::preRun()
 {
 	system->Solver::logString("MbD: Starting quasi kinematic analysis.");

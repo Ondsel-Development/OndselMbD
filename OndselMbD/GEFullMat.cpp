@@ -12,6 +12,18 @@
 
 using namespace MbD;
 
+std::shared_ptr<GEFullMat> MbD::GEFullMat::With()
+{
+	auto inst = std::make_shared<GEFullMat>();
+	inst->initialize();
+	return inst;
+}
+
+void MbD::GEFullMat::doPivoting(size_t p)
+{
+	assert(false);
+}
+
 void GEFullMat::forwardEliminateWithPivot(size_t)
 {
 	assert(false);

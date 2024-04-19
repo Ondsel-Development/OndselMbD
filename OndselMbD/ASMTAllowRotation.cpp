@@ -15,8 +15,9 @@ using namespace MbD;
 
 std::shared_ptr<ASMTAllowRotation> MbD::ASMTAllowRotation::With()
 {
-	auto asmtAllowRotation = std::make_shared<ASMTAllowRotation>();
-	return asmtAllowRotation;
+	auto inst = std::make_shared<ASMTAllowRotation>();
+	inst->initialize();
+	return inst;
 }
 
 void MbD::ASMTAllowRotation::parseASMT(std::vector<std::string>& lines)
@@ -40,8 +41,8 @@ void MbD::ASMTAllowRotation::readMotionJoint(std::vector<std::string>& lines)
 void MbD::ASMTAllowRotation::initMarkers()
 {
 	if (motionJoint == "") {
-		assert(markerI != "");
-		assert(markerJ != "");
+		assert(markerI->name != "");
+		assert(markerJ->name != "");
 	}
 	else {
 		auto jt = root()->jointAt(motionJoint);
@@ -57,6 +58,7 @@ std::shared_ptr<Joint> MbD::ASMTAllowRotation::mbdClassNew()
 
 void MbD::ASMTAllowRotation::setMotionJoint(std::string motionJoint)
 {
+	assert(false);
 }
 
 void MbD::ASMTAllowRotation::storeOnLevel(std::ofstream& os, size_t level)

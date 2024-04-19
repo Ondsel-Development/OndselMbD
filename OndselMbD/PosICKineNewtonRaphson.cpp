@@ -13,6 +13,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<PosICKineNewtonRaphson> MbD::PosICKineNewtonRaphson::With()
+{
+	auto inst = std::make_shared<PosICKineNewtonRaphson>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::PosICKineNewtonRaphson::run()
 {
 	//Keep for debugging
@@ -28,16 +35,16 @@ void MbD::PosICKineNewtonRaphson::iterate()
 	//Keep for debugging
 	iterNo = SIZE_MAX;
 	this->fillY();
-	this->calcyNorm();
+	calcyNorm();
 	yNorms->push_back(yNorm);
 
 	while (true) {
-		this->incrementIterNo();
-		this->fillPyPx();
+		incrementIterNo();
+		fillPyPx();
 		//std::cout << *pypx << std::endl;
-		//outputSpreadsheet();
-		this->solveEquations();
-		this->calcDXNormImproveRootCalcYNorm();
+		outputSpreadsheet();
+		solveEquations();
+		calcDXNormImproveRootCalcYNorm();
 		if (this->isConverged()) {
 			//std::cout << "iterNo = " << iterNo << std::endl;
 			break;

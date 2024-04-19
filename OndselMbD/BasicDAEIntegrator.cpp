@@ -12,7 +12,6 @@
 #include "BasicDAEIntegrator.h"
 #include "IntegratorInterface.h"
 #include "DynIntegrator.h"
-#include "CREATE.h"
 #include "DAECorrector.h"
 #include "MaximumIterationError.h"
 #include "SingularMatrixError.h"
@@ -20,12 +19,19 @@
 
 using namespace MbD;
 
+std::shared_ptr<BasicDAEIntegrator> MbD::BasicDAEIntegrator::With()
+{
+	auto inst = std::make_shared<BasicDAEIntegrator>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::BasicDAEIntegrator::initialize()
 {
 	BasicIntegrator::initialize();
-	extrapolator = CREATE<Extrapolator>::With();
+	extrapolator = Extrapolator::With();
 	extrapolator->timeNodes = tpast;
-	newtonRaphson = CREATE<DAECorrector>::With();
+	newtonRaphson = DAECorrector::With();
 	newtonRaphson->setSystem(this);
 	ypast = std::make_shared<std::vector<FColDsptr>>();
 	ydotpast = std::make_shared<std::vector<FColDsptr>>();

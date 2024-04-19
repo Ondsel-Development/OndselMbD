@@ -11,6 +11,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<LDUSpMat> MbD::LDUSpMat::With()
+{
+	auto inst = std::make_shared<LDUSpMat>();
+	inst->initialize();
+	return inst;
+}
+
 FColDsptr LDUSpMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
 	this->decomposesaveOriginal(spMat, saveOriginal);

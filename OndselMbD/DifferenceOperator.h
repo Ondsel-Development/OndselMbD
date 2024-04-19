@@ -10,20 +10,22 @@
 
 #include <memory>
 
+#include "Numeric.h"
 #include "FullMatrix.h"
 
 namespace MbD {
-	class DifferenceOperator
+	class DifferenceOperator : public Numeric
 	{
 		//iStep order taylorMatrix operatorMatrix time timeNodes 
 	public:
-		virtual ~DifferenceOperator() {}
-		void calcOperatorMatrix();
+		//virtual ~DifferenceOperator() {}
 		virtual void initialize();
+		
+		void calcOperatorMatrix();
 		virtual void initializeLocally();
 		virtual void setiStep(size_t i);
 		virtual void setorder(size_t o);
-		virtual void formTaylorMatrix() = 0;
+		virtual void formTaylorMatrix();
 		virtual void instantiateTaylorMatrix();
 		virtual void formTaylorRowwithTimeNodederivative(size_t i, size_t ii, size_t k);
 		void settime(double t);

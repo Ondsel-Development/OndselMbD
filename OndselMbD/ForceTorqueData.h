@@ -15,6 +15,8 @@ namespace MbD {
 	{
 		//aFIO aTIO
 	public:
+		static std::shared_ptr<ForceTorqueData> With();
+		
 		std::ostream& printOn(std::ostream& s) const override;
 
 		FColDsptr aFIO, aTIO;

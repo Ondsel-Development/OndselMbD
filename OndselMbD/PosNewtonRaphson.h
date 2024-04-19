@@ -11,16 +11,18 @@
 #include "SystemNewtonRaphson.h"
 
 namespace MbD {
-    class PosNewtonRaphson : public SystemNewtonRaphson
-    {
-        //
-    public:
-        void preRun() override;
-        void incrementIterNo() override;
-        void askSystemToUpdate() override;
-        void postRun() override;
-        void run() override;
-        void iterate() override;
-    };
+	class PosNewtonRaphson : public SystemNewtonRaphson
+	{
+		//
+	public:
+		static std::shared_ptr<PosNewtonRaphson> With();
+
+		void preRun() override;
+		void incrementIterNo() override;
+		void askSystemToUpdate() override;
+		void postRun() override;
+		void run() override;
+		void iterate() override;
+	};
 }
 

@@ -11,13 +11,15 @@
 #include "GESpMatParPv.h"
 
 namespace MbD {
-    class GESpMatParPvMarko : public GESpMatParPv
-    {
-        //
-    public:
-        void doPivoting(size_t p) override;
-        void preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) override;
+	class GESpMatParPvMarko : public GESpMatParPv
+	{
+		//
+	public:
+		static std::shared_ptr<GESpMatParPvMarko> With();
+		
+		void doPivoting(size_t p) override;
+		void preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) override;
 
-    };
+	};
 }
 

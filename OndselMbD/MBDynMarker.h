@@ -14,10 +14,13 @@ namespace MbD {
 	class MBDynMarker : public MBDynItem
 	{
 	public:
+		static std::shared_ptr<MBDynMarker> With();
+
 		void parseMBDyn(std::vector<std::string>& args) override;
 		void parseMBDynTotalJointMarker(std::vector<std::string>& args);
 		void parseMBDynClamp(std::vector<std::string>& args);
 		void createASMT() override;
+		FColDsptr rOmO();
 
 		std::string nodeStr;
 		FColDsptr rPmP; //part to marker

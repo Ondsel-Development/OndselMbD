@@ -11,18 +11,19 @@
 #include "ASMTConstraintSet.h"
 
 namespace MbD {
-    class ForceTorqueData;
+	class ForceTorqueData;
 
-    class ASMTJoint : public ASMTConstraintSet
-    {
-        //
-    public:
-        void parseASMT(std::vector<std::string>& lines) override;
-        void readJointSeries(std::vector<std::string>& lines);
-        void storeOnLevel(std::ofstream& os, size_t level) override;
-        void storeOnTimeSeries(std::ofstream& os) override;
+	class ASMTJoint : public ASMTConstraintSet
+	{
+		//
+	public:
+		static std::shared_ptr<ASMTJoint> With();
+		
+		void readJointSeries(std::vector<std::string>& lines);
+		void storeOnLevel(std::ofstream& os, size_t level) override;
+		void storeOnTimeSeries(std::ofstream& os) override;
 
-        std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueData>>> jointSeries;
+		std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueData>>> jointSeries;
 
-    };
+	};
 }

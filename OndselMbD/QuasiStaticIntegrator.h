@@ -8,19 +8,21 @@
 
 #pragma once
 
-#include <vector>
+//#include <vector>
 
 #include "QuasiIntegrator.h"
 
 namespace MbD {
-    class SolverStatistics;
+	class SolverStatistics;
 
-    class QuasiStaticIntegrator : public QuasiIntegrator
-    {
-        //
-    public:
-        void useTrialStepStats(std::shared_ptr<SolverStatistics> stats);
+	class QuasiStaticIntegrator : public QuasiIntegrator
+	{
+		//
+	public:
+		static std::shared_ptr<QuasiStaticIntegrator> With();
+
+		void useTrialStepStats(std::shared_ptr<SolverStatistics> stats);
 
 
-    };
+	};
 }

@@ -11,17 +11,18 @@
 #include "FunctionX.h"
 
 namespace MbD {
-    class Abs : public FunctionX
-    {
-        //
-    public:
-        Abs() = default;
-        Abs(Symsptr arg);
-        double getValue() override;
-        Symsptr copyWith(Symsptr arg) override;
+	class Abs : public FunctionX
+	{
+		//
+	public:
+		Abs() = default;
+		Abs(Symsptr arg);
+		static std::shared_ptr<Abs> With();
+		double getValue() override;
+		Symsptr copyWith(Symsptr arg) override;
 
-        std::ostream& printOn(std::ostream& s) const override;
+		std::ostream& printOn(std::ostream& s) const override;
 
-    };
+	};
 }
 

@@ -13,19 +13,21 @@
 
 namespace MbD {
 
-    class ASMTRefItem : public ASMTSpatialItem
-    {
-        //
-    public:
-        void addMarker(std::shared_ptr<ASMTMarker> marker);
-        void readMarkers(std::vector<std::string>& lines);
-        void readMarker(std::vector<std::string>& lines);
-        void storeOnLevel(std::ofstream& os, size_t level) override;
-        void updateFromInputState();
+	class ASMTRefItem : public ASMTSpatialItem
+	{
+		//
+	public:
+		static std::shared_ptr<ASMTRefItem> With();
+		
+		void addMarker(std::shared_ptr<ASMTMarker> marker);
+		void readMarkers(std::vector<std::string>& lines);
+		void readMarker(std::vector<std::string>& lines);
+		void storeOnLevel(std::ofstream& os, size_t level) override;
+		void updateFromInputState();
 
-        std::shared_ptr<std::vector<std::shared_ptr<ASMTMarker>>> markers = std::make_shared<std::vector<std::shared_ptr<ASMTMarker>>>();
+		std::shared_ptr<std::vector<std::shared_ptr<ASMTMarker>>> markers = std::make_shared<std::vector<std::shared_ptr<ASMTMarker>>>();
 
 
-    };
+	};
 }
 

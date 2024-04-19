@@ -16,6 +16,7 @@ namespace MbD {
 		//pGpXI pGpEI ppGpXIpXI ppGpXIpEI ppGpEIpEI iqXI iqEI 
 	public:
 		DistancexyConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj);
+		static std::shared_ptr<DistancexyConstraintIqcJc> With(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void addToJointForceI(FColDsptr col) override;
 		void addToJointTorqueI(FColDsptr col) override;

@@ -4,6 +4,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<MBDynOutputMeter> MbD::MBDynOutputMeter::With()
+{
+	auto inst = std::make_shared<MBDynOutputMeter>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MBDynOutputMeter::parseMBDyn(std::string line)
 {
 	outputMeterString = line;

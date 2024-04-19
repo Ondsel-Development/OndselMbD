@@ -11,12 +11,14 @@
 #include "LDUSpMatParPv.h"
 
 namespace MbD {
-    class LDUSpMatParPvPrecise : public LDUSpMatParPv
-    {
-        //
-    public:
-        void doPivoting(size_t p) override;
+	class LDUSpMatParPvPrecise : public LDUSpMatParPv
+	{
+		//
+	public:
+		static std::shared_ptr<LDUSpMatParPvPrecise> With();
+		
+		void doPivoting(size_t p) override;
 
-    };
+	};
 }
 

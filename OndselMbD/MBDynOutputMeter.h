@@ -13,8 +13,10 @@ namespace MbD {
 	class MBDynOutputMeter : public MBDynControlData
 	{
 	public:
+		static std::shared_ptr<MBDynOutputMeter> With();
+
 		void parseMBDyn(std::string line) override;
-		void readFunction(std::vector<std::string>& args);
+		void readFunction(std::vector<std::string>& args) override;
 
 		std::string outputMeterString, outputMeterName, formula;
 

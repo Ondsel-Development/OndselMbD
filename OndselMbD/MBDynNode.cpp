@@ -4,8 +4,16 @@
 
 using namespace MbD;
 
+std::shared_ptr<MBDynNode> MbD::MBDynNode::With()
+{
+	auto inst = std::make_shared<MBDynNode>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MBDynNode::initialize()
 {
+	assert(false);
 }
 
 void MbD::MBDynNode::parseMBDyn(std::vector<std::string>&)
@@ -15,7 +23,7 @@ void MbD::MBDynNode::parseMBDyn(std::vector<std::string>&)
 
 void MbD::MBDynNode::outputLine(size_t i, std::ostream& os)
 {
-	auto id = nodeidAt(name);
+	auto id = labelIDat(label);
 	auto asmtPart = std::static_pointer_cast<ASMTPart>(asmtItem);
 	auto x = asmtPart->xs->at(i);
 	auto y = asmtPart->ys->at(i);

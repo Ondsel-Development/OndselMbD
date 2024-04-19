@@ -5,18 +5,28 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
+//#include <cassert>
+
 #include "ArcTan.h"
 
 using namespace MbD;
 
 MbD::ArcTan::ArcTan(Symsptr arg) : FunctionX(arg)
 {
+	assert(false);
+}
+
+std::shared_ptr<ArcTan> MbD::ArcTan::With()
+{
+	auto inst = std::make_shared<ArcTan>();
+	inst->initialize();
+	return inst;
 }
 
 double MbD::ArcTan::getValue()
 {
-    return std::atan(xx->getValue());
+	return std::atan(xx->getValue());
 }
 
 Symsptr MbD::ArcTan::copyWith(Symsptr arg)

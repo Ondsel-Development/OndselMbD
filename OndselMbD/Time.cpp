@@ -5,7 +5,9 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
+#include <cassert>
+
 #include "Time.h"
 
 using namespace MbD;
@@ -16,6 +18,14 @@ Time::Time()
 	this->setName(str);
 }
 
+std::shared_ptr<Time> MbD::Time::With()
+{
+	auto inst = std::make_shared<Time>();
+	inst->initialize();
+	return inst;
+}
+
 void Time::initialize()
 {
+	assert(false);
 }

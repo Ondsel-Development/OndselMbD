@@ -7,24 +7,34 @@
  ***************************************************************************/
  
 #include "ZTranslation.h"
-#include "CREATE.h"
 #include "System.h"
 
 using namespace MbD;
 
-MbD::ZTranslation::ZTranslation()
-{
-}
-
 MbD::ZTranslation::ZTranslation(const char*)
 {
+	assert(false);
+}
+
+std::shared_ptr<ZTranslation> MbD::ZTranslation::With()
+{
+	auto inst = std::make_shared<ZTranslation>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<ZTranslation> MbD::ZTranslation::With(const char* str)
+{
+	auto inst = std::make_shared<ZTranslation>(str);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::ZTranslation::initializeGlobally()
 {
 	if (constraints->empty()) {
 		initMotions();
-		auto tranCon = CREATE<TranslationConstraintIJ>::ConstraintWith(frmI, frmJ, 2);
+		auto tranCon = TranslationConstraintIJ::With(frmI, frmJ, 2);
 		addConstraint(tranCon);
 		this->root()->hasChanged = true;
 	}

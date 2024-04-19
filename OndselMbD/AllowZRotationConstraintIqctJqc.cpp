@@ -7,10 +7,9 @@
  ***************************************************************************/
 
 #include "AllowZRotationConstraintIqctJqc.h"
-#include "EndFramec.h"
 #include "MarkerFrame.h"
 #include "EndFrameqc.h"
-#include "CREATE.h"
+#include "EndFrameqct.h"
 #include "Symbolic.h"
 #include "Constant.h"
  #include "EulerAngleszxz.h"
@@ -20,13 +19,14 @@ using namespace MbD;
 MbD::AllowZRotationConstraintIqctJqc::AllowZRotationConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj) :
 	DirectionCosineConstraintIqctJqc(frmi, frmj, axisi, axisj)
 {
+	assert(false);
 }
 
 std::shared_ptr<AllowZRotationConstraintIqctJqc> MbD::AllowZRotationConstraintIqctJqc::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj)
 {
-	auto con = std::make_shared<AllowZRotationConstraintIqctJqc>(frmi, frmj, axisi, axisj);
-	con->initialize();
-	return con;
+	auto inst = std::make_shared<AllowZRotationConstraintIqctJqc>(frmi, frmj, axisi, axisj);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::AllowZRotationConstraintIqctJqc::postInput()

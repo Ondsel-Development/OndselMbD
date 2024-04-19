@@ -11,13 +11,16 @@
 #include "InLineJoint.h"
 
 namespace MbD {
-    class CylindricalJoint : public InLineJoint
-    {
-        //frmI frmJ constraints friction 
-    public:
-        CylindricalJoint();
-        CylindricalJoint(const char* str);
-        void initializeGlobally() override;
-    };
+	class CylindricalJoint : public InLineJoint
+	{
+		//frmI frmJ constraints friction 
+	public:
+		CylindricalJoint() {}
+		CylindricalJoint(const char* str);
+		static std::shared_ptr<CylindricalJoint> With();
+		static std::shared_ptr<CylindricalJoint> With(const char* str);
+		
+		void initializeGlobally() override;
+	};
 }
 

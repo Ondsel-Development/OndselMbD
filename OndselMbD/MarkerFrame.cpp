@@ -5,37 +5,41 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include<algorithm>
 
 #include "PartFrame.h"
 #include "MarkerFrame.h"
-#include "EndFramec.h"
-#include "EndFrameqc.h"
+ //#include "EndFramec.h"
+#include "EndFrameqct.h"
 #include "EulerParameters.h"
-#include "CREATE.h"
 
 using namespace MbD;
 
-MarkerFrame::MarkerFrame()
+MarkerFrame::MarkerFrame(const char* str) : CartesianFrame(str)
 {
+	//Do nothing.
 }
 
-MarkerFrame::MarkerFrame(const char* str) : CartesianFrame(str) {
+std::shared_ptr<MarkerFrame> MbD::MarkerFrame::With(const char* str)
+{
+	auto inst = std::make_shared<MarkerFrame>(str);
+	inst->initialize();
+	return inst;
+}
+
+void MarkerFrame::initialize()
+{
+	prOmOpE = FullMatrix<double>::With(3, 4);
+	pAOmpE = std::make_shared<FullColumn<FMatDsptr>>(4);
+	endFrames = std::make_shared<std::vector<EndFrmsptr>>();
+	auto endFrm = EndFrameqc::With();
+	this->addEndFrame(endFrm);
 }
 
 System* MarkerFrame::root()
 {
 	return partFrame->root();
-}
-
-void MarkerFrame::initialize()
-{
-	prOmOpE = std::make_shared<FullMatrix<double>>(3, 4);
-	pAOmpE = std::make_shared<FullColumn<FMatDsptr>>(4);
-	endFrames = std::make_shared<std::vector<EndFrmsptr>>();
-	auto endFrm = CREATE<EndFrameqc>::With();
-	this->addEndFrame(endFrm);
 }
 
 void MarkerFrame::initializeLocally()
@@ -53,7 +57,9 @@ void MarkerFrame::initializeLocally()
 	}
 	endFramesDo([](EndFrmsptr endFrame) { endFrame->initializeLocally(); });
 }
-
+/// <summary>
+/// 
+/// </summary>
 void MarkerFrame::initializeGlobally()
 {
 	endFramesDo([](EndFrmsptr endFrame) { endFrame->initializeGlobally(); });
@@ -75,7 +81,7 @@ void MarkerFrame::calcPostDynCorrectorIteration()
 	for (size_t i = 0; i < 4; i++)
 	{
 		auto& pAOppEi = pAOppE->at(i);
-		prOmOpE->atijputFullColumn(0, i, pAOppEi->timesFullColumn(rpmp));
+		prOmOpE->atandputFullColumn(0, i, pAOppEi->timesFullColumn(rpmp));
 		pAOmpE->at(i) = pAOppEi->timesFullMatrix(aApm);
 	}
 }
@@ -86,9 +92,48 @@ void MarkerFrame::prePosIC()
 	endFramesDo([](EndFrmsptr endFrame) { endFrame->prePosIC(); });
 }
 
+void MbD::MarkerFrame::preStatic()
+{
+	assert(false);
+}
+
 size_t MarkerFrame::iqX() const
 {
 	return partFrame->iqX;
+}
+
+FColDsptr MbD::MarkerFrame::omeOmO() const
+{
+	return partFrame->omeOpO();
+}
+
+FMatDsptr MbD::MarkerFrame::pAdotjOmpE(size_t jj)
+{
+	auto pAdotOppE = partFrame->pAdotOppE();
+	auto aAjjpm = aApm->column(jj);
+	auto answer = FullMatrix<double>::With(3, 4);
+	for (size_t j = 0; j < 4; j++) {
+		auto pAdotOppEj = pAdotOppE->at(j);
+		auto pAdotjjpmpEj = pAdotOppEj->timesFullColumn(aAjjpm);
+		answer->atandputFullColumn(0, j, pAdotjjpmpEj);
+	}
+	return answer;
+}
+
+FMatDsptr MbD::MarkerFrame::pAdotjOmpET(size_t jj)
+{
+	auto pAdotOppE = partFrame->pAdotOppE();
+	auto aAjjpm = aApm->column(jj);
+	auto answer = FullMatrix<double>::With(4, 3);
+	for (size_t i = 0; i < 4; i++) {
+		auto answeri = answer->at(i);
+		auto pAdotOppEi = pAdotOppE->at(i);
+		auto pAdotjjpmpEi = pAdotOppEi->timesFullColumn(aAjjpm);
+		for (size_t j = 0; j < 3; j++) {
+			answeri->atput(j, (pAdotjjpmpEi->at(j)));
+		}
+	}
+	return answer;
 }
 
 size_t MarkerFrame::iqE() const
@@ -136,6 +181,16 @@ void MarkerFrame::fillqsudot(FColDsptr col)
 	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->fillqsudot(col); });
 }
 
+void MbD::MarkerFrame::fillqsudotPlam(FColDsptr col)
+{
+	assert(false);
+}
+
+void MbD::MarkerFrame::fillqsudotPlamDeriv(FColDsptr col)
+{
+	assert(false);
+}
+
 void MarkerFrame::fillqsudotWeights(DiagMatDsptr diagMat)
 {
 	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->fillqsudotWeights(diagMat); });
@@ -151,6 +206,12 @@ void MarkerFrame::setqsulam(FColDsptr col)
 	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->setqsulam(col); });
 }
 
+void MbD::MarkerFrame::simUpdateAll()
+{
+	CartesianFrame::simUpdateAll();
+	endFramesDo([](EndFrmsptr endFrame) { endFrame->simUpdateAll(); });
+}
+
 void MarkerFrame::setqsudot(FColDsptr col)
 {
 	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->setqsudot(col); });
@@ -161,10 +222,25 @@ void MarkerFrame::setqsudotlam(FColDsptr col)
 	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->setqsudotlam(col); });
 }
 
+void MbD::MarkerFrame::setqsudotPlam(FColDsptr col)
+{
+	assert(false);
+}
+
+void MbD::MarkerFrame::setqsudotPlamDeriv(FColDsptr col)
+{
+	assert(false);
+}
+
 void MarkerFrame::postPosICIteration()
 {
 	CartesianFrame::postPosICIteration();
 	endFramesDo([](EndFrmsptr endFrame) { endFrame->postPosICIteration(); });
+}
+
+void MbD::MarkerFrame::postStaticIteration()
+{
+	assert(false);
 }
 
 void MarkerFrame::postPosIC()
@@ -210,9 +286,24 @@ FColDsptr MarkerFrame::qXdot() const
 	return partFrame->qXdot;
 }
 
+FColDsptr MbD::MarkerFrame::rmemOFrOeO(FColDsptr rOeOCol) const
+{
+	return aAOm->transposeTimesFullColumn(rOeOCol->minusFullColumn(rOmO));
+}
+
+FColDsptr MbD::MarkerFrame::rOeOOFrmem(FColDsptr rmemCol) const
+{
+	return rOmO->plusFullColumn(aAOm->timesFullColumn(rmemCol));
+}
+
 std::shared_ptr<EulerParametersDot<double>> MarkerFrame::qEdot() const
 {
 	return partFrame->qEdot;
+}
+
+FColDsptr MbD::MarkerFrame::qX() const
+{
+	return partFrame->qX;
 }
 
 FColDsptr MarkerFrame::qXddot() const
@@ -278,14 +369,49 @@ void MbD::MarkerFrame::postDynCorrectorIteration()
 	endFramesDo([](EndFrmsptr endFrame) { endFrame->postDynCorrectorIteration(); });
 }
 
-void MbD::MarkerFrame::fillDynError(FColDsptr col)
+FMatDsptr MbD::MarkerFrame::pvOmOpE()
 {
-	//Do nothing
+	auto answer = FullMatrix<double>::With(3, 4);
+	auto pAdotOppE = partFrame->pAdotOppE();
+	for (size_t i = 0; i < 3; i++) {
+		auto answeri = answer->at(i);
+		for (size_t j = 0; j < 4; j++) {
+			auto pAdotOpipEj = pAdotOppE->at(j)->at(i);
+			answeri->atput(j, pAdotOpipEj->dot(rpmp));
+		}
+	}
+	return answer;
+}
+
+FColDsptr MbD::MarkerFrame::vOmO() const
+{
+	return partFrame->vOpO()->plusFullColumn(partFrame->aAdotOp()->timesFullColumn(rpmp));
+}
+
+FColDsptr MbD::MarkerFrame::vOeO_of_rmem() const
+{
+	assert(false);
+	return FColDsptr();
+}
+
+FColDsptr MbD::MarkerFrame::aOmO() const
+{
+	return partFrame->aOpO()->plusFullColumn(partFrame->aAddotOp()->timesFullColumn(rpmp));
 }
 
 void MarkerFrame::setPartFrame(PartFrame* partFrm)
 {
 	partFrame = partFrm;
+}
+
+FMatDsptr MbD::MarkerFrame::pomeOmOpE()
+{
+	return partFrame->pomeOpOpE();
+}
+
+FMatDsptr MbD::MarkerFrame::pomeOmOpEdot()
+{
+	return partFrame->pomeOpOpEdot();
 }
 
 PartFrame* MarkerFrame::getPartFrame() const {
@@ -297,10 +423,16 @@ void MarkerFrame::setrpmp(FColDsptr x) const
 	rpmp->copyFrom(x);
 }
 
+FColDsptr MbD::MarkerFrame::aAdotjOm(size_t j)
+{
+	return partFrame->aAdotOp()->timesFullColumn(aApm->column(j));
+}
+
 void MarkerFrame::setaApm(FMatDsptr mat) const
 {
 	aApm->copyFrom(mat);
 }
+
 void MarkerFrame::addEndFrame(EndFrmsptr endFrm)
 {
 	endFrm->setMarkerFrame(this);

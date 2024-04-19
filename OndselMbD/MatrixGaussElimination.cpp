@@ -10,7 +10,15 @@
 
 using namespace MbD;
 
+std::shared_ptr<MatrixGaussElimination> MbD::MatrixGaussElimination::With()
+{
+	auto inst = std::make_shared<MatrixGaussElimination>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MatrixGaussElimination::forwardEliminateWithPivot(size_t p)
 {
+	//Subclasses must implement.
 	assert(false);
 }

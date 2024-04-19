@@ -10,10 +10,14 @@
 
 using namespace MbD;
 
-StateData::StateData()
+std::shared_ptr<StateData> MbD::StateData::With()
 {
+	auto inst = std::make_shared<StateData>();
+	inst->initialize();
+	return inst;
 }
 
 void StateData::initialize()
 {
+	assert(false);
 }

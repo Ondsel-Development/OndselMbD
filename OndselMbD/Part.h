@@ -21,14 +21,17 @@ namespace MbD {
 	{
 		//ToDo: ipX ipE m aJ partFrame pX pXdot pE pEdot mX mE mEdot pTpE ppTpEpE ppTpEpEdot 
 	public:
-		Part();
+		Part() {}
 		Part(const char* str);
-		System* root() override;
+		static std::shared_ptr<Part> With();
+		static std::shared_ptr<Part> With(const char* str);
 		void initialize() override;
+
+		System* root() override;
 		void initializeLocally() override;
 		void initializeGlobally() override;
-		void setqX(FColDsptr x);
-		FColDsptr getqX();
+		void setqX(FColDsptr x) const;
+		FColDsptr getqX() const;
 		void setaAap(FMatDsptr mat);
 		void setqE(FColDsptr x);
 		FColDsptr getqE();
@@ -121,7 +124,7 @@ namespace MbD {
 		void fillpFpy(SpMatDsptr mat) override;
 		void fillpFpydot(SpMatDsptr mat) override;
 		void postDynCorrectorIteration() override;
-        void preDynOutput() override;
+		void preDynOutput() override;
 		void postDynOutput() override;
 
 		System* system;	//Use raw pointer when pointing backwards.

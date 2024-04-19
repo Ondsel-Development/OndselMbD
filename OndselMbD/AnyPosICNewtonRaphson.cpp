@@ -9,7 +9,7 @@
 #include "AnyPosICNewtonRaphson.h"
 #include "SystemSolver.h"
 #include "Item.h"
-#include <iostream>
+//#include <iostream>
 
 using namespace MbD;
 
@@ -32,7 +32,7 @@ void AnyPosICNewtonRaphson::initializeGlobally()
 void AnyPosICNewtonRaphson::createVectorsAndMatrices()
 {
 	qsuOld = std::make_shared<FullColumn<double>>(nqsu);
-	qsuWeights = std::make_shared<DiagonalMatrix<double>>(nqsu);
+	qsuWeights = DiagonalMatrix<double>::With(nqsu);
 	SystemNewtonRaphson::createVectorsAndMatrices();
 }
 
@@ -41,7 +41,7 @@ void AnyPosICNewtonRaphson::fillY()
 	auto newMinusOld = qsuOld->negated();
 	newMinusOld->equalSelfPlusFullColumnAt(x, 0);
 	y->zeroSelf();
-	y->atiminusFullColumn(0, (qsuWeights->timesFullColumn(newMinusOld)));
+	y->atminusFullColumn(0, (qsuWeights->timesFullColumn(newMinusOld)));
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) {
 		item->fillPosICError(y);
 		//std::cout << item->name << *y << std::endl;
@@ -53,7 +53,7 @@ void AnyPosICNewtonRaphson::fillY()
 void AnyPosICNewtonRaphson::fillPyPx()
 {
 	pypx->zeroSelf();
-	pypx->atijminusDiagonalMatrix(0, 0, qsuWeights);
+	pypx->atandminusDiagonalMatrix(0, 0, qsuWeights);
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) {
 		item->fillPosICJacob(pypx);
 		//std::cout << *(pypx->at(3)) << std::endl;
@@ -68,5 +68,6 @@ void AnyPosICNewtonRaphson::passRootToSystem()
 
 void MbD::AnyPosICNewtonRaphson::assignEquationNumbers()
 {
+	//Subclasses must implement.
 	assert(false);
 }

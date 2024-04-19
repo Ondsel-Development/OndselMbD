@@ -15,8 +15,11 @@ namespace MbD {
 	{
 		//
 	public:
-		ZTranslation();
+		ZTranslation() {}
 		ZTranslation(const char* str);
+		static std::shared_ptr<ZTranslation> With();
+		static std::shared_ptr<ZTranslation> With(const char* str);
+
 		void initializeGlobally() override;
 
 	};

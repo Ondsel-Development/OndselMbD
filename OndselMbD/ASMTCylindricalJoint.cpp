@@ -14,12 +14,14 @@ using namespace MbD;
 
 std::shared_ptr<ASMTCylindricalJoint> MbD::ASMTCylindricalJoint::With()
 {
-	return std::make_shared<ASMTCylindricalJoint>();
+	auto inst = std::make_shared<ASMTCylindricalJoint>();
+	inst->initialize();
+	return inst;
 }
 
 std::shared_ptr<Joint> MbD::ASMTCylindricalJoint::mbdClassNew()
 {
-    return CREATE<CylindricalJoint>::With();
+	return CylindricalJoint::With();
 }
 
 void MbD::ASMTCylindricalJoint::storeOnLevel(std::ofstream& os, size_t level)

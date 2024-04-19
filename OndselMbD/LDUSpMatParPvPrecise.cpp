@@ -11,6 +11,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<LDUSpMatParPvPrecise> MbD::LDUSpMatParPvPrecise::With()
+{
+	auto inst = std::make_shared<LDUSpMatParPvPrecise>();
+	inst->initialize();
+	return inst;
+}
+
 void LDUSpMatParPvPrecise::doPivoting(size_t p)
 {
 	//"Search from bottom to top."

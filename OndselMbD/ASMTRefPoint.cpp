@@ -8,13 +8,14 @@
 
 #include "ASMTRefPoint.h"
 #include "ASMTMarker.h"
-#include "CREATE.h"
 
 using namespace MbD;
 
 std::shared_ptr<ASMTRefPoint> MbD::ASMTRefPoint::With()
 {
-	return std::make_shared<ASMTRefPoint>();
+	auto inst = std::make_shared<ASMTRefPoint>();
+	inst->initialize();
+	return inst;
 }
 
 void MbD::ASMTRefPoint::parseASMT(std::vector<std::string>& lines)

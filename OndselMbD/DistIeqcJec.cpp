@@ -5,18 +5,32 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "DistIeqcJec.h"
 #include "EndFrameqc.h"
 
 using namespace MbD;
 
-MbD::DistIeqcJec::DistIeqcJec()
-{
-}
-
 MbD::DistIeqcJec::DistIeqcJec(EndFrmsptr frmi, EndFrmsptr frmj) : DistIecJec(frmi, frmj)
 {
+	assert(false);
+}
+
+std::shared_ptr<DistIeqcJec> MbD::DistIeqcJec::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	auto inst = std::make_shared<DistIeqcJec>(frmi, frmj);
+	inst->initialize();
+	return inst;
+}
+
+void MbD::DistIeqcJec::initialize()
+{
+	DistIecJec::initialize();
+	prIeJepXI = FullRow<double>::With(3);
+	prIeJepEI = FullRow<double>::With(4);
+	pprIeJepXIpXI = FullMatrix<double>::With(3, 3);
+	pprIeJepXIpEI = FullMatrix<double>::With(3, 4);
+	pprIeJepEIpEI = FullMatrix<double>::With(4, 4);
 }
 
 void MbD::DistIeqcJec::calcPrivate()
@@ -38,10 +52,10 @@ void MbD::DistIeqcJec::calcPrivate()
 		{
 			auto element = (i == j) ? 1.0 : 0.0;
 			element -= prIeJepXIi * prIeJepXI->at(j);
-			pprIeJepXIipXI->atiput(j, element / rIeJe);
+			pprIeJepXIipXI->atput(j, element / rIeJe);
 		}
 	}
-	pprIeJepXIpEI = std::make_shared<FullMatrix<double>>(3, 4);
+	pprIeJepXIpEI = FullMatrix<double>::With(3, 4);
 	for (size_t i = 0; i < 3; i++)
 	{
 		auto& pprIeJepXIipEI = pprIeJepXIpEI->at(i);
@@ -50,10 +64,10 @@ void MbD::DistIeqcJec::calcPrivate()
 		for (size_t j = 0; j < 4; j++)
 		{
 			auto element = mprIeJeOipEI->at(j) - prIeJepXIi * prIeJepEI->at(j);
-			pprIeJepXIipEI->atiput(j, element / rIeJe);
+			pprIeJepXIipEI->atput(j, element / rIeJe);
 		}
 	}
-	pprIeJepEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
+	pprIeJepEIpEI = FullMatrix<double>::With(4, 4);
 	for (size_t i = 0; i < 4; i++)
 	{
 		auto& pprIeJepEIipEI = pprIeJepEIpEI->at(i);
@@ -64,19 +78,9 @@ void MbD::DistIeqcJec::calcPrivate()
 		{
 			auto element = mprIeJeOpEIiT->dot(mprIeJeOpEIT->at(j))
 				- mpprIeJeOpEIipEI->at(j)->dot(rIeJeO) - prIeJepEIi * prIeJepEI->at(j);
-			pprIeJepEIipEI->atiput(j, element / rIeJe);
+			pprIeJepEIipEI->atput(j, element / rIeJe);
 		}
 	}
-}
-
-void MbD::DistIeqcJec::initialize()
-{
-	DistIecJec::initialize();
-	prIeJepXI = std::make_shared<FullRow<double>>(3);
-	prIeJepEI = std::make_shared<FullRow<double>>(4);
-	pprIeJepXIpXI = std::make_shared<FullMatrix<double>>(3, 3);
-	pprIeJepXIpEI = std::make_shared<FullMatrix<double>>(3, 4);
-	pprIeJepEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
 FMatDsptr MbD::DistIeqcJec::ppvaluepEIpEI()
@@ -92,6 +96,41 @@ FMatDsptr MbD::DistIeqcJec::ppvaluepXIpEI()
 FMatDsptr MbD::DistIeqcJec::ppvaluepXIpXI()
 {
 	return pprIeJepXIpXI;
+}
+
+FMatDsptr MbD::DistIeqcJec::puIeJeOpEI()
+{
+	auto answer = FullMatrix<double>::With(3, 4);
+	auto mprIeJeOpEI = std::static_pointer_cast<EndFrameqc>(frmI)->prOeOpE;
+	auto m1OverrIeJe = -1.0 / rIeJe;
+	auto m1OverrIeJeSq = m1OverrIeJe / rIeJe;
+	for (size_t i = 0; i < 3; i++) {
+		auto answeri = answer->at(i);
+		auto mprIeJeOpEIi = mprIeJeOpEI->at(i);
+		auto rIeJeOi = rIeJeO->at(i);
+		for (size_t j = 0; j < 4; j++) {
+			auto aij = mprIeJeOpEIi->at(j) * m1OverrIeJe + (rIeJeOi * prIeJepEI->at(j) * m1OverrIeJeSq);
+			answeri->atput(j, aij);
+		}
+	}
+	return answer;
+}
+
+FMatDsptr MbD::DistIeqcJec::puIeJeOpXI()
+{
+	auto answer = FullMatrix<double>::With(3, 3);
+	auto m1OverrIeJe = -1.0 / rIeJe;
+	auto m1OverrIeJeSq = m1OverrIeJe / rIeJe;
+	for (size_t i = 0; i < 3; i++) {
+		auto answeri = answer->at(i);
+		auto rIeJeOi = rIeJeO->at(i);
+		for (size_t j = 0; j < 3; j++) {
+			auto aij = rIeJeOi * prIeJepXI->at(j) * m1OverrIeJeSq;
+			answeri->atput(j, aij);
+		}
+		answeri->atplusNumber(i, m1OverrIeJe);
+	}
+	return answer;
 }
 
 FRowDsptr MbD::DistIeqcJec::pvaluepEI()

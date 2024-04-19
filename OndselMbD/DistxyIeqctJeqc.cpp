@@ -9,3 +9,10 @@
 #include "DistxyIeqctJeqc.h"
 
 using namespace MbD;
+
+std::shared_ptr<DistxyIeqctJeqc> MbD::DistxyIeqctJeqc::With()
+{
+	auto inst = std::make_shared<DistxyIeqctJeqc>();
+	inst->initialize();
+	return inst;
+}

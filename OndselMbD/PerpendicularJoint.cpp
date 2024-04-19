@@ -7,24 +7,34 @@
  ***************************************************************************/
  
 #include "PerpendicularJoint.h"
-#include "CREATE.h"
 #include "System.h"
 
 using namespace MbD;
 
-MbD::PerpendicularJoint::PerpendicularJoint()
-{
-}
-
 MbD::PerpendicularJoint::PerpendicularJoint(const char*)
 {
+	assert(false);
+}
+
+std::shared_ptr<PerpendicularJoint> MbD::PerpendicularJoint::With()
+{
+	auto inst = std::make_shared<PerpendicularJoint>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<PerpendicularJoint> MbD::PerpendicularJoint::With(const char* str)
+{
+	auto inst = std::make_shared<PerpendicularJoint>(str);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::PerpendicularJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 2));
+		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 2));
 		this->root()->hasChanged = true;
 	}
 	else {

@@ -13,23 +13,24 @@
 
 namespace MbD {
 
-    class AnyPosICNewtonRaphson : public PosNewtonRaphson
-    {
-        //IC with fully or under constrained system
-        //nqsu qsuOld qsuWeights nSingularMatrixError 
-    public:
-        void initialize() override;
-        void initializeGlobally() override;
-        void createVectorsAndMatrices() override;
-        void fillY() override;
-        void fillPyPx() override;
-        void passRootToSystem() override;
-        void assignEquationNumbers() override = 0;
+	class AnyPosICNewtonRaphson : public PosNewtonRaphson
+	{
+		//IC with fully or under constrained system
+		//nqsu qsuOld qsuWeights nSingularMatrixError 
+	public:
+		void initialize() override;
+		
+		void initializeGlobally() override;
+		void createVectorsAndMatrices() override;
+		void fillY() override;
+		void fillPyPx() override;
+		void passRootToSystem() override;
+		void assignEquationNumbers() override;
 
-        size_t nqsu = SIZE_MAX;
-        FColDsptr qsuOld;
-        DiagMatDsptr qsuWeights;
-        size_t nSingularMatrixError = SIZE_MAX;
-    };
+		size_t nqsu = SIZE_MAX;
+		FColDsptr qsuOld;
+		DiagMatDsptr qsuWeights;
+		size_t nSingularMatrixError = SIZE_MAX;
+	};
 }
 

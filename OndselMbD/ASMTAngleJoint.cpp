@@ -12,14 +12,27 @@
 
 using namespace MbD;
 
+MbD::ASMTAngleJoint::ASMTAngleJoint(const char* str)
+{
+}
+
 std::shared_ptr<ASMTAngleJoint> MbD::ASMTAngleJoint::With()
 {
-	return std::make_shared<ASMTAngleJoint>();
+	auto inst = std::make_shared<ASMTAngleJoint>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<ASMTAngleJoint> MbD::ASMTAngleJoint::With(const char* str)
+{
+	auto inst = std::make_shared<ASMTAngleJoint>(str);
+	inst->initialize();
+	return inst;
 }
 
 std::shared_ptr<Joint> MbD::ASMTAngleJoint::mbdClassNew()
 {
-    return CREATE<AngleJoint>::With();
+	return AngleJoint::With();
 }
 
 void MbD::ASMTAngleJoint::parseASMT(std::vector<std::string>& lines)

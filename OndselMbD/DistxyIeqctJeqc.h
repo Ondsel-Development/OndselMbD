@@ -11,11 +11,11 @@
 #include "DistxyIeqcJeqc.h"
 
 namespace MbD {
-	class DistxyIeqctJeqc :
-		public DistxyIeqcJeqc
+	class DistxyIeqctJeqc : public DistxyIeqcJeqc
 	{
 		//pdistxypt ppdistxypXIpt ppdistxypEIpt ppdistxypXJpt ppdistxypEJpt ppdistxyptpt 
 	public:
+		static std::shared_ptr<DistxyIeqctJeqc> With();
 		//ToDo: add member functions.
 
 	};

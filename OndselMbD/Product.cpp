@@ -6,7 +6,6 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
-#include <algorithm>
 #include <iterator>
 
 #include "Product.h"
@@ -15,6 +14,13 @@
 #include "Integral.h"
 
 using namespace MbD;
+
+std::shared_ptr<Product> MbD::Product::With()
+{
+	auto inst = std::make_shared<Product>();
+	inst->initialize();
+	return inst;
+}
 
 Symsptr MbD::Product::differentiateWRT(Symsptr var)
 {

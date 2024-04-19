@@ -8,19 +8,22 @@
 
 #pragma once
 
-#include <vector>
+//#include <vector>
 
 #include "Solver.h"
 
 namespace MbD {
-    class SolverStatistics;
+	class SolverStatistics;
 
-    class DifferentialAlgebraicEquationSolver : public Solver
-    {
-        //
-    public:
-        void useDAETrialStepStats(std::shared_ptr<SolverStatistics> stats);
+	class DifferentialAlgebraicEquationSolver : public Solver
+	{
+		//
+	public:
+		static std::shared_ptr<DifferentialAlgebraicEquationSolver> With();
+		
+		void setSystem(Solver* sys) override;
+		void useDAETrialStepStats(std::shared_ptr<SolverStatistics> stats);
 
 
-    };
+	};
 }

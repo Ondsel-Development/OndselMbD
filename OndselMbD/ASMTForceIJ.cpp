@@ -1,0 +1,10 @@
+#include "ASMTForceIJ.h"
+
+using namespace MbD;
+
+std::shared_ptr<ASMTForceIJ> MbD::ASMTForceIJ::With()
+{
+	auto inst = std::make_shared<ASMTForceIJ>();
+	inst->initialize();
+	return inst;
+}

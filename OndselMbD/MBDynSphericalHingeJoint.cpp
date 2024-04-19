@@ -11,6 +11,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<MBDynSphericalHingeJoint> MbD::MBDynSphericalHingeJoint::With()
+{
+	auto inst = std::make_shared<MBDynSphericalHingeJoint>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MBDynSphericalHingeJoint::parseMBDyn(std::string line)
 {
 	MBDynJoint::parseMBDyn(line);

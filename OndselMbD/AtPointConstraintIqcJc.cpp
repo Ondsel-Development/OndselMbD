@@ -8,14 +8,15 @@
  
 #include "AtPointConstraintIqcJc.h"
 #include "DispCompIeqcJecO.h"
-#include "CREATE.h"
 #include "EndFrameqc.h"
 
 using namespace MbD;
 
-AtPointConstraintIqcJc::AtPointConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi) :
-	AtPointConstraintIJ(frmi, frmj, axisi)
+std::shared_ptr<AtPointConstraintIqcJc> MbD::AtPointConstraintIqcJc::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisO)
 {
+	auto inst = std::make_shared<AtPointConstraintIqcJc>(frmi, frmj, axisO);
+	inst->initialize();
+	return inst;
 }
 
 void AtPointConstraintIqcJc::initializeGlobally()
@@ -26,7 +27,7 @@ void AtPointConstraintIqcJc::initializeGlobally()
 
 void AtPointConstraintIqcJc::initriIeJeO()
 {
-	riIeJeO = CREATE<DispCompIeqcJecO>::With(frmI, frmJ, axis);
+	riIeJeO = DispCompIeqcJecO::With(frmI, frmJ, axis);
 }
 
 void AtPointConstraintIqcJc::calcPostDynCorrectorIteration()
@@ -44,68 +45,68 @@ void AtPointConstraintIqcJc::useEquationNumbers()
 
 void MbD::AtPointConstraintIqcJc::fillpFpy(SpMatDsptr mat)
 {
-	mat->atijplusNumber(iG, iqXIminusOnePlusAxis, -1.0);
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
-	mat->atijplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
+	mat->atandplusNumber(iG, iqXIminusOnePlusAxis, -1.0);
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
 }
 
 void MbD::AtPointConstraintIqcJc::fillpFpydot(SpMatDsptr mat)
 {
-	mat->atijplusNumber(iqXIminusOnePlusAxis, iG, -1.0);
-	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
+	mat->atandplusNumber(iqXIminusOnePlusAxis, iG, -1.0);
+	mat->atandplusFullColumn(iqEI, iG, pGpEI->transpose());
 }
 
 void AtPointConstraintIqcJc::fillPosICError(FColDsptr col)
 {
 	Constraint::fillPosICError(col);
-	col->atiminusNumber(iqXIminusOnePlusAxis, lam);
-	col->atiplusFullVectortimes(iqEI, pGpEI, lam);
+	col->atminusNumber(iqXIminusOnePlusAxis, lam);
+	col->atplusFullVectortimes(iqEI, pGpEI, lam);
 }
 
 void AtPointConstraintIqcJc::fillPosICJacob(SpMatDsptr mat)
 {
-	mat->atijplusNumber(iG, iqXIminusOnePlusAxis, -1.0);
-	mat->atijplusNumber(iqXIminusOnePlusAxis, iG, -1.0);
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
-	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
-	mat->atijplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
+	mat->atandplusNumber(iG, iqXIminusOnePlusAxis, -1.0);
+	mat->atandplusNumber(iqXIminusOnePlusAxis, iG, -1.0);
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullColumn(iqEI, iG, pGpEI->transpose());
+	mat->atandplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
 }
 
 void AtPointConstraintIqcJc::fillPosKineJacob(SpMatDsptr mat)
 {
-	mat->atijplusNumber(iG, iqXIminusOnePlusAxis, -1.0);
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusNumber(iG, iqXIminusOnePlusAxis, -1.0);
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
 }
 
 void AtPointConstraintIqcJc::fillVelICJacob(SpMatDsptr mat)
 {
-	mat->atijplusNumber(iG, iqXIminusOnePlusAxis, -1.0);
-	mat->atijplusNumber(iqXIminusOnePlusAxis, iG, -1.0);
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
-	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
+	mat->atandplusNumber(iG, iqXIminusOnePlusAxis, -1.0);
+	mat->atandplusNumber(iqXIminusOnePlusAxis, iG, -1.0);
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullColumn(iqEI, iG, pGpEI->transpose());
 }
 
 void AtPointConstraintIqcJc::fillAccICIterError(FColDsptr col)
 {
-	col->atiminusNumber(iqXIminusOnePlusAxis, lam);
-	col->atiplusFullVectortimes(iqEI, pGpEI, lam);
+	col->atminusNumber(iqXIminusOnePlusAxis, lam);
+	col->atplusFullVectortimes(iqEI, pGpEI, lam);
 	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
 	auto qEdotI = efrmIqc->qEdot();
 	auto sum = -efrmIqc->qXddot()->at(axis);
 	sum += pGpEI->timesFullColumn(efrmIqc->qEddot());
 	sum += qEdotI->transposeTimesFullColumn(ppGpEIpEI->timesFullColumn(qEdotI));
-	col->atiplusNumber(iG, sum);
+	col->atplusNumber(iG, sum);
 }
 
 void AtPointConstraintIqcJc::addToJointForceI(FColDsptr col)
 {
-	col->atiminusNumber(axis, lam);
+	col->atminusNumber(axis, lam);
 }
 
 void AtPointConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 {
-	auto cForceT = std::make_shared<FullRow<double>>(3, 0.0);
-	cForceT->atiput(axis, -lam);
+	auto cForceT = FullRow<double>::With(3, 0.0);
+	cForceT->atput(axis, -lam);
 	auto rIpIeIp = frmI->rpep();
 	auto pAOIppEI = frmI->pAOppE();
 	auto aBOIp = frmI->aBOp();
@@ -113,7 +114,7 @@ void AtPointConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 	for (size_t i = 0; i < 4; i++)
 	{
 		auto dum = cForceT->timesFullColumn(pAOIppEI->at(i)->timesFullColumn(rIpIeIp));
-		fpAOIppEIrIpIeIp->atiput(i, dum);
+		fpAOIppEIrIpIeIp->atput(i, dum);
 	}
 	auto lampGpE = pGpEI->transpose()->times(lam);
 	auto c2Torque = aBOIp->timesFullColumn(lampGpE->minusFullColumn(fpAOIppEIrIpIeIp));

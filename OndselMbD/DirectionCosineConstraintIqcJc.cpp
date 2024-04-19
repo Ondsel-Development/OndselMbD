@@ -9,18 +9,19 @@
 #include "DirectionCosineConstraintIqcJc.h"
 #include "DirectionCosineIeqcJec.h"
 #include "EndFrameqc.h"
-#include "CREATE.h"
 
 using namespace MbD;
 
-DirectionCosineConstraintIqcJc::DirectionCosineConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj) :
-	DirectionCosineConstraintIJ(frmi, frmj, axisi, axisj)
+std::shared_ptr<DirectionCosineConstraintIqcJc> MbD::DirectionCosineConstraintIqcJc::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj)
 {
+	auto inst = std::make_shared<DirectionCosineConstraintIqcJc>(frmi, frmj, axisi, axisj);
+	inst->initialize();
+	return inst;
 }
 
 void DirectionCosineConstraintIqcJc::initaAijIeJe()
 {
-	aAijIeJe = CREATE<DirectionCosineIeqcJec>::With(frmI, frmJ, axisI, axisJ);
+	aAijIeJe = DirectionCosineIeqcJec::With(frmI, frmJ, axisI, axisJ);
 }
 
 void DirectionCosineConstraintIqcJc::calcPostDynCorrectorIteration()
@@ -38,47 +39,48 @@ void DirectionCosineConstraintIqcJc::useEquationNumbers()
 
 void MbD::DirectionCosineConstraintIqcJc::fillpFpy(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
-	mat->atijplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
 }
+
 
 void MbD::DirectionCosineConstraintIqcJc::fillpFpydot(SpMatDsptr mat)
 {
-	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
+	mat->atandplusFullColumn(iqEI, iG, pGpEI->transpose());
 }
 
 void DirectionCosineConstraintIqcJc::fillPosICError(FColDsptr col)
 {
 	Constraint::fillPosICError(col);
-	col->atiplusFullVectortimes(iqEI, pGpEI, lam);
+	col->atplusFullVectortimes(iqEI, pGpEI, lam);
 }
 
 void DirectionCosineConstraintIqcJc::fillPosICJacob(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
-	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
-	mat->atijplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullColumn(iqEI, iG, pGpEI->transpose());
+	mat->atandplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
 }
 
 void DirectionCosineConstraintIqcJc::fillPosKineJacob(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
 }
 
 void DirectionCosineConstraintIqcJc::fillVelICJacob(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
-	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullColumn(iqEI, iG, pGpEI->transpose());
 }
 
 void DirectionCosineConstraintIqcJc::fillAccICIterError(FColDsptr col)
 {
-	col->atiplusFullVector(iqEI, pGpEI->times(lam));
+	col->atplusFullVector(iqEI, pGpEI->times(lam));
 	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
 	auto qEdotI = efrmIqc->qEdot();
 	auto sum = pGpEI->timesFullColumn(efrmIqc->qEddot());
 	sum += qEdotI->transposeTimesFullColumn(ppGpEIpEI->timesFullColumn(qEdotI));
-	col->atiplusNumber(iG, sum);
+	col->atplusNumber(iG, sum);
 }
 
 void DirectionCosineConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)

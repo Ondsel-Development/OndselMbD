@@ -11,7 +11,6 @@
 #include "ASMTAssembly.h"
 #include "SymbolicParser.h"
 #include "BasicUserFunction.h"
-#include "CREATE.h"
 #include "Constant.h"
 #include "EulerAngles.h"
 #include "FullMotion.h"
@@ -21,7 +20,9 @@ using namespace MbD;
 
 std::shared_ptr<ASMTGeneralMotion> MbD::ASMTGeneralMotion::With()
 {
-	return std::make_shared<ASMTGeneralMotion>();
+	auto inst = std::make_shared<ASMTGeneralMotion>();
+	inst->initialize();
+	return inst;
 }
 
 void MbD::ASMTGeneralMotion::parseASMT(std::vector<std::string>& lines)
@@ -85,7 +86,7 @@ void MbD::ASMTGeneralMotion::readRotationOrder(std::vector<std::string>& lines)
 
 std::shared_ptr<Joint> MbD::ASMTGeneralMotion::mbdClassNew()
 {
-	return CREATE<FullMotion>::With();
+	return FullMotion::With();
 }
 
 void MbD::ASMTGeneralMotion::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)

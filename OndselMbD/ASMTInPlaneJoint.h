@@ -11,16 +11,18 @@
 #include "ASMTJoint.h"
 
 namespace MbD {
-    class ASMTInPlaneJoint : public ASMTJoint
-    {
-        //
-    public:
-        void parseASMT(std::vector<std::string>& lines) override;
-        void readOffset(std::vector<std::string>& lines);
-        void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
-        void storeOnLevel(std::ofstream& os, size_t level) override;
+	class ASMTInPlaneJoint : public ASMTJoint
+	{
+		//
+	public:
+		static std::shared_ptr<ASMTInPlaneJoint> With();
+		
+		void parseASMT(std::vector<std::string>& lines) override;
+		void readOffset(std::vector<std::string>& lines);
+		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+		void storeOnLevel(std::ofstream& os, size_t level) override;
 
-        double offset = 0.0;
+		double offset = 0.0;
 
-    };
+	};
 }

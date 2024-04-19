@@ -11,32 +11,33 @@
 #include "ConstraintIJ.h"
 
 namespace MbD {
-    class DispCompIecJecO;
+	class DispCompIecJecO;
 
-    class AtPointConstraintIJ : public ConstraintIJ
-    {
-        //axis riIeJeO 
-    public:
-        AtPointConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi);
+	class AtPointConstraintIJ : public ConstraintIJ
+	{
+		//axis riIeJeO 
+	public:
+		AtPointConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisO) : ConstraintIJ(frmi, frmj), axis(axisO) {}
+		static std::shared_ptr<AtPointConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisO);
+		void initialize() override;
 
-        void calcPostDynCorrectorIteration() override;
-        void initialize() override;
-        void initializeGlobally() override;
-        void initializeLocally() override;
-        virtual void initriIeJeO();
-        void postInput() override;
-        void postPosICIteration() override;
-        void preAccIC() override;
-        void prePosIC() override;
-        void preVelIC() override;
-        ConstraintType type() override;
-        void postDynPredictor() override;
-        void postDynCorrectorIteration() override;
-        void preDynOutput() override;
+		void calcPostDynCorrectorIteration() override;
+		void initializeGlobally() override;
+		void initializeLocally() override;
+		virtual void initriIeJeO();
+		void postInput() override;
+		void postPosICIteration() override;
+		void preAccIC() override;
+		void prePosIC() override;
+		void preVelIC() override;
+		ConstraintType type() override;
+		void postDynPredictor() override;
+		void postDynCorrectorIteration() override;
+		void preDynOutput() override;
 		void postDynOutput() override;
 
-        size_t axis;
-        std::shared_ptr<DispCompIecJecO> riIeJeO;
-    };
+		size_t axis;
+		std::shared_ptr<DispCompIecJecO> riIeJeO;
+	};
 }
 

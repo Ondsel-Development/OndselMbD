@@ -37,6 +37,13 @@ FunctionWithManyArgs::FunctionWithManyArgs(std::shared_ptr<std::vector<Symsptr>>
 		terms->push_back(_terms->at(i));
 }
 
+std::shared_ptr<FunctionWithManyArgs> MbD::FunctionWithManyArgs::With()
+{
+	auto inst = std::make_shared<FunctionWithManyArgs>();
+	inst->initialize();
+	return inst;
+}
+
 std::shared_ptr<std::vector<Symsptr>> FunctionWithManyArgs::getTerms()
 {
 	return terms;
@@ -58,5 +65,33 @@ bool MbD::FunctionWithManyArgs::isConstant()
 		if (!term->isConstant()) return false;
 	}
 	return true;
+}
+
+void MbD::FunctionWithManyArgs::fillKineIJs(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> kineIJs)
+{
+	for (auto& term : *terms) {
+		term->fillKineIJs(kineIJs);
+	}
+}
+
+void MbD::FunctionWithManyArgs::fillKinedotIJs(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> kinedotIJs)
+{
+	for (auto& term : *terms) {
+		term->fillKinedotIJs(kinedotIJs);
+	}
+}
+
+void MbD::FunctionWithManyArgs::fillJointForces(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> jointForces)
+{
+	for (auto& term : *terms) {
+		term->fillJointForces(jointForces);
+	}
+}
+
+void MbD::FunctionWithManyArgs::fillJointTorques(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> jointTorques)
+{
+	for (auto& term : *terms) {
+		term->fillJointTorques(jointTorques);
+	}
 }
 

@@ -14,13 +14,31 @@
 #include "ForceTorqueItem.h"
 #include "SystemSolver.h"
 #include "Time.h"
-#include "CREATE.h"
 #include "ExternalSystem.h"
 #include "PrescribedMotion.h"
 
 using namespace MbD;
 
-System::System() {
+System::System(const char* str) : Item(str) {
+	assert(false);
+}
+
+std::shared_ptr<System> MbD::System::With()
+{
+	auto inst = std::make_shared<System>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<System> MbD::System::With(const char* str)
+{
+	auto inst = std::make_shared<System>(str);
+	inst->initialize();
+	return inst;
+}
+
+void System::initialize()
+{
 	externalSystem = std::make_shared<ExternalSystem>();
 	time = std::make_shared<Time>();
 	parts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
@@ -29,21 +47,9 @@ System::System() {
 	systemSolver = std::make_shared<SystemSolver>(this);
 }
 
-System::System(const char* str) : Item(str) {
-}
-
-std::shared_ptr<System> MbD::System::With()
-{
-	return std::make_shared<System>();
-}
-
 System* MbD::System::root()
 {
 	return this;
-}
-
-void System::initialize()
-{
 }
 
 void System::addPart(std::shared_ptr<Part> part)

@@ -14,6 +14,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<VelKineSolver> MbD::VelKineSolver::With()
+{
+	auto inst = std::make_shared<VelKineSolver>();
+	inst->initialize();
+	return inst;
+}
+
 void VelKineSolver::assignEquationNumbers()
 {
 	//"Equation order is q,s,u."
@@ -60,8 +67,30 @@ void VelKineSolver::run()
 	jacobian->zeroSelf();
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillPosKineJacob(jacobian); });
 	matrixSolver = this->matrixSolverClassNew();
-	this->solveEquations();
+	outputSpreadsheet();
+	solveEquations();
 	auto& qsudot = this->x;
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->setqsudot(qsudot); });
 	system->partsJointsMotionsDo([](std::shared_ptr<Item> item) { item->postVelIC(); });
+}
+
+void MbD::VelKineSolver::outputSpreadsheet()
+{
+	std::ofstream os("../testapp/spreadsheetcpp.csv");
+	os << std::setprecision(std::numeric_limits<double>::max_digits10);
+	for (size_t i = 0; i < jacobian->nrow(); i++)
+	{
+		auto rowi = jacobian->at(i);
+		for (size_t j = 0; j < jacobian->ncol(); j++)
+		{
+			if (rowi->find(j) == rowi->end()) {
+				os << 0.0;
+			}
+			else {
+				os << rowi->at(j);
+			}
+			os << '\t';
+		}
+		os << "\t" << errorVector->at(i) << std::endl;
+	}
 }

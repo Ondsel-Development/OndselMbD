@@ -11,18 +11,19 @@
 #include "ASMTJoint.h"
 
 namespace MbD {
-    class ASMTRackPinionJoint : public ASMTJoint
-    {
-        //
-    public:
-        static std::shared_ptr<ASMTRackPinionJoint> With();
-        std::shared_ptr<Joint> mbdClassNew() override;
-        void parseASMT(std::vector<std::string>& lines) override;
-        void readPitchRadius(std::vector<std::string>& lines);
-        void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
-        void storeOnLevel(std::ofstream& os, size_t level) override;
+	class ASMTRackPinionJoint : public ASMTJoint
+	{
+		//
+	public:
+		static std::shared_ptr<ASMTRackPinionJoint> With();
 
-        double pitchRadius = 0.0, aConstant = 0.0;
-    };
+		std::shared_ptr<Joint> mbdClassNew() override;
+		void parseASMT(std::vector<std::string>& lines) override;
+		void readPitchRadius(std::vector<std::string>& lines);
+		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+		void storeOnLevel(std::ofstream& os, size_t level) override;
+
+		double pitchRadius = 0.0, aConstant = 0.0;
+	};
 }
 

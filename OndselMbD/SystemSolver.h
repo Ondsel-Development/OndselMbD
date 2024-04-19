@@ -8,10 +8,10 @@
  
 #pragma once
 
-#include <memory>
-#include <vector>
-#include <functional> 
-#include <set> 
+//#include <memory>
+//#include <vector>
+//#include <functional> 
+//#include <set> 
 
 #include "Solver.h"
 #include "System.h"
@@ -31,11 +31,12 @@ namespace MbD {
 		//iterMaxPosKine iterMaxAccKine basicIntegrator tstartPasts tstart hmin hmax tend toutFirst hout direction corAbsTol corRelTol 
 		//intAbsTol intRelTol iterMaxDyn orderMax translationLimit rotationLimit 
 	public:
-		SystemSolver(System* x) : system(x) {
-			initialize();
-		}
-		void setSystem(Solver* sys) override;
+		SystemSolver() {}
+		SystemSolver(System* x);
+		static std::shared_ptr<SystemSolver> With();
 		void initialize() override;
+
+		void setSystem(Solver* sys) override;
 		void initializeLocally() override;
 		void initializeGlobally() override;
 		void runAllIC();

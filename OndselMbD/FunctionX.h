@@ -19,8 +19,10 @@ namespace MbD {
 	{
 		//
 	public:
-		FunctionX() = default;
-		FunctionX(Symsptr arg);
+		FunctionX() {}
+		FunctionX(Symsptr arg) : xx(arg) {}
+		static std::shared_ptr<FunctionX> With();
+		
 		void arguments(Symsptr args) override;
 		virtual Symsptr copyWith(Symsptr arg);
 		Symsptr expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;

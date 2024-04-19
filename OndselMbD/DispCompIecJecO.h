@@ -15,8 +15,9 @@ namespace MbD {
 	{
 		//axis riIeJeO 
 	public:
-		DispCompIecJecO();
-		DispCompIecJecO(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis);
+		DispCompIecJecO() {}
+		DispCompIecJecO(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisO) : KinematicIeJe(frmi, frmj), axis(axisO) {}
+		static std::shared_ptr<DispCompIecJecO> With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis);
 
 		void calcPostDynCorrectorIteration() override;
 		double value() override;

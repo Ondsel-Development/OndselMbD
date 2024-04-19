@@ -7,18 +7,28 @@
  ***************************************************************************/
  
 #include "RackPinJoint.h"
-#include "CREATE.h"
 #include "System.h"
 #include "RackPinConstraintIJ.h"
 
 using namespace MbD;
 
-MbD::RackPinJoint::RackPinJoint()
-{
-}
-
 MbD::RackPinJoint::RackPinJoint(const char* str) : Joint(str)
 {
+	assert(false);
+}
+
+std::shared_ptr<RackPinJoint> MbD::RackPinJoint::With()
+{
+	auto inst = std::make_shared<RackPinJoint>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<RackPinJoint> MbD::RackPinJoint::With(const char* str)
+{
+	auto inst = std::make_shared<RackPinJoint>(str);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::RackPinJoint::initializeGlobally()

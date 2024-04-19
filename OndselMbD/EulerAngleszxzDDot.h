@@ -13,31 +13,44 @@
 
 namespace MbD {
 
-    template<typename T>
-    class EulerAngleszxzDDot : public EulerArray<T>
-    {
-        //phiThePsiDot phiAddot theAddot psiAddot aAddot 
-    public:
-        EulerAngleszxzDDot() : EulerArray<T>(3) {}
-        void initialize() override;
-        void calc() override;
+	template<typename T>
+	class EulerAngleszxzDDot : public EulerArray<T>
+	{
+		//phiThePsiDot phiAddot theAddot psiAddot aAddot 
+	public:
+		EulerAngleszxzDDot() : EulerArray<T>(3) {}
+		static std::shared_ptr<EulerAngleszxzDDot<T>> With();
+		void initialize() override;
+		
+		void calc() override;
 
-        std::shared_ptr<EulerAngleszxzDot<double>> phiThePsiDot;
-        FMatDsptr phiAddot, theAddot, psiAddot, aAddot;
-    };
-    template<typename T>
-    inline void EulerAngleszxzDDot<T>::initialize()
-    {
-        phiAddot = std::make_shared<FullMatrix<double>>(3, 3);
-        phiAddot->zeroSelf();
-        theAddot = std::make_shared<FullMatrix<double>>(3, 3);
-        theAddot->zeroSelf();
-        psiAddot = std::make_shared<FullMatrix<double>>(3, 3);
-        psiAddot->zeroSelf();
-    }
-    template<typename T>
-    inline void EulerAngleszxzDDot<T>::calc()
-    {
+		std::shared_ptr<EulerAngleszxzDot<double>> phiThePsiDot;
+		FMatDsptr phiAddot, theAddot, psiAddot, aAddot;
+	};
+
+	template<typename T>
+	inline std::shared_ptr<EulerAngleszxzDDot<T>> EulerAngleszxzDDot<T>::With()
+	{
+		auto inst = std::make_shared<EulerAngleszxzDDot<T>>();
+		inst->initialize();
+		return inst;
+	}
+
+	template<typename T>
+	inline void EulerAngleszxzDDot<T>::initialize()
+	{
+		EulerArray<T>::initialize();
+		phiAddot = FullMatrix<double>::With(3, 3);
+		phiAddot->zeroSelf();
+		theAddot = FullMatrix<double>::With(3, 3);
+		theAddot->zeroSelf();
+		psiAddot = FullMatrix<double>::With(3, 3);
+		psiAddot->zeroSelf();
+	}
+
+	template<typename T>
+	inline void EulerAngleszxzDDot<T>::calc()
+	{
 		//| zero phiThePsi phi sphi cphi phidot phiddot cphiddot sphiddot the sthe cthe thedot theddot ctheddot stheddot 
 		// psi spsi cpsi psidot psiddot cpsiddot spsiddot phiA theA psiA phiAdot theAdot psiAdot |
 		double zero = 0.0;
@@ -63,18 +76,18 @@ namespace MbD {
 		auto& psiddot = this->at(2);
 		auto cpsiddot = zero - (spsi * psiddot) - (cpsi * psidot * psidot);
 		auto spsiddot = cpsi * psiddot - (spsi * psidot * psidot);
-		phiAddot->at(0)->atiput(0, cphiddot);
-		phiAddot->at(0)->atiput(1, zero - sphiddot);
-		phiAddot->at(1)->atiput(0, sphiddot);
-		phiAddot->at(1)->atiput(1, cphiddot);
-		theAddot->at(1)->atiput(1, ctheddot);
-		theAddot->at(1)->atiput(2, zero - stheddot);
-		theAddot->at(2)->atiput(1, stheddot);
-		theAddot->at(2)->atiput(2, ctheddot);
-		psiAddot->at(0)->atiput(0, cpsiddot);
-		psiAddot->at(0)->atiput(1, zero - spsiddot);
-		psiAddot->at(1)->atiput(0, spsiddot);
-		psiAddot->at(1)->atiput(1, cpsiddot);
+		phiAddot->at(0)->atput(0, cphiddot);
+		phiAddot->at(0)->atput(1, zero - sphiddot);
+		phiAddot->at(1)->atput(0, sphiddot);
+		phiAddot->at(1)->atput(1, cphiddot);
+		theAddot->at(1)->atput(1, ctheddot);
+		theAddot->at(1)->atput(2, zero - stheddot);
+		theAddot->at(2)->atput(1, stheddot);
+		theAddot->at(2)->atput(2, ctheddot);
+		psiAddot->at(0)->atput(0, cpsiddot);
+		psiAddot->at(0)->atput(1, zero - spsiddot);
+		psiAddot->at(1)->atput(0, spsiddot);
+		psiAddot->at(1)->atput(1, cpsiddot);
 		auto& phiA = phiThePsi->phiA;
 		auto& theA = phiThePsi->theA;
 		auto& psiA = phiThePsi->psiA;
@@ -90,6 +103,7 @@ namespace MbD {
 			+ *(phiAdot->timesFullMatrix(theA->timesFullMatrix(psiAdot)))
 			+ *(phiA->timesFullMatrix(theAdot->timesFullMatrix(psiAdot)))
 			+ *(phiA->timesFullMatrix(theA->timesFullMatrix(psiAddot)));
+		//aAddot = FullMatrix<double>::With(mat);	//Doesn't compile. Why?
 		aAddot = std::make_shared<FullMatrix<double>>(mat);
 	}
 }

@@ -14,26 +14,27 @@ using namespace MbD;
 
 MbD::GearConstraintIJ::GearConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj)
 {
+	assert(false);
 }
 
 std::shared_ptr<GearConstraintIJ> MbD::GearConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	assert(frmi->isEndFrameqc());
 	assert(frmj->isEndFrameqc());
-	auto gearCon = std::make_shared<GearConstraintIqcJqc>(frmi, frmj);
-	gearCon->initorbitsIJ();
-	return gearCon;
-}
-
-void MbD::GearConstraintIJ::calcPostDynCorrectorIteration()
-{
-	aG = orbitJeIe->value() + (this->ratio() * orbitIeJe->value()) - aConstant;
+	auto inst = std::make_shared<GearConstraintIqcJqc>(frmi, frmj);
+	inst->initorbitsIJ();
+	return inst;
 }
 
 void MbD::GearConstraintIJ::initialize()
 {
 	ConstraintIJ::initialize();
 	this->initorbitsIJ();
+}
+
+void MbD::GearConstraintIJ::calcPostDynCorrectorIteration()
+{
+	aG = orbitJeIe->value() + (this->ratio() * orbitIeJe->value()) - aConstant;
 }
 
 void MbD::GearConstraintIJ::initializeGlobally()

@@ -12,7 +12,14 @@ using namespace MbD;
 
 std::shared_ptr<ASMTSimulationParameters> MbD::ASMTSimulationParameters::With()
 {
-	return std::make_shared<ASMTSimulationParameters>();
+	auto inst = std::make_shared<ASMTSimulationParameters>();
+	inst->initialize();
+	return inst;
+}
+
+void MbD::ASMTSimulationParameters::initialize()
+{
+	//Do nothing.
 }
 
 void MbD::ASMTSimulationParameters::parseASMT(std::vector<std::string>& lines)

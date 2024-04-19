@@ -15,7 +15,8 @@ namespace MbD {
 	{
 		//pGpEI ppGpEIpEI iqXIminusOnePlusAxis iqEI 
 	public:
-		AtPointConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi);
+		AtPointConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisO) : AtPointConstraintIJ(frmi, frmj, axisO) {}
+		static std::shared_ptr<AtPointConstraintIqcJc> With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisO);
 
 		void addToJointForceI(FColDsptr col) override;
 		void addToJointTorqueI(FColDsptr col) override;

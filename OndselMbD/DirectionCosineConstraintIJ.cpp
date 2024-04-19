@@ -6,16 +6,24 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
-#include "DirectionCosineConstraintIJ.h"
-#include "DirectionCosineIecJec.h"
-#include "EndFramec.h"
-#include "CREATE.h"
+//#include "DirectionCosineConstraintIJ.h"
+#include "DirectionCosineConstraintIqctJqc.h"
+#include "DirectionCosineIeqctJeqc.h"
+#include "EndFrameqct.h"
 
 using namespace MbD;
 
-DirectionCosineConstraintIJ::DirectionCosineConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj) :
-	ConstraintIJ(frmi, frmj), axisI(axisi), axisJ(axisj)
+std::shared_ptr<DirectionCosineConstraintIJ> MbD::DirectionCosineConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj)
 {
+	std::shared_ptr<DirectionCosineConstraintIJ> inst;
+	if (std::dynamic_pointer_cast<EndFrameqct>(frmi)) {
+		inst = std::make_shared<DirectionCosineConstraintIqctJqc>(frmi, frmj, axisi, axisj);
+	}
+	else {
+		inst = std::make_shared<DirectionCosineConstraintIqcJqc>(frmi, frmj, axisi, axisj);
+	}
+	inst->initialize();
+	return inst;
 }
 
 void DirectionCosineConstraintIJ::initialize()
@@ -36,7 +44,7 @@ void DirectionCosineConstraintIJ::initializeGlobally()
 
 void DirectionCosineConstraintIJ::initaAijIeJe()
 {
-	aAijIeJe = CREATE<DirectionCosineIecJec>::With(frmI, frmJ, axisI, axisJ);
+	aAijIeJe = DirectionCosineIecJec::With(frmI, frmJ, axisI, axisJ);
 }
 
 void DirectionCosineConstraintIJ::postInput()

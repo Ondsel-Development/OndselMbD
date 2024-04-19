@@ -11,8 +11,8 @@
 #include "Symbolic.h"
 
 namespace MbD {
-    class UserFunction : public Symbolic
-    {
-    };
+	class UserFunction : public Symbolic
+	{
+	};
 }
 

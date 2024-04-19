@@ -11,14 +11,16 @@
 #include "GESpMat.h"
 
 namespace MbD {
-    class GESpMatParPv : public GESpMat
-    {
-        //
-    public:
-        void forwardEliminateWithPivot(size_t p) override;
-        void backSubstituteIntoDU() override;
-        void postSolve() override;
+	class GESpMatParPv : public GESpMat
+	{
+		//
+	public:
+		static std::shared_ptr<GESpMatParPv> With();
 
-    };
+		void forwardEliminateWithPivot(size_t p) override;
+		void backSubstituteIntoDU() override;
+		void postSolve() override;
+
+	};
 }
 

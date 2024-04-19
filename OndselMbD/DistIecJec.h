@@ -11,19 +11,21 @@
 #include "KinematicIeJe.h"
 
 namespace MbD {
-    class DistIecJec : public KinematicIeJe
-    {
-        //rIeJe rIeJeO uIeJeO muIeJeO 
-    public:
-        DistIecJec();
-        DistIecJec(EndFrmsptr frmi, EndFrmsptr frmj);
+	class DistIecJec : public KinematicIeJe
+	{
+		//rIeJe rIeJeO uIeJeO muIeJeO 
+	public:
+		DistIecJec() {}
+		DistIecJec(EndFrmsptr frmi, EndFrmsptr frmj);
+		static std::shared_ptr<DistIecJec> With(EndFrmsptr frmi, EndFrmsptr frmj);
 
-        void calcPostDynCorrectorIteration() override;
-        virtual void calcPrivate();
-        double value() override;
+		void calcPostDynCorrectorIteration() override;
+		virtual void calcPrivate();
+		double value() override;
+		FColDsptr rIeJeIe();
 
-        double rIeJe;
-        FColDsptr rIeJeO, uIeJeO, muIeJeO;
-    };
+		double rIeJe;
+		FColDsptr rIeJeO, uIeJeO, muIeJeO;
+	};
 }
 

@@ -5,14 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
+#include <cassert>
+
 #include "Negative.h"
 #include "Constant.h"
 
 using namespace MbD;
 
-MbD::Negative::Negative(Symsptr arg) : FunctionX(arg)
+std::shared_ptr<Negative> MbD::Negative::With(Symsptr arg)
 {
+	auto sym = std::make_shared<Negative>(arg);
+	sym->initialize();
+	return sym;
 }
 
 double MbD::Negative::getValue()

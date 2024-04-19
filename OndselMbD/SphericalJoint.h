@@ -15,8 +15,11 @@ namespace MbD {
 	{
 		//
 	public:
-		SphericalJoint();
+		SphericalJoint() {}
 		SphericalJoint(const char* str);
+		static std::shared_ptr<SphericalJoint> With();
+		static std::shared_ptr<SphericalJoint> With(const char* str);
+
 		void initializeGlobally() override;
 
 	};

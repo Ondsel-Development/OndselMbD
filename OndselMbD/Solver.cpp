@@ -13,22 +13,31 @@
 
 using namespace MbD;
 
+std::shared_ptr<Solver> MbD::Solver::With()
+{
+	auto inst = std::make_shared<Solver>();
+	inst->initialize();
+	return inst;
+}
+
+void Solver::initialize()
+{
+	//Do nothing.
+}
+
 void MbD::Solver::noop()
 {
 	//No Operations
 }
 
-void Solver::initialize()
-{
-}
-
 void Solver::initializeLocally()
 {
+	//Do nothing.
 }
 
 void Solver::initializeGlobally()
 {
-	assert(false);
+	//Do nothing.
 }
 
 void Solver::assignEquationNumbers()
@@ -48,6 +57,7 @@ void Solver::preRun()
 
 void Solver::finalize()
 {
+	//Do nothing.
 }
 
 void Solver::reportStats()
@@ -73,6 +83,7 @@ void Solver::logString(const char* chars)
 
 void MbD::Solver::setSystem(Solver*)
 {
+	//Subclasses must implement.
 	assert(false);
 }
 

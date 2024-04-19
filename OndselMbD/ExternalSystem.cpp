@@ -14,6 +14,18 @@
 
 using namespace MbD;
 
+std::shared_ptr<ExternalSystem> MbD::ExternalSystem::With()
+{
+	auto inst = std::make_shared<ExternalSystem>();
+	inst->initialize();
+	return inst;
+}
+
+void MbD::ExternalSystem::initialize()
+{
+	//Do nothing.
+}
+
 void MbD::ExternalSystem::preMbDrun(std::shared_ptr<System> mbdSys)
 {
 	if (cadSystem) {

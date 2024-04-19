@@ -15,8 +15,11 @@
 
 using namespace MbD;
 
-MbD::FunctionX::FunctionX(Symsptr arg) : xx(arg)
+std::shared_ptr<FunctionX> MbD::FunctionX::With()
 {
+	auto inst = std::make_shared<FunctionX>();
+	inst->initialize();
+	return inst;
 }
 
 void MbD::FunctionX::arguments(Symsptr args)

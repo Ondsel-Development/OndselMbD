@@ -11,12 +11,9 @@
 
 using namespace MbD;
 
-MbD::FunctionXY::FunctionXY()
-{
-}
-
 MbD::FunctionXY::FunctionXY(Symsptr base, Symsptr exp) : x(base), y(exp)
 {
+	assert(false);
 }
 
 void MbD::FunctionXY::arguments(Symsptr args)
@@ -35,12 +32,14 @@ bool MbD::FunctionXY::isConstant()
 
 Symsptr MbD::FunctionXY::differentiateWRTx()
 {
+	//Subclasses must implement.
 	assert(false);
 	return Symsptr();
 }
 
 Symsptr MbD::FunctionXY::differentiateWRTy()
 {
+	//Subclasses must implement.
 	assert(false);
 	return Symsptr();
 }

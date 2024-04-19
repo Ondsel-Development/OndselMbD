@@ -14,12 +14,14 @@ using namespace MbD;
 
 std::shared_ptr<ASMTScrewJoint> MbD::ASMTScrewJoint::With()
 {
-	return std::make_shared<ASMTScrewJoint>();
+	auto inst = std::make_shared<ASMTScrewJoint>();
+	inst->initialize();
+	return inst;
 }
 
 std::shared_ptr<Joint> MbD::ASMTScrewJoint::mbdClassNew()
 {
-    return CREATE<ScrewJoint>::With();
+	return ScrewJoint::With();
 }
 
 void MbD::ASMTScrewJoint::parseASMT(std::vector<std::string>& lines)

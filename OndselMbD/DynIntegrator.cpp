@@ -25,6 +25,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<DynIntegrator> MbD::DynIntegrator::With()
+{
+	auto inst = std::make_shared<DynIntegrator>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::DynIntegrator::assignEquationNumbers()
 {
 	//"Equation order is p,q,s,u,w,mubar,mu."

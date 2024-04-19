@@ -8,23 +8,27 @@
  
 #pragma once
 
-#include "ExpressionX.h"
+#include "ASMTSymbolicFunction.h"
 #include "System.h"
 #include "Units.h"
 
 namespace MbD {
-    class ASMTTime : public ExpressionX
-    {
-        //
-    public:
-        void deleteMbD();
-        void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
-        Symsptr expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
-        Symsptr simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
-        bool isVariable() override;
-        void setValue(double val) override;
-        double getValue() override;
+	class ASMTTime : public ASMTSymbolicFunction
+	{
+		//
+	public:
+		static std::shared_ptr<ASMTTime> With();
+		
+		void deleteMbD();
+		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+		Symsptr expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
+		Symsptr simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
+		bool isVariable() override;
+		void setValue(double val) override;
+		double getValue() override;
+		const std::string& getName() const override;
 
-    };
+		std::string name = "time";
+	};
 }
 

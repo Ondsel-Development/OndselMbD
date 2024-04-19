@@ -6,15 +6,25 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
-#include "AtPointConstraintIJ.h"
+//#include "AtPointConstraintIJ.h"
+//#include "AtPointConstraintIqcJqc.h"
+#include "AtPointConstraintIqctJqc.h"
 #include "DispCompIecJecO.h"
-#include "CREATE.h"
+#include "EndFrameqct.h"
 
 using namespace MbD;
 
-AtPointConstraintIJ::AtPointConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi) :
-	ConstraintIJ(frmi, frmj), axis(axisi)
+std::shared_ptr<AtPointConstraintIJ> MbD::AtPointConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisO)
 {
+	std::shared_ptr<AtPointConstraintIJ> inst;
+	if (std::dynamic_pointer_cast<EndFrameqct>(frmi)) {
+		inst = std::make_shared<AtPointConstraintIqctJqc>(frmi, frmj, axisO);
+	}
+	else {
+		inst = std::make_shared<AtPointConstraintIqcJqc>(frmi, frmj, axisO);
+	}
+	inst->initialize();
+	return inst;
 }
 
 void AtPointConstraintIJ::initialize()
@@ -35,7 +45,7 @@ void AtPointConstraintIJ::initializeGlobally()
 
 void AtPointConstraintIJ::initriIeJeO()
 {
-	riIeJeO = CREATE<DispCompIecJecO>::With(frmI, frmJ, axis);
+	riIeJeO = DispCompIecJecO::With(frmI, frmJ, axis);
 }
 
 void AtPointConstraintIJ::postInput()

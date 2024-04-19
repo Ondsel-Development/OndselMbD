@@ -11,14 +11,15 @@
 #include "ASMTAtPointJoint.h"
 
 namespace MbD {
-    class ASMTFixedJoint : public ASMTAtPointJoint
-    {
-        //
-    public:
-        static std::shared_ptr<ASMTFixedJoint> With();
-        std::shared_ptr<Joint> mbdClassNew() override;
-        void storeOnLevel(std::ofstream& os, size_t level) override;
-        void storeOnTimeSeries(std::ofstream& os) override;
+	class ASMTFixedJoint : public ASMTAtPointJoint
+	{
+		//
+	public:
+		static std::shared_ptr<ASMTFixedJoint> With();
 
-    };
+		std::shared_ptr<Joint> mbdClassNew() override;
+		void storeOnLevel(std::ofstream& os, size_t level) override;
+		void storeOnTimeSeries(std::ofstream& os) override;
+
+	};
 }

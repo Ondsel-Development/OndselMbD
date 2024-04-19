@@ -5,14 +5,26 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "ASMTAnimationParameters.h"
 
 using namespace MbD;
 
 std::shared_ptr<ASMTAnimationParameters> MbD::ASMTAnimationParameters::With()
 {
-	return std::make_shared<ASMTAnimationParameters>();
+	auto inst = std::make_shared<ASMTAnimationParameters>();
+	inst->initialize();
+	return inst;
+}
+
+void MbD::ASMTAnimationParameters::initialize()
+{
+	nframe = 1000000;
+	icurrent = 1;
+	istart = 1;
+	iend = 1000000;
+	isForward = true;
+	framesPerSecond = 30;
 }
 
 void MbD::ASMTAnimationParameters::parseASMT(std::vector<std::string>& lines)

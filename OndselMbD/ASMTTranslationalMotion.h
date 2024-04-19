@@ -11,22 +11,23 @@
 #include "ASMTMotion.h"
 
 namespace MbD {
-    class ASMTTranslationalMotion : public ASMTMotion
-    {
-        //
-    public:
-        static std::shared_ptr<ASMTTranslationalMotion> With();
-        void parseASMT(std::vector<std::string>& lines) override;
-        void initMarkers() override;
-        void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
-        std::shared_ptr<Joint> mbdClassNew() override;
-        void readMotionJoint(std::vector<std::string>& lines);
-        void readTranslationZ(std::vector<std::string>& lines);
-        void storeOnLevel(std::ofstream& os, size_t level) override;
-        void storeOnTimeSeries(std::ofstream& os) override;
+	class ASMTTranslationalMotion : public ASMTMotion
+	{
+		//
+	public:
+		static std::shared_ptr<ASMTTranslationalMotion> With();
 
-        std::string motionJoint, translationZ;
+		void parseASMT(std::vector<std::string>& lines) override;
+		void initMarkers() override;
+		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+		std::shared_ptr<Joint> mbdClassNew() override;
+		void readMotionJoint(std::vector<std::string>& lines);
+		void readTranslationZ(std::vector<std::string>& lines);
+		void storeOnLevel(std::ofstream& os, size_t level) override;
+		void storeOnTimeSeries(std::ofstream& os) override;
 
-    };
+		std::string motionJoint, translationZ;
+
+	};
 }
 

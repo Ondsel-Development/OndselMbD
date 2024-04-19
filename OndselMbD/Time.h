@@ -11,11 +11,13 @@
 #include "IndependentVariable.h"
 
 namespace MbD {
-    class Time : public IndependentVariable
-    {
-    public:
-        Time();
-        void initialize() override;
-    };
+	class Time : public IndependentVariable
+	{
+	public:
+		Time();
+		static std::shared_ptr<Time> With();
+		void initialize() override;
+
+	};
 }
 

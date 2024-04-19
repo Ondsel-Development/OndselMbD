@@ -9,7 +9,6 @@
 #include "Part.h"
 #include "PartFrame.h"
 #include "System.h"
-#include "CREATE.h"
 #include "EulerParameters.h"
 #include "PosVelAccData.h"
 #include "FullColumn.h"
@@ -19,10 +18,31 @@
 
 using namespace MbD;
 
-Part::Part() {
+Part::Part(const char* str) : Item(str) {
+	assert(false);
 }
 
-Part::Part(const char* str) : Item(str) {
+std::shared_ptr<Part> MbD::Part::With()
+{
+	auto inst = std::make_shared<Part>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<Part> MbD::Part::With(const char* str)
+{
+	auto inst = std::make_shared<Part>(str);
+	inst->initialize();
+	return inst;
+}
+
+void Part::initialize()
+{
+	partFrame = PartFrame::With();
+	partFrame->setPart(this);
+	pTpE = std::make_shared<FullColumn<double>>(4);
+	ppTpEpE = FullMatrix<double>::With(4, 4);
+	ppTpEpEdot = FullMatrix<double>::With(4, 4);
 }
 
 System* MbD::Part::root()
@@ -30,23 +50,14 @@ System* MbD::Part::root()
 	return system;
 }
 
-void Part::initialize()
-{
-	partFrame = CREATE<PartFrame>::With();
-	partFrame->setPart(this);
-	pTpE = std::make_shared<FullColumn<double>>(4);
-	ppTpEpE = std::make_shared<FullMatrix<double>>(4, 4);
-	ppTpEpEdot = std::make_shared<FullMatrix<double>>(4, 4);
-}
-
 void Part::initializeLocally()
 {
 	partFrame->initializeLocally();
 	if (m > 0) {
-		mX = std::make_shared<DiagonalMatrix<double>>(3, m);
+		mX = DiagonalMatrix<double>::With(3, m);
 	}
 	else {
-		mX = std::make_shared<DiagonalMatrix<double>>(3, 0.0);
+		mX = DiagonalMatrix<double>::With(3, 0.0);
 	}
 }
 
@@ -55,11 +66,11 @@ void Part::initializeGlobally()
 	partFrame->initializeGlobally();
 }
 
-void Part::setqX(FColDsptr x) {
+void Part::setqX(FColDsptr x) const {
 	partFrame->setqX(x);
 }
 
-FColDsptr Part::getqX() {
+FColDsptr Part::getqX() const {
 	return partFrame->getqX();
 }
 
@@ -201,11 +212,11 @@ void Part::postInput()
 
 void Part::calcPostDynCorrectorIteration()
 {
-	this->calcmE();
-	this->calcmEdot();
-	this->calcpTpE();
-	this->calcppTpEpE();
-	this->calcppTpEpEdot();
+	calcmE();
+	calcmEdot();
+	calcpTpE();
+	calcppTpEpE();
+	calcppTpEpEdot();
 }
 
 void Part::prePosIC()
@@ -244,8 +255,9 @@ void Part::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Cons
 	partFrame->fillEssenConstraints(essenConstraints);
 }
 
-void Part::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>)
+void Part::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
 {
+	partFrame->fillRedundantConstraints(redunConstraints);
 }
 
 void Part::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
@@ -271,8 +283,8 @@ void Part::fillqsuWeights(DiagMatDsptr diagMat)
 	auto aJiMax = this->root()->maximumMomentOfInertia();
 	double minw = 1.0e3;
 	double maxw = 1.0e6;
-	auto wqX = std::make_shared<DiagonalMatrix<double>>(3);
-	auto wqE = std::make_shared<DiagonalMatrix<double>>(4);
+	auto wqX = DiagonalMatrix<double>::With(3);
+	auto wqE = DiagonalMatrix<double>::With(4);
 	if (mMax == 0) { mMax = 1.0; }
 	for (size_t i = 0; i < 3; i++)
 	{
@@ -285,8 +297,8 @@ void Part::fillqsuWeights(DiagMatDsptr diagMat)
 		wqE->at(i) = (maxw * aJi / aJiMax) + minw;
 	}
 	wqE->at(3) = minw;
-	diagMat->atiputDiagonalMatrix(partFrame->iqX, wqX);
-	diagMat->atiputDiagonalMatrix(partFrame->iqE, wqE);
+	diagMat->atputDiagonalMatrix(partFrame->iqX, wqX);
+	diagMat->atputDiagonalMatrix(partFrame->iqE, wqE);
 	partFrame->fillqsuWeights(diagMat);
 }
 
@@ -302,15 +314,15 @@ void Part::fillqsulam(FColDsptr col)
 
 void MbD::Part::fillpqsumu(FColDsptr col)
 {
-	col->atiputFullColumn(ipX, pX);
-	col->atiputFullColumn(ipE, pE);
+	col->atputFullColumn(ipX, pX);
+	col->atputFullColumn(ipE, pE);
 	partFrame->fillpqsumu(col);
 }
 
 void MbD::Part::fillpqsumudot(FColDsptr col)
 {
-	col->atiputFullColumn(ipX, pXdot);
-	col->atiputFullColumn(ipE, pEdot);
+	col->atputFullColumn(ipX, pXdot);
+	col->atputFullColumn(ipE, pEdot);
 	partFrame->fillpqsumudot(col);
 }
 
@@ -333,8 +345,8 @@ void Part::fillqsudotWeights(DiagMatDsptr diagMat)
 	if (maxInertia == 0) maxInertia = 1.0;
 	double minw = 1.0e-12 * maxInertia;
 	double maxw = maxInertia;
-	auto wqXdot = std::make_shared<DiagonalMatrix<double>>(3);
-	auto wqEdot = std::make_shared<DiagonalMatrix<double>>(4);
+	auto wqXdot = DiagonalMatrix<double>::With(3);
+	auto wqEdot = DiagonalMatrix<double>::With(4);
 	for (size_t i = 0; i < 3; i++)
 	{
 		wqXdot->at(i) = (maxw * m / maxInertia) + minw;
@@ -342,8 +354,8 @@ void Part::fillqsudotWeights(DiagMatDsptr diagMat)
 		wqEdot->at(i) = (maxw * aJi / maxInertia) + minw;
 	}
 	wqEdot->at(3) = minw;
-	diagMat->atiputDiagonalMatrix(partFrame->iqX, wqXdot);
-	diagMat->atiputDiagonalMatrix(partFrame->iqE, wqEdot);
+	diagMat->atputDiagonalMatrix(partFrame->iqX, wqXdot);
+	diagMat->atputDiagonalMatrix(partFrame->iqE, wqEdot);
 	partFrame->fillqsudotWeights(diagMat);
 }
 
@@ -405,7 +417,7 @@ void Part::constraintsReport()
 void Part::postPosIC()
 {
 	partFrame->postPosIC();
-	this->calcmE();
+	calcmE();
 }
 
 void Part::preDyn()
@@ -436,11 +448,11 @@ void Part::preVelIC()
 void Part::postVelIC()
 {
 	partFrame->postVelIC();
-	this->calcp();
-	this->calcmEdot();
-	this->calcpTpE();
-	this->calcppTpEpE();
-	this->calcppTpEpEdot();
+	calcp();
+	calcmEdot();
+	calcpTpE();
+	calcppTpEpE();
+	calcppTpEpEdot();
 }
 
 void Part::fillVelICError(FColDsptr col)
@@ -520,10 +532,10 @@ void Part::fillAccICIterError(FColDsptr col)
 {
 	auto iqX = partFrame->iqX;
 	auto iqE = partFrame->iqE;
-	col->atiminusFullColumn(iqX, mX->timesFullColumn(partFrame->qXddot));
-	col->atiminusFullColumn(iqE, mEdot->timesFullColumn(partFrame->qEdot));
-	col->atiminusFullColumn(iqE, mE->timesFullColumn(partFrame->qEddot));
-	col->atiplusFullColumn(iqE, pTpE);
+	col->atminusFullColumn(iqX, mX->timesFullColumn(partFrame->qXddot));
+	col->atminusFullColumn(iqE, mEdot->timesFullColumn(partFrame->qEdot));
+	col->atminusFullColumn(iqE, mE->timesFullColumn(partFrame->qEddot));
+	col->atplusFullColumn(iqE, pTpE);
 	partFrame->fillAccICIterError(col);
 }
 
@@ -531,8 +543,8 @@ void Part::fillAccICIterJacob(SpMatDsptr mat)
 {
 	auto iqX = partFrame->iqX;
 	auto iqE = partFrame->iqE;
-	mat->atijminusDiagonalMatrix(iqX, iqX, mX);
-	mat->atijminusFullMatrix(iqE, iqE, mE);
+	mat->atandminusDiagonalMatrix(iqX, iqX, mX);
+	mat->atandminusFullMatrix(iqE, iqE, mE);
 	partFrame->fillAccICIterJacob(mat);
 }
 
@@ -631,19 +643,19 @@ void MbD::Part::postDynPredictor()
 void MbD::Part::fillDynError(FColDsptr col)
 {
 	partFrame->fillDynError(col);
-	col->atiplusFullColumn(ipX, pX->minusFullColumn(mX->timesFullColumn(partFrame->qXdot)));
-	col->atiplusFullColumn(ipE, pE->minusFullColumn(mE->timesFullColumn(partFrame->qEdot)));
-	col->atiminusFullColumn(partFrame->iqX, pXdot);
-	col->atiminusFullColumn(partFrame->iqE, pEdot->minusFullColumn(pTpE));
+	col->atplusFullColumn(ipX, pX->minusFullColumn(mX->timesFullColumn(partFrame->qXdot)));
+	col->atplusFullColumn(ipE, pE->minusFullColumn(mE->timesFullColumn(partFrame->qEdot)));
+	col->atminusFullColumn(partFrame->iqX, pXdot);
+	col->atminusFullColumn(partFrame->iqE, pEdot->minusFullColumn(pTpE));
 }
 
 void MbD::Part::fillpFpy(SpMatDsptr mat)
 {
-	mat->atijplusDiagonalMatrix(ipX, ipX, DiagonalMatrix<double>::Identity3by3);
-	mat->atijplusDiagonalMatrix(ipE, ipE, DiagonalMatrix<double>::Identity4by4);
+	mat->atandplusDiagonalMatrix(ipX, ipX, DiagonalMatrix<double>::Identity3by3);
+	mat->atandplusDiagonalMatrix(ipE, ipE, DiagonalMatrix<double>::Identity4by4);
 	auto iqE = partFrame->iqE;
-	mat->atijminusTransposeFullMatrix(ipE, iqE, ppTpEpEdot);
-	mat->atijplusFullMatrix(iqE, iqE, ppTpEpE);
+	mat->atandminusTransposeFullMatrix(ipE, iqE, ppTpEpEdot);
+	mat->atandplusFullMatrix(iqE, iqE, ppTpEpE);
 	partFrame->fillpFpy(mat);
 }
 
@@ -651,11 +663,11 @@ void MbD::Part::fillpFpydot(SpMatDsptr mat)
 {
 		auto iqX = partFrame->iqX;
 		auto iqE = partFrame->iqE;
-		mat->atijminusDiagonalMatrix(ipX, iqX, mX);
-		mat->atijminusFullMatrix(ipE, iqE, mE);
-		mat->atijminusDiagonalMatrix(iqX, ipX, DiagonalMatrix<double>::Identity3by3);
-		mat->atijminusDiagonalMatrix(iqE, ipE, DiagonalMatrix<double>::Identity4by4);
-		mat->atijplusFullMatrix(iqE, iqE, ppTpEpEdot);
+		mat->atandminusDiagonalMatrix(ipX, iqX, mX);
+		mat->atandminusFullMatrix(ipE, iqE, mE);
+		mat->atandminusDiagonalMatrix(iqX, ipX, DiagonalMatrix<double>::Identity3by3);
+		mat->atandminusDiagonalMatrix(iqE, ipE, DiagonalMatrix<double>::Identity4by4);
+		mat->atandplusFullMatrix(iqE, iqE, ppTpEpEdot);
 		partFrame->fillpFpydot(mat);
 }
 

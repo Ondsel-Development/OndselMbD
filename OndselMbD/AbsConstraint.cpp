@@ -10,73 +10,76 @@
 #include "PartFrame.h"
 
 using namespace MbD;
-//
-//AbsConstraint::AbsConstraint() {}
-//
-//AbsConstraint::AbsConstraint(const char* str) : Constraint(str) {}
 
 AbsConstraint::AbsConstraint(size_t i)
 {
-    axis = i;
+	axis = i;
+}
+
+std::shared_ptr<AbsConstraint> MbD::AbsConstraint::With(size_t axis)
+{
+	auto inst = std::make_shared<AbsConstraint>(axis);
+	inst->initialize();
+	return inst;
 }
 
 void AbsConstraint::calcPostDynCorrectorIteration()
 {
-    if (axis < 3) {
-        aG = static_cast<PartFrame*>(owner)->qX->at(axis);
-    }
-    else {
-        aG = static_cast<PartFrame*>(owner)->qE->at(axis - 3);
-    }
+	if (axis < 3) {
+		aG = static_cast<PartFrame*>(owner)->qX->at(axis);
+	}
+	else {
+		aG = static_cast<PartFrame*>(owner)->qE->at(axis - 3);
+	}
 }
 
 void AbsConstraint::useEquationNumbers()
 {
-    iqXminusOnePlusAxis = static_cast<PartFrame*>(owner)->iqX + axis;
+	iqXminusOnePlusAxis = static_cast<PartFrame*>(owner)->iqX + axis;
 }
 
 void MbD::AbsConstraint::fillpFpy(SpMatDsptr mat)
 {
-    mat->atijplusNumber(iG, iqXminusOnePlusAxis, 1.0);
+	mat->atandplusNumber(iG, iqXminusOnePlusAxis, 1.0);
 }
 
 void MbD::AbsConstraint::fillpFpydot(SpMatDsptr mat)
 {
-    mat->atijplusNumber(iqXminusOnePlusAxis, iG, 1.0);
+	mat->atandplusNumber(iqXminusOnePlusAxis, iG, 1.0);
 }
 
 void AbsConstraint::fillPosICJacob(SpMatDsptr mat)
 {
-    mat->atijplusNumber(iG, iqXminusOnePlusAxis, 1.0);
-    mat->atijplusNumber(iqXminusOnePlusAxis, iG, 1.0);
+	mat->atandplusNumber(iG, iqXminusOnePlusAxis, 1.0);
+	mat->atandplusNumber(iqXminusOnePlusAxis, iG, 1.0);
 }
 
 void AbsConstraint::fillPosICError(FColDsptr col)
 {
-    Constraint::fillPosICError(col);
-    col->atiplusNumber(iqXminusOnePlusAxis, lam);
+	Constraint::fillPosICError(col);
+	col->atplusNumber(iqXminusOnePlusAxis, lam);
 }
 
 void AbsConstraint::fillPosKineJacob(SpMatDsptr mat)
 {
-    mat->atijplusNumber(iG, iqXminusOnePlusAxis, 1.0);
+	mat->atandplusNumber(iG, iqXminusOnePlusAxis, 1.0);
 }
 
 void AbsConstraint::fillVelICJacob(SpMatDsptr mat)
 {
-    this->fillPosICJacob(mat);
+	this->fillPosICJacob(mat);
 }
 
 void AbsConstraint::fillAccICIterError(FColDsptr col)
 {
-    col->atiplusNumber(iqXminusOnePlusAxis, lam);
-    auto partFrame = static_cast<PartFrame*>(owner);
-        double sum;
-        if (axis < 3) {
-            sum = partFrame->qXddot->at(axis);
-        }
-        else {
-            sum = partFrame->qEddot->at(axis - 3);
-        }
-        col->atiplusNumber(iG, sum);
+	col->atplusNumber(iqXminusOnePlusAxis, lam);
+	auto partFrame = static_cast<PartFrame*>(owner);
+		double sum;
+		if (axis < 3) {
+			sum = partFrame->qXddot->at(axis);
+		}
+		else {
+			sum = partFrame->qEddot->at(axis - 3);
+		}
+		col->atplusNumber(iG, sum);
 }

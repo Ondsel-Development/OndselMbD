@@ -11,15 +11,18 @@
 #include "Joint.h"
 
 namespace MbD {
-    class AngleJoint : public Joint
-    {
-        //theIzJz
-    public:
-        AngleJoint();
-        AngleJoint(const char* str);
-        void initializeGlobally() override;
+	class AngleJoint : public Joint
+	{
+		//theIzJz
+	public:
+		AngleJoint() {}
+		AngleJoint(const char* str);
+		static std::shared_ptr<AngleJoint> With();
+		static std::shared_ptr<AngleJoint> With(const char* str);
 
-        double theIzJz = 0.0;
-    };
+		void initializeGlobally() override;
+
+		double theIzJz = 0.0;
+	};
 }
 

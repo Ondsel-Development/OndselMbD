@@ -16,16 +16,23 @@ using namespace MbD;
 
 MbD::ScrewConstraintIJ::ScrewConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj)
 {
+	assert(false);
 }
 
 std::shared_ptr<ScrewConstraintIJ> MbD::ScrewConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	assert(frmi->isEndFrameqc());
 	assert(frmj->isEndFrameqc());
-	auto screwCon = std::make_shared<ScrewConstraintIqcJqc>(frmi, frmj);
-	screwCon->initzIeJeIe();
-	screwCon->initthezIeJe();
-	return screwCon;
+	auto inst = std::make_shared<ScrewConstraintIqcJqc>(frmi, frmj);
+	inst->initzIeJeIe();
+	inst->initthezIeJe();
+	return inst;
+}
+
+void MbD::ScrewConstraintIJ::initialize()
+{
+	ConstraintIJ::initialize();
+	this->init_zthez();
 }
 
 void MbD::ScrewConstraintIJ::calcPostDynCorrectorIteration()
@@ -48,12 +55,6 @@ void MbD::ScrewConstraintIJ::initzIeJeIe()
 void MbD::ScrewConstraintIJ::initthezIeJe()
 {
 	assert(false);
-}
-
-void MbD::ScrewConstraintIJ::initialize()
-{
-	ConstraintIJ::initialize();
-	this->init_zthez();
 }
 
 void MbD::ScrewConstraintIJ::initializeGlobally()

@@ -13,6 +13,14 @@ using namespace MbD;
 
 MbD::DifferentiatedGeneralSpline::DifferentiatedGeneralSpline(Symsptr arg, Symsptr spline, size_t derivOrder) : AnyGeneralSpline(arg), generalSpline(spline), derivativeOrder(derivOrder)
 {
+	assert(false);
+}
+
+std::shared_ptr<DifferentiatedGeneralSpline> MbD::DifferentiatedGeneralSpline::With()
+{
+	auto inst = std::make_shared<DifferentiatedGeneralSpline>();
+	inst->initialize();
+	return inst;
 }
 
 double MbD::DifferentiatedGeneralSpline::getValue()

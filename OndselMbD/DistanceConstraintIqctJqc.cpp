@@ -15,6 +15,18 @@ MbD::DistanceConstraintIqctJqc::DistanceConstraintIqctJqc(EndFrmsptr frmi, EndFr
 	assert(false);
 }
 
+std::shared_ptr<DistanceConstraintIqctJqc> MbD::DistanceConstraintIqctJqc::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	auto inst = std::make_shared<DistanceConstraintIqctJqc>(frmi, frmj);
+	inst->initialize();
+	return inst;
+}
+
+void MbD::DistanceConstraintIqctJqc::fillVelICError(FColDsptr col)
+{
+	col->atminusNumber(iG, pGpt);
+}
+
 ConstraintType MbD::DistanceConstraintIqctJqc::type()
 {
 	return essential;

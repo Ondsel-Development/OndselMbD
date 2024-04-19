@@ -11,16 +11,18 @@
 #include "Joint.h"
 
 namespace MbD {
-    class AtPointJoint : public Joint
-    {
-        //
-    public:
-        AtPointJoint();
-        AtPointJoint(const char* str);
+	class AtPointJoint : public Joint
+	{
+		//
+	public:
+		AtPointJoint() {}
+		AtPointJoint(const char* str);
+		static std::shared_ptr<AtPointJoint> With();
+		static std::shared_ptr<AtPointJoint> With(const char* str);
 
-        void createAtPointConstraints();
+		void createAtPointConstraints();
 
 
-    };
+	};
 }
 

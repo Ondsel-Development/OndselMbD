@@ -14,18 +14,20 @@ using namespace MbD;
 
 std::shared_ptr<ASMTPointInPlaneJoint> MbD::ASMTPointInPlaneJoint::With()
 {
-	return std::make_shared<ASMTPointInPlaneJoint>();
+	auto inst = std::make_shared<ASMTPointInPlaneJoint>();
+	inst->initialize();
+	return inst;
 }
 
 std::shared_ptr<Joint> MbD::ASMTPointInPlaneJoint::mbdClassNew()
 {
-    return CREATE<PointInPlaneJoint>::With();
+	return PointInPlaneJoint::With();
 }
 
 void MbD::ASMTPointInPlaneJoint::parseASMT(std::vector<std::string>& lines)
 {
-    ASMTJoint::parseASMT(lines);
-    readOffset(lines);
+	ASMTJoint::parseASMT(lines);
+	readOffset(lines);
 }
 
 void MbD::ASMTPointInPlaneJoint::readOffset(std::vector<std::string>& lines)

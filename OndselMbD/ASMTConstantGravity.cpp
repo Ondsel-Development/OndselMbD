@@ -17,7 +17,14 @@ using namespace MbD;
 
 std::shared_ptr<ASMTConstantGravity> MbD::ASMTConstantGravity::With()
 {
-	return std::make_shared<ASMTConstantGravity>();
+	auto inst = std::make_shared<ASMTConstantGravity>();
+	inst->initialize();
+	return inst;
+}
+
+void MbD::ASMTConstantGravity::initialize()
+{
+	//Do nothing.
 }
 
 void MbD::ASMTConstantGravity::parseASMT(std::vector<std::string>& lines)
@@ -28,7 +35,7 @@ void MbD::ASMTConstantGravity::parseASMT(std::vector<std::string>& lines)
 
 void MbD::ASMTConstantGravity::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
 {
-	auto mbdGravity = CREATE<ConstantGravity>::With();
+	auto mbdGravity = ConstantGravity::With();
 	mbdObject = mbdGravity;
 	mbdGravity->gXYZ = g->times(1.0 / mbdUnits->acceleration);
 	mbdSys->addForceTorque(mbdGravity);

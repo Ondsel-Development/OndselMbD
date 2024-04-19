@@ -7,20 +7,30 @@
  ***************************************************************************/
  
 #include "AngleZIeqcJeqc.h"
-#include "CREATE.h"
 #include "DirectionCosineIeqcJeqc.h"
 
 using namespace MbD;
 
-MbD::AngleZIeqcJeqc::AngleZIeqcJeqc()
-{
-}
-
 MbD::AngleZIeqcJeqc::AngleZIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj) : AngleZIeqcJec(frmi, frmj)
 {
-	pthezpEJ = std::make_shared<FullRow<double>>(4);
-	ppthezpEIpEJ = std::make_shared<FullMatrix<double>>(4, 4);
-	ppthezpEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+	pthezpEJ = FullRow<double>::With(4);
+	ppthezpEIpEJ = FullMatrix<double>::With(4, 4);
+	ppthezpEJpEJ = FullMatrix<double>::With(4, 4);
+}
+
+std::shared_ptr<AngleZIeqcJeqc> MbD::AngleZIeqcJeqc::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	auto inst = std::make_shared<AngleZIeqcJeqc>(frmi, frmj);
+	inst->initialize();
+	return inst;
+}
+
+void MbD::AngleZIeqcJeqc::initialize()
+{
+	AngleZIeqcJec::initialize();
+	pthezpEJ = FullRow<double>::With(4);
+	ppthezpEIpEJ = FullMatrix<double>::With(4, 4);
+	ppthezpEJpEJ = FullMatrix<double>::With(4, 4);
 }
 
 void MbD::AngleZIeqcJeqc::calcPostDynCorrectorIteration()
@@ -34,7 +44,7 @@ void MbD::AngleZIeqcJeqc::calcPostDynCorrectorIteration()
 	auto ppsthezpEJpEJ = aA10IeJe->ppvaluepEJpEJ();
 	for (size_t i = 0; i < 4; i++)
 	{
-		pthezpEJ->atiput(i, (psthezpEJ->at(i)) * cosOverSSq - ((pcthezpEJ->at(i)) * sinOverSSq));
+		pthezpEJ->atput(i, (psthezpEJ->at(i)) * cosOverSSq - ((pcthezpEJ->at(i)) * sinOverSSq));
 	}
 	for (size_t i = 0; i < 4; i++)
 	{
@@ -50,7 +60,7 @@ void MbD::AngleZIeqcJeqc::calcPostDynCorrectorIteration()
 			auto term1 = (pcthezpEIi * pcthezpEJj - (psthezpEIi * psthezpEJj)) * twoCosSinOverSSqSq;
 			auto term2 = ppsthezpEIpEJi->at(j) * cosOverSSq - (ppcthezpEIpEJi->at(j) * sinOverSSq);
 			auto term3 = (psthezpEIi * pcthezpEJj + (pcthezpEIi * psthezpEJj)) * dSqOverSSqSq;
-			ppthezpEIpEJi->atiput(j, term1 + term2 + term3);
+			ppthezpEIpEJi->atput(j, term1 + term2 + term3);
 		}
 	}
 	for (size_t i = 0; i < 4; i++)
@@ -63,7 +73,7 @@ void MbD::AngleZIeqcJeqc::calcPostDynCorrectorIteration()
 		auto term1 = (pcthezpEJi * pcthezpEJi - (psthezpEJi * psthezpEJi)) * twoCosSinOverSSqSq;
 		auto term2 = ppsthezpEJpEJi->at(i) * cosOverSSq - (ppcthezpEJpEJi->at(i) * sinOverSSq);
 		auto term3 = (psthezpEJi * pcthezpEJi + (pcthezpEJi * psthezpEJi)) * dSqOverSSqSq;
-		ppthezpEJpEJi->atiput(i, term1 + term2 + term3);
+		ppthezpEJpEJi->atput(i, term1 + term2 + term3);
 		for (size_t j = i + 1; j < 4; j++)
 		{
 			auto pcthezpEJj = pcthezpEJ->at(j);
@@ -72,24 +82,16 @@ void MbD::AngleZIeqcJeqc::calcPostDynCorrectorIteration()
 			auto term2 = ppsthezpEJpEJi->at(j) * cosOverSSq - (ppcthezpEJpEJi->at(j) * sinOverSSq);
 			auto term3 = (psthezpEJi * pcthezpEJj + (pcthezpEJi * psthezpEJj)) * dSqOverSSqSq;
 			auto ppthezpEJpEJij = term1 + term2 + term3;
-			ppthezpEJpEJi->atiput(j, ppthezpEJpEJij);
-			ppthezpEJpEJ->atijput(j, i, ppthezpEJpEJij);
+			ppthezpEJpEJi->atput(j, ppthezpEJpEJij);
+			ppthezpEJpEJ->atandput(j, i, ppthezpEJpEJij);
 		}
 	}
 }
 
 void MbD::AngleZIeqcJeqc::init_aAijIeJe()
 {
-	aA00IeJe = CREATE<DirectionCosineIeqcJeqc>::With(frmI, frmJ, 0, 0);
-	aA10IeJe = CREATE<DirectionCosineIeqcJeqc>::With(frmI, frmJ, 1, 0);
-}
-
-void MbD::AngleZIeqcJeqc::initialize()
-{
-	AngleZIeqcJec::initialize();
-	pthezpEJ = std::make_shared<FullRow<double>>(4);
-	ppthezpEIpEJ = std::make_shared<FullMatrix<double>>(4, 4);
-	ppthezpEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+	aA00IeJe = DirectionCosineIeqcJeqc::With(frmI, frmJ, 0, 0);
+	aA10IeJe = DirectionCosineIeqcJeqc::With(frmI, frmJ, 1, 0);
 }
 
 FMatDsptr MbD::AngleZIeqcJeqc::ppvaluepEIpEJ()

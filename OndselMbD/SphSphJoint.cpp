@@ -7,18 +7,28 @@
  ***************************************************************************/
  
 #include "SphSphJoint.h"
-#include "CREATE.h"
 #include "DistanceConstraintIJ.h"
 #include "System.h"
 
 using namespace MbD;
 
-MbD::SphSphJoint::SphSphJoint()
-{
-}
-
 MbD::SphSphJoint::SphSphJoint(const char* str) : CompoundJoint(str)
 {
+	assert(false);
+}
+
+std::shared_ptr<SphSphJoint> MbD::SphSphJoint::With()
+{
+	auto inst = std::make_shared<SphSphJoint>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<SphSphJoint> MbD::SphSphJoint::With(const char* str)
+{
+	auto inst = std::make_shared<SphSphJoint>(str);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::SphSphJoint::initializeGlobally()

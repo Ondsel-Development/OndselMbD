@@ -15,6 +15,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<PosNewtonRaphson> MbD::PosNewtonRaphson::With()
+{
+	//Should not create abstract class.
+	assert(false);
+	return std::shared_ptr<PosNewtonRaphson>();
+}
+
 void PosNewtonRaphson::preRun()
 {
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->prePosIC(); });

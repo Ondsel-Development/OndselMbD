@@ -10,14 +10,16 @@
 #include "MBDynJoint.h"
 
 namespace MbD {
-    class ASMTJoint;
+	class ASMTJoint;
 
-    class MBDynSphericalHingeJoint : public MBDynJoint
-    {
-    public:
-        void parseMBDyn(std::string line) override;
-        void createASMT() override;
-        std::shared_ptr<ASMTJoint> asmtClassNew() override;
+	class MBDynSphericalHingeJoint : public MBDynJoint
+	{
+	public:
+		static std::shared_ptr<MBDynSphericalHingeJoint> With();
 
-    };
+		void parseMBDyn(std::string line) override;
+		void createASMT() override;
+		std::shared_ptr<ASMTJoint> asmtClassNew() override;
+
+	};
 }

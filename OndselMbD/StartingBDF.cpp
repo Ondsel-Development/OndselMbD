@@ -11,6 +11,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<StartingBDF> MbD::StartingBDF::With()
+{
+	auto inst = std::make_shared<StartingBDF>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::StartingBDF::initialize()
 {
 	BackwardDifference::initialize();

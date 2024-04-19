@@ -8,11 +8,14 @@
 
 #pragma once
 #include <limits>
+#include <memory>
 
 namespace MbD {
 	class SolverStatistics
 	{
 	public:
+		static std::shared_ptr<SolverStatistics> With();
+
 		size_t iterNo = SIZE_MAX;
 		size_t corIterNo = SIZE_MAX;
 		double h = std::numeric_limits<double>::min();

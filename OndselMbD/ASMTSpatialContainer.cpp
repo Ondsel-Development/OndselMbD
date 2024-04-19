@@ -20,30 +20,11 @@
 
 using namespace MbD;
 
-MbD::ASMTSpatialContainer::ASMTSpatialContainer()
+std::shared_ptr<ASMTSpatialContainer> MbD::ASMTSpatialContainer::With()
 {
-	refPoints = std::make_shared<std::vector<std::shared_ptr<ASMTRefPoint>>>();
-	refCurves = std::make_shared<std::vector<std::shared_ptr<ASMTRefCurve>>>();
-	refSurfaces = std::make_shared<std::vector<std::shared_ptr<ASMTRefSurface>>>();
-
-	xs = std::make_shared<FullRow<double>>();
-	ys = std::make_shared<FullRow<double>>();
-	zs = std::make_shared<FullRow<double>>();
-	bryxs = std::make_shared<FullRow<double>>();
-	bryys = std::make_shared<FullRow<double>>();
-	bryzs = std::make_shared<FullRow<double>>();
-	vxs = std::make_shared<FullRow<double>>();
-	vys = std::make_shared<FullRow<double>>();
-	vzs = std::make_shared<FullRow<double>>();
-	omexs = std::make_shared<FullRow<double>>();
-	omeys = std::make_shared<FullRow<double>>();
-	omezs = std::make_shared<FullRow<double>>();
-	axs = std::make_shared<FullRow<double>>();
-	ays = std::make_shared<FullRow<double>>();
-	azs = std::make_shared<FullRow<double>>();
-	alpxs = std::make_shared<FullRow<double>>();
-	alpys = std::make_shared<FullRow<double>>();
-	alpzs = std::make_shared<FullRow<double>>();
+	auto inst = std::make_shared<ASMTSpatialContainer>();
+	inst->initialize();
+	return inst;
 }
 
 void MbD::ASMTSpatialContainer::initialize()
@@ -52,24 +33,24 @@ void MbD::ASMTSpatialContainer::initialize()
 	refCurves = std::make_shared<std::vector<std::shared_ptr<ASMTRefCurve>>>();
 	refSurfaces = std::make_shared<std::vector<std::shared_ptr<ASMTRefSurface>>>();
 
-	xs = std::make_shared<FullRow<double>>();
-	ys = std::make_shared<FullRow<double>>();
-	zs = std::make_shared<FullRow<double>>();
-	bryxs = std::make_shared<FullRow<double>>();
-	bryys = std::make_shared<FullRow<double>>();
-	bryzs = std::make_shared<FullRow<double>>();
-	vxs = std::make_shared<FullRow<double>>();
-	vys = std::make_shared<FullRow<double>>();
-	vzs = std::make_shared<FullRow<double>>();
-	omexs = std::make_shared<FullRow<double>>();
-	omeys = std::make_shared<FullRow<double>>();
-	omezs = std::make_shared<FullRow<double>>();
-	axs = std::make_shared<FullRow<double>>();
-	ays = std::make_shared<FullRow<double>>();
-	azs = std::make_shared<FullRow<double>>();
-	alpxs = std::make_shared<FullRow<double>>();
-	alpys = std::make_shared<FullRow<double>>();
-	alpzs = std::make_shared<FullRow<double>>();
+	xs = FullRow<double>::With();
+	ys = FullRow<double>::With();
+	zs = FullRow<double>::With();
+	bryxs = FullRow<double>::With();
+	bryys = FullRow<double>::With();
+	bryzs = FullRow<double>::With();
+	vxs = FullRow<double>::With();
+	vys = FullRow<double>::With();
+	vzs = FullRow<double>::With();
+	omexs = FullRow<double>::With();
+	omeys = FullRow<double>::With();
+	omezs = FullRow<double>::With();
+	axs = FullRow<double>::With();
+	ays = FullRow<double>::With();
+	azs = FullRow<double>::With();
+	alpxs = FullRow<double>::With();
+	alpys = FullRow<double>::With();
+	alpzs = FullRow<double>::With();
 }
 
 void MbD::ASMTSpatialContainer::setPrincipalMassMarker(std::shared_ptr<ASMTPrincipalMassMarker> aJ)
@@ -97,9 +78,9 @@ void MbD::ASMTSpatialContainer::readRefPoint(std::vector<std::string>& lines)
 	assert(lines[0].find("RefPoint") != std::string::npos);
 	lines.erase(lines.begin());
 	auto refPoint = ASMTRefPoint::With();
+	refPoint->owner = this;
 	refPoint->parseASMT(lines);
 	refPoints->push_back(refPoint);
-	refPoint->owner = this;
 }
 
 void MbD::ASMTSpatialContainer::readRefCurves(std::vector<std::string>& lines)
@@ -270,7 +251,7 @@ void MbD::ASMTSpatialContainer::readAlphaZs(std::vector<std::string>& lines)
 
 void MbD::ASMTSpatialContainer::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
 {
-	auto mbdPart = CREATE<Part>::With();
+	auto mbdPart = Part::With();
 	mbdObject = mbdPart;
 	mbdPart->name = fullName("");
 	mbdPart->m = principalMassMarker->mass / mbdUnits->mass;
@@ -526,7 +507,7 @@ void MbD::ASMTSpatialContainer::readVelocity3D(std::vector<std::string>& lines)
 	assert(lines[0].find("Velocity3D") != std::string::npos);
 	lines.erase(lines.begin());
 	std::istringstream iss(lines[0]);
-	velocity3D = std::make_shared<FullColumn<double>>();
+	velocity3D = FullColumn<double>::With();
 	double d;
 	while (iss >> d) {
 		velocity3D->push_back(d);
@@ -539,7 +520,7 @@ void MbD::ASMTSpatialContainer::readOmega3D(std::vector<std::string>& lines)
 	assert(lines[0].find("Omega3D") != std::string::npos);
 	lines.erase(lines.begin());
 	std::istringstream iss(lines[0]);
-	omega3D = std::make_shared<FullColumn<double>>();
+	omega3D = FullColumn<double>::With();
 	double d;
 	while (iss >> d) {
 		omega3D->push_back(d);
@@ -723,18 +704,18 @@ void MbD::ASMTSpatialContainer::storeOnTimeSeries(std::ofstream& os)
 FColDsptr MbD::ASMTSpatialContainer::getVelocity3D(size_t i) const
 {
 	auto vec3 = std::make_shared<FullColumn<double>>(3);
-	vec3->atiput(0, vxs->at(i));
-	vec3->atiput(1, vys->at(i));
-	vec3->atiput(2, vzs->at(i));
+	vec3->atput(0, vxs->at(i));
+	vec3->atput(1, vys->at(i));
+	vec3->atput(2, vzs->at(i));
 	return vec3;
 }
 
 FColDsptr MbD::ASMTSpatialContainer::getOmega3D(size_t i) const
 {
 	auto vec3 = std::make_shared<FullColumn<double>>(3);
-	vec3->atiput(0, omexs->at(i));
-	vec3->atiput(1, omeys->at(i));
-	vec3->atiput(2, omezs->at(i));
+	vec3->atput(0, omexs->at(i));
+	vec3->atput(1, omeys->at(i));
+	vec3->atput(2, omezs->at(i));
 	return vec3;
 }
 

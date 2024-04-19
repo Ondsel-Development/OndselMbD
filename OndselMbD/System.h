@@ -16,11 +16,12 @@
 
 #pragma once
 
-#include <memory>
-#include <vector>
-#include <functional>
+//#include <memory>
+//#include <vector>
+//#include <functional>
 
 #include "Item.h"
+#include "MbDMath.h"
 
 namespace MbD {
 	class Part;
@@ -37,11 +38,13 @@ namespace MbD {
 	{
 		//ToDo: Needed members admSystem namedItems mbdTime parts jointsMotions forcesTorques sensors variables hasChanged mbdSystemSolver
 	public:
-		System();
+		System() {}
 		System(const char* str);
 		static std::shared_ptr<System> With();
-		System* root() override;
+		static std::shared_ptr<System> With(const char* str);
 		void initialize() override;
+
+		System* root() override;
 		void initializeLocally() override;
 		void initializeGlobally() override;
 		void clear();

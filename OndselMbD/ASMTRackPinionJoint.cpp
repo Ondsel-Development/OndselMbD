@@ -14,12 +14,14 @@ using namespace MbD;
 
 std::shared_ptr<ASMTRackPinionJoint> MbD::ASMTRackPinionJoint::With()
 {
-	return std::make_shared<ASMTRackPinionJoint>();
+	auto inst = std::make_shared<ASMTRackPinionJoint>();
+	inst->initialize();
+	return inst;
 }
 
 std::shared_ptr<Joint> MbD::ASMTRackPinionJoint::mbdClassNew()
 {
-    return CREATE<RackPinJoint>::With();
+	return RackPinJoint::With();
 }
 
 void MbD::ASMTRackPinionJoint::parseASMT(std::vector<std::string>& lines)

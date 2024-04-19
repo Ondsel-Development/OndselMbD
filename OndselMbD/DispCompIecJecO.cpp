@@ -11,12 +11,11 @@
 
 using namespace MbD;
 
-DispCompIecJecO::DispCompIecJecO()
+std::shared_ptr<DispCompIecJecO> MbD::DispCompIecJecO::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis)
 {
-}
-
-DispCompIecJecO::DispCompIecJecO(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis) : KinematicIeJe(frmi, frmj), axis(axis)
-{
+	auto inst = std::make_shared<DispCompIecJecO>(frmi, frmj, axis);
+	inst->initialize();
+	return inst;
 }
 
 void DispCompIecJecO::calcPostDynCorrectorIteration()

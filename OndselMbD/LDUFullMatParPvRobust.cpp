@@ -14,6 +14,13 @@ using namespace MbD;
 
 #include "LDUFullMatParPvRobust.h"
 
+std::shared_ptr<LDUFullMatParPvRobust> MbD::LDUFullMatParPvRobust::With()
+{
+	auto inst = std::make_shared<LDUFullMatParPvRobust>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::LDUFullMatParPvRobust::doPivoting(size_t p)
 {
 	try {

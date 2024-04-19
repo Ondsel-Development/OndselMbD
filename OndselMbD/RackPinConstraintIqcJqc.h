@@ -11,11 +11,12 @@
 #include "RackPinConstraintIqcJc.h"
 
 namespace MbD {
-    class RackPinConstraintIqcJqc : public RackPinConstraintIqcJc
-    {
-        //pGpXJ pGpEJ ppGpEIpXJ ppGpEIpEJ ppGpEJpEJ iqXJ iqEJ 
-    public:
+	class RackPinConstraintIqcJqc : public RackPinConstraintIqcJc
+	{
+		//pGpXJ pGpEJ ppGpEIpXJ ppGpEIpEJ ppGpEJpEJ iqXJ iqEJ 
+	public:
 		RackPinConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj);
+		static std::shared_ptr<RackPinConstraintIqcJqc> With(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void initxIeJeIe() override;
 		void initthezIeJe() override;
@@ -35,9 +36,9 @@ namespace MbD {
 		void fillpFpy(SpMatDsptr mat) override;
 		void fillpFpydot(SpMatDsptr mat) override;
 
-        FRowDsptr pGpXJ, pGpEJ;
-        FMatDsptr ppGpEIpXJ, ppGpEIpEJ, ppGpEJpEJ;
-        size_t iqXJ = SIZE_MAX, iqEJ = SIZE_MAX;
-    };
+		FRowDsptr pGpXJ, pGpEJ;
+		FMatDsptr ppGpEIpXJ, ppGpEIpEJ, ppGpEJpEJ;
+		size_t iqXJ = SIZE_MAX, iqEJ = SIZE_MAX;
+	};
 }
 

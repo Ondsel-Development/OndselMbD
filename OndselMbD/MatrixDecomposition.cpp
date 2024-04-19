@@ -10,6 +10,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<MatrixDecomposition> MbD::MatrixDecomposition::With()
+{
+	auto inst = std::make_shared<MatrixDecomposition>();
+	inst->initialize();
+	return inst;
+}
+
 FColDsptr MbD::MatrixDecomposition::forAndBackSubsaveOriginal(FColDsptr, bool)
 {
 	assert(false);

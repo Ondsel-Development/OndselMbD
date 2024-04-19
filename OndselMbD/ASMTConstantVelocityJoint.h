@@ -11,13 +11,14 @@
 #include "ASMTAtPointJoint.h"
 
 namespace MbD {
-    class ASMTConstantVelocityJoint : public ASMTAtPointJoint
-    {
-        //
-    public:
-        static std::shared_ptr<ASMTConstantVelocityJoint> With();
-        std::shared_ptr<Joint> mbdClassNew() override;
+	class ASMTConstantVelocityJoint : public ASMTAtPointJoint
+	{
+		//
+	public:
+		static std::shared_ptr<ASMTConstantVelocityJoint> With();
 
-    };
+		std::shared_ptr<Joint> mbdClassNew() override;
+
+	};
 }
 

@@ -11,16 +11,23 @@
 
 using namespace MbD;
 
+std::shared_ptr<BackwardDifference> MbD::BackwardDifference::With()
+{
+	auto inst = std::make_shared<BackwardDifference>();
+	inst->initialize();
+	return inst;
+}
+
 FColDsptr MbD::BackwardDifference::derivativepresentpast(size_t deriv, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast)
 {
 	//"Answer ith derivative given present value and past values."
 
 	if (deriv == 0) { return y->copy(); }
 	auto series = std::make_shared<FullRow<FColDsptr>>(deriv + 1);
-	series->atiput(0, y);
+	series->atput(0, y);
 	for (size_t i = 1; i < deriv + 1; i++)
 	{
-		series->atiput(i, (ypast->at(i - 1)));
+		series->atput(i, (ypast->at(i - 1)));
 	}
 
 	auto& coeffs = operatorMatrix->at(deriv - 1);

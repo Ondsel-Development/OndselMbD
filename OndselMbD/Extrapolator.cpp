@@ -11,6 +11,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<Extrapolator> MbD::Extrapolator::With()
+{
+	auto inst = std::make_shared<Extrapolator>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::Extrapolator::formTaylorMatrix()
 {
 	//"

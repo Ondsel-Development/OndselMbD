@@ -11,10 +11,16 @@
 
 #include "Sum.h"
 #include "Constant.h"
-#include <algorithm>
 #include "Integral.h"
 
 using namespace MbD;
+
+std::shared_ptr<Sum> MbD::Sum::With()
+{
+	auto inst = std::make_shared<Sum>();
+	inst->initialize();
+	return inst;
+}
 
 Symsptr MbD::Sum::parseExpression(std::string& expression)
 {
@@ -41,6 +47,7 @@ void MbD::Sum::parse(std::istringstream& iss)
 
 void MbD::Sum::parseTerm(std::istringstream&)
 {
+	assert(false);
 }
 
 void MbD::Sum::parsePlusTerm(std::istringstream& iss)
@@ -50,6 +57,7 @@ void MbD::Sum::parsePlusTerm(std::istringstream& iss)
 
 void MbD::Sum::parseMinusTerm(std::istringstream&)
 {
+	assert(false);
 }
 
 Symsptr Sum::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
@@ -154,10 +162,10 @@ Symsptr MbD::Sum::integrateWRT(Symsptr var)
 	answer->integrand = simple;;
 	if (simple->isSum()) {
 		auto newTerms = simple->getTerms();
-		auto integrals = std::make_shared<std::vector<Symsptr>>();
+		auto integrals = std::make_shared<std::vector<Symsptr>>(newTerms->size());
 		std::transform(newTerms->begin(),
 			newTerms->end(),
-			std::back_inserter(*integrals),
+			integrals->begin(),
 			[var](Symsptr term) { return term->integrateWRT(var); }
 		);
 		auto sum = std::make_shared<Sum>();

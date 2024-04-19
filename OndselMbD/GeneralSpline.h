@@ -18,6 +18,8 @@ namespace MbD {
 	public:
 		GeneralSpline() = default;
 		GeneralSpline(Symsptr arg);
+		static std::shared_ptr<GeneralSpline> With();
+		
 		double getValue() override;
 		Symsptr differentiateWRTx() override;
 		void arguments(Symsptr args) override;

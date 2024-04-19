@@ -7,17 +7,34 @@
  ***************************************************************************/
  
 #include "DistxyIeqcJeqc.h"
-#include "CREATE.h"
 #include "DispCompIeqcJeqcIe.h"
 
 using namespace MbD;
 
-MbD::DistxyIeqcJeqc::DistxyIeqcJeqc()
-{
-}
-
 MbD::DistxyIeqcJeqc::DistxyIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj) : DistxyIeqcJec(frmi, frmj)
 {
+	assert(false);
+}
+
+std::shared_ptr<DistxyIeqcJeqc> MbD::DistxyIeqcJeqc::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	auto inst = std::make_shared<DistxyIeqcJeqc>(frmi, frmj);
+	inst->initialize();
+	return inst;
+}
+
+void MbD::DistxyIeqcJeqc::initialize()
+{
+	DistxyIeqcJec::initialize();
+	pdistxypXJ = FullRow<double>::With(3);
+	pdistxypEJ = FullRow<double>::With(4);
+	ppdistxypXIpXJ = FullMatrix<double>::With(3, 3);
+	ppdistxypXIpEJ = FullMatrix<double>::With(3, 4);
+	ppdistxypEIpXJ = FullMatrix<double>::With(4, 3);
+	ppdistxypEIpEJ = FullMatrix<double>::With(4, 4);
+	ppdistxypXJpXJ = FullMatrix<double>::With(3, 3);
+	ppdistxypXJpEJ = FullMatrix<double>::With(3, 4);
+	ppdistxypEJpEJ = FullMatrix<double>::With(4, 4);
 }
 
 void MbD::DistxyIeqcJeqc::calc_ppdistxypEIpEJ()
@@ -47,7 +64,7 @@ void MbD::DistxyIeqcJeqc::calc_ppdistxypEIpEJ()
 			auto term2 = ppxpEIpEJi->at(j) * x + ppypEIpEJi->at(j) * y;
 			auto term3 = pxpEIi * pxpEJj + pypEIi * pypEJj;
 			auto ppdistxypEIpEJij = (term1 + term2 + term3) / distxy;
-			ppdistxypEIpEJi->atiput(j, ppdistxypEIpEJij);
+			ppdistxypEIpEJi->atput(j, ppdistxypEIpEJij);
 		}
 	}
 }
@@ -79,7 +96,7 @@ void MbD::DistxyIeqcJeqc::calc_ppdistxypEIpXJ()
 			auto term2 = ppxpEIpXJi->at(j) * x + ppypEIpXJi->at(j) * y;
 			auto term3 = pxpEIi * pxpXJj + pypEIi * pypXJj;
 			auto ppdistxypEIpXJij = (term1 + term2 + term3) / distxy;
-			ppdistxypEIpXJi->atiput(j, ppdistxypEIpXJij);
+			ppdistxypEIpXJi->atput(j, ppdistxypEIpXJij);
 		}
 	}
 }
@@ -109,8 +126,8 @@ void MbD::DistxyIeqcJeqc::calc_ppdistxypEJpEJ()
 			auto term2 = ppxpEJpEJi->at(j) * x + ppypEJpEJi->at(j) * y;
 			auto term3 = pxpEJi * pxpEJj + pypEJi * pypEJj;
 			auto ppdistxypEJpEJij = (term1 + term2 + term3) / distxy;
-			ppdistxypEJpEJi->atiput(j, ppdistxypEJpEJij);
-			if (i < j) ppdistxypEJpEJ->atijput(j, i, ppdistxypEJpEJij);
+			ppdistxypEJpEJi->atput(j, ppdistxypEJpEJij);
+			if (i < j) ppdistxypEJpEJ->atandput(j, i, ppdistxypEJpEJij);
 		}
 	}
 }
@@ -142,7 +159,7 @@ void MbD::DistxyIeqcJeqc::calc_ppdistxypXIpEJ()
 			auto term2 = ppxpXIpEJi->at(j) * x + ppypXIpEJi->at(j) * y;
 			auto term3 = pxpXIi * pxpEJj + pypXIi * pypEJj;
 			auto ppdistxypXIpEJij = (term1 + term2 + term3) / distxy;
-			ppdistxypXIpEJi->atiput(j, ppdistxypXIpEJij);
+			ppdistxypXIpEJi->atput(j, ppdistxypXIpEJij);
 		}
 	}
 }
@@ -174,7 +191,7 @@ void MbD::DistxyIeqcJeqc::calc_ppdistxypXIpXJ()
 			auto term2 = ppxpXIpXJi->at(j) * x + ppypXIpXJi->at(j) * y;
 			auto term3 = pxpXIi * pxpXJj + pypXIi * pypXJj;
 			auto ppdistxypXIpXJij = (term1 + term2 + term3) / distxy;
-			ppdistxypXIpXJi->atiput(j, ppdistxypXIpXJij);
+			ppdistxypXIpXJi->atput(j, ppdistxypXIpXJij);
 		}
 	}
 }
@@ -206,7 +223,7 @@ void MbD::DistxyIeqcJeqc::calc_ppdistxypXJpEJ()
 			auto term2 = ppxpXJpEJi->at(j) * x + ppypXJpEJi->at(j) * y;
 			auto term3 = pxpXJi * pxpEJj + pypXJi * pypEJj;
 			auto ppdistxypXJpEJij = (term1 + term2 + term3) / distxy;
-			ppdistxypXJpEJi->atiput(j, ppdistxypXJpEJij);
+			ppdistxypXJpEJi->atput(j, ppdistxypXJpEJij);
 		}
 	}
 }
@@ -236,8 +253,8 @@ void MbD::DistxyIeqcJeqc::calc_ppdistxypXJpXJ()
 			auto term2 = ppxpXJpXJi->at(j) * x + ppypXJpXJi->at(j) * y;
 			auto term3 = pxpXJi * pxpXJj + pypXJi * pypXJj;
 			auto ppdistxypXJpXJij = (term1 + term2 + term3) / distxy;
-			ppdistxypXJpXJi->atiput(j, ppdistxypXJpXJij);
-			if (i < j) ppdistxypXJpXJ->atijput(j, i, ppdistxypXJpXJij);
+			ppdistxypXJpXJi->atput(j, ppdistxypXJpXJij);
+			if (i < j) ppdistxypXJpXJ->atandput(j, i, ppdistxypXJpXJij);
 		}
 	}
 }
@@ -251,7 +268,7 @@ void MbD::DistxyIeqcJeqc::calc_pdistxypEJ()
 	for (size_t i = 0; i < 4; i++)
 	{
 		auto term = pxpEJ->at(i) * x + pypEJ->at(i) * y;
-		pdistxypEJ->atiput(i, term / distxy);
+		pdistxypEJ->atput(i, term / distxy);
 	}
 }
 
@@ -264,42 +281,28 @@ void MbD::DistxyIeqcJeqc::calc_pdistxypXJ()
 	for (size_t i = 0; i < 3; i++)
 	{
 		auto term = pxpXJ->at(i) * x + pypXJ->at(i) * y;
-		pdistxypXJ->atiput(i, term / distxy);
+		pdistxypXJ->atput(i, term / distxy);
 	}
 }
 
 void MbD::DistxyIeqcJeqc::calcPostDynCorrectorIteration()
 {
 	DistxyIeqcJec::calcPostDynCorrectorIteration();
-	this->calc_pdistxypXJ();
-	this->calc_pdistxypEJ();
-	this->calc_ppdistxypXIpXJ();
-	this->calc_ppdistxypXIpEJ();
-	this->calc_ppdistxypEIpXJ();
-	this->calc_ppdistxypEIpEJ();
-	this->calc_ppdistxypXJpXJ();
-	this->calc_ppdistxypXJpEJ();
-	this->calc_ppdistxypEJpEJ();
+	calc_pdistxypXJ();
+	calc_pdistxypEJ();
+	calc_ppdistxypXIpXJ();
+	calc_ppdistxypXIpEJ();
+	calc_ppdistxypEIpXJ();
+	calc_ppdistxypEIpEJ();
+	calc_ppdistxypXJpXJ();
+	calc_ppdistxypXJpEJ();
+	calc_ppdistxypEJpEJ();
 }
 
 void MbD::DistxyIeqcJeqc::init_xyIeJeIe()
 {
-	xIeJeIe = CREATE<DispCompIeqcJeqcIe>::With(frmI, frmJ, 0);
-	yIeJeIe = CREATE<DispCompIeqcJeqcIe>::With(frmI, frmJ, 1);
-}
-
-void MbD::DistxyIeqcJeqc::initialize()
-{
-	DistxyIeqcJec::initialize();
-	pdistxypXJ = std::make_shared<FullRow<double>>(3);
-	pdistxypEJ = std::make_shared<FullRow<double>>(4);
-	ppdistxypXIpXJ = std::make_shared<FullMatrix<double>>(3, 3);
-	ppdistxypXIpEJ = std::make_shared<FullMatrix<double>>(3, 4);
-	ppdistxypEIpXJ = std::make_shared<FullMatrix<double>>(4, 3);
-	ppdistxypEIpEJ = std::make_shared<FullMatrix<double>>(4, 4);
-	ppdistxypXJpXJ = std::make_shared<FullMatrix<double>>(3, 3);
-	ppdistxypXJpEJ = std::make_shared<FullMatrix<double>>(3, 4);
-	ppdistxypEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+	xIeJeIe = DispCompIeqcJeqcIe::With(frmI, frmJ, 0);
+	yIeJeIe = DispCompIeqcJeqcIe::With(frmI, frmJ, 1);
 }
 
 FMatDsptr MbD::DistxyIeqcJeqc::ppvaluepEIpEJ()

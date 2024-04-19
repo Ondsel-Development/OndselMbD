@@ -12,17 +12,17 @@
 #include "Symbolic.h"
 #include "Time.h"
 #include "EulerParameters.h"
-#include "CREATE.h"
 #include "EulerAngleszxz.h"
 #include "EulerAngleszxzDot.h"
 #include "EulerAngleszxzDDot.h"
 
 using namespace MbD;
 
-EndFrameqct::EndFrameqct() {
-}
-
-EndFrameqct::EndFrameqct(const char* str) : EndFrameqc(str) {
+std::shared_ptr<EndFrameqct> MbD::EndFrameqct::With(const char* str)
+{
+	auto inst = std::make_shared<EndFrameqct>(str);
+	inst->initialize();
+	return inst;
 }
 
 void EndFrameqct::initialize()
@@ -32,12 +32,12 @@ void EndFrameqct::initialize()
 	prmempt = std::make_shared<FullColumn<double>>(3);
 	pprmemptpt = std::make_shared<FullColumn<double>>(3);
 	aAme = FullMatrix<double>::identitysptr(3);
-	pAmept = std::make_shared<FullMatrix<double>>(3, 3);
-	ppAmeptpt = std::make_shared<FullMatrix<double>>(3, 3);
-	pprOeOpEpt = std::make_shared<FullMatrix<double>>(3, 4);
+	pAmept = FullMatrix<double>::With(3, 3);
+	ppAmeptpt = FullMatrix<double>::With(3, 3);
+	pprOeOpEpt = FullMatrix<double>::With(3, 4);
 	pprOeOptpt = std::make_shared<FullColumn<double>>(3);
 	ppAOepEpt = std::make_shared<FullColumn<FMatDsptr>>(4);
-	ppAOeptpt = std::make_shared<FullMatrix<double>>(3, 3);
+	ppAOeptpt = FullMatrix<double>::With(3, 3);
 }
 
 void EndFrameqct::initializeLocally()
@@ -163,7 +163,7 @@ void EndFrameqct::prePosIC()
 	EndFrameqc::prePosIC();
 }
 
-void EndFrameqct::evalrmem()
+void EndFrameqct::evalrmem() const
 {
 	if (rmemBlks) {
 		for (size_t i = 0; i < 3; i++)
@@ -178,7 +178,7 @@ void EndFrameqct::evalrmem()
 void EndFrameqct::evalAme()
 {
 	if (phiThePsiBlks) {
-		auto phiThePsi = CREATE<EulerAngleszxz<double>>::With();
+		auto phiThePsi = EulerAngleszxz<double>::With();
 		for (size_t i = 0; i < 3; i++)
 		{
 			auto& expression = phiThePsiBlks->at(i);
@@ -212,12 +212,12 @@ void EndFrameqct::postVelIC()
 		for (size_t j = 0; j < 4; j++)
 		{
 			auto pprOeOpEptij = pAOmpE->at(j)->at(i)->dot(prmempt);
-			pprOeOpEpti->atiput(j, pprOeOpEptij);
+			pprOeOpEpti->atput(j, pprOeOpEptij);
 		}
 	}
 	for (size_t i = 0; i < 4; i++)
 	{
-		ppAOepEpt->atiput(i, pAOmpE->at(i)->timesFullMatrix(pAmept));
+		ppAOepEpt->atput(i, pAOmpE->at(i)->timesFullMatrix(pAmept));
 	}
 }
 
@@ -228,7 +228,7 @@ FColDsptr EndFrameqct::pAjOept(size_t j)
 
 FMatDsptr EndFrameqct::ppAjOepETpt(size_t jj)
 {
-	auto answer = std::make_shared<FullMatrix<double>>(4, 3);
+	auto answer = FullMatrix<double>::With(4, 3);
 	for (size_t i = 0; i < 4; i++)
 	{
 		auto& answeri = answer->at(i);
@@ -236,7 +236,7 @@ FMatDsptr EndFrameqct::ppAjOepETpt(size_t jj)
 		for (size_t j = 0; j < 3; j++)
 		{
 			auto& answerij = ppAOepEipt->at(j)->at(jj);
-			answeri->atiput(j, answerij);
+			answeri->atput(j, answerij);
 		}
 	}
 	return answer;
@@ -277,8 +277,8 @@ void EndFrameqct::evalprmempt()
 void EndFrameqct::evalpAmept()
 {
 	if (phiThePsiBlks) {
-		auto phiThePsi = CREATE<EulerAngleszxz<double>>::With();
-		auto phiThePsiDot = CREATE<EulerAngleszxzDot<double>>::With();
+		auto phiThePsi = EulerAngleszxz<double>::With();
+		auto phiThePsiDot = EulerAngleszxzDot<double>::With();
 		phiThePsiDot->phiThePsi = phiThePsi;
 		for (size_t i = 0; i < 3; i++)
 		{
@@ -302,7 +302,7 @@ void EndFrameqct::evalpprmemptpt()
 		{
 			auto& secondDerivative = pprmemptptBlks->at(i);
 			auto value = secondDerivative->getValue();
-			pprmemptpt->atiput(i, value);
+			pprmemptpt->atput(i, value);
 		}
 	}
 }
@@ -310,10 +310,10 @@ void EndFrameqct::evalpprmemptpt()
 void EndFrameqct::evalppAmeptpt()
 {
 	if (phiThePsiBlks) {
-		auto phiThePsi = CREATE<EulerAngleszxz<double>>::With();
-		auto phiThePsiDot = CREATE<EulerAngleszxzDot<double>>::With();
+		auto phiThePsi = EulerAngleszxz<double>::With();
+		auto phiThePsiDot = EulerAngleszxzDot<double>::With();
 		phiThePsiDot->phiThePsi = phiThePsi;
-		auto phiThePsiDDot = CREATE<EulerAngleszxzDDot<double>>::With();
+		auto phiThePsiDDot = EulerAngleszxzDDot<double>::With();
 		phiThePsiDDot->phiThePsiDot = phiThePsiDot;
 		for (size_t i = 0; i < 3; i++)
 		{
@@ -323,9 +323,9 @@ void EndFrameqct::evalppAmeptpt()
 			auto value = expression->getValue();
 			auto valueDot = derivative->getValue();
 			auto valueDDot = secondDerivative->getValue();
-			phiThePsi->atiput(i, value);
-			phiThePsiDot->atiput(i, valueDot);
-			phiThePsiDDot->atiput(i, valueDDot);
+			phiThePsi->atput(i, value);
+			phiThePsiDot->atput(i, valueDot);
+			phiThePsiDDot->atput(i, valueDDot);
 		}
 		phiThePsi->calc();
 		phiThePsiDot->calc();

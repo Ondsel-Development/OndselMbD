@@ -35,16 +35,20 @@ namespace MbD {
 				this->insert(std::pair<const size_t, double>(index, value));
 			}
 		}
-		virtual ~SparseVector() {}
+		//virtual ~SparseVector() {}
 		double rootMeanSquare();
 		size_t numberOfElements();
 		double sumOfSquares();
-		void atiput(size_t i, T value);
-		void atiplusNumber(size_t i, double value);
-		void atiminusNumber(size_t i, double value);
+		void atput(size_t i, T value);
+		void atplusNumber(size_t i, double value);
+		void atminusNumber(size_t i, double value);
 		void zeroSelf();
 		double maxMagnitude();
 		void magnifySelf(T factor);
+		virtual std::string to_CSV();
+		void outputCSV(std::string filename);
+		void appendCSV(std::string filename);
+		void aaaa();
 
 		virtual std::ostream& printOn(std::ostream& s) const;
 		friend std::ostream& operator<<(std::ostream& s, const SparseVector& spVec)
@@ -52,16 +56,19 @@ namespace MbD {
 			return spVec.printOn(s);
 		}
 	};
+
 	template<typename T>
 	inline double SparseVector<T>::rootMeanSquare()
 	{
 		return std::sqrt(this->sumOfSquares() / this->numberOfElements());
 	}
+
 	template<typename T>
 	inline size_t SparseVector<T>::numberOfElements()
 	{
 		return n;
 	}
+
 	template<typename T>
 	inline double SparseVector<T>::sumOfSquares()
 	{
@@ -72,26 +79,31 @@ namespace MbD {
 		}
 		return sum;
 	}
+
 	template<typename T>
-	inline void SparseVector<T>::atiput(size_t i, T value)
+	inline void SparseVector<T>::atput(size_t i, T value)
 	{
 		(*this)[i] = value;
 	}
+
 	template<>
-	inline void SparseVector<double>::atiplusNumber(size_t i, double value)
+	inline void SparseVector<double>::atplusNumber(size_t i, double value)
 	{
 		(*this)[i] += value;
 	}
+
 	template<typename T>
-	inline void SparseVector<T>::atiminusNumber(size_t i, double value)
+	inline void SparseVector<T>::atminusNumber(size_t i, double value)
 	{
 		(*this)[i] -= value;
 	}
+
 	template<>
 	inline void SparseVector<double>::zeroSelf()
 	{
 		this->clear();
 	}
+
 	template<typename T>
 	inline double SparseVector<T>::maxMagnitude()
 	{
@@ -103,6 +115,7 @@ namespace MbD {
 		}
 		return max;
 	}
+
 	template<typename T>
 	inline void SparseVector<T>::magnifySelf(T factor)
 	{
@@ -113,6 +126,51 @@ namespace MbD {
 			this->at(key) = val;
 		}
 	}
+
+	template<typename T>
+	inline std::string SparseVector<T>::to_CSV()
+	{
+		std::stringstream ss;
+		ss << std::setprecision(std::numeric_limits<double>::max_digits10);
+		for (size_t i = 0; i < n; i++) {
+			auto it = this->find(i);
+			if (it == this->end()) {
+				ss << 0.0;
+			}
+			else {
+				ss << it->second;
+			}
+			if (i < n - 1) {
+				ss << ", ";
+			}
+			else {
+				ss << std::endl;
+			}
+		}
+		return ss.str();
+	}
+
+	template<typename T>
+	inline void SparseVector<T>::outputCSV(std::string filename)
+	{
+		std::ofstream os(filename);
+		os << this->to_CSV();
+		os.close();
+	}
+
+	template<typename T>
+	inline void SparseVector<T>::appendCSV(std::string filename)
+	{
+		std::ofstream os(filename, std::ios_base::app);
+		os << this->to_CSV();
+		os.close();
+	}
+
+	template<typename T>
+	inline void SparseVector<T>::aaaa()
+	{
+	}
+
 	template<typename T>
 	inline std::ostream& SparseVector<T>::printOn(std::ostream& s) const
 	{

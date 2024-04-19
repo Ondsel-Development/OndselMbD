@@ -11,22 +11,23 @@
 #include "DispCompIeqcJecO.h"
 
 namespace MbD {
-    class DispCompIeqcJeqcO : public DispCompIeqcJecO
-    {
-        //priIeJeOpXJ priIeJeOpEJ ppriIeJeOpEJpEJ 
-    public:
-        DispCompIeqcJeqcO();
-        DispCompIeqcJeqcO(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis);
+	class DispCompIeqcJeqcO : public DispCompIeqcJecO
+	{
+		//priIeJeOpXJ priIeJeOpEJ ppriIeJeOpEJpEJ 
+	public:
+		DispCompIeqcJeqcO() {}
+		DispCompIeqcJeqcO(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisO) : DispCompIeqcJecO(frmi, frmj, axisO) {}
+		static std::shared_ptr<DispCompIeqcJeqcO> With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis);
 
-        void calcPostDynCorrectorIteration() override;
-        void initializeGlobally() override;
-        FMatDsptr ppvaluepEJpEJ() override;
-        FRowDsptr pvaluepEJ() override;
-        FRowDsptr pvaluepXJ() override;
+		void calcPostDynCorrectorIteration() override;
+		void initializeGlobally() override;
+		FMatDsptr ppvaluepEJpEJ() override;
+		FRowDsptr pvaluepEJ() override;
+		FRowDsptr pvaluepXJ() override;
 
-        FRowDsptr priIeJeOpXJ;
-        FRowDsptr priIeJeOpEJ;
-        FMatDsptr ppriIeJeOpEJpEJ;
-    };
+		FRowDsptr priIeJeOpXJ;
+		FRowDsptr priIeJeOpEJ;
+		FMatDsptr ppriIeJeOpEJpEJ;
+	};
 }
 

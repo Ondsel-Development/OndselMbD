@@ -17,6 +17,8 @@ namespace MbD {
 	public:
 		Integral() = default;
 		Integral(Symsptr var, Symsptr integrand);
+		static std::shared_ptr<Integral> With();
+		
 		void arguments(Symsptr args) override;
 		Symsptr expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
 		Symsptr simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;

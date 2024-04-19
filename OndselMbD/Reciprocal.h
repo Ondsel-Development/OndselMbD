@@ -11,19 +11,21 @@
 #include "FunctionX.h"
 
 namespace MbD {
-    class Reciprocal : public FunctionX
-    {
-        //
-    public:
-        Reciprocal() = default;
-        Reciprocal(Symsptr arg);
-        double getValue() override;
-        Symsptr differentiateWRTx() override;
-        Symsptr integrateWRTx() override;
-        Symsptr copyWith(Symsptr arg) override;
+	class Reciprocal : public FunctionX
+	{
+		//
+	public:
+		Reciprocal() = default;
+		Reciprocal(Symsptr arg);
+		static std::shared_ptr<Reciprocal> With();
 
-        std::ostream& printOn(std::ostream& s) const override;
+		double getValue() override;
+		Symsptr differentiateWRTx() override;
+		Symsptr integrateWRTx() override;
+		Symsptr copyWith(Symsptr arg) override;
 
-    };
+		std::ostream& printOn(std::ostream& s) const override;
+
+	};
 }
 

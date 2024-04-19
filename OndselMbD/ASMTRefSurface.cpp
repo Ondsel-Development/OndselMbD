@@ -7,9 +7,15 @@
  ***************************************************************************/
  
 #include "ASMTRefSurface.h"
-#include "CREATE.h"
 
 using namespace MbD;
+
+std::shared_ptr<ASMTRefSurface> MbD::ASMTRefSurface::With()
+{
+	auto inst = std::make_shared<ASMTRefSurface>();
+	inst->initialize();
+	return inst;
+}
 
 void MbD::ASMTRefSurface::parseASMT(std::vector<std::string>&)
 {

@@ -5,31 +5,32 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "TranslationConstraintIqcJqc.h"
 
 namespace MbD {
-    class TranslationConstraintIqctJqc : public TranslationConstraintIqcJqc
-    {
-        //pGpt ppGpXIpt ppGpEIpt ppGpXJpt ppGpEJpt ppGptpt 
-    public:
-        TranslationConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi);
+	class TranslationConstraintIqctJqc : public TranslationConstraintIqcJqc
+	{
+		//pGpt ppGpXIpt ppGpEIpt ppGpXJpt ppGpEJpt ppGptpt 
+	public:
+		TranslationConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi) : TranslationConstraintIqcJqc(frmi, frmj, axisi) {}
+		static std::shared_ptr<TranslationConstraintIqctJqc> With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi);
 
-        void fillAccICIterError(FColDsptr col) override;
-        void fillVelICError(FColDsptr col) override;
-        void initriIeJeIe() override;
-        void preAccIC() override;
-        void preVelIC() override;
-        ConstraintType type() override;
+		void fillAccICIterError(FColDsptr col) override;
+		void fillVelICError(FColDsptr col) override;
+		void initriIeJeIe() override;
+		void preAccIC() override;
+		void preVelIC() override;
+		ConstraintType type() override;
 
-        double pGpt;
-        FRowDsptr ppGpXIpt;
-        FRowDsptr ppGpEIpt;
-        FRowDsptr ppGpXJpt;
-        FRowDsptr ppGpEJpt;
-        double ppGptpt;
-    };
+		double pGpt;
+		FRowDsptr ppGpXIpt;
+		FRowDsptr ppGpEIpt;
+		FRowDsptr ppGpXJpt;
+		FRowDsptr ppGpEJpt;
+		double ppGptpt;
+	};
 }
 

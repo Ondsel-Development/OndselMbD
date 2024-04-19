@@ -18,6 +18,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<MatrixSolver> MbD::MatrixSolver::With()
+{
+	auto inst = std::make_shared<MatrixSolver>();
+	inst->initialize();
+	return inst;
+}
+
 void MatrixSolver::initialize()
 {
 	Solver::initialize();
@@ -62,43 +69,51 @@ FColDsptr MatrixSolver::timedSolvewithsaveOriginal(FMatDsptr, FColDsptr, bool)
 
 FColDsptr MbD::MatrixSolver::basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
 {
+	//Subclasses must implement.
 	assert(false);
 	return FColDsptr();
 }
 
 FColDsptr MbD::MatrixSolver::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
+	//Subclasses must implement.
 	assert(false);
 	return FColDsptr();
 }
 
 void MbD::MatrixSolver::preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
 void MbD::MatrixSolver::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
 void MbD::MatrixSolver::doPivoting(size_t p)
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
 void MbD::MatrixSolver::forwardEliminateWithPivot(size_t p)
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
 void MbD::MatrixSolver::backSubstituteIntoDU()
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
 void MbD::MatrixSolver::postSolve()
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
@@ -116,6 +131,7 @@ void MatrixSolver::findScalingsForRowRange(size_t begin, size_t end)
 
 double MbD::MatrixSolver::getmatrixArowimaxMagnitude(size_t i)
 {
+	//Subclasses must implement.
 	assert(false);
 	return 0.0;
 }

@@ -15,8 +15,11 @@ namespace MbD {
 	{
 		//
 	public:
-		NoRotationJoint();
+		NoRotationJoint() {}
 		NoRotationJoint(const char* str);
+		static std::shared_ptr<NoRotationJoint> With();
+		static std::shared_ptr<NoRotationJoint> With(const char* str);
+
 		void initializeGlobally() override;
 
 	};

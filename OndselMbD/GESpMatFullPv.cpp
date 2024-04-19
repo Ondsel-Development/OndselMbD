@@ -13,6 +13,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<GESpMatFullPv> MbD::GESpMatFullPv::With()
+{
+	//Should not create abstract class.
+	assert(false);
+	return std::shared_ptr<GESpMatFullPv>();
+}
+
 void GESpMatFullPv::doPivoting(size_t p)
 {
 	//"Used by Gauss Elimination only."
@@ -61,6 +68,7 @@ void GESpMatFullPv::doPivoting(size_t p)
 	}
 	markowitzPivotColCount = rowPositionsOfNonZerosInPivotColumn->size();
 }
+
 void GESpMatFullPv::forwardEliminateWithPivot(size_t p)
 {
 	//app is pivot.

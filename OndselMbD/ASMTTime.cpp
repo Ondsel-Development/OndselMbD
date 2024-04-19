@@ -15,6 +15,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTTime> MbD::ASMTTime::With()
+{
+	auto inst = std::make_shared<ASMTTime>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::ASMTTime::deleteMbD()
 {
 	xx = nullptr;
@@ -60,4 +67,9 @@ void MbD::ASMTTime::setValue(double val)
 double MbD::ASMTTime::getValue()
 {
 	return ExpressionX::getValue();
+}
+
+const std::string& MbD::ASMTTime::getName() const
+{
+	return name;
 }

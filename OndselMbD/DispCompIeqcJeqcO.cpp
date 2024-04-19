@@ -11,18 +11,17 @@
 
 using namespace MbD;
 
-DispCompIeqcJeqcO::DispCompIeqcJeqcO()
+std::shared_ptr<DispCompIeqcJeqcO> MbD::DispCompIeqcJeqcO::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis)
 {
-}
-
-DispCompIeqcJeqcO::DispCompIeqcJeqcO(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis) : DispCompIeqcJecO(frmi, frmj, axis)
-{
+	auto inst = std::make_shared<DispCompIeqcJeqcO>(frmi, frmj, axis);
+	inst->initialize();
+	return inst;
 }
 
 void DispCompIeqcJeqcO::initializeGlobally()
 {
 	DispCompIeqcJecO::initializeGlobally();
-	priIeJeOpXJ = std::make_shared<FullRow<double>>(3, 0.0);
+	priIeJeOpXJ = FullRow<double>::With(3, 0.0);
 	priIeJeOpXJ->at(axis) = 1.0;
 	ppriIeJeOpEJpEJ = std::static_pointer_cast<EndFrameqc>(frmJ)->ppriOeOpEpE(axis);
 }

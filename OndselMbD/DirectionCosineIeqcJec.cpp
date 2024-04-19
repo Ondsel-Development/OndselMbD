@@ -11,20 +11,18 @@
 
 using namespace MbD;
 
-DirectionCosineIeqcJec::DirectionCosineIeqcJec()
+std::shared_ptr<DirectionCosineIeqcJec> MbD::DirectionCosineIeqcJec::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj)
 {
-}
-
-DirectionCosineIeqcJec::DirectionCosineIeqcJec(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj) :
-	DirectionCosineIecJec(frmi, frmj, axisi, axisj)
-{
+	auto inst = std::make_shared<DirectionCosineIeqcJec>(frmi, frmj, axisi, axisj);
+	inst->initialize();
+	return inst;
 }
 
 void DirectionCosineIeqcJec::initialize()
 {
 	DirectionCosineIecJec::initialize();
-	pAijIeJepEI = std::make_shared<FullRow<double>>(4);
-	ppAijIeJepEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
+	pAijIeJepEI = FullRow<double>::With(4);
+	ppAijIeJepEIpEI = FullMatrix<double>::With(4, 4);
 }
 
 void DirectionCosineIeqcJec::initializeGlobally()

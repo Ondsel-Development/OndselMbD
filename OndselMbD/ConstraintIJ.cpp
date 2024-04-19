@@ -7,12 +7,15 @@
  ***************************************************************************/
  
 #include "ConstraintIJ.h"
-#include "EndFramec.h"
+#include "EndFrameqc.h"
 
 using namespace MbD;
 
-ConstraintIJ::ConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : frmI(frmi), frmJ(frmj), Constraint()
+std::shared_ptr<ConstraintIJ> MbD::ConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
+	//Should not create abstract class.
+	assert(false);
+	return std::shared_ptr<ConstraintIJ>();
 }
 
 void ConstraintIJ::initialize()

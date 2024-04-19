@@ -6,7 +6,7 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
-#include <iostream>
+//#include <iostream>
 
 #include "AccNewtonRaphson.h"
 #include "SystemSolver.h"
@@ -14,9 +14,15 @@
 #include "Constraint.h"
 #include "SimulationStoppingError.h"
 #include "GESpMatParPvPrecise.h"
-#include "CREATE.h"
 
 using namespace MbD;
+
+std::shared_ptr<AccNewtonRaphson> MbD::AccNewtonRaphson::With()
+{
+	auto inst = std::make_shared<AccNewtonRaphson>();
+	inst->initialize();
+	return inst;
+}
 
 void AccNewtonRaphson::askSystemToUpdate()
 {
@@ -49,7 +55,7 @@ void AccNewtonRaphson::assignEquationNumbers()
 		con->iG = eqnNo;
 		eqnNo += 1;
 	}
-    //auto lastEqnNo = eqnNo - 1;
+	//auto lastEqnNo = eqnNo - 1;
 	nEqns = eqnNo;	//C++ uses index 0.
 	n = nEqns;
 }
@@ -125,10 +131,10 @@ void AccNewtonRaphson::preRun()
 
 void MbD::AccNewtonRaphson::handleSingularMatrix()
 {
-    auto& r = *matrixSolver;
+	auto& r = *matrixSolver;
 	std::string str = typeid(r).name();
 	if (str.find("GESpMatParPvMarkoFast") != std::string::npos) {
-		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
+		matrixSolver = GESpMatParPvPrecise::With();
 		solveEquations();
 	} else {
 		str = typeid(r).name();

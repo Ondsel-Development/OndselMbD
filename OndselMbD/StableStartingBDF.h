@@ -18,7 +18,9 @@ namespace MbD {
 	{
 		//
 	public:
+		static std::shared_ptr<StableStartingBDF> With();
 		void initialize() override;
+
 		void initializeLocally() override;
 		double pvdotpv() override;
 		void formTaylorMatrix() override;

@@ -11,22 +11,21 @@
 
 using namespace MbD;
 
-DispCompIeqcJecKeqc::DispCompIeqcJecKeqc()
+std::shared_ptr<DispCompIeqcJecKeqc> MbD::DispCompIeqcJecKeqc::With(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk)
 {
-}
-
-DispCompIeqcJecKeqc::DispCompIeqcJecKeqc(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk) : DispCompIecJecKeqc(frmi, frmj, frmk, axisk)
-{
+	auto inst = std::make_shared<DispCompIeqcJecKeqc>(frmi, frmj, frmk, axisk);
+	inst->initialize();
+	return inst;
 }
 
 void DispCompIeqcJecKeqc::initialize()
 {
 	DispCompIecJecKeqc::initialize();
-	priIeJeKepXI = std::make_shared<FullRow<double>>(3);
-	priIeJeKepEI = std::make_shared<FullRow<double>>(4);
-	ppriIeJeKepEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
-	ppriIeJeKepXIpEK = std::make_shared<FullMatrix<double>>(3, 4);
-	ppriIeJeKepEIpEK = std::make_shared<FullMatrix<double>>(4, 4);
+	priIeJeKepXI = FullRow<double>::With(3);
+	priIeJeKepEI = FullRow<double>::With(4);
+	ppriIeJeKepEIpEI = FullMatrix<double>::With(4, 4);
+	ppriIeJeKepXIpEK = FullMatrix<double>::With(3, 4);
+	ppriIeJeKepEIpEK = FullMatrix<double>::With(4, 4);
 }
 
 void DispCompIeqcJecKeqc::calcPostDynCorrectorIteration()

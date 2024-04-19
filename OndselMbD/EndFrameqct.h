@@ -20,9 +20,11 @@ namespace MbD {
 		//time rmemBlks prmemptBlks pprmemptptBlks phiThePsiBlks pPhiThePsiptBlks ppPhiThePsiptptBlks 
 		//rmem prmempt pprmemptpt aAme pAmept ppAmeptpt prOeOpt pprOeOpEpt pprOeOptpt pAOept ppAOepEpt ppAOeptpt 
 	public:
-		EndFrameqct();
-		EndFrameqct(const char* str);
+		EndFrameqct() {}
+		EndFrameqct(const char* str) : EndFrameqc(str) {}
+		static std::shared_ptr<EndFrameqct> With(const char* str);
 		void initialize() override;
+		
 		void initializeLocally() override;
 		void initializeGlobally() override;
 		void initprmemptBlks();
@@ -32,7 +34,7 @@ namespace MbD {
 		void postInput() override;
 		void calcPostDynCorrectorIteration() override;
 		void prePosIC() override;
-		void evalrmem();
+		void evalrmem() const;
 		virtual void evalAme();
 		void preVelIC() override;
 		void postVelIC() override;

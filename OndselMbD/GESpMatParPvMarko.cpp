@@ -13,6 +13,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<GESpMatParPvMarko> MbD::GESpMatParPvMarko::With()
+{
+	auto inst = std::make_shared<GESpMatParPvMarko>();
+	inst->initialize();
+	return inst;
+}
+
 void GESpMatParPvMarko::doPivoting(size_t p)
 {
 	//"Search from bottom to top."
@@ -99,7 +106,7 @@ void GESpMatParPvMarko::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr ful
 		if (maxRowMagnitude == 0) {
 			throwSingularMatrixError("");
 		}
-		rowScalings->atiput(i, 1.0 / maxRowMagnitude);
-		matrixA->atiput(i, spRowi->conditionedWithTol(singularPivotTolerance * maxRowMagnitude));
+		rowScalings->atput(i, 1.0 / maxRowMagnitude);
+		matrixA->atput(i, spRowi->conditionedWithTol(singularPivotTolerance * maxRowMagnitude));
 	}
 }

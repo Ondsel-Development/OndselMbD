@@ -15,8 +15,11 @@ namespace MbD {
 	{
 		//
 	public:
-		FixedJoint();
+		FixedJoint() {}
 		FixedJoint(const char* str);
+		static std::shared_ptr<FixedJoint> With();
+		static std::shared_ptr<FixedJoint> With(const char* str);
+		
 		void initializeGlobally() override;
 
 

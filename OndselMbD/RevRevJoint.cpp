@@ -7,18 +7,28 @@
  ***************************************************************************/
 
 #include "RevRevJoint.h"
-#include "CREATE.h"
 #include "DistancexyConstraintIJ.h"
 #include "System.h"
 
 using namespace MbD;
 
-MbD::RevRevJoint::RevRevJoint()
-{
-}
-
 MbD::RevRevJoint::RevRevJoint(const char* str) : CompoundJoint(str)
 {
+	assert(false);
+}
+
+std::shared_ptr<RevRevJoint> MbD::RevRevJoint::With()
+{
+	auto inst = std::make_shared<RevRevJoint>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<RevRevJoint> MbD::RevRevJoint::With(const char* str)
+{
+	auto inst = std::make_shared<RevRevJoint>(str);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::RevRevJoint::initializeGlobally()
@@ -28,9 +38,9 @@ void MbD::RevRevJoint::initializeGlobally()
 		auto distxyIJ = DistancexyConstraintIJ::With(frmI, frmJ);
 		distxyIJ->setConstant(distanceIJ);
 		addConstraint(distxyIJ);
-		addConstraint(CREATE<TranslationConstraintIJ>::ConstraintWith(frmI, frmJ, 2));
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 0));
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 1));
+		addConstraint(TranslationConstraintIJ::With(frmI, frmJ, 2));
+		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 1));
 		this->root()->hasChanged = true;
 	}
 	else {

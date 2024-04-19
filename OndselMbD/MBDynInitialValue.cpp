@@ -7,8 +7,16 @@
 
 using namespace MbD;
 
+std::shared_ptr<MBDynInitialValue> MbD::MBDynInitialValue::With()
+{
+	auto inst = std::make_shared<MBDynInitialValue>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MBDynInitialValue::initialize()
 {
+	assert(false);
 }
 
 void MbD::MBDynInitialValue::parseMBDyn(std::vector<std::string>& lines)

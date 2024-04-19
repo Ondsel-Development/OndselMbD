@@ -2,8 +2,16 @@
 
 using namespace MbD;
 
+std::shared_ptr<MBDynData> MbD::MBDynData::With()
+{
+	auto inst = std::make_shared<MBDynData>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MBDynData::initialize()
 {
+	assert(false);
 }
 
 void MbD::MBDynData::parseMBDyn(std::vector<std::string>& lines)

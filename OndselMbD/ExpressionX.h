@@ -11,17 +11,18 @@
 #include "FunctionX.h"
 
 namespace MbD {
-    class ExpressionX : public FunctionX
-    {
-        //
-    public:
+	class ExpressionX : public FunctionX
+	{
+		//
+	public:
+		static std::shared_ptr<ExpressionX> With();
 
-        void xexpression(Symsptr arg, Symsptr func);
-        Symsptr differentiateWRTx() override;
-        Symsptr differentiateWRT(Symsptr var) override;
-        double getValue() override;
+		void xexpression(Symsptr arg, Symsptr func);
+		Symsptr differentiateWRTx() override;
+		Symsptr differentiateWRT(Symsptr var) override;
+		double getValue() override;
 
-        Symsptr expression = std::make_shared<Symbolic>();
-    };
+		Symsptr expression = std::make_shared<Symbolic>();
+	};
 }
 

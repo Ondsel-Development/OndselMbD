@@ -17,5 +17,6 @@ namespace MbD {
 	public:
 		AnyGeneralSpline() = default;
 		AnyGeneralSpline(Symsptr arg);
+		static std::shared_ptr<AnyGeneralSpline> With();
 	};
 }

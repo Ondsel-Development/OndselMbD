@@ -11,14 +11,17 @@
 #include "InLineJoint.h"
 
 namespace MbD {
-    class TranslationalJoint : public InLineJoint
-    {
-        //
-    public:
-        TranslationalJoint();
-        TranslationalJoint(const char* str);
-        void initializeGlobally() override;
+	class TranslationalJoint : public InLineJoint
+	{
+		//
+	public:
+		TranslationalJoint() {}
+		TranslationalJoint(const char* str);
+		static std::shared_ptr<TranslationalJoint> With();
+		static std::shared_ptr<TranslationalJoint> With(const char* str);
 
-    };
+		void initializeGlobally() override;
+
+	};
 }
 

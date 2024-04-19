@@ -5,18 +5,28 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
+#include <cassert>
+
 #include "Ln.h"
 
 using namespace MbD;
 
 MbD::Ln::Ln(Symsptr arg) : FunctionX(arg)
 {
+	assert(false);
+}
+
+std::shared_ptr<Ln> MbD::Ln::With()
+{
+	auto inst = std::make_shared<Ln>();
+	inst->initialize();
+	return inst;
 }
 
 double MbD::Ln::getValue()
 {
-    return std::log(xx->getValue());
+	return std::log(xx->getValue());
 }
 
 Symsptr MbD::Ln::copyWith(Symsptr arg)

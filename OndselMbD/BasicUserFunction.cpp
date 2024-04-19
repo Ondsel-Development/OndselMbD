@@ -7,7 +7,6 @@
  ***************************************************************************/
  
 #include "BasicUserFunction.h"
-#include "CREATE.h"
 #include "Units.h"
 
 using namespace MbD;
@@ -17,7 +16,14 @@ MbD::BasicUserFunction::BasicUserFunction(const std::string& expression, double 
 	units = std::make_shared<Units>();
 }
 
+std::shared_ptr<BasicUserFunction> MbD::BasicUserFunction::With()
+{
+	auto inst = std::make_shared<BasicUserFunction>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::BasicUserFunction::initialize()
 {
-	units = CREATE<Units>::With();
+	units = Units::With();
 }

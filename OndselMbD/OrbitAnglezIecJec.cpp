@@ -13,12 +13,22 @@
 
 using namespace MbD;
 
-MbD::OrbitAngleZIecJec::OrbitAngleZIecJec()
-{
-}
-
 MbD::OrbitAngleZIecJec::OrbitAngleZIecJec(EndFrmsptr frmi, EndFrmsptr frmj) : KinematicIeJe(frmi, frmj)
 {
+	assert(false);
+}
+
+std::shared_ptr<OrbitAngleZIecJec> MbD::OrbitAngleZIecJec::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	auto inst = std::make_shared<OrbitAngleZIecJec>(frmi, frmj);
+	inst->initialize();
+	return inst;
+}
+
+void MbD::OrbitAngleZIecJec::initialize()
+{
+	KinematicIeJe::initialize();
+	this->init_xyIeJeIe();
 }
 
 void MbD::OrbitAngleZIecJec::calcPostDynCorrectorIteration()
@@ -36,10 +46,10 @@ void MbD::OrbitAngleZIecJec::calcPostDynCorrectorIteration()
 	dSqOverSSqSq = diffOfSquares / sumOfSquaresSquared;
 }
 
-void MbD::OrbitAngleZIecJec::initialize()
+void MbD::OrbitAngleZIecJec::init_xyIeJeIe()
 {
-	KinematicIeJe::initialize();
-	this->init_xyIeJeIe();
+	//Subclasses must implement.
+	assert(false);
 }
 
 void MbD::OrbitAngleZIecJec::initializeGlobally()

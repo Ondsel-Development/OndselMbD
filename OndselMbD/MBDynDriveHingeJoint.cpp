@@ -14,6 +14,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<MBDynDriveHingeJoint> MbD::MBDynDriveHingeJoint::With()
+{
+	auto inst = std::make_shared<MBDynDriveHingeJoint>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MBDynDriveHingeJoint::parseMBDyn(std::string line)
 {
 	MBDynJoint::parseMBDyn(line);
@@ -27,9 +34,9 @@ void MbD::MBDynDriveHingeJoint::createASMT()
 	auto asmtAsm = asmtAssembly();
 	auto asmtMotion = std::make_shared<ASMTRotationalMotion>();
 	asmtItem = asmtMotion;
-	asmtMotion->setName(name);
-	asmtMotion->setMarkerI(mkr1->asmtItem->fullName(""));
-	asmtMotion->setMarkerJ(mkr2->asmtItem->fullName(""));
+	asmtMotion->setName(label);
+	asmtMotion->setMarkerI(std::static_pointer_cast<ASMTMarker>(mkr1->asmtItem));
+	asmtMotion->setMarkerJ(std::static_pointer_cast<ASMTMarker>(mkr2->asmtItem));
 	asmtMotion->setRotationZ(formula);
 	asmtAsm->addMotion(asmtMotion);
 	return;

@@ -12,6 +12,18 @@
 
 using namespace MbD;
 
+std::shared_ptr<DifferentialAlgebraicEquationSolver> MbD::DifferentialAlgebraicEquationSolver::With()
+{
+	auto inst = std::make_shared<DifferentialAlgebraicEquationSolver>();
+	inst->initialize();
+	return inst;
+}
+
+void MbD::DifferentialAlgebraicEquationSolver::setSystem(Solver* sys)
+{
+	assert(false);
+}
+
 void MbD::DifferentialAlgebraicEquationSolver::useDAETrialStepStats(std::shared_ptr<SolverStatistics> stats)
 {
 	assert(false);

@@ -15,8 +15,11 @@ namespace MbD {
 	{
 		//
 	public:
-		ParallelAxesJoint();
+		ParallelAxesJoint() {}
 		ParallelAxesJoint(const char* str);
+		static std::shared_ptr<ParallelAxesJoint> With();
+		static std::shared_ptr<ParallelAxesJoint> With(const char* str);
+
 		void initializeGlobally() override;
 
 	};

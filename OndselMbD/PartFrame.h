@@ -8,16 +8,16 @@
  
 #pragma once
 
-#include <memory>
-#include <vector>
-#include <functional>
+//#include <memory>
+//#include <vector>
+//#include <functional>
 
 #include "CartesianFrame.h"
-#include "EndFramec.h"
+#include "EndFrameqc.h"
 #include "FullColumn.h"
 #include "EulerParameters.h"
 #include "EulerParametersDot.h"
-#include "CREATE.h"
+#include "MarkerFrame.h"
 
 namespace MbD {
 	class Part;
@@ -29,18 +29,21 @@ namespace MbD {
 	{
 		//ToDo: part iqX iqE qX qE qXdot qEdot qXddot qEddot aGeu aGabs markerFrames 
 	public:
-		PartFrame();
+		PartFrame() {}
 		PartFrame(const char* str);
-		System* root() override;
+		static std::shared_ptr<PartFrame> With();
+		static std::shared_ptr<PartFrame> With(const char* str);
 		void initialize() override;
+
+		System* root() override;
 		void initializeLocally() override;
 		void initializeGlobally() override;
 		void asFixed();
 		void postInput() override;
 		void calcPostDynCorrectorIteration() override;
 
-		void setqX(FColDsptr x);
-		FColDsptr getqX();
+		void setqX(FColDsptr x) const;
+		FColDsptr getqX() const;
 		void setqE(FColDsptr x);
 		void setaAap(FMatDsptr mat);
 		FColDsptr getqE();
@@ -59,7 +62,7 @@ namespace MbD {
 		void addMarkerFrame(std::shared_ptr<MarkerFrame> x);
 		EndFrmsptr endFrame(std::string name);
 		void aGabsDo(const std::function <void(std::shared_ptr<Constraint>)>& f);
-		void markerFramesDo(const std::function <void(std::shared_ptr<MarkerFrame>)>& f);
+		void markerFramesDo(const std::function <void(std::shared_ptr<MarkerFrame>)>& f) const;
 		void removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos) override;
 		void reactivateRedundantConstraints() override;
 		void constraintsReport() override;
@@ -72,6 +75,13 @@ namespace MbD {
 		FMatDsptr aCdot();
 		FColDsptr alpOpO();
 		FColFMatDsptr pAOppE();
+		FColFMatDsptr pAdotOppE();
+		FMatDsptr pomeOpOpE();
+		FMatDsptr pomeOpOpEdot();
+		FColDsptr vOpO();
+		FMatDsptr aAdotOp();
+		FColDsptr aOpO();
+		FMatDsptr aAddotOp();
 		void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
 		void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) override;
 		void fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints) override;
@@ -115,16 +125,16 @@ namespace MbD {
 		void fillpFpy(SpMatDsptr mat) override;
 		void fillpFpydot(SpMatDsptr mat) override;
 		void postDynCorrectorIteration() override;
-        void preDynOutput() override;
+		void preDynOutput() override;
 		void postDynOutput() override;
 
 		Part* part = nullptr; //Use raw pointer when pointing backwards.
 		size_t iqX = SIZE_MAX;
 		size_t iqE = SIZE_MAX;	//Position index of frame variables qX and qE in system list of variables
 		FColDsptr qX = std::make_shared<FullColumn<double>>(3);
-		std::shared_ptr<EulerParameters<double>> qE = CREATE<EulerParameters<double>>::With(4);
+		std::shared_ptr<EulerParameters<double>> qE = EulerParameters<double>::With(4);
 		FColDsptr qXdot = std::make_shared<FullColumn<double>>(3);
-		std::shared_ptr<EulerParametersDot<double>> qEdot = CREATE<EulerParametersDot<double>>::With(4);
+		std::shared_ptr<EulerParametersDot<double>> qEdot = EulerParametersDot<double>::With(4);
 		FColDsptr qXddot = std::make_shared<FullColumn<double>>(3);
 		FColDsptr qEddot = std::make_shared<FullColumn<double>>(4);
 		std::shared_ptr<Constraint> aGeu;

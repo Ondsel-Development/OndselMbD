@@ -7,23 +7,22 @@
  ***************************************************************************/
  
 #include "InLineJoint.h"
-#include "CREATE.h"
 
-MbD::InLineJoint::InLineJoint()
-{
-}
+using namespace MbD;
 
 MbD::InLineJoint::InLineJoint(const char*)
 {
+	assert(false);
 }
 
 void MbD::InLineJoint::initializeGlobally()
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
 void MbD::InLineJoint::createInLineConstraints()
 {
-	addConstraint(CREATE<TranslationConstraintIJ>::ConstraintWith(frmI, frmJ, 0));
-	addConstraint(CREATE<TranslationConstraintIJ>::ConstraintWith(frmI, frmJ, 1));
+	addConstraint(TranslationConstraintIJ::With(frmI, frmJ, 0));
+	addConstraint(TranslationConstraintIJ::With(frmI, frmJ, 1));
 }

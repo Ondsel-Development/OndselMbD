@@ -10,11 +10,13 @@
 #include "MBDynItem.h"
 
 namespace MbD {
-    class MBDynElement : public MBDynItem
-    {
-    public:
-        void parseMBDyn(std::vector<std::string>& lines) override;
-        void initialize() override;
+	class MBDynElement : public MBDynItem
+	{
+	public:
+		static std::shared_ptr<MBDynElement> With();
+		void initialize() override;
 
-    };
+		void parseMBDyn(std::vector<std::string>& lines) override;
+
+	};
 }

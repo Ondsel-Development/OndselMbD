@@ -8,29 +8,43 @@
 
 using namespace MbD;
 
+std::shared_ptr<MBDynMarker> MbD::MBDynMarker::With()
+{
+	auto inst = std::make_shared<MBDynMarker>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MBDynMarker::parseMBDyn(std::vector<std::string>& args)
 {
-	rPmP = std::make_shared<FullColumn<double>>(3);
-	aAPm = FullMatrix<double>::identitysptr(3);
 	if (args.empty()) return;
-	auto str = args.at(0); //Must copy string
-	if (str.find("reference") != std::string::npos) {
-		auto strucNode = std::static_pointer_cast<MBDynStructural>(nodeAt(nodeStr));
-		auto rOPO = strucNode->rOfO;
-		auto aAOP = strucNode->aAOf;
-		auto rOmO = readPosition(args);
-		auto aAOm = readOrientation(args);
-		rPmP = aAOP->transposeTimesFullColumn(rOmO->minusFullColumn(rOPO));
-		aAPm = aAOP->transposeTimesFullMatrix(aAOm);
-	}
-	else if (str.find("offset") != std::string::npos) {
-		rPmP = readPosition(args);
-	}
-	else {
-		rPmP = readPosition(args);
-		aAPm = readOrientation(args);
-	}
+	rPmP = readPosition(args);
+	aAPm = readOrientation(args);
 }
+//
+//void MbD::MBDynMarker::parseMBDyn(std::vector<std::string>& args)
+//{
+//	rPmP = std::make_shared<FullColumn<double>>(3);
+//	aAPm = FullMatrix<double>::identitysptr(3);
+//	if (args.empty()) return;
+//	auto str = args.at(0); //Must copy string
+//	if (str.find("reference") != std::string::npos) {
+//		auto strucNode = std::static_pointer_cast<MBDynStructural>(nodeAt(nodeStr));
+//		auto rOPO = strucNode->rOfO;
+//		auto aAOP = strucNode->aAOf;
+//		auto rOmO = readPosition(args);
+//		auto aAOm = readOrientation(args);
+//		rPmP = aAOP->transposeTimesFullColumn(rOmO->minusFullColumn(rOPO));
+//		aAPm = aAOP->transposeTimesFullMatrix(aAOm);
+//	}
+//	else if (str.find("offset") != std::string::npos) {
+//		rPmP = readPosition(args);
+//	}
+//	else {
+//		rPmP = readPosition(args);
+//		aAPm = readOrientation(args);
+//	}
+//}
 
 void MbD::MBDynMarker::parseMBDynTotalJointMarker(std::vector<std::string>& args)
 {
@@ -71,4 +85,14 @@ void MbD::MBDynMarker::createASMT()
 		mkr->setRotationMatrix(aAPm);
 		asmtPart->addMarker(mkr);
 	}
+}
+
+FColDsptr MbD::MBDynMarker::rOmO()
+{
+	auto strucNode = std::static_pointer_cast<MBDynStructural>(nodeAt(nodeStr));
+	auto rOPO = strucNode->rOfO;
+	auto aAOP = strucNode->aAOf;
+	auto rOmO = rOPO->plusFullColumn(aAOP->timesFullColumn(rPmP));
+	//auto aAOm = aAOP->timesFullMatrix(aAPm);
+	return rOmO;
 }

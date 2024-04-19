@@ -12,20 +12,27 @@
 #include "EndFrameqct.h"
 #include "Variable.h"
 #include "MarkerFrame.h"
-#include "CREATE.h"
 #include "EndFrameqct2.h"
 
 using namespace MbD;
 
-EndFrameqc::EndFrameqc() {
+std::shared_ptr<EndFrameqc> MbD::EndFrameqc::With()
+{
+	auto inst = std::make_shared<EndFrameqc>();
+	inst->initialize();
+	return inst;
 }
 
-EndFrameqc::EndFrameqc(const char* str) : EndFramec(str) {
+std::shared_ptr<EndFrameqc> MbD::EndFrameqc::With(const char* str)
+{
+	auto inst = std::make_shared<EndFrameqc>(str);
+	inst->initialize();
+	return inst;
 }
 
 void EndFrameqc::initialize()
 {
-	prOeOpE = std::make_shared<FullMatrix<double>>(3, 4);
+	prOeOpE = FullMatrix<double>::With(3, 4);
 	pprOeOpEpE = std::make_shared<FullMatrix<FColDsptr>>(4, 4);
 	pAOepE = std::make_shared<FullColumn<FMatDsptr>>(4);
 	ppAOepEpE = std::make_shared<FullMatrix<FMatDsptr>>(4, 4);
@@ -39,7 +46,7 @@ void EndFrameqc::initializeGlobally()
 
 void EndFrameqc::initEndFrameqct()
 {
-	endFrameqct = CREATE<EndFrameqct>::With(this->name.data());
+	endFrameqct = EndFrameqct::With(this->name.data());
 	endFrameqct->prOeOpE = prOeOpE;
 	endFrameqct->pprOeOpEpE = pprOeOpEpE;
 	endFrameqct->pAOepE = pAOepE;
@@ -49,7 +56,7 @@ void EndFrameqc::initEndFrameqct()
 
 void MbD::EndFrameqc::initEndFrameqct2()
 {
-	endFrameqct = CREATE<EndFrameqct2>::With(this->name.data());
+	endFrameqct = EndFrameqct2::With(this->name.data());
 	endFrameqct->prOeOpE = prOeOpE;
 	endFrameqct->pprOeOpEpE = pprOeOpEpE;
 	endFrameqct->pAOepE = pAOepE;
@@ -80,7 +87,7 @@ void EndFrameqc::calcPostDynCorrectorIteration()
 
 FMatDsptr EndFrameqc::pAjOepET(size_t axis)
 {
-	auto answer = std::make_shared<FullMatrix<double>>(4, 3);
+	auto answer = FullMatrix<double>::With(4, 3);
 	for (size_t i = 0; i < 4; i++) {
 		auto& answeri = answer->at(i);
 		auto& pAOepEi = pAOepE->at(i);
@@ -94,7 +101,7 @@ FMatDsptr EndFrameqc::pAjOepET(size_t axis)
 
 FMatDsptr EndFrameqc::ppriOeOpEpE(size_t ii)
 {
-	auto answer = std::make_shared<FullMatrix<double>>(4, 4);
+	auto answer = FullMatrix<double>::With(4, 4);
 	for (size_t i = 0; i < 4; i++) {
 		auto& answeri = answer->at(i);
 		auto& pprOeOpEipE = pprOeOpEpE->at(i);
@@ -159,4 +166,9 @@ FMatDsptr EndFrameqc::aBOp()
 bool MbD::EndFrameqc::isEndFrameqc()
 {
 	return true;
+}
+
+FMatDsptr MbD::EndFrameqc::pvOeOpE()
+{
+	return markerFrame->pvOmOpE();
 }

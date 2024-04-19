@@ -7,17 +7,30 @@
  ***************************************************************************/
  
 #include "OrbitAngleZIeqcJec.h"
-#include "CREATE.h"
 #include "DispCompIeqcJecIe.h"
 
 using namespace MbD;
 
-MbD::OrbitAngleZIeqcJec::OrbitAngleZIeqcJec()
-{
-}
-
 MbD::OrbitAngleZIeqcJec::OrbitAngleZIeqcJec(EndFrmsptr frmi, EndFrmsptr frmj) : OrbitAngleZIecJec(frmi, frmj)
 {
+	assert(false);
+}
+
+std::shared_ptr<OrbitAngleZIeqcJec> MbD::OrbitAngleZIeqcJec::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	auto inst = std::make_shared<OrbitAngleZIeqcJec>(frmi, frmj);
+	inst->initialize();
+	return inst;
+}
+
+void MbD::OrbitAngleZIeqcJec::initialize()
+{
+	OrbitAngleZIecJec::initialize();
+	pthezpXI = FullRow<double>::With(3);
+	pthezpEI = FullRow<double>::With(4);
+	ppthezpXIpXI = FullMatrix<double>::With(3, 3);
+	ppthezpXIpEI = FullMatrix<double>::With(3, 4);
+	ppthezpEIpEI = FullMatrix<double>::With(4, 4);
 }
 
 void MbD::OrbitAngleZIeqcJec::calc_ppthezpEIpEI()
@@ -41,8 +54,8 @@ void MbD::OrbitAngleZIeqcJec::calc_ppthezpEIpEI()
 			auto term2 = ppypEIpEIi->at(j) * cosOverSSq - (ppxpEIpEIi->at(j) * sinOverSSq);
 			auto term3 = (pypEIi * pxpEIj + (pxpEIi * pypEIj)) * dSqOverSSqSq;
 			auto ppthezpEIpEIij = term1 + term2 + term3;
-			ppthezpEIpEIi->atiput(j, ppthezpEIpEIij);
-			if (i < j) ppthezpEIpEI->atijput(j, i, ppthezpEIpEIij);
+			ppthezpEIpEIi->atput(j, ppthezpEIpEIij);
+			if (i < j) ppthezpEIpEI->atandput(j, i, ppthezpEIpEIij);
 		}
 	}
 }
@@ -69,7 +82,7 @@ void MbD::OrbitAngleZIeqcJec::calc_ppthezpXIpEI()
 			auto term1 = (pxpXIi * pxpEIj - (pypXIi * pypEIj)) * twoCosSinOverSSqSq;
 			auto term2 = ppypXIpEIi->at(j) * cosOverSSq - (ppxpXIpEIi->at(j) * sinOverSSq);
 			auto term3 = (pypXIi * pxpEIj + (pxpXIi * pypEIj)) * dSqOverSSqSq;
-			ppthezpXIpEIi->atiput(j, term1 + term2 + term3);
+			ppthezpXIpEIi->atput(j, term1 + term2 + term3);
 		}
 	}
 }
@@ -92,7 +105,7 @@ void MbD::OrbitAngleZIeqcJec::calc_ppthezpXIpXI()
 			auto pypXIj = pypXI->at(j);
 			auto term1 = (pxpXIi * pxpXIj - (pypXIi * pypXIj)) * twoCosSinOverSSqSq;
 			auto term3 = (pypXIi * pxpXIj + (pxpXIi * pypXIj)) * dSqOverSSqSq;
-			ppthezpXIpXIi->atiput(j, term1 + term3);
+			ppthezpXIpXIi->atput(j, term1 + term3);
 		}
 	}
 }
@@ -103,7 +116,7 @@ void MbD::OrbitAngleZIeqcJec::calc_pthezpEI()
 	auto pypEI = yIeJeIe->pvaluepEI();
 	for (size_t i = 0; i < 4; i++)
 	{
-		pthezpEI->atiput(i, pypEI->at(i) * cosOverSSq - (pxpEI->at(i) * sinOverSSq));
+		pthezpEI->atput(i, pypEI->at(i) * cosOverSSq - (pxpEI->at(i) * sinOverSSq));
 	}
 }
 
@@ -113,34 +126,24 @@ void MbD::OrbitAngleZIeqcJec::calc_pthezpXI()
 	auto pypXI = yIeJeIe->pvaluepXI();
 	for (size_t i = 0; i < 3; i++)
 	{
-		pthezpXI->atiput(i, pypXI->at(i) * cosOverSSq - (pxpXI->at(i) * sinOverSSq));
+		pthezpXI->atput(i, pypXI->at(i) * cosOverSSq - (pxpXI->at(i) * sinOverSSq));
 	}
 }
 
 void MbD::OrbitAngleZIeqcJec::calcPostDynCorrectorIteration()
 {
 	OrbitAngleZIecJec::calcPostDynCorrectorIteration();
-	this->calc_pthezpXI();
-	this->calc_pthezpEI();
-	this->calc_ppthezpXIpXI();
-	this->calc_ppthezpXIpEI();
-	this->calc_ppthezpEIpEI();
+	calc_pthezpXI();
+	calc_pthezpEI();
+	calc_ppthezpXIpXI();
+	calc_ppthezpXIpEI();
+	calc_ppthezpEIpEI();
 }
 
 void MbD::OrbitAngleZIeqcJec::init_xyIeJeIe()
 {
-	xIeJeIe = CREATE<DispCompIeqcJecIe>::With(frmI, frmJ, 0);
-	yIeJeIe = CREATE<DispCompIeqcJecIe>::With(frmI, frmJ, 1);
-}
-
-void MbD::OrbitAngleZIeqcJec::initialize()
-{
-	OrbitAngleZIecJec::initialize();
-	pthezpXI = std::make_shared<FullRow<double>>(3);
-	pthezpEI = std::make_shared<FullRow<double>>(4);
-	ppthezpXIpXI = std::make_shared<FullMatrix<double>>(3, 3);
-	ppthezpXIpEI = std::make_shared<FullMatrix<double>>(3, 4);
-	ppthezpEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
+	xIeJeIe = DispCompIeqcJecIe::With(frmI, frmJ, 0);
+	yIeJeIe = DispCompIeqcJecIe::With(frmI, frmJ, 1);
 }
 
 FMatDsptr MbD::OrbitAngleZIeqcJec::ppvaluepEIpEI()

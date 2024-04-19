@@ -11,12 +11,14 @@
 #include "GEFullMat.h"
 
 namespace MbD {
-    class GEFullMatFullPv : public GEFullMat
-    {
-        //
-    public:
-        void doPivoting(size_t p) override;
-        void postSolve() override;
-    };
+	class GEFullMatFullPv : public GEFullMat
+	{
+		//
+	public:
+		static std::shared_ptr<GEFullMatFullPv> With();
+		
+		void doPivoting(size_t p) override;
+		void postSolve() override;
+	};
 }
 

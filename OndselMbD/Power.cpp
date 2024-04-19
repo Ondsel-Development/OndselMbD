@@ -13,12 +13,16 @@
 
 using namespace MbD;
 
-MbD::Power::Power()
-{
-}
-
 MbD::Power::Power(Symsptr bse, Symsptr ex) : FunctionXY(bse, ex)
 {
+	assert(false);
+}
+
+std::shared_ptr<Power> MbD::Power::With()
+{
+	auto inst = std::make_shared<Power>();
+	inst->initialize();
+	return inst;
 }
 
 Symsptr MbD::Power::differentiateWRTx()

@@ -8,8 +8,6 @@
  
 #pragma once
 
-#include <algorithm>
-
 #include "EulerArray.h"
 #include "FullMatrix.h"
 #include "EulerAnglesDot.h"
@@ -27,7 +25,9 @@ namespace MbD {
 	public:
 		EulerAngles() : EulerArray<T>(3) {}
 		EulerAngles(std::initializer_list<T> list) : EulerArray<T>{ list } {}
+		static std::shared_ptr<EulerAngles<T>> With();
 		void initialize() override;
+		
 		void calc() override;
 		std::shared_ptr<EulerAnglesDot<T>> differentiateWRT(T var);
 		void setRotOrder(size_t i, size_t j, size_t k);
@@ -37,11 +37,26 @@ namespace MbD {
 		FMatDsptr aA;
 
 	};
+
+	template<typename T>
+	inline std::shared_ptr<EulerAngles<T>> EulerAngles<T>::With()
+	{
+		assert(false);
+		auto inst = std::make_shared<EulerAngles<T>>();
+		inst->initialize();
+		return inst;
+	}
+
 	template<typename T>
 	inline void EulerAngles<T>::initialize()
 	{
-		assert(false);
+		EulerArray<T>::initialize();
+		rotOrder = std::make_shared<std::vector<size_t>>(3);
+		rotOrder->at(0) = 1;
+		rotOrder->at(1) = 2;
+		rotOrder->at(2) = 3;
 	}
+
 	template<>
 	inline void EulerAngles<Symsptr>::calc()
 	{
@@ -51,13 +66,13 @@ namespace MbD {
 			auto axis = rotOrder->at(i);
 			auto angle = this->at(i)->getValue();
 			if (axis == 1) {
-				cA->atiput(i, FullMatrix<double>::rotatex(angle));
+				cA->atput(i, FullMatrix<double>::rotatex(angle));
 			}
 			else if (axis == 2) {
-				cA->atiput(i, FullMatrix<double>::rotatey(angle));
+				cA->atput(i, FullMatrix<double>::rotatey(angle));
 			}
 			else if (axis == 3) {
-				cA->atiput(i, FullMatrix<double>::rotatez(angle));
+				cA->atput(i, FullMatrix<double>::rotatez(angle));
 			}
 			else {
 				throw std::runtime_error("Euler angle rotation order must be any permutation of 1,2,3 without consecutive repeats.");
@@ -65,6 +80,7 @@ namespace MbD {
 		}
 		aA = cA->at(0)->timesFullMatrix(cA->at(1)->timesFullMatrix(cA->at(2)));
 	}
+
 	template<>
 	inline void EulerAngles<double>::calc()
 	{
@@ -74,13 +90,13 @@ namespace MbD {
 			auto axis = rotOrder->at(i);
 			auto angle = this->at(i);
 			if (axis == 1) {
-				cA->atiput(i, FullMatrix<double>::rotatex(angle));
+				cA->atput(i, FullMatrix<double>::rotatex(angle));
 			}
 			else if (axis == 2) {
-				cA->atiput(i, FullMatrix<double>::rotatey(angle));
+				cA->atput(i, FullMatrix<double>::rotatey(angle));
 			}
 			else if (axis == 3) {
-				cA->atiput(i, FullMatrix<double>::rotatez(angle));
+				cA->atput(i, FullMatrix<double>::rotatez(angle));
 			}
 			else {
 				throw std::runtime_error("Euler angle rotation order must be any permutation of 1,2,3 without consecutive repeats.");
@@ -88,11 +104,13 @@ namespace MbD {
 		}
 		aA = cA->at(0)->timesFullMatrix(cA->at(1)->timesFullMatrix(cA->at(2)));
 	}
+
 	template<typename T>
 	inline void EulerAngles<T>::calc()
 	{
 		assert(false);
 	}
+
 	template<typename T>
 	inline std::shared_ptr<EulerAnglesDot<T>> EulerAngles<T>::differentiateWRT(T var)
 	{
@@ -103,6 +121,7 @@ namespace MbD {
 		derivatives->aEulerAngles = this;
 		return derivatives;
 	}
+
 	template<typename T>
 	inline void EulerAngles<T>::setRotOrder(size_t i, size_t j, size_t k)
 	{

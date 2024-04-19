@@ -21,18 +21,22 @@ namespace MbD {
 	class Constant;
 	class Variable;
 	class Symbolic;
+	class MbDSymbolicFunction;
 	using Symsptr = std::shared_ptr<Symbolic>;
+	using vecSymsptr = std::shared_ptr<std::vector<Symsptr>>;
 
 	class Symbolic : public MbDMath
 	{
 	public:
-		Symbolic();
-		virtual ~Symbolic() {}
+		Symbolic() {}
+		//virtual ~Symbolic() {}
+		static std::shared_ptr<Symbolic> With();
+
 		static Symsptr times(Symsptr arg, Symsptr arg1);
 		static Symsptr sum(Symsptr arg, Symsptr arg1);
 		static Symsptr raisedTo(Symsptr x, Symsptr y);
-
 		virtual void initialize();
+
 		virtual Symsptr differentiateWRT(Symsptr var);
 		virtual Symsptr integrateWRT(Symsptr var);
 		virtual Symsptr simplified();
@@ -54,6 +58,11 @@ namespace MbD {
 		std::shared_ptr<Constant> sptrConstant(double value);
 		virtual bool isVariable();
 		virtual void setIntegrationConstant(double integConstant);
+		virtual const std::string& getName() const;
+		virtual void fillKineIJs(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> kineIJs);
+		virtual void fillKinedotIJs(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> kinedotIJs);
+		virtual void fillJointForces(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> jointActions);
+		virtual void fillJointTorques(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> jointActions);
 
 		virtual std::ostream& printOn(std::ostream& s) const;
 		friend std::ostream& operator<<(std::ostream& s, const Symbolic& sym)

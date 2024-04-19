@@ -12,19 +12,29 @@
 
 using namespace MbD;
 
-EulerConstraint::EulerConstraint()
-{
-
-}
-
 EulerConstraint::EulerConstraint(const char* str) : Constraint(str)
 {
+	assert(false);
+}
+
+std::shared_ptr<EulerConstraint> MbD::EulerConstraint::With()
+{
+	auto inst = std::make_shared<EulerConstraint>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<EulerConstraint> MbD::EulerConstraint::With(const char* str)
+{
+	auto inst = std::make_shared<EulerConstraint>(str);
+	inst->initialize();
+	return inst;
 }
 
 void EulerConstraint::initialize()
 {
 	Constraint::initialize();
-	pGpE = std::make_shared<FullRow<double>>(4);
+	pGpE = FullRow<double>::With(4);
 }
 
 void EulerConstraint::calcPostDynCorrectorIteration()
@@ -45,31 +55,31 @@ void EulerConstraint::useEquationNumbers()
 void EulerConstraint::fillPosICError(FColDsptr col)
 {
 	Constraint::fillPosICError(col);
-	col->atiplusFullVectortimes(iqE, pGpE, lam);
+	col->atplusFullVectortimes(iqE, pGpE, lam);
 }
 
 void EulerConstraint::fillPosICJacob(SpMatDsptr mat)
 {
 	//"ppGpEpE is a diag(2,2,2,2)."
-	mat->atijplusFullRow(iG, iqE, pGpE);
-	mat->atijplusFullColumn(iqE, iG, pGpE->transpose());
+	mat->atandplusFullRow(iG, iqE, pGpE);
+	mat->atandplusFullColumn(iqE, iG, pGpE->transpose());
 	auto twolam = 2.0 * lam;
 	for (size_t i = 0; i < 4; i++)
 	{
 		auto ii = iqE + i;
-		mat->atijplusNumber(ii, ii, twolam);
+		mat->atandplusNumber(ii, ii, twolam);
 	}
 }
 
 void EulerConstraint::fillPosKineJacob(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqE, pGpE);
+	mat->atandplusFullRow(iG, iqE, pGpE);
 }
 
 void EulerConstraint::fillVelICJacob(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqE, pGpE);
-	mat->atijplusFullColumn(iqE, iG, pGpE->transpose());
+	mat->atandplusFullRow(iG, iqE, pGpE);
+	mat->atandplusFullColumn(iqE, iG, pGpE->transpose());
 }
 
 void EulerConstraint::fillAccICIterError(FColDsptr col)
@@ -77,26 +87,26 @@ void EulerConstraint::fillAccICIterError(FColDsptr col)
 	//"qdotT[ppGpqpq]*qdot."
 	//"qdotT[2 2 2 2 diag]*qdot."
 
-	col->atiplusFullVectortimes(iqE, pGpE, lam);
+	col->atplusFullVectortimes(iqE, pGpE, lam);
 	auto partFrame = static_cast<PartFrame*>(owner);
 	double sum = pGpE->timesFullColumn(partFrame->qEddot);
 	sum += 2.0 * partFrame->qEdot->sumOfSquares();
-	col->atiplusNumber(iG, sum);
+	col->atplusNumber(iG, sum);
 }
 
 void MbD::EulerConstraint::fillpFpy(SpMatDsptr mat)
 {
 	//"ppGpEpE is a diag(2,2,2,2)."
-	mat->atijplusFullRow(iG, iqE, pGpE);
+	mat->atandplusFullRow(iG, iqE, pGpE);
 	auto twolam = 2.0 * lam;
 	for (size_t i = 0; i < 4; i++)
 	{
 		auto ii = iqE + i;
-		mat->atijplusNumber(ii, ii, twolam);
+		mat->atandplusNumber(ii, ii, twolam);
 	}
 }
 
 void MbD::EulerConstraint::fillpFpydot(SpMatDsptr mat)
 {
-	mat->atijplusFullColumn(iqE, iG, pGpE->transpose());
+	mat->atandplusFullColumn(iqE, iG, pGpE->transpose());
 }

@@ -17,26 +17,27 @@ namespace MbD {
 	{
 		//xIeJeIe thezIeJe pitchRadius 
 	public:
-        RackPinConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
+		RackPinConstraintIJ() {}
+		RackPinConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
+		static std::shared_ptr<RackPinConstraintIJ> With();
+		static std::shared_ptr<RackPinConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
+		void initialize() override;
 
-        static std::shared_ptr<RackPinConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
-
-        void calcPostDynCorrectorIteration() override;
-        virtual void init_xthez();
-        virtual void initxIeJeIe();
-        virtual void initthezIeJe();
-        void initialize() override;
-        void initializeGlobally() override;
-        void initializeLocally() override;
-        void postInput() override;
-        void postPosICIteration() override;
-        void preAccIC() override;
-        void prePosIC() override;
-        void preVelIC() override;
-        void simUpdateAll() override;
-        void postDynPredictor() override;
-        void postDynCorrectorIteration() override;
-        void preDynOutput() override;
+		void calcPostDynCorrectorIteration() override;
+		virtual void init_xthez();
+		virtual void initxIeJeIe();
+		virtual void initthezIeJe();
+		void initializeGlobally() override;
+		void initializeLocally() override;
+		void postInput() override;
+		void postPosICIteration() override;
+		void preAccIC() override;
+		void prePosIC() override;
+		void preVelIC() override;
+		void simUpdateAll() override;
+		void postDynPredictor() override;
+		void postDynCorrectorIteration() override;
+		void preDynOutput() override;
 		void postDynOutput() override;
 
 		std::shared_ptr<DispCompIecJecIe> xIeJeIe;

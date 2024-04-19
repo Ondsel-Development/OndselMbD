@@ -13,6 +13,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<GEFullMatParPv> MbD::GEFullMatParPv::With()
+{
+	auto inst = std::make_shared<GEFullMatParPv>();
+	inst->initialize();
+	return inst;
+}
+
 void GEFullMatParPv::doPivoting(size_t p)
 {
 	//"Use scalings. Do row pivoting."

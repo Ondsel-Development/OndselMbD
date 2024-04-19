@@ -11,19 +11,23 @@
 
 using namespace MbD;
 
-MbD::DistIecJec::DistIecJec()
-{
-}
-
 MbD::DistIecJec::DistIecJec(EndFrmsptr frmi, EndFrmsptr frmj) : KinematicIeJe(frmi, frmj)
 {
+	assert(false);
+}
+
+std::shared_ptr<DistIecJec> MbD::DistIecJec::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	auto inst = std::make_shared<DistIecJec>(frmi, frmj);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::DistIecJec::calcPostDynCorrectorIteration()
 {
 	rIeJeO = frmJ->rOeO->minusFullColumn(frmI->rOeO);
 	rIeJe = rIeJeO->length();
-	this->calcPrivate();
+	calcPrivate();
 }
 
 void MbD::DistIecJec::calcPrivate()

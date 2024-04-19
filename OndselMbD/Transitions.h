@@ -14,6 +14,7 @@ namespace MbD {
 	class Transitions : public Arguments
 	{
 	public:
+		static std::shared_ptr<Transitions> With();
 
 	};
 }

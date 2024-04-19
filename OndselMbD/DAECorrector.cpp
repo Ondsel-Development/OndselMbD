@@ -10,28 +10,34 @@
 
 #include "DAECorrector.h"
 #include "BasicDAEIntegrator.h"
-#include "CREATE.h"
 #include "GESpMatParPvMarkoFast.h"
 #include "GESpMatParPvPrecise.h"
 #include "SystemSolver.h"
 
 using namespace MbD;
 
+std::shared_ptr<DAECorrector> MbD::DAECorrector::With()
+{
+	auto inst = std::make_shared<DAECorrector>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::DAECorrector::iterate()
 {
 	//Keep for debugging
 	iterNo = SIZE_MAX;
 	this->fillY();
-	this->calcyNorm();
+	calcyNorm();
 	yNorms->push_back(yNorm);
 
 	while (true) {
-		this->incrementIterNo();
-		this->fillPyPx();
+		incrementIterNo();
+		fillPyPx();
 		//std::cout << *pypx << std::endl;
-		//outputSpreadsheet();
-		this->solveEquations();
-		this->calcDXNormImproveRootCalcYNorm();
+		outputSpreadsheet();
+		solveEquations();
+		calcDXNormImproveRootCalcYNorm();
 		if (this->isConverged()) {
 			//std::cout << "iterNo = " << iterNo << std::endl;
 			break;
@@ -68,8 +74,8 @@ void MbD::DAECorrector::handleSingularMatrix()
 {	
 	std::string str = typeid(*matrixSolver).name();
 	if (str == "class MbD::GESpMatParPvMarkoFast") {
-		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
-		this->solveEquations();
+		matrixSolver = GESpMatParPvPrecise::With();
+		solveEquations();
 	}
 	else {
 		str = typeid(*matrixSolver).name();
@@ -86,7 +92,7 @@ void MbD::DAECorrector::initializeGlobally()
 {
 	iterMax = daeSystem->iterMax();
 	x = daeSystem->y;
-	matrixSolver = CREATE<GESpMatParPvMarkoFast>::With();
+	matrixSolver = GESpMatParPvMarkoFast::With();
 }
 
 void MbD::DAECorrector::run()
@@ -134,6 +140,7 @@ void MbD::DAECorrector::reportStats()
 
 void MbD::DAECorrector::outputSpreadsheet()
 {
+	if (true) return;	//For debugging.
 	std::ofstream os("../testapp/spreadsheetcpp.csv");
 	os << std::setprecision(std::numeric_limits<double>::max_digits10);
 	for (size_t i = 0; i < pypx->nrow(); i++)
@@ -141,14 +148,14 @@ void MbD::DAECorrector::outputSpreadsheet()
 		auto rowi = pypx->at(i);
 		for (size_t j = 0; j < pypx->ncol(); j++)
 		{
-			if (j > 0) os << '\t';
 			if (rowi->find(j) == rowi->end()) {
 				os << 0.0;
 			}
 			else {
 				os << rowi->at(j);
 			}
+			os << '\t';
 		}
-		os << "\t\t" << y->at(i) << std::endl;
+		os << "\t" << y->at(i) << std::endl;
 	}
 }

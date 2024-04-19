@@ -15,8 +15,11 @@ namespace MbD {
 	{
 		//
 	public:
-		LineInPlaneJoint();
+		LineInPlaneJoint() {}
 		LineInPlaneJoint(const char* str);
+		static std::shared_ptr<LineInPlaneJoint> With();
+		static std::shared_ptr<LineInPlaneJoint> With(const char* str);
+		
 		void initializeGlobally() override;
 
 	};

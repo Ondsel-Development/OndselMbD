@@ -8,13 +8,15 @@
  
 #include "AtPointConstraintIqctJqc.h"
 #include "DispCompIeqctJeqcO.h"
-#include "CREATE.h"
+#include "EndFrameqc.h"
 
 using namespace MbD;
 
-AtPointConstraintIqctJqc::AtPointConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi) :
-	AtPointConstraintIqcJqc(frmi, frmj, axisi)
+std::shared_ptr<AtPointConstraintIqctJqc> MbD::AtPointConstraintIqctJqc::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisO)
 {
+	auto inst = std::make_shared<AtPointConstraintIqctJqc>(frmi, frmj, axisO);
+	inst->initialize();
+	return inst;
 }
 
 void AtPointConstraintIqctJqc::initializeGlobally()
@@ -25,7 +27,7 @@ void AtPointConstraintIqctJqc::initializeGlobally()
 
 void AtPointConstraintIqctJqc::initriIeJeO()
 {
-	riIeJeO = CREATE<DispCompIeqctJeqcO>::With(frmI, frmJ, axis);
+	riIeJeO = DispCompIeqctJeqcO::With(frmI, frmJ, axis);
 }
 
 void AtPointConstraintIqctJqc::calcPostDynCorrectorIteration()
@@ -49,7 +51,7 @@ void AtPointConstraintIqctJqc::preVelIC()
 
 void AtPointConstraintIqctJqc::fillVelICError(FColDsptr col)
 {
-	col->atiminusNumber(iG, pGpt);
+	col->atminusNumber(iG, pGpt);
 }
 
 void AtPointConstraintIqctJqc::fillAccICIterError(FColDsptr col)
@@ -59,7 +61,7 @@ void AtPointConstraintIqctJqc::fillAccICIterError(FColDsptr col)
 	auto qEdotI = efrmIqc->qEdot();
 	double sum = (ppGpEIpt->timesFullColumn(qEdotI)) * 2.0;
 	sum += ppGptpt;
-	col->atiplusNumber(iG, sum);
+	col->atplusNumber(iG, sum);
 }
 
 void AtPointConstraintIqctJqc::preAccIC()

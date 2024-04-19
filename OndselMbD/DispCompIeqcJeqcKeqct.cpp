@@ -12,22 +12,26 @@
 
 using namespace MbD;
 
-DispCompIeqcJeqcKeqct::DispCompIeqcJeqcKeqct()
-{
-}
-
 DispCompIeqcJeqcKeqct::DispCompIeqcJeqcKeqct(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk) : DispCompIeqcJeqcKeqc(frmi, frmj, frmk, axisk)
 {
+	assert(false);
+}
+
+std::shared_ptr<DispCompIeqcJeqcKeqct> MbD::DispCompIeqcJeqcKeqct::With(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk)
+{
+	auto inst = std::make_shared<DispCompIeqcJeqcKeqct>(frmi, frmj, frmk, axisk);
+	inst->initialize();
+	return inst;
 }
 
 void DispCompIeqcJeqcKeqct::initialize()
 {
 	DispCompIeqcJeqcKeqc::initialize();
-	ppriIeJeKepXIpt = std::make_shared<FullRow<double>>(3);
-	ppriIeJeKepEIpt = std::make_shared<FullRow<double>>(4);
-	ppriIeJeKepXJpt = std::make_shared<FullRow<double>>(3);
-	ppriIeJeKepEJpt = std::make_shared<FullRow<double>>(4);
-	ppriIeJeKepEKpt = std::make_shared<FullRow<double>>(4);
+	ppriIeJeKepXIpt = FullRow<double>::With(3);
+	ppriIeJeKepEIpt = FullRow<double>::With(4);
+	ppriIeJeKepXJpt = FullRow<double>::With(3);
+	ppriIeJeKepEJpt = FullRow<double>::With(4);
+	ppriIeJeKepEKpt = FullRow<double>::With(4);
 }
 
 void MbD::DispCompIeqcJeqcKeqct::initializeGlobally()
@@ -95,14 +99,14 @@ void DispCompIeqcJeqcKeqct::preAccIC()
 	auto prIeJeOpEJT = std::static_pointer_cast<EndFrameqc>(frmJ)->prOeOpE->transpose();
 	for (size_t i = 0; i < 3; i++)
 	{
-		ppriIeJeKepXIpt->atiput(i, -(pAjOKept->at(i)));
-		ppriIeJeKepXJpt->atiput(i, pAjOKept->at(i));
+		ppriIeJeKepXIpt->atput(i, -(pAjOKept->at(i)));
+		ppriIeJeKepXJpt->atput(i, pAjOKept->at(i));
 	}
 	for (size_t i = 0; i < 4; i++)
 	{
-		ppriIeJeKepEIpt->atiput(i, pAjOKept->dot(prIeJeOpEIT->at(i)));
-		ppriIeJeKepEJpt->atiput(i, pAjOKept->dot(prIeJeOpEJT->at(i)));
-		ppriIeJeKepEKpt->atiput(i, ppAjOKepEKTpt->at(i)->dot(rIeJeO));
+		ppriIeJeKepEIpt->atput(i, pAjOKept->dot(prIeJeOpEIT->at(i)));
+		ppriIeJeKepEJpt->atput(i, pAjOKept->dot(prIeJeOpEJT->at(i)));
+		ppriIeJeKepEKpt->atput(i, ppAjOKepEKTpt->at(i)->dot(rIeJeO));
 	}
 	ppriIeJeKeptpt = ppAjOKeptpt->dot(rIeJeO);
 }

@@ -13,6 +13,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<MBDynAxialRotationJoint> MbD::MBDynAxialRotationJoint::With()
+{
+	auto inst = std::make_shared<MBDynAxialRotationJoint>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MBDynAxialRotationJoint::parseMBDyn(std::string line)
 {
 	MBDynJoint::parseMBDyn(line);
@@ -24,7 +31,7 @@ void MbD::MBDynAxialRotationJoint::createASMT()
 	MBDynJoint::createASMT();
 	auto asmtAsm = asmtAssembly();
 	asmtMotion = std::make_shared<ASMTRotationalMotion>();
-	asmtMotion->setName(name + "Motion");
+	asmtMotion->setName(label + "Motion");
 	asmtMotion->setMotionJoint(asmtItem->fullName(""));
 	asmtMotion->setRotationZ(asmtFormulaIntegral(formula));
 	asmtAsm->addMotion(asmtMotion);
@@ -38,7 +45,7 @@ std::shared_ptr<ASMTJoint> MbD::MBDynAxialRotationJoint::asmtClassNew()
 
 void MbD::MBDynAxialRotationJoint::outputLine(size_t i, std::ostream& os)
 {
-	auto id = nodeidAt(name);
+	auto id = labelIDat(label);
 	auto asmtJoint = std::static_pointer_cast<ASMTJoint>(asmtItem);
 	auto aFII = asmtJoint->aFII(i)->plusFullColumn(asmtMotion->aFII(i));
 	auto aTII = asmtJoint->aTII(i)->plusFullColumn(asmtMotion->aTII(i));

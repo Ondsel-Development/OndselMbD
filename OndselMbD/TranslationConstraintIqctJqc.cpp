@@ -8,18 +8,19 @@
  
 #include "TranslationConstraintIqctJqc.h"
 #include "DispCompIeqctJeqcKeqct.h"
-#include "CREATE.h"
 
 using namespace MbD;
 
-TranslationConstraintIqctJqc::TranslationConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi) :
-	TranslationConstraintIqcJqc(frmi, frmj, axisi)
+std::shared_ptr<TranslationConstraintIqctJqc> MbD::TranslationConstraintIqctJqc::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi)
 {
+	auto inst = std::make_shared<TranslationConstraintIqctJqc>(frmi, frmj, axisi);
+	inst->initialize();
+	return inst;
 }
 
 void TranslationConstraintIqctJqc::initriIeJeIe()
 {
-	riIeJeIe = CREATE<DispCompIeqctJeqcKeqct>::With(frmI, frmJ, frmI, axisI);
+	riIeJeIe = DispCompIeqctJeqcKeqct::With(frmI, frmJ, frmI, axisI);
 }
 
 ConstraintType TranslationConstraintIqctJqc::type()
@@ -35,7 +36,7 @@ void TranslationConstraintIqctJqc::preVelIC()
 
 void TranslationConstraintIqctJqc::fillVelICError(FColDsptr col)
 {
-	col->atiminusNumber(iG, pGpt);
+	col->atminusNumber(iG, pGpt);
 }
 
 void TranslationConstraintIqctJqc::preAccIC()
@@ -63,5 +64,5 @@ void TranslationConstraintIqctJqc::fillAccICIterError(FColDsptr col)
 	sum += 2.0 * ppGpXJpt->timesFullColumn(qXdotJ);
 	sum += 2.0 * ppGpEJpt->timesFullColumn(qEdotJ);
 	sum += ppGptpt;
-	col->atiplusNumber(iG, sum);
+	col->atplusNumber(iG, sum);
 }

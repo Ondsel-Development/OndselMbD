@@ -12,8 +12,12 @@
 #include <sstream> 
 
 #include "FullVector.h"
+ //#include "FullMatrix.h"
 
 namespace MbD {
+	//template<typename T>
+	//class FullMatrix;
+	//using FMatDsptr = std::shared_ptr<FullMatrix<double>>;
 	template<typename T>
 	class FullColumn;
 	using FColDsptr = std::shared_ptr<FullColumn<double>>;
@@ -21,6 +25,11 @@ namespace MbD {
 	using FColsptr = std::shared_ptr<FullColumn<T>>;
 	template<typename T>
 	class FullRow;
+	using FRowDsptr = std::shared_ptr<FullRow<double>>;
+	template<typename T>
+	class SparseRow;
+	template<typename T>
+	using SpRowsptr = std::shared_ptr<SparseRow<T>>;
 	template<typename T>
 	using FRowsptr = std::shared_ptr<FullRow<T>>;
 	class Symbolic;
@@ -35,20 +44,24 @@ namespace MbD {
 		FullColumn(size_t count, const T& value) : FullVector<T>(count, value) {}
 		FullColumn(typename std::vector<T>::iterator begin, typename std::vector<T>::iterator end) : FullVector<T>(begin, end) {}
 		FullColumn(std::initializer_list<T> list) : FullVector<T>{ list } {}
+		static std::shared_ptr<FullColumn<T>> With();
+		static std::shared_ptr<FullColumn<T>> With(size_t count);
+
 		FColsptr<T> plusFullColumn(FColsptr<T> fullCol);
 		std::shared_ptr<FullColumn<T>> operator+(const std::shared_ptr<FullColumn<T>> fullCol);
 		FColsptr<T> plusFullColumntimes(FColsptr<T> fullCol, double factor);
 		FColsptr<T> minusFullColumn(FColsptr<T> fullCol);
 		FColsptr<T> times(T a);
+		//FMatDsptr timesFullRowtimes(FRowDsptr row, double a);
 		FColsptr<T> negated();
-		void atiputFullColumn(size_t i, FColsptr<T> fullCol);
-		void atiplusFullColumn(size_t i, FColsptr<T> fullCol);
+		void atputFullColumn(size_t i, FColsptr<T> fullCol);
+		void atplusFullColumn(size_t i, FColsptr<T> fullCol);
 		void equalSelfPlusFullColumnAt(FColsptr<T> fullCol, size_t i);
-		void atiminusFullColumn(size_t i, FColsptr<T> fullCol);
+		void atminusFullColumn(size_t i, FColsptr<T> fullCol);
 		void equalFullColumnAt(FColsptr<T> fullCol, size_t i);
 		FColsptr<T> copy();
 		FRowsptr<T> transpose();
-		void atiplusFullColumntimes(size_t i, FColsptr<T> fullCol, T factor);
+		void atplusFullColumntimes(size_t i, FColsptr<T> fullCol, T factor);
 		T transposeTimesFullColumn(const FColsptr<T> fullCol);
 		void equalSelfPlusFullColumntimes(FColsptr<T> fullCol, T factor);
 		FColsptr<T> cross(FColsptr<T> fullCol);
@@ -59,6 +72,23 @@ namespace MbD {
 
 		std::ostream& printOn(std::ostream& s) const override;
 	};
+
+	template<typename T>
+	inline std::shared_ptr<FullColumn<T>> FullColumn<T>::With()
+	{
+		auto inst = std::make_shared<FullColumn<T>>();
+		inst->initialize();
+		return inst;
+	}
+
+	template<typename T>
+	inline std::shared_ptr<FullColumn<T>> FullColumn<T>::With(size_t count)
+	{
+		auto inst = std::make_shared<FullColumn<T>>(count);
+		inst->initialize();
+		return inst;
+	}
+
 	template<typename T>
 	inline FColsptr<T> FullColumn<T>::plusFullColumn(FColsptr<T> fullCol)
 	{
@@ -69,6 +99,7 @@ namespace MbD {
 		}
 		return answer;
 	}
+
 	template<>
 	inline std::shared_ptr<FullColumn<double>> FullColumn<double>::operator+(const std::shared_ptr<FullColumn<double>> fullCol)
 	{
@@ -79,6 +110,7 @@ namespace MbD {
 		}
 		return answer;
 	}
+
 	template<typename T>
 	inline std::shared_ptr<FullColumn<T>> FullColumn<T>::operator+(const std::shared_ptr<FullColumn<T>> fullCol)
 	{
@@ -89,6 +121,7 @@ namespace MbD {
 		}
 		return answer;
 	}
+
 	template<typename T>
 	inline FColsptr<T> FullColumn<T>::plusFullColumntimes(FColsptr<T> fullCol, double factor)
 	{
@@ -99,6 +132,7 @@ namespace MbD {
 		}
 		return answer;
 	}
+
 	template<typename T>
 	inline FColsptr<T> FullColumn<T>::minusFullColumn(FColsptr<T> fullCol)
 	{
@@ -109,6 +143,7 @@ namespace MbD {
 		}
 		return answer;
 	}
+
 	template<>
 	inline FColDsptr FullColumn<double>::times(double a)
 	{
@@ -119,32 +154,49 @@ namespace MbD {
 		}
 		return answer;
 	}
+
 	template<typename T>
 	inline FColsptr<T> FullColumn<T>::times(T)
 	{
 		assert(false);
 	}
+	//template<>
+	//inline FMatDsptr FullColumn<double>::timesFullRowtimes(FRowDsptr row, double a)
+	//{
+	//	//"a*b*scalar = a(i)b(j)*scalar"
+
+	//	auto nrow = this->size();
+	//	auto answer = FullMatrix<double>::With(nrow);
+	//	for (size_t i = 0; i < nrow; i++) {
+	//		answer->atput(i, row->times(a * this->at(i)));
+	//	}
+	//	return answer;
+	//}
+
 	template<typename T>
 	inline FColsptr<T> FullColumn<T>::negated()
 	{
 		return this->times(-1.0);
 	}
+
 	template<typename T>
-	inline void FullColumn<T>::atiputFullColumn(size_t i, FColsptr<T> fullCol)
+	inline void FullColumn<T>::atputFullColumn(size_t i, FColsptr<T> fullCol)
 	{
 		for (size_t ii = 0; ii < fullCol->size(); ii++)
 		{
 			this->at(i + ii) = fullCol->at(ii);
 		}
 	}
+
 	template<typename T>
-	inline void FullColumn<T>::atiplusFullColumn(size_t i, FColsptr<T> fullCol)
+	inline void FullColumn<T>::atplusFullColumn(size_t i, FColsptr<T> fullCol)
 	{
 		for (size_t ii = 0; ii < fullCol->size(); ii++)
 		{
 			this->at(i + ii) += fullCol->at(ii);
 		}
 	}
+
 	template<typename T>
 	inline void FullColumn<T>::equalSelfPlusFullColumnAt(FColsptr<T> fullCol, size_t ii)
 	{
@@ -154,8 +206,9 @@ namespace MbD {
 			this->at(i) += fullCol->at(ii + i);
 		}
 	}
+
 	template<typename T>
-	inline void FullColumn<T>::atiminusFullColumn(size_t i1, FColsptr<T> fullCol)
+	inline void FullColumn<T>::atminusFullColumn(size_t i1, FColsptr<T> fullCol)
 	{
 		for (size_t ii = 0; ii < fullCol->size(); ii++)
 		{
@@ -163,6 +216,7 @@ namespace MbD {
 			this->at(i) -= fullCol->at(ii);
 		}
 	}
+
 	template<typename T>
 	inline void FullColumn<T>::equalFullColumnAt(FColsptr<T> fullCol, size_t i)
 	{
@@ -172,6 +226,7 @@ namespace MbD {
 		//	this->at(ii) = fullCol->at(i + ii);
 		//}
 	}
+
 	template<>
 	inline FColDsptr FullColumn<double>::copy()
 	{
@@ -183,13 +238,15 @@ namespace MbD {
 		}
 		return answer;
 	}
+
 	template<typename T>
 	inline FRowsptr<T> FullColumn<T>::transpose()
 	{
 		return std::make_shared<FullRow<T>>(*this);
 	}
+
 	template<typename T>
-	inline void FullColumn<T>::atiplusFullColumntimes(size_t i1, FColsptr<T> fullCol, T factor)
+	inline void FullColumn<T>::atplusFullColumntimes(size_t i1, FColsptr<T> fullCol, T factor)
 	{
 		for (size_t ii = 0; ii < fullCol->size(); ii++)
 		{
@@ -197,30 +254,33 @@ namespace MbD {
 			this->at(i) += fullCol->at(ii) * factor;
 		}
 	}
+
 	template<typename T>
 	inline T FullColumn<T>::transposeTimesFullColumn(const FColsptr<T> fullCol)
 	{
 		return this->dot(fullCol);
 	}
+
 	template<typename T>
 	inline void FullColumn<T>::equalSelfPlusFullColumntimes(FColsptr<T> fullCol, T factor)
 	{
 		this->equalSelfPlusFullVectortimes(fullCol, factor);
 	}
+
 	template<typename T>
 	inline FColsptr<T> FullColumn<T>::cross(FColsptr<T> fullCol)
 	{
-			auto a0 = this->at(0);
-			auto a1 = this->at(1);
-			auto a2 = this->at(2);
-			auto b0 = fullCol->at(0);
-			auto b1 = fullCol->at(1);
-			auto b2 = fullCol->at(2);
-			auto answer = std::make_shared<FullColumn<T>>(3);
-			answer->atiput(0, a1 * b2 - (a2 * b1));
-			answer->atiput(1, a2 * b0 - (a0 * b2));
-			answer->atiput(2, a0 * b1 - (a1 * b0));
-			return answer;
+		auto a0 = this->at(0);
+		auto a1 = this->at(1);
+		auto a2 = this->at(2);
+		auto b0 = fullCol->at(0);
+		auto b1 = fullCol->at(1);
+		auto b2 = fullCol->at(2);
+		auto answer = std::make_shared<FullColumn<T>>(3);
+		answer->atput(0, a1 * b2 - (a2 * b1));
+		answer->atput(1, a2 * b0 - (a0 * b2));
+		answer->atput(2, a0 * b1 - (a1 * b0));
+		return answer;
 	}
 	//template<>
 	//inline std::shared_ptr<FullColumn<Symsptr>> FullColumn<Symsptr>::simplified()
@@ -234,17 +294,20 @@ namespace MbD {
 	//	}
 	//	return answer;
 	//}
+
 	template<typename T>
 	inline FColsptr<T> FullColumn<T>::simplified()
 	{
 		assert(false);
 		return FColsptr<T>();
 	}
+
 	template<typename T>
 	inline std::shared_ptr<FullColumn<T>> FullColumn<T>::clonesptr()
 	{
 		return std::make_shared<FullColumn<T>>(*this);
 	}
+
 	template<typename T>
 	inline double FullColumn<T>::dot(std::shared_ptr<FullVector<T>> vec)
 	{
@@ -255,6 +318,7 @@ namespace MbD {
 		}
 		return answer;
 	}
+
 	template<typename T>
 	inline std::shared_ptr<FullVector<T>> FullColumn<T>::dot(std::shared_ptr<std::vector<std::shared_ptr<FullColumn<T>>>> vecvec)
 	{
@@ -271,6 +335,7 @@ namespace MbD {
 		}
 		return answer;
 	}
+
 	template<typename T>
 	inline std::ostream& FullColumn<T>::printOn(std::ostream& s) const
 	{

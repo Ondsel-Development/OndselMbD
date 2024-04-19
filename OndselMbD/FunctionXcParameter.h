@@ -11,13 +11,14 @@
 #include "FunctionX.h"
 
 namespace MbD {
-    class FunctionXcParameter : public FunctionX
-    {
-        //
-    public:
-        FunctionXcParameter() = default;
-        FunctionXcParameter(Symsptr arg);
+	class FunctionXcParameter : public FunctionX
+	{
+		//
+	public:
+		FunctionXcParameter() = default;
+		FunctionXcParameter(Symsptr arg);
+		static std::shared_ptr<FunctionXcParameter> With();
 
-    };
+	};
 }
 

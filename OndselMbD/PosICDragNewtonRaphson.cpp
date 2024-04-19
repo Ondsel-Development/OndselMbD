@@ -15,9 +15,9 @@ using namespace MbD;
 
 std::shared_ptr<PosICDragNewtonRaphson> MbD::PosICDragNewtonRaphson::With()
 {
-	auto newtonRaphson = std::make_shared<PosICDragNewtonRaphson>();
-	newtonRaphson->initialize();
-	return newtonRaphson;
+	auto inst = std::make_shared<PosICDragNewtonRaphson>();
+	inst->initialize();
+	return inst;
 }
 
 void MbD::PosICDragNewtonRaphson::initializeGlobally()

@@ -8,18 +8,20 @@
  
 #include "DirectionCosineConstraintIqctJqc.h"
 #include "DirectionCosineIeqctJeqc.h"
-#include "CREATE.h"
+#include "EndFrameqc.h"
 
 using namespace MbD;
 
-DirectionCosineConstraintIqctJqc::DirectionCosineConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj) :
-	DirectionCosineConstraintIqcJqc(frmi, frmj, axisi, axisj)
+std::shared_ptr<DirectionCosineConstraintIqctJqc> MbD::DirectionCosineConstraintIqctJqc::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj)
 {
+	auto inst = std::make_shared<DirectionCosineConstraintIqctJqc>(frmi, frmj, axisi, axisj);
+	inst->initialize();
+	return inst;
 }
 
 void DirectionCosineConstraintIqctJqc::initaAijIeJe()
 {
-	aAijIeJe = CREATE<DirectionCosineIeqctJeqc>::With(frmI, frmJ, axisI, axisJ);
+	aAijIeJe = DirectionCosineIeqctJeqc::With(frmI, frmJ, axisI, axisJ);
 }
 
 ConstraintType DirectionCosineConstraintIqctJqc::type()
@@ -35,7 +37,7 @@ void DirectionCosineConstraintIqctJqc::preVelIC()
 
 void DirectionCosineConstraintIqctJqc::fillVelICError(FColDsptr col)
 {
-	col->atiminusNumber(iG, pGpt);
+	col->atminusNumber(iG, pGpt);
 }
 
 void DirectionCosineConstraintIqctJqc::preAccIC()
@@ -56,5 +58,5 @@ void DirectionCosineConstraintIqctJqc::fillAccICIterError(FColDsptr col)
 	double sum = (ppGpEIpt->timesFullColumn(qEdotI)) * 2.0;
 	sum += (ppGpEJpt->timesFullColumn(qEdotJ)) * 2.0;
 	sum += ppGptpt;
-	col->atiplusNumber(iG, sum);
+	col->atplusNumber(iG, sum);
 }

@@ -11,6 +11,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<MBDynPrismaticJoint> MbD::MBDynPrismaticJoint::With()
+{
+	auto inst = std::make_shared<MBDynPrismaticJoint>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MBDynPrismaticJoint::parseMBDyn(std::string line)
 {
 	MBDynJoint::parseMBDyn(line);

@@ -11,16 +11,18 @@
 #include "AccICNewtonRaphson.h"
 
 namespace MbD {
-    class AccICKineNewtonRaphson : public AccICNewtonRaphson
-    {
-        //Kinematics with under constrained system
-    public:
-        void run() override;
-        void iterate() override;
-        void initializeGlobally() override;
-        void preRun() override;
+	class AccICKineNewtonRaphson : public AccICNewtonRaphson
+	{
+		//Kinematics with under constrained system
+	public:
+		static std::shared_ptr<AccICKineNewtonRaphson> With();
+
+		void run() override;
+		void iterate() override;
+		void initializeGlobally() override;
+		void preRun() override;
 
 
-    };
+	};
 }
 

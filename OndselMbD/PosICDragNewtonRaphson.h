@@ -11,19 +11,19 @@
 #include "AnyPosICNewtonRaphson.h"
 
 namespace MbD {
-    class Part;
+	class Part;
 
-    class PosICDragNewtonRaphson : public AnyPosICNewtonRaphson
-    {
-        //Kinematics with under constrained system
-    public:
-        static std::shared_ptr<PosICDragNewtonRaphson> With();
-        void initializeGlobally() override;
-        void assignEquationNumbers() override;
-        bool isConverged() override;
-        void setdragParts(std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts);
+	class PosICDragNewtonRaphson : public AnyPosICNewtonRaphson
+	{
+		//Kinematics with under constrained system
+	public:
+		static std::shared_ptr<PosICDragNewtonRaphson> With();
+		void initializeGlobally() override;
+		void assignEquationNumbers() override;
+		bool isConverged() override;
+		void setdragParts(std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts);
 
-        std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts;
-    };
+		std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts;
+	};
 }
 

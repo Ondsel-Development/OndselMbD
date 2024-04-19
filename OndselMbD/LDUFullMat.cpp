@@ -10,6 +10,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<LDUFullMat> MbD::LDUFullMat::With()
+{
+	auto inst = std::make_shared<LDUFullMat>();
+	inst->initialize();
+	return inst;
+}
+
 FColDsptr LDUFullMat::basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
 {
 	this->decomposesaveOriginal(fullMat, saveOriginal);
@@ -49,7 +56,7 @@ void LDUFullMat::forwardEliminateWithPivot(size_t p)
 		if (factor != 0) {
 			for (size_t j = p + 1; j < n; j++)
 			{
-				rowi->atiminusNumber(j, factor * rowp->at(j));
+				rowi->atminusNumber(j, factor * rowp->at(j));
 			}
 		}
 	}
@@ -122,7 +129,7 @@ FMatDsptr LDUFullMat::inversesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
 		rightHandSideB->zeroSelf();
 		rightHandSideB->at(j) = 1.0;
 		this->forAndBackSubsaveOriginal(rightHandSideB, saveOriginal);
-		matrixAinverse->atijputFullColumn(0, j, answerX);
+		matrixAinverse->atandputFullColumn(0, j, answerX);
 	}
 	return matrixAinverse;
 }

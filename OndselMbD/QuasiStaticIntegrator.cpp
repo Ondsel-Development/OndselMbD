@@ -14,6 +14,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<QuasiStaticIntegrator> MbD::QuasiStaticIntegrator::With()
+{
+	auto inst = std::make_shared<QuasiStaticIntegrator>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::QuasiStaticIntegrator::useTrialStepStats(std::shared_ptr<SolverStatistics> stats)
 {
 	system->useDynTrialStepStats(stats);

@@ -12,20 +12,18 @@
 
 using namespace MbD;
 
-DirectionCosineIeqctJeqc::DirectionCosineIeqctJeqc()
+std::shared_ptr<DirectionCosineIeqctJeqc> MbD::DirectionCosineIeqctJeqc::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj)
 {
-}
-
-DirectionCosineIeqctJeqc::DirectionCosineIeqctJeqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj) :
-	DirectionCosineIeqcJeqc(frmi, frmj, axisi, axisj)
-{
+	auto inst = std::make_shared<DirectionCosineIeqctJeqc>(frmi, frmj, axisi, axisj);
+	inst->initialize();
+	return inst;
 }
 
 void DirectionCosineIeqctJeqc::initialize()
 {
 	DirectionCosineIeqcJeqc::initialize();
-	ppAijIeJepEIpt = std::make_shared<FullRow<double>>(4);
-	ppAijIeJepEJpt = std::make_shared<FullRow<double>>(4);
+	ppAijIeJepEIpt = FullRow<double>::With(4);
+	ppAijIeJepEJpt = FullRow<double>::With(4);
 }
 
 void DirectionCosineIeqctJeqc::initializeGlobally()
@@ -78,11 +76,11 @@ void DirectionCosineIeqctJeqc::preAccIC()
 	for (size_t i = 0; i < 4; i++)
 	{
 		auto& ppAjOIepEITpti = ppAjOIepEITpt->at(i);
-		ppAijIeJepEIpt->atiput(i, ppAjOIepEITpti->dot(aAjOJe));
+		ppAijIeJepEIpt->atput(i, ppAjOIepEITpti->dot(aAjOJe));
 	}
 	for (size_t i = 0; i < 4; i++)
 	{
-		ppAijIeJepEJpt->atiput(i, pAjOIept->dot(pAjOJepEJT->at(i)));
+		ppAijIeJepEJpt->atput(i, pAjOIept->dot(pAjOJepEJT->at(i)));
 	}
 	ppAijIeJeptpt = ppAjOIeptpt->dot(aAjOJe);
 }

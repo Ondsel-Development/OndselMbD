@@ -13,14 +13,31 @@ using namespace MbD;
 
 MbD::DispCompIeqctJeqcIe::DispCompIeqctJeqcIe()
 {
+	//Do nothing.
 }
 
 MbD::DispCompIeqctJeqcIe::DispCompIeqctJeqcIe(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis) : DispCompIeqcJeqcIe(frmi, frmj, axis)
 {
-	ppriIeJeIepXIpt = std::make_shared<FullRow<double>>(3);
-	ppriIeJeIepEIpt = std::make_shared<FullRow<double>>(4);
-	ppriIeJeIepXJpt = std::make_shared<FullRow<double>>(3);
-	ppriIeJeIepEJpt = std::make_shared<FullRow<double>>(4);
+	ppriIeJeIepXIpt = FullRow<double>::With(3);
+	ppriIeJeIepEIpt = FullRow<double>::With(4);
+	ppriIeJeIepXJpt = FullRow<double>::With(3);
+	ppriIeJeIepEJpt = FullRow<double>::With(4);
+}
+
+std::shared_ptr<DispCompIeqctJeqcIe> MbD::DispCompIeqctJeqcIe::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis)
+{
+	auto inst = std::make_shared<DispCompIeqctJeqcIe>(frmi, frmj, axis);
+	inst->initialize();
+	return inst;
+}
+
+void MbD::DispCompIeqctJeqcIe::initialize()
+{
+	DispCompIeqcJeqcIe::initialize();
+	ppriIeJeIepXIpt = FullRow<double>::With(3);
+	ppriIeJeIepEIpt = FullRow<double>::With(4);
+	ppriIeJeIepXJpt = FullRow<double>::With(3);
+	ppriIeJeIepEJpt = FullRow<double>::With(4);
 }
 
 void MbD::DispCompIeqctJeqcIe::calc_ppvaluepEIpt()
@@ -38,7 +55,7 @@ void MbD::DispCompIeqctJeqcIe::calc_ppvaluepEIpt()
 		auto mprIeJeOpEITi = mprIeJeOpEIT->at(i);
 		auto mpprIeJeOpEITpti = mpprIeJeOpEITpt->at(i);
 		auto ppriIeJeIepEIpti = ppAjOIepEITpti->dot(rIeJeO) - pAjOIepEITi->dot(mprIeJeOpt) - pAjOIept->dot(mprIeJeOpEITi) - aAjOIe->dot(mpprIeJeOpEITpti);
-		ppriIeJeIepEIpt->atiput(i, ppriIeJeIepEIpti);
+		ppriIeJeIepEIpt->atput(i, ppriIeJeIepEIpti);
 	}
 }
 
@@ -50,7 +67,7 @@ void MbD::DispCompIeqctJeqcIe::calc_ppvaluepEJpt()
 	auto prIeJeOpEJT = frmJeqct->prOeOpE->transpose();
 	for (size_t i = 0; i < 4; i++)
 	{
-		ppriIeJeIepEJpt->atiput(i, pAjOIept->dot(prIeJeOpEJT->at(i)));
+		ppriIeJeIepEJpt->atput(i, pAjOIept->dot(prIeJeOpEJT->at(i)));
 	}
 }
 
@@ -70,7 +87,7 @@ void MbD::DispCompIeqctJeqcIe::calc_ppvaluepXIpt()
 	auto pAjOIept = frmIeqct->pAjOept(axis);
 	for (size_t i = 0; i < 3; i++)
 	{
-		ppriIeJeIepXIpt->atiput(i, -pAjOIept->at(i));
+		ppriIeJeIepXIpt->atput(i, -pAjOIept->at(i));
 	}
 }
 
@@ -80,7 +97,7 @@ void MbD::DispCompIeqctJeqcIe::calc_ppvaluepXJpt()
 	auto pAjOIept = frmIeqct->pAjOept(axis);
 	for (size_t i = 0; i < 3; i++)
 	{
-		ppriIeJeIepXJpt->atiput(i, pAjOIept->at(i));
+		ppriIeJeIepXJpt->atput(i, pAjOIept->at(i));
 	}
 }
 
@@ -98,15 +115,6 @@ void MbD::DispCompIeqctJeqcIe::calcPostDynCorrectorIteration()
 	auto frmIeqct = std::static_pointer_cast<EndFrameqct>(frmI);
 	ppAjOIepEIpEI = frmIeqct->ppAjOepEpE(axis);
 	DispCompIeqcJeqcIe::calcPostDynCorrectorIteration();
-}
-
-void MbD::DispCompIeqctJeqcIe::initialize()
-{
-	DispCompIeqcJeqcIe::initialize();
-	ppriIeJeIepXIpt = std::make_shared<FullRow<double>>(3);
-	ppriIeJeIepEIpt = std::make_shared<FullRow<double>>(4);
-	ppriIeJeIepXJpt = std::make_shared<FullRow<double>>(3);
-	ppriIeJeIepEJpt = std::make_shared<FullRow<double>>(4);
 }
 
 void MbD::DispCompIeqctJeqcIe::initializeGlobally()

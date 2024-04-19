@@ -12,6 +12,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<LDUFullMatParPv> MbD::LDUFullMatParPv::With()
+{
+	auto inst = std::make_shared<LDUFullMatParPv>();
+	inst->initialize();
+	return inst;
+}
+
 void LDUFullMatParPv::doPivoting(size_t p)
 {
 	//"Use scalings. Do row pivoting."

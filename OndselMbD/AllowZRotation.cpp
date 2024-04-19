@@ -12,24 +12,32 @@
 #include "AllowZRotationConstraintIqctJqc.h"
 #include "EndFrameqc.h"
 #include "EndFrameqct.h"
-#include "CREATE.h"
 #include "RedundantConstraint.h"
 
 using namespace MbD;
-
-MbD::AllowZRotation::AllowZRotation()
-{
-}
+//
+//MbD::AllowZRotation::AllowZRotation()
+//{
+//	//Do nothing.
+//}
 
 MbD::AllowZRotation::AllowZRotation(const char* str) : PrescribedMotion(str) 
 {
+	assert(false);
 }
 
 std::shared_ptr<AllowZRotation> MbD::AllowZRotation::With()
 {
-	auto allowZRotation = std::make_shared<AllowZRotation>();
-	allowZRotation->initialize();
-	return allowZRotation;
+	auto inst = std::make_shared<AllowZRotation>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<AllowZRotation> MbD::AllowZRotation::With(const char* str)
+{
+	auto inst = std::make_shared<AllowZRotation>(str);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::AllowZRotation::initializeGlobally()
@@ -50,7 +58,7 @@ void MbD::AllowZRotation::postPosIC()
 	for (size_t i = 0; i < constraints->size(); i++)
 	{
 		auto& constraint = constraints->at(i);
-		auto redunCon = CREATE<RedundantConstraint>::With();
+		auto redunCon = RedundantConstraint::With();
 		redunCon->constraint = constraint;
 		constraints->at(i) = redunCon;
 	}

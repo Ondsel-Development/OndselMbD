@@ -13,11 +13,17 @@
 #include "VectorNewtonRaphson.h"
 #include "MatrixSolver.h"
 #include "GEFullMatParPv.h"
-#include "CREATE.h"
 #include "SystemSolver.h"
 #include "SingularMatrixError.h"
 
 using namespace MbD;
+
+std::shared_ptr<VectorNewtonRaphson> MbD::VectorNewtonRaphson::With()
+{
+	auto inst = std::make_shared<VectorNewtonRaphson>();
+	inst->initialize();
+	return inst;
+}
 
 void VectorNewtonRaphson::initializeGlobally()
 {
@@ -36,7 +42,7 @@ void VectorNewtonRaphson::run()
 
 std::shared_ptr<MatrixSolver> VectorNewtonRaphson::matrixSolverClassNew()
 {
-	return CREATE<GEFullMatParPv>::With();
+	return GEFullMatParPv::With();
 }
 
 void VectorNewtonRaphson::fillY()
@@ -81,6 +87,7 @@ void VectorNewtonRaphson::xEqualxoldPlusdx()
 
 void MbD::VectorNewtonRaphson::basicSolveEquations()
 {
+	//Subclasses must implement.
 	assert(false);
 }
 

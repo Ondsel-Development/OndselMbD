@@ -6,13 +6,19 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
 
-#include <algorithm>
-#include <iterator>
+//#include <iterator>
 
 #include "Arguments.h"
 
 using namespace MbD;
 
+
+std::shared_ptr<Arguments> MbD::Arguments::With()
+{
+	auto inst = std::make_shared<Arguments>();
+	inst->initialize();
+	return inst;
+}
 
 void MbD::Arguments::arguments(Symsptr args)
 {

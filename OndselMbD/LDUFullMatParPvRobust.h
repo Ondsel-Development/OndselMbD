@@ -11,12 +11,14 @@
 #include "LDUFullMatParPv.h"
 
 namespace MbD {
-    class LDUFullMatParPvRobust : public LDUFullMatParPv
-    {
-        //
-    public:
-        void doPivoting(size_t p) override;
+	class LDUFullMatParPvRobust : public LDUFullMatParPv
+	{
+		//
+	public:
+		static std::shared_ptr<LDUFullMatParPvRobust> With();
+		
+		void doPivoting(size_t p) override;
 
-    };
+	};
 }
 

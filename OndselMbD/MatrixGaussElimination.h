@@ -12,11 +12,13 @@
 #include "SparseMatrix.h"
 
 namespace MbD {
-    class MatrixGaussElimination : public MatrixSolver
-    {
-        //
-    public:
-        virtual void forwardEliminateWithPivot(size_t p) = 0;
-    };
+	class MatrixGaussElimination : public MatrixSolver
+	{
+		//
+	public:
+		static std::shared_ptr<MatrixGaussElimination> With();
+
+		virtual void forwardEliminateWithPivot(size_t p);
+	};
 }
 

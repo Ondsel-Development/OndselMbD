@@ -11,16 +11,18 @@
 #include "VelSolver.h"
 
 namespace MbD {
-    class VelICSolver : public VelSolver
-    {
-      //IC with fully or under constrained system
-      //nqsu
-    public:
-        void assignEquationNumbers() override;
-        void run() override;
-        void runBasic();
+	class VelICSolver : public VelSolver
+	{
+	  //IC with fully or under constrained system
+	  //nqsu
+	public:
+		static std::shared_ptr<VelICSolver> With();
 
-        size_t nqsu = SIZE_MAX;
-    };
+		void assignEquationNumbers() override;
+		void run() override;
+		void runBasic();
+
+		size_t nqsu = SIZE_MAX;
+	};
 }
 

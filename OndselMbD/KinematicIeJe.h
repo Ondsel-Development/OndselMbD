@@ -11,6 +11,7 @@
 #include "Item.h"
 
 namespace MbD {
+	class PartFrame;
 	class EndFramec;
 	using EndFrmsptr = std::shared_ptr<EndFramec>;
 
@@ -18,8 +19,9 @@ namespace MbD {
 	{
 		//frmI frmJ 
 	public:
-		KinematicIeJe();
-		KinematicIeJe(EndFrmsptr frmi, EndFrmsptr frmj);
+		KinematicIeJe() {}
+		KinematicIeJe(EndFrmsptr frmi, EndFrmsptr frmj) : frmI(frmi), frmJ(frmj) {}
+		static std::shared_ptr<KinematicIeJe> With(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		bool isKineIJ() override;
 		virtual void calc_value();
@@ -74,6 +76,10 @@ namespace MbD {
 		virtual FMatDsptr ppvaluepXJpEK();
 		virtual FMatDsptr ppvaluepEJpEK();
 		virtual FMatDsptr ppvaluepEKpEK();
+		virtual FMatDsptr puIeJeOpEI();
+		virtual FMatDsptr puIeJeOpXI();
+		virtual FMatDsptr puIeJeOpEJ();
+		virtual FMatDsptr puIeJeOpXJ();
 		virtual double pvaluept();
 		virtual double ppvalueptpt();
 		virtual FRowDsptr ppvaluepXIpt();
@@ -82,7 +88,10 @@ namespace MbD {
 		virtual FRowDsptr ppvaluepEJpt();
 		virtual FRowDsptr ppvaluepXKpt();
 		virtual FRowDsptr ppvaluepEKpt();
-		virtual double value();
+		double value() override;
+		virtual void withFrmIfrmJ(EndFrmsptr eFrmI, EndFrmsptr eFrmJ);
+		PartFrame* partFrameI();
+		PartFrame* partFrameJ();
 
 		EndFrmsptr frmI, frmJ;
 	};

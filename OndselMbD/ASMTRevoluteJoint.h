@@ -11,15 +11,16 @@
 #include "ASMTAtPointJoint.h"
 
 namespace MbD {
-    class ASMTRevoluteJoint : public ASMTAtPointJoint
-    {
-        //
-    public:
-        static std::shared_ptr<ASMTRevoluteJoint> With();
-        std::shared_ptr<Joint> mbdClassNew() override;
-        void storeOnLevel(std::ofstream& os, size_t level) override;
-        void storeOnTimeSeries(std::ofstream& os) override;
+	class ASMTRevoluteJoint : public ASMTAtPointJoint
+	{
+		//
+	public:
+		static std::shared_ptr<ASMTRevoluteJoint> With();
 
-    };
+		std::shared_ptr<Joint> mbdClassNew() override;
+		void storeOnLevel(std::ofstream& os, size_t level) override;
+		void storeOnTimeSeries(std::ofstream& os) override;
+
+	};
 }
 

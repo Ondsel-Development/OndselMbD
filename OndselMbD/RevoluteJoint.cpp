@@ -10,16 +10,26 @@
 #include "System.h"
 #include "AtPointConstraintIJ.h"
 #include "DirectionCosineConstraintIJ.h"
-#include "CREATE.h"
 
 using namespace MbD;
 
-RevoluteJoint::RevoluteJoint() 
-{
-}
-
 RevoluteJoint::RevoluteJoint(const char* str) : AtPointJoint(str)
 {
+	assert(false);
+}
+
+std::shared_ptr<RevoluteJoint> MbD::RevoluteJoint::With()
+{
+	auto inst = std::make_shared<RevoluteJoint>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<RevoluteJoint> MbD::RevoluteJoint::With(const char* str)
+{
+	auto inst = std::make_shared<RevoluteJoint>(str);
+	inst->initialize();
+	return inst;
 }
 
 void RevoluteJoint::initializeGlobally()
@@ -27,8 +37,8 @@ void RevoluteJoint::initializeGlobally()
 	if (constraints->empty())
 	{
 		createAtPointConstraints();
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 0));
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 1));
+		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 1));
 		this->root()->hasChanged = true;
 	}
 	else {

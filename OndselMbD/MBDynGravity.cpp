@@ -6,6 +6,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<MBDynGravity> MbD::MBDynGravity::With()
+{
+	auto inst = std::make_shared<MBDynGravity>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MBDynGravity::parseMBDyn(std::string line)
 {
 	gravityString = line;

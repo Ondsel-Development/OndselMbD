@@ -12,12 +12,14 @@
 
 using namespace MbD;
 
-std::shared_ptr<Joint> MbD::ASMTPerpendicularJoint::mbdClassNew()
-{
-    return CREATE<PerpendicularJoint>::With();
-}
-
 std::shared_ptr<ASMTPerpendicularJoint> MbD::ASMTPerpendicularJoint::With()
 {
-    return std::make_shared<ASMTPerpendicularJoint>();
+	auto inst = std::make_shared<ASMTPerpendicularJoint>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<Joint> MbD::ASMTPerpendicularJoint::mbdClassNew()
+{
+	return PerpendicularJoint::With();
 }

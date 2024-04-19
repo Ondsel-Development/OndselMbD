@@ -18,6 +18,8 @@ namespace MbD {
 	{
 		//
 	public:
+		static std::shared_ptr<DAECorrector> With();
+		
 		void iterate() override;
 		void fillPyPx() override;
 		void fillY() override;
@@ -33,7 +35,7 @@ namespace MbD {
 		void postRun() override;
 		void setSystem(Solver* sys) override;
 		void reportStats() override;
-        void outputSpreadsheet();
+		void outputSpreadsheet();
 
 		SpMatDsptr pypx;
 		BasicDAEIntegrator* daeSystem;

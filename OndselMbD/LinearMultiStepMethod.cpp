@@ -11,6 +11,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<LinearMultiStepMethod> MbD::LinearMultiStepMethod::With()
+{
+	auto inst = std::make_shared<LinearMultiStepMethod>();
+	inst->initialize();
+	return inst;
+}
+
 FColDsptr MbD::LinearMultiStepMethod::derivativeatpresentpast(size_t n, double t, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast)
 {
 	//"Interpolate or extrapolate."

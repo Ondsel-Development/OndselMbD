@@ -11,12 +11,13 @@
 #include "ASMTJoint.h"
 
 namespace MbD {
-    class ASMTPerpendicularJoint : public ASMTJoint
-    {
-        //
-    public:
-        std::shared_ptr<Joint> mbdClassNew() override;
-        static std::shared_ptr<ASMTPerpendicularJoint> With();
+	class ASMTPerpendicularJoint : public ASMTJoint
+	{
+		//
+	public:
+		static std::shared_ptr<ASMTPerpendicularJoint> With();
 
-    };
+		std::shared_ptr<Joint> mbdClassNew() override;
+
+	};
 }

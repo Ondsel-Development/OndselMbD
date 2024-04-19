@@ -3,8 +3,16 @@
 
 using namespace MbD;
 
+std::shared_ptr<MBDynControlData> MbD::MBDynControlData::With()
+{
+	auto inst = std::make_shared<MBDynControlData>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MBDynControlData::initialize()
 {
+	assert(false);
 }
 
 void MbD::MBDynControlData::parseMBDyn(std::vector<std::string>& lines)
@@ -17,8 +25,11 @@ void MbD::MBDynControlData::parseMBDyn(std::vector<std::string>& lines)
 	readOutputMeter(lines);
 	readStructuralNodes(lines);
 	readRigidBodies(lines);
+	readAbstractNodes(lines);
 	readJoints(lines);
+	readForces(lines);
 	readGravity(lines);
+	readGenels(lines);
 	assert(lines.size() == 2);
 }
 
@@ -134,6 +145,20 @@ void MbD::MBDynControlData::readRigidBodies(std::vector<std::string>& lines)
 	lines.erase(it);
 }
 
+void MbD::MBDynControlData::readAbstractNodes(std::vector<std::string>& lines)
+{
+	//abstract nodes:     3;
+	std::vector<std::string> tokens{ "abstract", "nodes:" };
+	auto it = findLineWith(lines, tokens);
+	if (it == lines.end()) return;
+	std::istringstream iss(*it);
+	std::string str;
+	iss >> str;
+	iss >> str;
+	iss >> abstractnodes;
+	lines.erase(it);
+}
+
 void MbD::MBDynControlData::readJoints(std::vector<std::string>& lines)
 {
 	//joints:           6;
@@ -147,11 +172,37 @@ void MbD::MBDynControlData::readJoints(std::vector<std::string>& lines)
 	lines.erase(it);
 }
 
+void MbD::MBDynControlData::readForces(std::vector<std::string>& lines)
+{
+	//forces:           6;
+	std::vector<std::string> tokens{ "forces:" };
+	auto it = findLineWith(lines, tokens);
+	if (it == lines.end()) return;
+	std::istringstream iss(*it);
+	std::string str;
+	iss >> str;
+	iss >> forces;
+	lines.erase(it);
+}
+
 void MbD::MBDynControlData::readGravity(std::vector<std::string>& lines)
 {
 	//gravity;
 	std::vector<std::string> tokens{ "gravity" };
 	auto it = findLineWith(lines, tokens);
 	if (it == lines.end()) return;
+	lines.erase(it);
+}
+
+void MbD::MBDynControlData::readGenels(std::vector<std::string>& lines)
+{
+	//genels:           6;
+	std::vector<std::string> tokens{ "genels:" };
+	auto it = findLineWith(lines, tokens);
+	if (it == lines.end()) return;
+	std::istringstream iss(*it);
+	std::string str;
+	iss >> str;
+	iss >> genels;
 	lines.erase(it);
 }

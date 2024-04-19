@@ -14,6 +14,8 @@ namespace MbD {
 	class Arguments : public FunctionWithManyArgs
 	{
 	public:
+		static std::shared_ptr<Arguments> With();
+		
 		void arguments(Symsptr args) override;
 	};
 }

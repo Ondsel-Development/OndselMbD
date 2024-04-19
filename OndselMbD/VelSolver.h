@@ -22,6 +22,8 @@ namespace MbD {
 	{
 		//system n x errorVector jacobian matrixSolver 
 	public:
+		static std::shared_ptr<VelSolver> With();
+
 		void basicSolveEquations();
 		void handleSingularMatrix() override;
 		void logSingularMatrixMessage();

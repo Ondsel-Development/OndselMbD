@@ -5,11 +5,14 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
+#include <cassert>
+
 #include "MaximumIterationError.h"
 
 using namespace MbD;
 
 MaximumIterationError::MaximumIterationError(const std::string& msg) : std::runtime_error(msg)
 {
+	assert(false);
 }

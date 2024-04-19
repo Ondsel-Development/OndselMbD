@@ -11,13 +11,16 @@
 #include "AtPointJoint.h"
 
 namespace MbD {
-    class RevoluteJoint : public AtPointJoint
-    {
-        //
-    public:
-        RevoluteJoint();
-        RevoluteJoint(const char* str);
-        void initializeGlobally() override;
-    };
+	class RevoluteJoint : public AtPointJoint
+	{
+		//
+	public:
+		RevoluteJoint() {}
+		RevoluteJoint(const char* str);
+		static std::shared_ptr<RevoluteJoint> With();
+		static std::shared_ptr<RevoluteJoint> With(const char* str);
+
+		void initializeGlobally() override;
+	};
 }
 

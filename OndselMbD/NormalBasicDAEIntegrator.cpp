@@ -11,14 +11,9 @@
 #include "NormalBasicDAEIntegrator.h"
 #include "LinearMultiStepMethod.h"
 #include "StableBackwardDifference.h"
-#include "CREATE.h"
 #include "StartingBasicDAEIntegrator.h"
 
 using namespace MbD;
-
-MbD::NormalBasicDAEIntegrator::NormalBasicDAEIntegrator()
-{
-}
 
 MbD::NormalBasicDAEIntegrator::NormalBasicDAEIntegrator(std::shared_ptr<StartingBasicDAEIntegrator> startingBasicDAEIntegrator)
 {
@@ -59,7 +54,7 @@ MbD::NormalBasicDAEIntegrator::NormalBasicDAEIntegrator(std::shared_ptr<Starting
 	integAbsTol = startingBasicDAEIntegrator->integAbsTol;
 	integRelTol = startingBasicDAEIntegrator->integRelTol;
 	truncError = startingBasicDAEIntegrator->truncError;
-	opBDFhigher = CREATE<StableBackwardDifference>::With();
+	opBDFhigher = StableBackwardDifference::With();
 	opBDFhigher->timeNodes = tpast;
 	opBDFhigher->time = t;
 	opBDFhigher->iStep = istep;
@@ -67,10 +62,17 @@ MbD::NormalBasicDAEIntegrator::NormalBasicDAEIntegrator(std::shared_ptr<Starting
 	//calcOperatorMatrix();
 }
 
+std::shared_ptr<NormalBasicDAEIntegrator> MbD::NormalBasicDAEIntegrator::With()
+{
+	auto inst = std::make_shared<NormalBasicDAEIntegrator>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::NormalBasicDAEIntegrator::initialize()
 {
 	BasicDAEIntegrator::initialize();
-	opBDFhigher = CREATE<StableBackwardDifference>::With();
+	opBDFhigher = StableBackwardDifference::With();
 	opBDFhigher->timeNodes = tpast;
 }
 

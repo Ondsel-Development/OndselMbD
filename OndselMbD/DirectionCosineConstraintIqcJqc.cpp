@@ -9,18 +9,19 @@
 #include "DirectionCosineConstraintIqcJqc.h"
 #include "DirectionCosineIeqcJeqc.h"
 #include "EndFrameqc.h"
-#include "CREATE.h"
 
 using namespace MbD;
 
-DirectionCosineConstraintIqcJqc::DirectionCosineConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj) :
-	DirectionCosineConstraintIqcJc(frmi, frmj, axisi, axisj)
+std::shared_ptr<DirectionCosineConstraintIqcJqc> MbD::DirectionCosineConstraintIqcJqc::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj)
 {
+	auto inst = std::make_shared<DirectionCosineConstraintIqcJqc>(frmi, frmj, axisi, axisj);
+	inst->initialize();
+	return inst;
 }
 
 void DirectionCosineConstraintIqcJqc::initaAijIeJe()
 {
-	aAijIeJe = CREATE<DirectionCosineIeqcJeqc>::With(frmI, frmJ, axisI, axisJ);
+	aAijIeJe = DirectionCosineIeqcJeqc::With(frmI, frmJ, axisI, axisJ);
 }
 
 void DirectionCosineConstraintIqcJqc::calcPostDynCorrectorIteration()
@@ -41,53 +42,53 @@ void DirectionCosineConstraintIqcJqc::useEquationNumbers()
 void MbD::DirectionCosineConstraintIqcJqc::fillpFpy(SpMatDsptr mat)
 {
 	DirectionCosineConstraintIqcJc::fillpFpy(mat);
-	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
+	mat->atandplusFullRow(iG, iqEJ, pGpEJ);
 	auto ppGpEIpEJlam = ppGpEIpEJ->times(lam);
-	mat->atijplusFullMatrix(iqEI, iqEJ, ppGpEIpEJlam);
-	mat->atijplusTransposeFullMatrix(iqEJ, iqEI, ppGpEIpEJlam);
-	mat->atijplusFullMatrixtimes(iqEJ, iqEJ, ppGpEJpEJ, lam);
+	mat->atandplusFullMatrix(iqEI, iqEJ, ppGpEIpEJlam);
+	mat->atandplusTransposeFullMatrix(iqEJ, iqEI, ppGpEIpEJlam);
+	mat->atandplusFullMatrixtimes(iqEJ, iqEJ, ppGpEJpEJ, lam);
 }
 
 void MbD::DirectionCosineConstraintIqcJqc::fillpFpydot(SpMatDsptr mat)
 {
 	DirectionCosineConstraintIqcJc::fillpFpydot(mat);
-	mat->atijplusFullColumn(iqEJ, iG, pGpEJ->transpose());
+	mat->atandplusFullColumn(iqEJ, iG, pGpEJ->transpose());
 }
 
 void DirectionCosineConstraintIqcJqc::fillPosICError(FColDsptr col)
 {
 	DirectionCosineConstraintIqcJc::fillPosICError(col);
-	col->atiplusFullVectortimes(iqEJ, pGpEJ, lam);
+	col->atplusFullVectortimes(iqEJ, pGpEJ, lam);
 }
 
 void DirectionCosineConstraintIqcJqc::fillPosICJacob(SpMatDsptr mat)
 {
 	DirectionCosineConstraintIqcJc::fillPosICJacob(mat);
-	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
-	mat->atijplusFullColumn(iqEJ, iG, pGpEJ->transpose());
+	mat->atandplusFullRow(iG, iqEJ, pGpEJ);
+	mat->atandplusFullColumn(iqEJ, iG, pGpEJ->transpose());
 	auto ppGpEIpEJlam = ppGpEIpEJ->times(lam);
-	mat->atijplusFullMatrix(iqEI, iqEJ, ppGpEIpEJlam);
-	mat->atijplusTransposeFullMatrix(iqEJ, iqEI, ppGpEIpEJlam);
-	mat->atijplusFullMatrixtimes(iqEJ, iqEJ, ppGpEJpEJ, lam);
+	mat->atandplusFullMatrix(iqEI, iqEJ, ppGpEIpEJlam);
+	mat->atandplusTransposeFullMatrix(iqEJ, iqEI, ppGpEIpEJlam);
+	mat->atandplusFullMatrixtimes(iqEJ, iqEJ, ppGpEJpEJ, lam);
 }
 
 void DirectionCosineConstraintIqcJqc::fillPosKineJacob(SpMatDsptr mat)
 {
 	DirectionCosineConstraintIqcJc::fillPosKineJacob(mat);
-	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
+	mat->atandplusFullRow(iG, iqEJ, pGpEJ);
 }
 
 void DirectionCosineConstraintIqcJqc::fillVelICJacob(SpMatDsptr mat)
 {
 	DirectionCosineConstraintIqcJc::fillVelICJacob(mat);
-	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
-	mat->atijplusFullColumn(iqEJ, iG, pGpEJ->transpose());
+	mat->atandplusFullRow(iG, iqEJ, pGpEJ);
+	mat->atandplusFullColumn(iqEJ, iG, pGpEJ->transpose());
 }
 
 void DirectionCosineConstraintIqcJqc::fillAccICIterError(FColDsptr col)
 {
 	DirectionCosineConstraintIqcJc::fillAccICIterError(col);
-	col->atiplusFullVectortimes(iqEJ, pGpEJ, lam);
+	col->atplusFullVectortimes(iqEJ, pGpEJ, lam);
 	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
 	auto efrmJqc = std::static_pointer_cast<EndFrameqc>(frmJ);
 	auto qEdotI = efrmIqc->qEdot();
@@ -95,5 +96,5 @@ void DirectionCosineConstraintIqcJqc::fillAccICIterError(FColDsptr col)
 	double sum = pGpEJ->timesFullColumn(efrmJqc->qEddot());
 	sum += (qEdotI->transposeTimesFullColumn(ppGpEIpEJ->timesFullColumn(qEdotJ))) * 2.0;
 	sum += qEdotJ->transposeTimesFullColumn(ppGpEJpEJ->timesFullColumn(qEdotJ));
-	col->atiplusNumber(iG, sum);
+	col->atplusNumber(iG, sum);
 }

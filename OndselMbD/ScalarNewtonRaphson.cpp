@@ -11,6 +11,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<ScalarNewtonRaphson> MbD::ScalarNewtonRaphson::With()
+{
+	auto inst = std::make_shared<ScalarNewtonRaphson>();
+	inst->initialize();
+	return inst;
+}
+
 void ScalarNewtonRaphson::initializeGlobally()
 {
 	assert(false);

@@ -20,7 +20,9 @@ using namespace MbD;
 
 std::shared_ptr<ASMTTranslationalMotion> MbD::ASMTTranslationalMotion::With()
 {
-	return std::make_shared<ASMTTranslationalMotion>();
+	auto inst = std::make_shared<ASMTTranslationalMotion>();
+	inst->initialize();
+	return inst;
 }
 
 void MbD::ASMTTranslationalMotion::parseASMT(std::vector<std::string>& lines)
@@ -54,7 +56,7 @@ void MbD::ASMTTranslationalMotion::createMbD(std::shared_ptr<System> mbdSys, std
 
 std::shared_ptr<Joint> MbD::ASMTTranslationalMotion::mbdClassNew()
 {
-	return CREATE<ZTranslation>::With();
+	return ZTranslation::With();
 }
 
 void MbD::ASMTTranslationalMotion::readMotionJoint(std::vector<std::string>& lines)

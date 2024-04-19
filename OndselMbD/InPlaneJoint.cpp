@@ -7,24 +7,24 @@
  ***************************************************************************/
  
 #include "InPlaneJoint.h"
-#include "CREATE.h"
+#include "TranslationConstraintIJ.h"
 
-MbD::InPlaneJoint::InPlaneJoint()
-{
-}
+using namespace MbD;
 
 MbD::InPlaneJoint::InPlaneJoint(const char*)
 {
+	assert(false);
 }
 
 void MbD::InPlaneJoint::initializeGlobally()
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
 void MbD::InPlaneJoint::createInPlaneConstraint()
 {
-	auto tranCon = CREATE<TranslationConstraintIJ>::ConstraintWith(frmI, frmJ, 2);
+	auto tranCon = TranslationConstraintIJ::With(frmI, frmJ, 2);
 	tranCon->setConstant(offset);
 	addConstraint(tranCon);
 }

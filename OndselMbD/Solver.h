@@ -11,16 +11,19 @@
 #include <string>
 #include <memory>
 
+#include "Numeric.h"
 #include "SolverStatistics.h"
 
 namespace MbD {
-	class Solver
+	class Solver : public Numeric
 	{
 		//statistics
 	public:
-		void noop();
-		virtual ~Solver() {}
+		//virtual ~Solver() {}
+		static std::shared_ptr<Solver> With();
 		virtual void initialize();
+
+		void noop();
 		virtual void initializeLocally();
 		virtual void initializeGlobally();
 		virtual void assignEquationNumbers();
@@ -31,7 +34,7 @@ namespace MbD {
 		virtual void postRun();
 		virtual void logString(std::string& str);
 		void logString(const char* chars);
-		virtual void setSystem(Solver* sys) = 0;
+		virtual void setSystem(Solver* sys);
 		virtual void handleSingularMatrix();
 
 		std::shared_ptr<SolverStatistics> statistics = std::make_shared<SolverStatistics>();

@@ -11,6 +11,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<MBDynInLineJoint> MbD::MBDynInLineJoint::With()
+{
+	auto inst = std::make_shared<MBDynInLineJoint>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MBDynInLineJoint::parseMBDyn(std::string line)
 {
 	MBDynJoint::parseMBDyn(line);

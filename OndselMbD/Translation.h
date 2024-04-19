@@ -15,8 +15,10 @@ namespace MbD {
 	{
 		//
 	public:
-		Translation();
+		Translation() {}
 		Translation(const char* str);
+		static std::shared_ptr<Translation> With(const char* str);
+
 		void initializeGlobally() override;
 
 	};

@@ -17,6 +17,8 @@ namespace MbD {
 	public:
 		DispCompIeqctJeqcIe();
 		DispCompIeqctJeqcIe(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis);
+		static std::shared_ptr<DispCompIeqctJeqcIe> With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis);
+		void initialize() override;
 
 		void calc_ppvaluepEIpt() override;
 		void calc_ppvaluepEJpt() override;
@@ -25,7 +27,6 @@ namespace MbD {
 		void calc_ppvaluepXJpt() override;
 		void calc_pvaluept() override;
 		void calcPostDynCorrectorIteration() override;
-		void initialize() override;
 		void initializeGlobally() override;
 		void preAccIC() override;
 		void preVelIC() override;

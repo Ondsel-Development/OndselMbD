@@ -11,12 +11,13 @@
 #include "ASMTItem.h"
 
 namespace MbD {
-    class ASMTExtrusion : public ASMTItem
-    {
-        //
-    public:
+	class ASMTExtrusion : public ASMTItem
+	{
+		//
+	public:
+		static std::shared_ptr<ASMTExtrusion> With();
 
 
-    };
+	};
 }
 

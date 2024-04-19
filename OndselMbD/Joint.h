@@ -8,11 +8,14 @@
  
 #pragma once
 
-#include <memory>
-#include <vector>
-#include <functional>
+//#include <memory>
+//#include <vector>
+//#include <functional>
 
 #include "Item.h"
+#include "EndFrameqc.h"
+#include "TranslationConstraintIJ.h"
+#include "DirectionCosineConstraintIJ.h"
 
 namespace MbD {
 	class Constraint;
@@ -23,8 +26,11 @@ namespace MbD {
 	{
 		//frmI frmJ constraints friction 
 	public:
-		Joint();
+		Joint() {}
 		Joint(const char* str);
+		static std::shared_ptr<Joint> With();
+		static std::shared_ptr<Joint> With(const char* str);
+		void initialize() override;
 
 		void addConstraint(std::shared_ptr<Constraint> con);
 		FColDsptr aFIeJtIe() const;
@@ -51,15 +57,16 @@ namespace MbD {
 		void fillpqsumu(FColDsptr col) override;
 		void fillpqsumudot(FColDsptr col) override;
 		void fillqsudot(FColDsptr col) override;
-		void fillqsudotWeights(DiagMatDsptr diagMat) override;
 		void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) override;
 		void fillVelICError(FColDsptr col) override;
 		void fillVelICJacob(SpMatDsptr mat) override;
-		void initialize() override;
 		void initializeGlobally() override;
 		void initializeLocally() override;
 		FColDsptr jointForceI() const;
 		FColDsptr jointTorqueI() const;
+		void postDynCorrectorIteration() override;
+		void postDynOutput() override;
+		void postDynPredictor() override;
 		void postDynStep() override;
 		void postInput() override;
 		void postPosIC() override;
@@ -79,12 +86,10 @@ namespace MbD {
 		void setpqsumu(FColDsptr col) override;
 		void setpqsumudot(FColDsptr col) override;
 		void setpqsumuddot(FColDsptr col) override;
-		void postDynPredictor() override;
 		void fillDynError(FColDsptr col) override;
 		void fillpFpy(SpMatDsptr mat) override;
 		void fillpFpydot(SpMatDsptr mat) override;
-		void postDynCorrectorIteration() override;
-        void preDynOutput() override;
+		void preDynOutput() override;
 
 		EndFrmsptr frmI;
 		EndFrmsptr frmJ;

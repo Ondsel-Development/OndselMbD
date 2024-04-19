@@ -22,8 +22,15 @@ FColDsptr GESpMat::solvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bo
 
 FColDsptr GESpMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
+	auto debug = false;
+	if (debug) {
+		spMat->outputCSV("../debug.csv");
+		fullCol->appendCSV("../debug.csv");
+	}
 	this->preSolvewithsaveOriginal(spMat, fullCol, saveOriginal);
-	//std::cout << *matrixA << std::endl;
+	if (debug) {
+		matrixA->appendCSV("../debug.csv");
+	}
 	for (size_t p = 0; p < m; p++)
 	{
 		this->doPivoting(p);
@@ -31,6 +38,9 @@ FColDsptr GESpMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCo
 	}
 	this->backSubstituteIntoDU();
 	this->postSolve();
+	if (debug) {
+		answerX->appendCSV("../debug.csv");
+	}
 	return answerX;
 }
 

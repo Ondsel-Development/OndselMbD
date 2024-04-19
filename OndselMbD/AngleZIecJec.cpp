@@ -13,12 +13,15 @@
 
 using namespace MbD;
 
-MbD::AngleZIecJec::AngleZIecJec()
-{
-}
-
 MbD::AngleZIecJec::AngleZIecJec(EndFrmsptr frmi, EndFrmsptr frmj) : KinematicIeJe(frmi, frmj)
 {
+	assert(false);
+}
+
+void MbD::AngleZIecJec::initialize()
+{
+	KinematicIeJe::initialize();
+	this->init_aAijIeJe();
 }
 
 void MbD::AngleZIecJec::calcPostDynCorrectorIteration()
@@ -38,14 +41,8 @@ void MbD::AngleZIecJec::calcPostDynCorrectorIteration()
 
 void MbD::AngleZIecJec::init_aAijIeJe()
 {
+	//Subclasses must implement.
 	assert(false);
-}
-
-void MbD::AngleZIecJec::initialize()
-{
-	KinematicIeJe::initialize();
-	this->init_aAijIeJe();
-
 }
 
 void MbD::AngleZIecJec::initializeGlobally()
@@ -56,7 +53,6 @@ void MbD::AngleZIecJec::initializeGlobally()
 
 void MbD::AngleZIecJec::initializeLocally()
 {
-	if (!aA00IeJe) init_aAijIeJe();
 	aA00IeJe->initializeLocally();
 	aA10IeJe->initializeLocally();
 }

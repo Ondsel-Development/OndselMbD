@@ -11,7 +11,6 @@
 #include "ASMTAssembly.h"
 #include "SymbolicParser.h"
 #include "BasicUserFunction.h"
-#include "CREATE.h"
 #include "Constant.h"
 #include "ASMTJoint.h"
 #include "ASMTTime.h"
@@ -20,7 +19,9 @@ using namespace MbD;
 
 std::shared_ptr<ASMTRotationalMotion> MbD::ASMTRotationalMotion::With()
 {
-	return std::make_shared<ASMTRotationalMotion>();
+	auto inst = std::make_shared<ASMTRotationalMotion>();
+	inst->initialize();
+	return inst;
 }
 
 void MbD::ASMTRotationalMotion::parseASMT(std::vector<std::string>& lines)
@@ -53,8 +54,8 @@ void MbD::ASMTRotationalMotion::readRotationZ(std::vector<std::string>& lines)
 void MbD::ASMTRotationalMotion::initMarkers()
 {
 	if (motionJoint == "") {
-		assert(markerI != "");
-		assert(markerJ != "");
+		assert(markerI->name != "");
+		assert(markerJ->name != "");
 	}
 	else {
 		auto jt = root()->jointAt(motionJoint);
@@ -84,7 +85,7 @@ void MbD::ASMTRotationalMotion::createMbD(std::shared_ptr<System> mbdSys, std::s
 
 std::shared_ptr<Joint> MbD::ASMTRotationalMotion::mbdClassNew()
 {
-	return CREATE<ZRotation>::With();
+	return ZRotation::With();
 }
 
 void MbD::ASMTRotationalMotion::setMotionJoint(std::string str)

@@ -11,7 +11,6 @@
 #include "DAEIntegrator.h"
 #include "Item.h"
 #include "SystemSolver.h"
-#include "CREATE.h"
 #include "BasicQuasiIntegrator.h"
 #include "SingularMatrixError.h"
 #include "SimulationStoppingError.h"
@@ -23,6 +22,20 @@
 #include "NormalBasicDAEIntegrator.h"
 
 using namespace MbD;
+
+std::shared_ptr<DAEIntegrator> MbD::DAEIntegrator::With()
+{
+	auto inst = std::make_shared<DAEIntegrator>();
+	inst->initialize();
+	return inst;
+}
+
+void MbD::DAEIntegrator::initialize()
+{
+	Solver::initialize();
+	integrator = StartingBasicDAEIntegrator::With();
+	integrator->setSystem(this);
+}
 
 void MbD::DAEIntegrator::initializeGlobally()
 {
@@ -44,13 +57,6 @@ void MbD::DAEIntegrator::checkForOutputThrough(double t)
 void MbD::DAEIntegrator::preRun()
 {
 	assert(false);
-}
-
-void MbD::DAEIntegrator::initialize()
-{
-	Solver::initialize();
-	integrator = CREATE<StartingBasicDAEIntegrator>::With();
-	integrator->setSystem(this);
 }
 
 void MbD::DAEIntegrator::preStep()
@@ -117,11 +123,11 @@ FColDsptr MbD::DAEIntegrator::integrationRelativeTolerance()
 	auto col = std::make_shared<FullColumn<double>>(neqn);
 	for (size_t i = 0; i < neqn - ncon; i++)
 	{
-		col->atiput(i, relTol);
+		col->atput(i, relTol);
 	}
 	for (size_t i = neqn - ncon; i < neqn; i++)
 	{
-		col->atiput(i, std::numeric_limits<double>::min());
+		col->atput(i, std::numeric_limits<double>::min());
 	}
 	return col;
 }
@@ -132,11 +138,11 @@ FColDsptr MbD::DAEIntegrator::integrationAbsoluteTolerance()
 	auto col = std::make_shared<FullColumn<double>>(neqn);
 	for (size_t i = 0; i < neqn - ncon; i++)
 	{
-		col->atiput(i, absTol);
+		col->atput(i, absTol);
 	}
 	for (size_t i = neqn - ncon; i < neqn; i++)
 	{
-		col->atiput(i, std::numeric_limits<double>::min());
+		col->atput(i, std::numeric_limits<double>::min());
 	}
 	return col;
 }
@@ -147,7 +153,7 @@ FColDsptr MbD::DAEIntegrator::correctorRelativeTolerance()
 	auto col = std::make_shared<FullColumn<double>>(neqn);
 	for (size_t i = 0; i < neqn; i++)
 	{
-		col->atiput(i, corRelTol);
+		col->atput(i, corRelTol);
 	}
 	return col;
 }
@@ -158,7 +164,7 @@ FColDsptr MbD::DAEIntegrator::correctorAbsoluteTolerance()
 	auto col = std::make_shared<FullColumn<double>>(neqn);
 	for (size_t i = 0; i < neqn; i++)
 	{
-		col->atiput(i, corAbsTol);
+		col->atput(i, corAbsTol);
 	}
 	return col;
 }

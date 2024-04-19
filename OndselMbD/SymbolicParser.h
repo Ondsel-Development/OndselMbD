@@ -11,18 +11,21 @@
 #include <stack>
 #include <memory>
 #include <sstream>
+#include <set>
 
 #include "Symbolic.h"
 #include "ASMTItem.h"
 #include "ASMTItemIJ.h"
 
 namespace MbD {
-	class SymbolicParser
+	class SymbolicParser : public std::enable_shared_from_this<SymbolicParser>
 	{
 		//
 	public:
 		SymbolicParser();
+		static std::shared_ptr<SymbolicParser> With();
 		void initialize();
+
 		void parseUserFunction(Symsptr userFunc);
 		void parseString(std::string expr);
 		bool commaExpression();
@@ -42,7 +45,7 @@ namespace MbD {
 		bool expression();
 		bool expressionInParentheses();
 		bool constant();
-		bool namedFunction();
+		virtual bool namedFunction();
 		bool intrinsic();
 		bool variable();
 		bool raisedTo();
@@ -53,10 +56,11 @@ namespace MbD {
 		void notifyat(std::string msg, int mrk) const;
 		void combineStackTo(size_t pos) const;
 		bool isNextLineTag(char c) const;
+		void initVariables();
+		std::shared_ptr<std::set<Symbolic*>> variablesSet();
 
 		ASMTItem* owner = nullptr;
 		std::shared_ptr<std::map<std::string, Symsptr>> variables;
-		std::shared_ptr<std::vector<ASMTItemIJ>> geoIJs;
 		std::shared_ptr<Units> units;
 		int mark = -1, prevEnd = -1;
 		char hereChar = '\0';

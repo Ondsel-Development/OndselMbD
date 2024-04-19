@@ -7,3 +7,12 @@
  ***************************************************************************/
  
 #include "VelICKineSolver.h"
+
+using namespace MbD;
+
+std::shared_ptr<VelICKineSolver> MbD::VelICKineSolver::With()
+{
+	auto inst = std::make_shared<VelICKineSolver>();
+	inst->initialize();
+	return inst;
+}

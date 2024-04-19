@@ -11,12 +11,16 @@
 
 using namespace MbD;
 
-MbD::DispCompIecJecIe::DispCompIecJecIe()
-{
-}
-
 MbD::DispCompIecJecIe::DispCompIecJecIe(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis) : KinematicIeJe(frmi, frmj), axis(axis)
 {
+	assert(false);
+}
+
+std::shared_ptr<DispCompIecJecIe> MbD::DispCompIecJecIe::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis)
+{
+	auto inst = std::make_shared<DispCompIecJecIe>(frmi, frmj, axis);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::DispCompIecJecIe::calc_value()

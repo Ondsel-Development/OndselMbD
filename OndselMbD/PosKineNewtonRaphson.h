@@ -11,19 +11,21 @@
 #include "PosNewtonRaphson.h"
 
 namespace MbD {
-    class PosKineNewtonRaphson : public PosNewtonRaphson
-    {
-        //Kinematics with fully constrained system
-    public:
-        void run() override;
-        void iterate() override;
-        void initializeGlobally() override;
-        void fillPyPx() override;
-        void passRootToSystem() override;
-        void assignEquationNumbers() override;
-        void preRun() override;
-        void fillY() override;
+	class PosKineNewtonRaphson : public PosNewtonRaphson
+	{
+		//Kinematics with fully constrained system
+	public:
+		static std::shared_ptr<PosKineNewtonRaphson> With();
 
-    };
+		void run() override;
+		void iterate() override;
+		void initializeGlobally() override;
+		void fillPyPx() override;
+		void passRootToSystem() override;
+		void assignEquationNumbers() override;
+		void preRun() override;
+		void fillY() override;
+
+	};
 }
 

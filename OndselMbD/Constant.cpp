@@ -14,12 +14,9 @@
 
 using namespace MbD;
 
-Constant::Constant()
+std::shared_ptr<Constant> MbD::Constant::With(double arg)
 {
-}
-
-Constant::Constant(double val) : Variable(val)
-{
+	return std::make_shared<Constant>(arg);
 }
 
 Symsptr MbD::Constant::differentiateWRT(Symsptr)

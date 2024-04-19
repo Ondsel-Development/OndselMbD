@@ -11,17 +11,19 @@
 #include "FunctionX.h"
 
 namespace MbD {
-    class ArcTan : public FunctionX
-    {
-        //
-    public:
-        ArcTan() = default;
-        ArcTan(Symsptr arg);
-        double getValue() override;
-        Symsptr copyWith(Symsptr arg) override;
+	class ArcTan : public FunctionX
+	{
+		//
+	public:
+		ArcTan() = default;
+		ArcTan(Symsptr arg);
+		static std::shared_ptr<ArcTan> With();
 
-        std::ostream& printOn(std::ostream& s) const override;
+		double getValue() override;
+		Symsptr copyWith(Symsptr arg) override;
 
-    };
+		std::ostream& printOn(std::ostream& s) const override;
+
+	};
 }
 

@@ -5,18 +5,28 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
+#include <cassert>
+
 #include "LogN.h"
 
 using namespace MbD;
 
 MbD::LogN::LogN(Symsptr arg) : FunctionX(arg)
 {
+	assert(false);
+}
+
+std::shared_ptr<LogN> MbD::LogN::With()
+{
+	auto inst = std::make_shared<LogN>();
+	inst->initialize();
+	return inst;
 }
 
 double MbD::LogN::getValue()
 {
-    return std::log(xx->getValue());
+	return std::log(xx->getValue());
 }
 
 Symsptr MbD::LogN::copyWith(Symsptr arg)

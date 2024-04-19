@@ -7,17 +7,27 @@
  ***************************************************************************/
  
 #include "LineInPlaneJoint.h"
-#include "CREATE.h"
 #include "System.h"
 
 using namespace MbD;
 
-MbD::LineInPlaneJoint::LineInPlaneJoint()
-{
-}
-
 MbD::LineInPlaneJoint::LineInPlaneJoint(const char*)
 {
+	assert(false);
+}
+
+std::shared_ptr<LineInPlaneJoint> MbD::LineInPlaneJoint::With()
+{
+	auto inst = std::make_shared<LineInPlaneJoint>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<LineInPlaneJoint> MbD::LineInPlaneJoint::With(const char* str)
+{
+	auto inst = std::make_shared<LineInPlaneJoint>(str);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::LineInPlaneJoint::initializeGlobally()
@@ -25,7 +35,7 @@ void MbD::LineInPlaneJoint::initializeGlobally()
 	if (constraints->empty())
 	{
 		this->createInPlaneConstraint();
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 2));
+		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 2));
 		this->root()->hasChanged = true;
 	}
 	else {

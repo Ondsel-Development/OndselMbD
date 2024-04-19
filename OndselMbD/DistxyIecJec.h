@@ -16,25 +16,26 @@ namespace MbD {
 	{
 		//distxy xIeJeIe yIeJeIe
 	public:
-        DistxyIecJec();
-        DistxyIecJec(EndFrmsptr frmi, EndFrmsptr frmj);
+		DistxyIecJec() {}
+		DistxyIecJec(EndFrmsptr frmi, EndFrmsptr frmj);
+		static std::shared_ptr<DistxyIecJec> With(EndFrmsptr frmi, EndFrmsptr frmj);
+		void initialize() override;
 
-        void calcPostDynCorrectorIteration() override;
-        void initialize() override;
-        void initializeGlobally() override;
-        void initializeLocally() override;
-        virtual void init_xyIeJeIe();
-        void postInput() override;
-        void postPosICIteration() override;
-        void preAccIC() override;
-        void prePosIC() override;
-        void preVelIC() override;
-        void simUpdateAll() override;
-        double value() override;
+		void calcPostDynCorrectorIteration() override;
+		void initializeGlobally() override;
+		void initializeLocally() override;
+		virtual void init_xyIeJeIe();
+		void postInput() override;
+		void postPosICIteration() override;
+		void preAccIC() override;
+		void prePosIC() override;
+		void preVelIC() override;
+		void simUpdateAll() override;
+		double value() override;
 
-        double distxy;
-        std::shared_ptr<DispCompIecJecIe> xIeJeIe, yIeJeIe;
-    
-    };
+		double distxy;
+		std::shared_ptr<DispCompIecJecIe> xIeJeIe, yIeJeIe;
+	
+	};
 }
 

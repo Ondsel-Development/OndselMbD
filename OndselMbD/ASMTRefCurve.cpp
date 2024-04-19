@@ -7,9 +7,15 @@
  ***************************************************************************/
  
 #include "ASMTRefCurve.h"
-#include "CREATE.h"
 
 using namespace MbD;
+
+std::shared_ptr<ASMTRefCurve> MbD::ASMTRefCurve::With()
+{
+	auto inst = std::make_shared<ASMTRefCurve>();
+	inst->initialize();
+	return inst;
+}
 
 void MbD::ASMTRefCurve::parseASMT(std::vector<std::string>&)
 {

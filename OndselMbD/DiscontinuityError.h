@@ -20,7 +20,6 @@ namespace MbD {
 		std::shared_ptr<std::vector<DiscontinuityType>> discontinuityTypes;
 
 	public:
-		//DiscontinuityError();
 		explicit
 			DiscontinuityError(const std::string& msg, std::shared_ptr<std::vector<DiscontinuityType>> disconTypes) :
 			std::runtime_error(msg), discontinuityTypes(disconTypes)
@@ -29,7 +28,5 @@ namespace MbD {
 		explicit DiscontinuityError(const std::string& msg) : std::runtime_error(msg)
 		{
 		}
-
-		virtual ~DiscontinuityError() noexcept {}
 	};
 }

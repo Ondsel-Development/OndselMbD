@@ -9,13 +9,19 @@
 #include "VelSolver.h"
 #include "MatrixSolver.h"
 #include "SystemSolver.h"
-#include "CREATE.h"
 #include "GESpMatParPvPrecise.h"
 #include "SingularMatrixError.h"
 #include "GESpMatParPvMarko.h"
 #include "GESpMatParPvMarkoFast.h"
 
 using namespace MbD;
+
+std::shared_ptr<VelSolver> MbD::VelSolver::With()
+{
+	auto inst = std::make_shared<VelSolver>();
+	inst->initialize();
+	return inst;
+}
 
 void VelSolver::basicSolveEquations()
 {
@@ -24,11 +30,11 @@ void VelSolver::basicSolveEquations()
 
 void VelSolver::handleSingularMatrix()
 {
-    auto& r = *matrixSolver;
+	auto& r = *matrixSolver;
 	std::string str = typeid(r).name();
 	if (str.find("GESpMatParPvMarkoFast") != std::string::npos) {
-		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
-		this->solveEquations();
+		matrixSolver = GESpMatParPvPrecise::With();
+		solveEquations();
 	}
 	else {
 		str = typeid(r).name();
@@ -50,7 +56,7 @@ void VelSolver::logSingularMatrixMessage()
 
 std::shared_ptr<MatrixSolver> VelSolver::matrixSolverClassNew()
 {
-	return CREATE<GESpMatParPvPrecise>::With();
+	return GESpMatParPvPrecise::With();
 }
 
 void VelSolver::solveEquations()

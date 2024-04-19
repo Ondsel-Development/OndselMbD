@@ -12,22 +12,24 @@
 #include "SparseMatrix.h"
 
 namespace MbD {
-    //class SparseMatrix;
+	//class SparseMatrix;
 
-    class SystemNewtonRaphson : public VectorNewtonRaphson
-    {
-        //
-    public:
-        void initializeGlobally() override;
-        virtual void assignEquationNumbers() override = 0;
-        virtual void createVectorsAndMatrices();
-        std::shared_ptr<MatrixSolver> matrixSolverClassNew() override;
-        void calcdxNorm() override;
-        void basicSolveEquations() override;
-        void handleSingularMatrix() override;
-        void outputSpreadsheet();
+	class SystemNewtonRaphson : public VectorNewtonRaphson
+	{
+		//
+	public:
+		static std::shared_ptr<SystemNewtonRaphson> With();
 
-        SpMatDsptr pypx;
-    };
+		void initializeGlobally() override;
+		virtual void assignEquationNumbers() override = 0;
+		virtual void createVectorsAndMatrices();
+		std::shared_ptr<MatrixSolver> matrixSolverClassNew() override;
+		void calcdxNorm() override;
+		void basicSolveEquations() override;
+		void handleSingularMatrix() override;
+		void outputSpreadsheet();
+
+		SpMatDsptr pypx;
+	};
 }
 

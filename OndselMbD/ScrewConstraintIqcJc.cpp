@@ -10,7 +10,6 @@
 
 #include "ScrewConstraintIqcJc.h"
 #include "EndFrameqc.h"
-#include "CREATE.h"
 #include "DispCompIeqcJecIe.h"
 #include "AngleZIeqcJec.h"
 
@@ -18,10 +17,17 @@ using namespace MbD;
 
 MbD::ScrewConstraintIqcJc::ScrewConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : ScrewConstraintIJ(frmi, frmj)
 {
-	pGpXI = std::make_shared<FullRow<double>>(3);
-	pGpEI = std::make_shared<FullRow<double>>(4);
-	ppGpXIpEI = std::make_shared<FullMatrix<double>>(3, 4);
-	ppGpEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
+	pGpXI = FullRow<double>::With(3);
+	pGpEI = FullRow<double>::With(4);
+	ppGpXIpEI = FullMatrix<double>::With(3, 4);
+	ppGpEIpEI = FullMatrix<double>::With(4, 4);
+}
+
+std::shared_ptr<ScrewConstraintIqcJc> MbD::ScrewConstraintIqcJc::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	auto inst = std::make_shared<ScrewConstraintIqcJc>(frmi, frmj);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::ScrewConstraintIqcJc::initzIeJeIe()
@@ -50,7 +56,7 @@ void MbD::ScrewConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 	for (size_t i = 0; i < 4; i++)
 	{
 		auto dum = cForceT->timesFullColumn(pAOIppEI->at(i)->timesFullColumn(rIpIeIp));
-		fpAOIppEIrIpIeIp->atiput(i, dum);
+		fpAOIppEIrIpIeIp->atput(i, dum);
 	}
 	auto lampGpE = pGpEI->transpose()->times(lam);
 	auto c2Torque = aBOIp->timesFullColumn(lampGpE->minusFullColumn(fpAOIppEIrIpIeIp));
@@ -81,16 +87,16 @@ void MbD::ScrewConstraintIqcJc::calc_ppGpXIpEI()
 void MbD::ScrewConstraintIqcJc::calcPostDynCorrectorIteration()
 {
 	ScrewConstraintIJ::calcPostDynCorrectorIteration();
-	this->calc_pGpXI();
-	this->calc_pGpEI();
-	this->calc_ppGpXIpEI();
-	this->calc_ppGpEIpEI();
+	calc_pGpXI();
+	calc_pGpEI();
+	calc_ppGpXIpEI();
+	calc_ppGpEIpEI();
 }
 
 void MbD::ScrewConstraintIqcJc::fillAccICIterError(FColDsptr col)
 {
-	col->atiplusFullVectortimes(iqXI, pGpXI, lam);
-	col->atiplusFullVectortimes(iqEI, pGpEI, lam);
+	col->atplusFullVectortimes(iqXI, pGpXI, lam);
+	col->atplusFullVectortimes(iqEI, pGpEI, lam);
 	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
 	auto qXdotI = efrmIqc->qXdot();
 	auto qEdotI = efrmIqc->qEdot();
@@ -98,46 +104,46 @@ void MbD::ScrewConstraintIqcJc::fillAccICIterError(FColDsptr col)
 	sum += pGpEI->timesFullColumn(efrmIqc->qEddot());
 	sum += 2.0 * (qXdotI->transposeTimesFullColumn(ppGpXIpEI->timesFullColumn(qEdotI)));
 	sum += qEdotI->transposeTimesFullColumn(ppGpEIpEI->timesFullColumn(qEdotI));
-	col->atiplusNumber(iG, sum);
+	col->atplusNumber(iG, sum);
 }
 
 void MbD::ScrewConstraintIqcJc::fillPosICError(FColDsptr col)
 {
 	ScrewConstraintIJ::fillPosICError(col);
-	col->atiplusFullVectortimes(iqXI, pGpXI, lam);
-	col->atiplusFullVectortimes(iqEI, pGpEI, lam);
+	col->atplusFullVectortimes(iqXI, pGpXI, lam);
+	col->atplusFullVectortimes(iqEI, pGpEI, lam);
 }
 
 void MbD::ScrewConstraintIqcJc::fillPosICJacob(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqXI, pGpXI);
-	mat->atijplusFullColumn(iqXI, iG, pGpXI->transpose());
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
-	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
+	mat->atandplusFullRow(iG, iqXI, pGpXI);
+	mat->atandplusFullColumn(iqXI, iG, pGpXI->transpose());
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullColumn(iqEI, iG, pGpEI->transpose());
 	auto ppGpXIpEIlam = ppGpXIpEI->times(lam);
-	mat->atijplusFullMatrix(iqXI, iqEI, ppGpXIpEIlam);
-	mat->atijplusTransposeFullMatrix(iqEI, iqXI, ppGpXIpEIlam);
-	mat->atijplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
+	mat->atandplusFullMatrix(iqXI, iqEI, ppGpXIpEIlam);
+	mat->atandplusTransposeFullMatrix(iqEI, iqXI, ppGpXIpEIlam);
+	mat->atandplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
 }
 
 void MbD::ScrewConstraintIqcJc::fillPosKineJacob(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqXI, pGpXI);
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullRow(iG, iqXI, pGpXI);
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
 }
 
 void MbD::ScrewConstraintIqcJc::fillVelICJacob(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqXI, pGpXI);
-	mat->atijplusFullColumn(iqXI, iG, pGpXI->transpose());
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
-	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
+	mat->atandplusFullRow(iG, iqXI, pGpXI);
+	mat->atandplusFullColumn(iqXI, iG, pGpXI->transpose());
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullColumn(iqEI, iG, pGpEI->transpose());
 }
 
 void MbD::ScrewConstraintIqcJc::init_zthez()
 {
-	zIeJeIe = CREATE<DispCompIeqcJecIe>::With(frmI, frmJ, 2);
-	thezIeJe = CREATE<AngleZIeqcJec>::With(frmJ, frmI);
+	zIeJeIe = DispCompIeqcJecIe::With(frmI, frmJ, 2);
+	thezIeJe = AngleZIeqcJec::With(frmJ, frmI);
 }
 
 void MbD::ScrewConstraintIqcJc::useEquationNumbers()
@@ -149,16 +155,16 @@ void MbD::ScrewConstraintIqcJc::useEquationNumbers()
 
 void MbD::ScrewConstraintIqcJc::fillpFpy(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqXI, pGpXI);
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullRow(iG, iqXI, pGpXI);
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
 	auto ppGpXIpEIlam = ppGpXIpEI->times(lam);
-	mat->atijplusFullMatrix(iqXI, iqEI, ppGpXIpEIlam);
-	mat->atijplusTransposeFullMatrix(iqEI, iqXI, ppGpXIpEIlam);
-	mat->atijplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
+	mat->atandplusFullMatrix(iqXI, iqEI, ppGpXIpEIlam);
+	mat->atandplusTransposeFullMatrix(iqEI, iqXI, ppGpXIpEIlam);
+	mat->atandplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
 }
 
 void MbD::ScrewConstraintIqcJc::fillpFpydot(SpMatDsptr mat)
 {
-	mat->atijplusFullColumn(iqXI, iG, pGpXI->transpose());
-	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
+	mat->atandplusFullColumn(iqXI, iG, pGpXI->transpose());
+	mat->atandplusFullColumn(iqEI, iG, pGpEI->transpose());
 }

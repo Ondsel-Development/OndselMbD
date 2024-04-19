@@ -11,6 +11,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<LDUSpMatParPvMarko> MbD::LDUSpMatParPvMarko::With()
+{
+	auto inst = std::make_shared<LDUSpMatParPvMarko>();
+	inst->initialize();
+	return inst;
+}
+
 void LDUSpMatParPvMarko::doPivoting(size_t p)
 {
 	//"Search from bottom to top."

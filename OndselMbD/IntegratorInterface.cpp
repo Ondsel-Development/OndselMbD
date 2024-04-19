@@ -12,11 +12,17 @@
 #include "IntegratorInterface.h"
 #include "SystemSolver.h"
 #include "BasicQuasiIntegrator.h"
-#include "CREATE.h"
 #include "NormalBasicDAEIntegrator.h"
 #include "StartingBasicDAEIntegrator.h"
 
 using namespace MbD;
+
+std::shared_ptr<IntegratorInterface> MbD::IntegratorInterface::With()
+{
+	//Should not create abstract class.
+	assert(false);
+	return std::shared_ptr<IntegratorInterface>();
+}
 
 void IntegratorInterface::initializeGlobally()
 {
@@ -31,11 +37,13 @@ void IntegratorInterface::initializeGlobally()
 
 void MbD::IntegratorInterface::preRun()
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
 void MbD::IntegratorInterface::checkForDiscontinuity()
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
@@ -66,18 +74,21 @@ void MbD::IntegratorInterface::postFirstStep()
 
 double MbD::IntegratorInterface::suggestSmallerOrAcceptFirstStepSize(double hnew)
 {
+	//Subclasses must implement.
 	assert(false);
 	return 0.0;
 }
 
 double MbD::IntegratorInterface::suggestSmallerOrAcceptStepSize(double hnew)
 {
+	//Subclasses must implement.
 	assert(false);
 	return 0.0;
 }
 
 void MbD::IntegratorInterface::checkForOutputThrough(double t)
 {
+	//Subclasses must implement.
 	assert(false);
 }
 

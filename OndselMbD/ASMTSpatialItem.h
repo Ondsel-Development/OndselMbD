@@ -15,6 +15,9 @@ namespace MbD {
 	{
 		//
 	public:
+		static std::shared_ptr<ASMTSpatialItem> With();
+		void initialize() override;
+
 		void setPosition3D(FColDsptr position3D);
 		void setRotationMatrix(FMatDsptr rotationMatrix);
 		void readPosition3D(std::vector<std::string>& lines);
@@ -35,7 +38,7 @@ namespace MbD {
 		FMatDsptr getRotationMatrix(size_t i);
 
 		FColDsptr position3D = std::make_shared<FullColumn<double>>(3);
-		FMatDsptr rotationMatrix = std::make_shared<FullMatrix<double>>(ListListD{
+		FMatDsptr rotationMatrix = FullMatrix<double>::With(ListListD{
 				{ 1, 0, 0 },
 				{ 0, 1, 0 },
 				{ 0, 0, 1 }

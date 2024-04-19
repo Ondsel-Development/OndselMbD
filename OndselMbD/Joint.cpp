@@ -14,7 +14,6 @@
 #include "Constraint.h"
 #include "EndFrameqc.h"
 #include "EndFrameqct.h"
-#include "CREATE.h"
 #include "RedundantConstraint.h"
 #include "MarkerFrame.h"
 #include "ForceTorqueData.h"
@@ -22,12 +21,22 @@
 
 using namespace MbD;
 
-Joint::Joint() {
-
+Joint::Joint(const char* str) : Item(str) {
+	assert(false);
 }
 
-Joint::Joint(const char* str) : Item(str) {
+std::shared_ptr<Joint> MbD::Joint::With()
+{
+	auto inst = std::make_shared<Joint>();
+	inst->initialize();
+	return inst;
+}
 
+std::shared_ptr<Joint> MbD::Joint::With(const char* str)
+{
+	auto inst = std::make_shared<Joint>(str);
+	inst->initialize();
+	return inst;
 }
 
 void Joint::initialize()
@@ -144,10 +153,6 @@ void Joint::fillqsudot(FColDsptr col)
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillqsudot(col); });
 }
 
-void Joint::fillqsudotWeights(DiagMatDsptr)
-{
-}
-
 void Joint::useEquationNumbers()
 {
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->useEquationNumbers(); });
@@ -186,6 +191,11 @@ void MbD::Joint::fillpFpydot(SpMatDsptr mat)
 void MbD::Joint::postDynCorrectorIteration()
 {
 	constraintsDo([](std::shared_ptr<Constraint> con) { con->postDynCorrectorIteration(); });
+}
+
+void MbD::Joint::postDynOutput()
+{
+	constraintsDo([](std::shared_ptr<Constraint> con) { con->postDynOutput(); });
 }
 
 void MbD::Joint::preDynOutput()
@@ -229,7 +239,7 @@ void Joint::removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redu
 	{
 		auto& constraint = constraints->at(i);
 		if (std::find(redundantEqnNos->begin(), redundantEqnNos->end(), constraint->iG) != redundantEqnNos->end()) {
-			auto redunCon = CREATE<RedundantConstraint>::With();
+			auto redunCon = RedundantConstraint::With();
 			redunCon->constraint = constraint;
 			constraints->at(i) = redunCon;
 		}

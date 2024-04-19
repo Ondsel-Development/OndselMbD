@@ -9,3 +9,10 @@
 #include "ASMTExtrusion.h"
 
 using namespace MbD;
+
+std::shared_ptr<ASMTExtrusion> MbD::ASMTExtrusion::With()
+{
+	auto inst = std::make_shared<ASMTExtrusion>();
+	inst->initialize();
+	return inst;
+}

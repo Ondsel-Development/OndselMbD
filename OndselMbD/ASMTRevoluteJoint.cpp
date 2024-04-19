@@ -14,12 +14,14 @@ using namespace MbD;
 
 std::shared_ptr<ASMTRevoluteJoint> MbD::ASMTRevoluteJoint::With()
 {
-	return std::make_shared<ASMTRevoluteJoint>();
+	auto inst = std::make_shared<ASMTRevoluteJoint>();
+	inst->initialize();
+	return inst;
 }
 
 std::shared_ptr<Joint> MbD::ASMTRevoluteJoint::mbdClassNew()
 {
-	return CREATE<RevoluteJoint>::With();
+	return RevoluteJoint::With();
 }
 
 void MbD::ASMTRevoluteJoint::storeOnLevel(std::ofstream& os, size_t level)

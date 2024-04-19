@@ -17,12 +17,15 @@
 
 using namespace MbD;
 
-PrescribedMotion::PrescribedMotion() {
-
+PrescribedMotion::PrescribedMotion(const char* str) : Joint(str) {
+	assert(false);
 }
 
-PrescribedMotion::PrescribedMotion(const char* str) : Joint(str) {
-
+std::shared_ptr<PrescribedMotion> MbD::PrescribedMotion::With(const char* str)
+{
+	auto inst = std::make_shared<PrescribedMotion>(str);
+	inst->initialize();
+	return inst;
 }
 
 void PrescribedMotion::initialize()

@@ -12,23 +12,32 @@
 #include "DirectionCosineConstraintIJ.h"
 #include "EndFrameqc.h"
 #include "EndFrameqct.h"
-#include "CREATE.h"
 
 using namespace MbD;
 
-ZRotation::ZRotation() {
-
+ZRotation::ZRotation(const char* str) : PrescribedMotion(str) {
+	assert(false);
 }
 
-ZRotation::ZRotation(const char* str) : PrescribedMotion(str) {
+std::shared_ptr<ZRotation> MbD::ZRotation::With()
+{
+	auto inst = std::make_shared<ZRotation>();
+	inst->initialize();
+	return inst;
+}
 
+std::shared_ptr<ZRotation> MbD::ZRotation::With(const char* str)
+{
+	auto inst = std::make_shared<ZRotation>(str);
+	inst->initialize();
+	return inst;
 }
 
 void ZRotation::initializeGlobally()
 {
 	if (constraints->empty()) {
 		initMotions();
-		auto dirCosCon = CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 1, 0);
+		auto dirCosCon = DirectionCosineConstraintIJ::With(frmI, frmJ, 1, 0);
 		addConstraint(dirCosCon);
 		this->root()->hasChanged = true;
 	}

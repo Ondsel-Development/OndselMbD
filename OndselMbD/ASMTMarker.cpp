@@ -20,7 +20,9 @@ using namespace MbD;
 
 std::shared_ptr<ASMTMarker> MbD::ASMTMarker::With()
 {
-	return std::make_shared<ASMTMarker>();
+	auto inst = std::make_shared<ASMTMarker>();
+	inst->initialize();
+	return inst;
 }
 
 void MbD::ASMTMarker::parseASMT(std::vector<std::string>& lines)
@@ -59,7 +61,7 @@ FMatDsptr MbD::ASMTMarker::aApm()
 
 void ASMTMarker::createMbD(std::shared_ptr<System>, std::shared_ptr<Units> mbdUnits)
 {
-	auto mkr = CREATE<MarkerFrame>::With(name.c_str());
+	auto mkr = MarkerFrame::With(name.c_str());
 	auto prt = std::static_pointer_cast<Part>(partOrAssembly()->mbdObject);
 	prt->partFrame->addMarkerFrame(mkr);
 

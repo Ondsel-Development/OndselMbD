@@ -10,6 +10,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<MatrixLDU> MbD::MatrixLDU::With()
+{
+	auto inst = std::make_shared<MatrixLDU>();
+	inst->initialize();
+	return inst;
+}
+
 FColDsptr MatrixLDU::forAndBackSubsaveOriginal(FColDsptr fullCol, bool saveOriginal)
 {
 	if (saveOriginal) {

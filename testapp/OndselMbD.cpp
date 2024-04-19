@@ -17,7 +17,6 @@
 #include <filesystem>
 
 #include "../OndselMbD/CADSystem.h"
-#include "../OndselMbD/CREATE.h"
 #include "../OndselMbD/GESpMatParPvPrecise.h"
 #include "../OndselMbD/ASMTAssembly.h"
 #include "../OndselMbD/MBDynSystem.h"
@@ -30,6 +29,9 @@ void sharedptrTest();
 
 int main()
 {
+	ASMTAssembly::runDynFile("../testapp/ASMT/aaaa.asmt");
+	ASMTAssembly::runDynFile("../testapp/ASMT/springdamper.asmt");
+	MBDynSystem::runDynFile("../testapp/MBDyn/markers.mbd");
 	MBDynSystem::runDynFile("../testapp/MBDyn/SingleRigidPendulum07-02-2024/MBDCaseOndsel.mbd");
 	MBDynSystem::runDynFile("../testapp/MBDyn/penduRod5deg2.mbd");
 	MBDynSystem::runDynFile("../testapp/MBDyn/penduBeam.mbd");
@@ -87,6 +89,7 @@ int main()
 	MomentOfInertiaSolver::example1();
 	sharedptrTest();
 }
+
 void sharedptrTest() {
 	auto assm = ASMTAssembly::With();
 
@@ -104,6 +107,7 @@ void sharedptrTest() {
 	assert(assm->constantGravity == assm2->constantGravity);	//constantGravity is same object pointed to
 	assert(&(assm->constantGravity) != &(assm2->constantGravity)); //Different shared_ptrs of same reference counter
 }
+
 void doublePrecisionTest()
 {
 	double pi = OS_M_PI;
@@ -112,22 +116,22 @@ void doublePrecisionTest()
 	double d;
 	iss >> d;
 
-
 }
+
 void runSpMat() {
 	auto spMat = std::make_shared<SparseMatrix<double>>(3, 3);
-	spMat->atijput(0, 0, 1.0);
-	spMat->atijput(0, 1, 1.0);
-	spMat->atijput(1, 0, 1.0);
-	spMat->atijput(1, 1, 1.0);
-	spMat->atijput(1, 2, 1.0);
-	spMat->atijput(2, 1, 1.0);
-	spMat->atijput(2, 2, 1.0);
+	spMat->atandput(0, 0, 1.0);
+	spMat->atandput(0, 1, 1.0);
+	spMat->atandput(1, 0, 1.0);
+	spMat->atandput(1, 1, 1.0);
+	spMat->atandput(1, 2, 1.0);
+	spMat->atandput(2, 1, 1.0);
+	spMat->atandput(2, 2, 1.0);
 	auto fullCol = std::make_shared<FullColumn<double>>(3);
-	fullCol->atiput(0, 1.0);
-	fullCol->atiput(1, 2.0);
-	fullCol->atiput(2, 3.0);
-	auto matSolver = CREATE<GESpMatParPvPrecise>::With();
+	fullCol->atput(0, 1.0);
+	fullCol->atput(1, 2.0);
+	fullCol->atput(2, 3.0);
+	auto matSolver = GESpMatParPvPrecise::With();
 	auto answer = matSolver->solvewithsaveOriginal(spMat, fullCol, true);
 	auto aAx = spMat->timesFullColumn(answer);
 }

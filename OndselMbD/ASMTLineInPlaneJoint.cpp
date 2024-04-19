@@ -14,10 +14,12 @@ using namespace MbD;
 
 std::shared_ptr<ASMTLineInPlaneJoint> MbD::ASMTLineInPlaneJoint::With()
 {
-    return std::make_shared<ASMTLineInPlaneJoint>();
+	auto inst = std::make_shared<ASMTLineInPlaneJoint>();
+	inst->initialize();
+	return inst;
 }
 
 std::shared_ptr<Joint> MbD::ASMTLineInPlaneJoint::mbdClassNew()
 {
-    return CREATE<LineInPlaneJoint>::With();
+	return LineInPlaneJoint::With();
 }

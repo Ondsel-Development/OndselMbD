@@ -15,21 +15,27 @@
 
 namespace MbD {
 
-    class FunctionWithManyArgs : public Function
-    {
-        //terms
-    public:
-        FunctionWithManyArgs();
-        FunctionWithManyArgs(Symsptr term);
-        FunctionWithManyArgs(Symsptr term, Symsptr term1);
-        FunctionWithManyArgs(Symsptr term, Symsptr term1, Symsptr term2);
-        FunctionWithManyArgs(std::shared_ptr<std::vector<Symsptr>> _terms);
-        std::shared_ptr<std::vector<Symsptr>> getTerms() override;
-        void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
-        void arguments(Symsptr args) override;
-        bool isConstant() override;
+	class FunctionWithManyArgs : public Function
+	{
+		//terms
+	public:
+		FunctionWithManyArgs();
+		FunctionWithManyArgs(Symsptr term);
+		FunctionWithManyArgs(Symsptr term, Symsptr term1);
+		FunctionWithManyArgs(Symsptr term, Symsptr term1, Symsptr term2);
+		FunctionWithManyArgs(std::shared_ptr<std::vector<Symsptr>> _terms);
+		static std::shared_ptr<FunctionWithManyArgs> With();
+		
+		std::shared_ptr<std::vector<Symsptr>> getTerms() override;
+		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+		void arguments(Symsptr args) override;
+		bool isConstant() override;
+		void fillKineIJs(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> kineIJs) override;
+		void fillKinedotIJs(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> kineIJs) override;
+		void fillJointForces(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> jointForces) override;
+		void fillJointTorques(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> jointTorques) override;
 
-        std::shared_ptr<std::vector<Symsptr>> terms;
-    };
+		std::shared_ptr<std::vector<Symsptr>> terms;
+	};
 }
 

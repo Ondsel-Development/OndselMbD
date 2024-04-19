@@ -32,8 +32,9 @@ namespace MbD {
 	{
 		//
 	public:
-		ASMTAssembly();
-        static std::shared_ptr<ASMTAssembly> With();
+		ASMTAssembly() {}
+		static std::shared_ptr<ASMTAssembly> With();
+		void initialize() override;
 		static void runSinglePendulumSuperSimplified();
 		static void runSinglePendulumSuperSimplified2();
 		static void runSinglePendulumSimplified();
@@ -45,7 +46,7 @@ namespace MbD {
 		static std::vector<std::string> linesFromFile(const char* chars);
 		static void readWriteFile(const char* chars);
 		static void readWriteDynFile(const char* chars);
-		void initialize() override;
+
 		ASMTAssembly* root() override;
 		void setNotes(std::string str);
 		void parseASMT(std::vector<std::string>& lines) override;
@@ -62,6 +63,7 @@ namespace MbD {
 		void readConstantGravity(std::vector<std::string>& lines);
 		void readSimulationParameters(std::vector<std::string>& lines);
 		void readAnimationParameters(std::vector<std::string>& lines);
+		void readSeries(std::vector<std::string>& lines);
 		void readTimeSeries(std::vector<std::string>& lines);
 		void readTimes(std::vector<std::string>& lines);
 		void readAssemblySeries(std::vector<std::string>& lines);
@@ -71,6 +73,7 @@ namespace MbD {
 		void readJointSeries(std::vector<std::string>& lines);
 		void readMotionSeriesMany(std::vector<std::string>& lines);
 		void readMotionSeries(std::vector<std::string>& lines);
+		void readForceTorqueSeries(std::vector<std::string>& lines);
 
 		void outputFor(AnalysisType type);
 		void preMbDrun(std::shared_ptr<System> mbdSys);
@@ -80,7 +83,6 @@ namespace MbD {
 		double calcCharacteristicMass() const;
 		double calcCharacteristicLength() const;
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTItemIJ>>> connectorList() const;
-		std::shared_ptr<std::map<std::string, std::shared_ptr<ASMTMarker>>>markerMap() const;
 		void deleteMbD() override;
 		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
 		void outputFile(std::string filename);

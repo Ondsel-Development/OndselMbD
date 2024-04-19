@@ -15,8 +15,11 @@ namespace MbD {
 	{
 		//
 	public:
-		PerpendicularJoint();
+		PerpendicularJoint() {}
 		PerpendicularJoint(const char* str);
+		static std::shared_ptr<PerpendicularJoint> With();
+		static std::shared_ptr<PerpendicularJoint> With(const char* str);
+
 		void initializeGlobally() override;
 
 	};

@@ -8,7 +8,6 @@
 #include <fstream>	
 
 #include "ASMTPart.h"
-#include "CREATE.h"
 #include "ASMTPrincipalMassMarker.h"
 #include "Part.h"
 #include <algorithm>
@@ -17,7 +16,9 @@ using namespace MbD;
 
 std::shared_ptr<ASMTPart> MbD::ASMTPart::With()
 {
-	return std::make_shared<ASMTPart>();
+	auto inst = std::make_shared<ASMTPart>();
+	inst->initialize();
+	return inst;
 }
 
 void MbD::ASMTPart::parseASMT(std::vector<std::string>& lines)
@@ -46,10 +47,10 @@ void MbD::ASMTPart::readFeatureOrder(std::vector<std::string>& lines)
 	//while (!featureOrderLines.empty()) {
 	//	if (featureOrderLines[0] == (leadingTabs + "\tExtrusion")) {
 	//		featureOrderLines.erase(featureOrderLines.begin());
-	//		auto extrusion = ASMTExtrusion>::With();
+	//		auto extrusion = ASMTExtrusion::With();
+	//		extrusion->owner = this;
 	//		extrusion->parseASMT(featureOrderLines);
 	//		featureOrder->push_back(extrusion);
-	//		extrusion->owner = this;
 	//	}
 	//	else {
 	//		assert(false);
@@ -62,9 +63,9 @@ void MbD::ASMTPart::readPrincipalMassMarker(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("PrincipalMassMarker") != std::string::npos);
 	lines.erase(lines.begin());
-	principalMassMarker = std::make_shared<ASMTPrincipalMassMarker>();
-	principalMassMarker->parseASMT(lines);
+	principalMassMarker = ASMTPrincipalMassMarker::With();
 	principalMassMarker->owner = this;
+	principalMassMarker->parseASMT(lines);
 }
 
 void MbD::ASMTPart::readPartSeries(std::vector<std::string>& lines)

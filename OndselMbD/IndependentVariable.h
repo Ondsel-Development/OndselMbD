@@ -11,12 +11,14 @@
 #include "Variable.h"
 
 namespace MbD {
-    class IndependentVariable : public Variable
-    {
-    public:
-        IndependentVariable();
-        Symsptr differentiateWRT(Symsptr var) override;
-    
-    };
+	class IndependentVariable : public Variable
+	{
+	public:
+		IndependentVariable() {}
+		static std::shared_ptr<IndependentVariable> With();
+		
+		Symsptr differentiateWRT(Symsptr var) override;
+	
+	};
 }
 

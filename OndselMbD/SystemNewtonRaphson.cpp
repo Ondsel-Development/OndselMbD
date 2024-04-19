@@ -14,10 +14,16 @@
 #include "SparseMatrix.h"
 #include "MatrixSolver.h"
 #include "GESpMatParPvMarkoFast.h"
-#include "CREATE.h"
 #include "GESpMatParPvPrecise.h"
 
 using namespace MbD;
+
+std::shared_ptr<SystemNewtonRaphson> MbD::SystemNewtonRaphson::With()
+{
+	//Should not create abstract class.
+	assert(false);
+	return std::shared_ptr<SystemNewtonRaphson>();
+}
 
 void SystemNewtonRaphson::initializeGlobally()
 {
@@ -41,7 +47,7 @@ void SystemNewtonRaphson::createVectorsAndMatrices()
 
 std::shared_ptr<MatrixSolver> SystemNewtonRaphson::matrixSolverClassNew()
 {
-	return CREATE<GESpMatParPvMarkoFast>::With();
+	return GESpMatParPvMarkoFast::With();
 }
 
 void SystemNewtonRaphson::calcdxNorm()
@@ -61,11 +67,11 @@ void SystemNewtonRaphson::basicSolveEquations()
 
 void SystemNewtonRaphson::handleSingularMatrix()
 {
-    auto& r = *matrixSolver;
+	auto& r = *matrixSolver;
 	std::string str = typeid(r).name();
 	if (str.find("GESpMatParPvMarkoFast") != std::string::npos) {
-		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
-		this->solveEquations();
+		matrixSolver = GESpMatParPvPrecise::With();
+		solveEquations();
 	}
 	else {
 		str = typeid(r).name();
@@ -89,14 +95,14 @@ void MbD::SystemNewtonRaphson::outputSpreadsheet()
 		auto rowi = pypx->at(i);
 		for (size_t j = 0; j < pypx->ncol(); j++)
 		{
-			if (j > 0) os << '\t';
 			if (rowi->find(j) == rowi->end()) {
 				os << 0.0;
 			}
 			else {
 				os << rowi->at(j);
 			}
+			os << '\t';
 		}
-		os << "\t\t" << y->at(i) << std::endl;
+		os << "\t" << y->at(i) << std::endl;
 	}
 }

@@ -23,6 +23,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<MBDynTotalJoint> MbD::MBDynTotalJoint::With()
+{
+	auto inst = std::make_shared<MBDynTotalJoint>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MBDynTotalJoint::parseMBDyn(std::string statement)
 {
 	MBDynJoint::parseMBDyn(statement);
@@ -123,14 +130,14 @@ void MbD::MBDynTotalJoint::createASMT()
 		auto asmtAsm = asmtAssembly();
 		auto asmtMotion = std::make_shared<ASMTGeneralMotion>();
 		asmtItem = asmtMotion;
-		asmtMotion->setName(name);
-		asmtMotion->setMarkerI(mkr1->asmtItem->fullName(""));
-		asmtMotion->setMarkerJ(mkr2->asmtItem->fullName(""));
+		asmtMotion->setName(label);
+		asmtMotion->setMarkerI(std::static_pointer_cast<ASMTMarker>(mkr1->asmtItem));
+		asmtMotion->setMarkerJ(std::static_pointer_cast<ASMTMarker>(mkr2->asmtItem));
 		asmtAsm->addMotion(asmtMotion);
 		for (size_t i = 0; i < 3; i++)
 		{
-			asmtMotion->rIJI->atiput(i, asmtFormula(positionFormulas.at(i)));
-			asmtMotion->angIJJ->atiput(i, asmtFormula(orientationFormulas.at(i)));
+			asmtMotion->rIJI->atput(i, asmtFormula(positionFormulas.at(i)));
+			asmtMotion->angIJJ->atput(i, asmtFormula(orientationFormulas.at(i)));
 		}
 	}
 	else {
@@ -223,4 +230,5 @@ std::shared_ptr<ASMTJoint> MbD::MBDynTotalJoint::asmtClassNew()
 		orientationConstraints[2] == "inactive"
 		)	return std::make_shared<ASMTPointInPlaneJoint>();
 	assert(false);
+	return std::make_shared<ASMTJoint>();
 }

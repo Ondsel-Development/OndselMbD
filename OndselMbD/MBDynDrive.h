@@ -13,11 +13,13 @@ namespace MbD {
 	class MBDynDrive : public MBDynElement
 	{
 	public:
-        void parseMBDyn(std::string line) override;
-		void readFunction(std::vector<std::string>& args);
+		static std::shared_ptr<MBDynDrive> newDrive(std::string line);
+		void parseMBDyn(std::string line) override;
+		void readFunction(std::vector<std::string>& args) override;
+		void readDriveElement(std::vector<std::string>& args);
 		void createASMT() override;
 
-        std::string driveString, driveName, formula;
+		std::string driveString, driveName, formula;
 
 	};
 }

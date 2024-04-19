@@ -11,16 +11,17 @@
 #include "DispCompIeqcJeqcKeqct.h"
 
 namespace MbD {
-    class DispCompIeqctJeqcKeqct : public DispCompIeqcJeqcKeqct
-    {
-        //
-    public:
-        DispCompIeqctJeqcKeqct();
-        DispCompIeqctJeqcKeqct(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
+	class DispCompIeqctJeqcKeqct : public DispCompIeqcJeqcKeqct
+	{
+		//
+	public:
+		DispCompIeqctJeqcKeqct() {}
+		DispCompIeqctJeqcKeqct(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
+		static std::shared_ptr<DispCompIeqctJeqcKeqct> With(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
 
-        void preAccIC() override;
-        void preVelIC() override;
+		void preAccIC() override;
+		void preVelIC() override;
 
-    };
+	};
 }
 

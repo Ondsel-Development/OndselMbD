@@ -15,6 +15,8 @@ namespace MbD {
 	{
 		//
 	public:
+		static std::shared_ptr<RedundantConstraint> With();
+
 		void removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos) override;
 		bool isRedundant() override;
 		std::string classname() override;
@@ -44,12 +46,14 @@ namespace MbD {
 		void setpqsumudot(FColDsptr col) override;
 		void setpqsumuddot(FColDsptr col) override;
 		void postDynPredictor() override;
+		void postPosICIteration() override;
 		void fillDynError(FColDsptr col) override;
 		void fillpFpy(SpMatDsptr mat) override;
 		void fillpFpydot(SpMatDsptr mat) override;
 		void postDynCorrectorIteration() override;
-        void preDynOutput() override;
+		void preDynOutput() override;
 		void postDynOutput() override;
+		void addToJointTorqueI(FColDsptr col) override;
 
 		std::shared_ptr<Constraint> constraint;
 	};

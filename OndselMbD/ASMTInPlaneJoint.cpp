@@ -4,6 +4,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTInPlaneJoint> MbD::ASMTInPlaneJoint::With()
+{
+	auto inst = std::make_shared<ASMTInPlaneJoint>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::ASMTInPlaneJoint::parseASMT(std::vector<std::string>& lines)
 {
 	ASMTJoint::parseASMT(lines);

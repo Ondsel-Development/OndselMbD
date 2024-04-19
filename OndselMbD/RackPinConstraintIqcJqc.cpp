@@ -8,7 +8,6 @@
  
 #include "RackPinConstraintIqcJqc.h"
 #include "EndFrameqc.h"
-#include "CREATE.h"
 #include "DispCompIeqcJeqcIe.h"
 #include "AngleZIeqcJeqc.h"
 
@@ -16,11 +15,18 @@ using namespace MbD;
 
 MbD::RackPinConstraintIqcJqc::RackPinConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : RackPinConstraintIqcJc(frmi, frmj)
 {
-	pGpXJ = std::make_shared<FullRow<double>>(3);
-	pGpEJ = std::make_shared<FullRow<double>>(4);
-	ppGpEIpXJ = std::make_shared<FullMatrix<double>>(4, 3);
-	ppGpEIpEJ = std::make_shared<FullMatrix<double>>(4, 4);
-	ppGpEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+	pGpXJ = FullRow<double>::With(3);
+	pGpEJ = FullRow<double>::With(4);
+	ppGpEIpXJ = FullMatrix<double>::With(4, 3);
+	ppGpEIpEJ = FullMatrix<double>::With(4, 4);
+	ppGpEJpEJ = FullMatrix<double>::With(4, 4);
+}
+
+std::shared_ptr<RackPinConstraintIqcJqc> MbD::RackPinConstraintIqcJqc::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	auto inst = std::make_shared<RackPinConstraintIqcJqc>(frmi, frmj);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::RackPinConstraintIqcJqc::initxIeJeIe()
@@ -46,7 +52,7 @@ void MbD::RackPinConstraintIqcJqc::calc_pGpXJ()
 void MbD::RackPinConstraintIqcJqc::calc_ppGpEIpEJ()
 {
 	ppGpEIpEJ = xIeJeIe->ppvaluepEIpEJ()
-            ->plusFullMatrix(thezIeJe->ppvaluepEIpEJ()->times(pitchRadius));
+			->plusFullMatrix(thezIeJe->ppvaluepEIpEJ()->times(pitchRadius));
 }
 
 void MbD::RackPinConstraintIqcJqc::calc_ppGpEIpXJ()
@@ -57,24 +63,24 @@ void MbD::RackPinConstraintIqcJqc::calc_ppGpEIpXJ()
 void MbD::RackPinConstraintIqcJqc::calc_ppGpEJpEJ()
 {
 	ppGpEJpEJ = xIeJeIe->ppvaluepEJpEJ()
-            ->plusFullMatrix(thezIeJe->ppvaluepEJpEJ()->times(pitchRadius));
+			->plusFullMatrix(thezIeJe->ppvaluepEJpEJ()->times(pitchRadius));
 }
 
 void MbD::RackPinConstraintIqcJqc::calcPostDynCorrectorIteration()
 {
 	RackPinConstraintIqcJc::calcPostDynCorrectorIteration();
-	this->calc_pGpXJ();
-	this->calc_pGpEJ();
-	this->calc_ppGpEIpXJ();
-	this->calc_ppGpEIpEJ();
-	this->calc_ppGpEJpEJ();
+	calc_pGpXJ();
+	calc_pGpEJ();
+	calc_ppGpEIpXJ();
+	calc_ppGpEIpEJ();
+	calc_ppGpEJpEJ();
 }
 
 void MbD::RackPinConstraintIqcJqc::fillAccICIterError(FColDsptr col)
 {
 	RackPinConstraintIqcJc::fillAccICIterError(col);
-	col->atiplusFullVectortimes(iqXJ, pGpXJ, lam);
-	col->atiplusFullVectortimes(iqEJ, pGpEJ, lam);
+	col->atplusFullVectortimes(iqXJ, pGpXJ, lam);
+	col->atplusFullVectortimes(iqEJ, pGpEJ, lam);
 	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
 	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(frmJ);
 	auto qEdotI = frmIeqc->qEdot();
@@ -86,52 +92,52 @@ void MbD::RackPinConstraintIqcJqc::fillAccICIterError(FColDsptr col)
 	sum += 2.0 * (qEdotI->transposeTimesFullColumn(ppGpEIpXJ->timesFullColumn(qXdotJ)));
 	sum += 2.0 * (qEdotI->transposeTimesFullColumn(ppGpEIpEJ->timesFullColumn(qEdotJ)));
 	sum += qEdotJ->transposeTimesFullColumn(ppGpEJpEJ->timesFullColumn(qEdotJ));
-	col->atiplusNumber(iG, sum);
+	col->atplusNumber(iG, sum);
 }
 
 void MbD::RackPinConstraintIqcJqc::fillPosICError(FColDsptr col)
 {
 	RackPinConstraintIqcJc::fillPosICError(col);
-	col->atiplusFullVectortimes(iqXJ, pGpXJ, lam);
-	col->atiplusFullVectortimes(iqEJ, pGpEJ, lam);
+	col->atplusFullVectortimes(iqXJ, pGpXJ, lam);
+	col->atplusFullVectortimes(iqEJ, pGpEJ, lam);
 }
 
 void MbD::RackPinConstraintIqcJqc::fillPosICJacob(SpMatDsptr mat)
 {
 	RackPinConstraintIqcJc::fillPosICJacob(mat);
-	mat->atijplusFullRow(iG, iqXJ, pGpXJ);
-	mat->atijplusFullColumn(iqXJ, iG, pGpXJ->transpose());
-	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
-	mat->atijplusFullColumn(iqEJ, iG, pGpEJ->transpose());
+	mat->atandplusFullRow(iG, iqXJ, pGpXJ);
+	mat->atandplusFullColumn(iqXJ, iG, pGpXJ->transpose());
+	mat->atandplusFullRow(iG, iqEJ, pGpEJ);
+	mat->atandplusFullColumn(iqEJ, iG, pGpEJ->transpose());
 	auto ppGpEIpXJlam = ppGpEIpXJ->times(lam);
-	mat->atijplusFullMatrix(iqEI, iqXJ, ppGpEIpXJlam);
-	mat->atijplusTransposeFullMatrix(iqXJ, iqEI, ppGpEIpXJlam);
+	mat->atandplusFullMatrix(iqEI, iqXJ, ppGpEIpXJlam);
+	mat->atandplusTransposeFullMatrix(iqXJ, iqEI, ppGpEIpXJlam);
 	auto ppGpEIpEJlam = ppGpEIpEJ->times(lam);
-	mat->atijplusFullMatrix(iqEI, iqEJ, ppGpEIpEJlam);
-	mat->atijplusTransposeFullMatrix(iqEJ, iqEI, ppGpEIpEJlam);
-	mat->atijplusFullMatrixtimes(iqEJ, iqEJ, ppGpEJpEJ, lam);
+	mat->atandplusFullMatrix(iqEI, iqEJ, ppGpEIpEJlam);
+	mat->atandplusTransposeFullMatrix(iqEJ, iqEI, ppGpEIpEJlam);
+	mat->atandplusFullMatrixtimes(iqEJ, iqEJ, ppGpEJpEJ, lam);
 }
 
 void MbD::RackPinConstraintIqcJqc::fillPosKineJacob(SpMatDsptr mat)
 {
 	RackPinConstraintIqcJc::fillPosKineJacob(mat);
-	mat->atijplusFullRow(iG, iqXJ, pGpXJ);
-	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
+	mat->atandplusFullRow(iG, iqXJ, pGpXJ);
+	mat->atandplusFullRow(iG, iqEJ, pGpEJ);
 }
 
 void MbD::RackPinConstraintIqcJqc::fillVelICJacob(SpMatDsptr mat)
 {
 	RackPinConstraintIqcJc::fillVelICJacob(mat);
-	mat->atijplusFullRow(iG, iqXJ, pGpXJ);
-	mat->atijplusFullColumn(iqXJ, iG, pGpXJ->transpose());
-	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
-	mat->atijplusFullColumn(iqEJ, iG, pGpEJ->transpose());
+	mat->atandplusFullRow(iG, iqXJ, pGpXJ);
+	mat->atandplusFullColumn(iqXJ, iG, pGpXJ->transpose());
+	mat->atandplusFullRow(iG, iqEJ, pGpEJ);
+	mat->atandplusFullColumn(iqEJ, iG, pGpEJ->transpose());
 }
 
 void MbD::RackPinConstraintIqcJqc::init_xthez()
 {
-	xIeJeIe = CREATE<DispCompIeqcJeqcIe>::With(frmI, frmJ, 0);
-	thezIeJe = CREATE<AngleZIeqcJeqc>::With(frmJ, frmI);
+	xIeJeIe = DispCompIeqcJeqcIe::With(frmI, frmJ, 0);
+	thezIeJe = AngleZIeqcJeqc::With(frmJ, frmI);
 }
 
 void MbD::RackPinConstraintIqcJqc::useEquationNumbers()
@@ -145,20 +151,20 @@ void MbD::RackPinConstraintIqcJqc::useEquationNumbers()
 void MbD::RackPinConstraintIqcJqc::fillpFpy(SpMatDsptr mat)
 {
 	RackPinConstraintIqcJc::fillpFpy(mat);
-	mat->atijplusFullRow(iG, iqXJ, pGpXJ);
-	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
+	mat->atandplusFullRow(iG, iqXJ, pGpXJ);
+	mat->atandplusFullRow(iG, iqEJ, pGpEJ);
 	auto ppGpEIpXJlam = ppGpEIpXJ->times(lam);
-	mat->atijplusFullMatrix(iqEI, iqXJ, ppGpEIpXJlam);
-	mat->atijplusTransposeFullMatrix(iqXJ, iqEI, ppGpEIpXJlam);
+	mat->atandplusFullMatrix(iqEI, iqXJ, ppGpEIpXJlam);
+	mat->atandplusTransposeFullMatrix(iqXJ, iqEI, ppGpEIpXJlam);
 	auto ppGpEIpEJlam = ppGpEIpEJ->times(lam);
-	mat->atijplusFullMatrix(iqEI, iqEJ, ppGpEIpEJlam);
-	mat->atijplusTransposeFullMatrix(iqEJ, iqEI, ppGpEIpEJlam);
-	mat->atijplusFullMatrixtimes(iqEJ, iqEJ, ppGpEJpEJ, lam);
+	mat->atandplusFullMatrix(iqEI, iqEJ, ppGpEIpEJlam);
+	mat->atandplusTransposeFullMatrix(iqEJ, iqEI, ppGpEIpEJlam);
+	mat->atandplusFullMatrixtimes(iqEJ, iqEJ, ppGpEJpEJ, lam);
 }
 
 void MbD::RackPinConstraintIqcJqc::fillpFpydot(SpMatDsptr mat)
 {
 	RackPinConstraintIqcJc::fillpFpydot(mat);
-	mat->atijplusFullColumn(iqXJ, iG, pGpXJ->transpose());
-	mat->atijplusFullColumn(iqEJ, iG, pGpEJ->transpose());
+	mat->atandplusFullColumn(iqXJ, iG, pGpXJ->transpose());
+	mat->atandplusFullColumn(iqEJ, iG, pGpEJ->transpose());
 }

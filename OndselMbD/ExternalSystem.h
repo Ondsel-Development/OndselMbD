@@ -25,6 +25,9 @@ namespace MbD {
 	{
 		//
 	public:
+		static std::shared_ptr<ExternalSystem> With();
+		void initialize();
+
 		void preMbDrun(std::shared_ptr<System> mbdSys);
 		void updateFromMbD();
 		void outputFor(AnalysisType type);

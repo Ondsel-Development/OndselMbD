@@ -11,8 +11,16 @@
 #include "ASMTMarker.h"
 #include "Joint.h"
 #include "FullMatrix.h"
+#include "EndFrameqc.h"
 
 using namespace MbD;
+
+std::shared_ptr<ASMTConstraintSet> MbD::ASMTConstraintSet::With()
+{
+	auto inst = std::make_shared<ASMTConstraintSet>();
+	inst->initialize();
+	return inst;
+}
 
 void MbD::ASMTConstraintSet::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units>)
 {
@@ -21,14 +29,15 @@ void MbD::ASMTConstraintSet::createMbD(std::shared_ptr<System> mbdSys, std::shar
 	auto mbdJt = this->mbdClassNew();
 	mbdObject = mbdJt;
 	mbdJt->name = fullName("");
-	auto mrkI = std::static_pointer_cast<EndFramec>(root()->markerAt(markerI)->mbdObject);
-	auto mrkJ = std::static_pointer_cast<EndFramec>(root()->markerAt(markerJ)->mbdObject);
+	auto mrkI = std::static_pointer_cast<EndFramec>(markerI->mbdObject);
+	auto mrkJ = std::static_pointer_cast<EndFramec>(markerJ->mbdObject);
 	mbdJt->connectsItoJ(mrkI, mrkJ);
 	mbdSys->addJoint(mbdJt);
 }
 
 std::shared_ptr<Joint> MbD::ASMTConstraintSet::mbdClassNew()
 {
+	//Should not create abstract class.
 	assert(false);
 	return std::shared_ptr<Joint>();
 }
@@ -58,9 +67,9 @@ void MbD::ASMTConstraintSet::compareResults(AnalysisType)
 	if (infxs == nullptr || infxs->empty()) return;
 	auto mbdUnts = mbdUnits();
 	//auto factor = 1.0e-6;
-    //auto forceTol = mbdUnts->force * factor;
-    //auto torqueTol = mbdUnts->torque * factor;
-    //auto i = fxs->size() - 1;
+	//auto forceTol = mbdUnts->force * factor;
+	//auto torqueTol = mbdUnts->torque * factor;
+	//auto i = fxs->size() - 1;
 	//assert(Numeric::equaltol(fxs->at(i), infxs->at(i), forceTol));
 	//assert(Numeric::equaltol(fys->at(i), infys->at(i), forceTol));
 	//assert(Numeric::equaltol(fzs->at(i), infzs->at(i), forceTol));
@@ -71,6 +80,7 @@ void MbD::ASMTConstraintSet::compareResults(AnalysisType)
 
 void MbD::ASMTConstraintSet::outputResults(AnalysisType)
 {
+	assert(false);
 }
 
 void MbD::ASMTConstraintSet::updateFromInputState()

@@ -33,6 +33,7 @@ namespace MbD {
 		FMatDsptr aAdot;
 		FColDsptr omeF, omef;
 	};
+
 	template<typename T>
 	inline std::shared_ptr<EulerAnglesDDot<T>> EulerAnglesDot<T>::differentiateWRT(T var)
 	{
@@ -43,6 +44,7 @@ namespace MbD {
 		derivatives->aEulerAnglesDot = this;
 		return derivatives;
 	}
+
 	template<typename T>
 	inline void EulerAnglesDot<T>::calc()
 	{
@@ -56,13 +58,13 @@ namespace MbD {
 			auto angle = aEulerAngles->at(i)->getValue();
 			auto angleDot = this->at(i)->getValue();
 			if (axis == 1) {
-				cAdot->atiput(i, FullMatrix<double>::rotatexrotDot(angle, angleDot));
+				cAdot->atput(i, FullMatrix<double>::rotatexrotDot(angle, angleDot));
 			}
 			else if (axis == 2) {
-				cAdot->atiput(i, FullMatrix<double>::rotateyrotDot(angle, angleDot));
+				cAdot->atput(i, FullMatrix<double>::rotateyrotDot(angle, angleDot));
 			}
 			else if (axis == 3) {
-				cAdot->atiput(i, FullMatrix<double>::rotatezrotDot(angle, angleDot));
+				cAdot->atput(i, FullMatrix<double>::rotatezrotDot(angle, angleDot));
 			}
 			else {
 				throw std::runtime_error("Euler angle rotation order must be any permutation of 1,2,3 without consecutive repeats.");

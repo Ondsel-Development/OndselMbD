@@ -11,12 +11,11 @@
 
 using namespace MbD;
 
-DispCompIeqctJeqcO::DispCompIeqctJeqcO()
+std::shared_ptr<DispCompIeqctJeqcO> MbD::DispCompIeqctJeqcO::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis)
 {
-}
-
-DispCompIeqctJeqcO::DispCompIeqctJeqcO(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis) : DispCompIeqcJeqcO(frmi, frmj, axis)
-{
+	auto inst = std::make_shared<DispCompIeqctJeqcO>(frmi, frmj, axis);
+	inst->initialize();
+	return inst;
 }
 
 void DispCompIeqctJeqcO::initializeGlobally()

@@ -14,11 +14,17 @@
 #include "SystemSolver.h"
 #include "Part.h"
 #include "Constraint.h"
-#include "CREATE.h"
 #include "GESpMatParPvPrecise.h"
 #include "GESpMatFullPvPosIC.h"
 
 using namespace MbD;
+
+std::shared_ptr<PosICNewtonRaphson> MbD::PosICNewtonRaphson::With()
+{
+	auto inst = std::make_shared<PosICNewtonRaphson>();
+	inst->initialize();
+	return inst;
+}
 
 void PosICNewtonRaphson::run()
 {
@@ -46,16 +52,16 @@ void MbD::PosICNewtonRaphson::iterate()
 	//Keep for debugging
 	iterNo = SIZE_MAX;
 	this->fillY();
-	this->calcyNorm();
+	calcyNorm();
 	yNorms->push_back(yNorm);
 
 	while (true) {
-		this->incrementIterNo();
-		this->fillPyPx();
+		incrementIterNo();
+		fillPyPx();
 		//std::cout << *pypx << std::endl;
-		//outputSpreadsheet();
-		this->solveEquations();
-		this->calcDXNormImproveRootCalcYNorm();
+		outputSpreadsheet();
+		solveEquations();
+		calcDXNormImproveRootCalcYNorm();
 		if (this->isConverged()) {
 			//std::cout << "iterNo = " << iterNo << std::endl;
 			break;
@@ -129,16 +135,16 @@ void PosICNewtonRaphson::handleSingularMatrix()
 		matrixSolver = this->matrixSolverClassNew();
 	}
 	else {
-        auto& r = *matrixSolver;
+		auto& r = *matrixSolver;
 		std::string str = typeid(r).name();
 		if (str.find("GESpMatParPvMarkoFast") != std::string::npos) {
-		    matrixSolver = CREATE<GESpMatParPvPrecise>::With();
-		    this->solveEquations();
+			matrixSolver = GESpMatParPvPrecise::With();
+			solveEquations();
 		}
 		else {
-            auto& msRef = *matrixSolver.get(); // extrapolated to suppress warning
-            str = typeid(msRef).name();
-            (void) msRef;                      // also for warning suppression
+			auto& msRef = *matrixSolver.get(); // extrapolated to suppress warning
+			str = typeid(msRef).name();
+			(void) msRef;                      // also for warning suppression
 			if (str.find("GESpMatParPvPrecise") != std::string::npos) {
 				this->lookForRedundantConstraints();
 				matrixSolver = this->matrixSolverClassNew();
@@ -153,7 +159,7 @@ void PosICNewtonRaphson::lookForRedundantConstraints()
 {
 	std::string str("MbD: Checking for redundant constraints.");
 	system->logString(str);
-	auto posICsolver = CREATE<GESpMatFullPvPosIC>::With();
+	auto posICsolver = GESpMatFullPvPosIC::With();
 	posICsolver->system = this;
 	dx = posICsolver->solvewithsaveOriginal(pypx, y->negated(), false);
 }

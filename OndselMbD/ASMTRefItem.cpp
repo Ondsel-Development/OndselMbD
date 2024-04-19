@@ -7,10 +7,16 @@
  ***************************************************************************/
  
 #include "ASMTRefItem.h"
-#include "CREATE.h"
 #include <algorithm>
 
 using namespace MbD;
+
+std::shared_ptr<ASMTRefItem> MbD::ASMTRefItem::With()
+{
+	auto inst = std::make_shared<ASMTRefItem>();
+	inst->initialize();
+	return inst;
+}
 
 void MbD::ASMTRefItem::addMarker(std::shared_ptr<ASMTMarker> marker)
 {
@@ -38,9 +44,9 @@ void MbD::ASMTRefItem::readMarker(std::vector<std::string>& lines)
 	assert(lines[0].find("Marker") != std::string::npos);
 	lines.erase(lines.begin());
 	auto marker = ASMTMarker::With();
+	marker->owner = this;
 	marker->parseASMT(lines);
 	markers->push_back(marker);
-	marker->owner = this;
 }
 
 void MbD::ASMTRefItem::storeOnLevel(std::ofstream& os, size_t level)

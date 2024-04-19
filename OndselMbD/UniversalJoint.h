@@ -15,8 +15,11 @@ namespace MbD {
 	{
 		//
 	public:
-		UniversalJoint();
+		UniversalJoint() {}
 		UniversalJoint(const char* str);
+		static std::shared_ptr<UniversalJoint> With();
+		static std::shared_ptr<UniversalJoint> With(const char* str);
+
 		void initializeGlobally() override;
 
 	};

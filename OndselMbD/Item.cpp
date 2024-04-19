@@ -19,13 +19,20 @@
 using namespace MbD;
 
 Item::Item() {
+}
+
+std::shared_ptr<Item> MbD::Item::With(const char* str)
+{
+	auto inst = std::make_shared<Item>(str);
+	inst->initialize();
+	return inst;
+}
+
+void Item::initialize()
+{
 	auto now = std::chrono::high_resolution_clock::now();
 	auto nanoseconds = now.time_since_epoch().count();
 	name = std::to_string(nanoseconds);
-}
-
-Item::Item(const char* str) : name(str)
-{
 }
 
 System* Item::root()
@@ -38,10 +45,6 @@ void MbD::Item::noop()
 	//No Operations
 }
 
-void Item::initialize()
-{
-}
-
 std::ostream& Item::printOn(std::ostream& s) const
 {
 	std::string str = typeid(*this).name();
@@ -50,36 +53,39 @@ std::ostream& Item::printOn(std::ostream& s) const
 	return s;
 }
 
-void Item::initializeLocally()
-{
-}
-
 bool MbD::Item::isJointForce()
 {
-	assert(false);
 	return false;
 }
 
 bool MbD::Item::isJointTorque()
 {
-	assert(false);
 	return false;
 }
 
 bool MbD::Item::isKinedotIJ()
 {
-	assert(false);
 	return false;
 }
 
 bool MbD::Item::isKineIJ()
 {
-	assert(false);
 	return false;
 }
 
 void Item::initializeGlobally()
 {
+	//"Called once only."
+	//"Initialize all constant dependent instance variables using local and global objects."
+	//"Default is do nothing."
+}
+
+void MbD::Item::initializeLocally()
+{
+	//"Called once only."
+	//"Assume that the independent instance variables are already set."
+	//"Initialize all constant dependent instance variables using local objects only."
+	//"Default is do nothing."
 }
 
 void Item::postInput()
@@ -90,6 +96,7 @@ void Item::postInput()
 
 void Item::calcPostDynCorrectorIteration()
 {
+	assert(false);
 }
 
 void MbD::Item::checkForCollisionDiscontinuityBetweenand(double, double)
@@ -99,25 +106,27 @@ void MbD::Item::checkForCollisionDiscontinuityBetweenand(double, double)
 
 void Item::removeRedundantConstraints(std::shared_ptr<std::vector<size_t>>)
 {
+	assert(false);
 }
 
 void MbD::Item::setpqsumu(FColDsptr)
 {
-	assert(false);
+	//Do nothing.
 }
 
 void MbD::Item::setpqsumuddot(FColDsptr)
 {
-	assert(false);
+	//Do nothing.
 }
 
 void MbD::Item::setpqsumudot(FColDsptr)
 {
-	assert(false);
+	//Do nothing.
 }
 
 void Item::reactivateRedundantConstraints()
 {
+	assert(false);
 }
 
 void MbD::Item::registerName()
@@ -127,20 +136,22 @@ void MbD::Item::registerName()
 
 void Item::fillPosKineError(FColDsptr)
 {
+	assert(false);
 }
 
 void Item::fillPosKineJacob(SpMatDsptr)
 {
+	assert(false);
 }
 
 void MbD::Item::fillpqsumu(FColDsptr)
 {
-	assert(false);
+	//Do nothing.
 }
 
 void MbD::Item::fillpqsumudot(FColDsptr)
 {
-	assert(false);
+	//Do nothing.
 }
 
 void Item::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>)
@@ -155,16 +166,17 @@ void MbD::Item::fillPerpenConstraints(std::shared_ptr<std::vector<std::shared_pt
 
 void MbD::Item::fillpFpy(SpMatDsptr)
 {
-	assert(false);
+	//Do nothing.
 }
 
 void MbD::Item::fillpFpydot(SpMatDsptr)
 {
-	assert(false);
+	//Do nothing.
 }
 
 void Item::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>)
 {
+	assert(false);
 }
 
 void MbD::Item::fillStaticError(FColDsptr)
@@ -172,7 +184,7 @@ void MbD::Item::fillStaticError(FColDsptr)
 	assert(false);
 }
 
-void MbD::Item::fillStaticJacob(FMatDsptr)
+void MbD::Item::fillStaticJacob(SpMatDsptr mat)
 {
 	assert(false);
 }
@@ -189,15 +201,17 @@ void MbD::Item::fillDispConstraints(std::shared_ptr<std::vector<std::shared_ptr<
 
 void MbD::Item::fillDynError(FColDsptr)
 {
-	assert(false);
+	//Do nothing.
 }
 
 void Item::fillqsu(FColDsptr)
 {
+	//Do nothing.
 }
 
 void Item::fillqsuWeights(DiagMatDsptr)
 {
+	//Do nothing.
 }
 
 void MbD::Item::fillqsuWeightsSmall(FColDsptr)
@@ -207,15 +221,17 @@ void MbD::Item::fillqsuWeightsSmall(FColDsptr)
 
 void Item::fillqsulam(FColDsptr)
 {
+	//Do nothing.
 }
 
 void Item::setqsulam(FColDsptr)
 {
+	//Do nothing.
 }
 
 void MbD::Item::simUpdateAll()
 {
-	assert(false);
+	calcPostDynCorrectorIteration();
 }
 
 void Item::preDyn()
@@ -311,6 +327,7 @@ void MbD::Item::postDynPredictor()
 
 void Item::preDynStep()
 {
+	//Do nothing.
 }
 
 void MbD::Item::preICRestart()
@@ -327,6 +344,7 @@ void Item::postDynStep()
 
 void Item::storeDynState()
 {
+	//Do nothing.
 }
 
 double MbD::Item::suggestSmallerOrAcceptCollisionFirstStepSize(double)
@@ -362,15 +380,17 @@ void Item::preVelIC()
 	//been calculated in postPosIC."
 	//"Variables dependent on t are updated."
 
-	this->calcPostDynCorrectorIteration();
+	calcPostDynCorrectorIteration();
 }
 
 void Item::postVelIC()
 {
+	//Do nothing.
 }
 
 void Item::fillqsudot(FColDsptr)
 {
+	//Do nothing.
 }
 
 void MbD::Item::fillqsudotPlam(FColDsptr)
@@ -385,14 +405,17 @@ void MbD::Item::fillqsudotPlamDeriv(FColDsptr)
 
 void Item::fillqsudotWeights(DiagMatDsptr)
 {
+	//Do nothing.
 }
 
 void Item::fillVelICError(FColDsptr)
 {
+	//Do nothing.
 }
 
 void Item::fillVelICJacob(SpMatDsptr)
 {
+	//Do nothing.
 }
 
 void MbD::Item::getString(std::string)
@@ -402,6 +425,7 @@ void MbD::Item::getString(std::string)
 
 void Item::setqsudotlam(FColDsptr)
 {
+	//Do nothing.
 }
 
 void MbD::Item::setqsudotPlam(FColDsptr)
@@ -416,7 +440,7 @@ void MbD::Item::setqsudotPlamDeriv(FColDsptr)
 
 void Item::preAccIC()
 {
-	this->calcPostDynCorrectorIteration();
+	calcPostDynCorrectorIteration();
 }
 
 void MbD::Item::preCollision()
@@ -451,10 +475,12 @@ void MbD::Item::preCollisionStep()
 
 void Item::postAccIC()
 {
+	//Do nothing.
 }
 
 void Item::postAccICIteration()
 {
+	//Do nothing.
 }
 
 void MbD::Item::postCollisionCorrector()
@@ -484,14 +510,17 @@ void MbD::Item::postCollisionStep()
 
 void Item::fillqsuddotlam(FColDsptr)
 {
+	//Do nothing.
 }
 
 void Item::fillAccICIterError(FColDsptr)
 {
+	//Do nothing.
 }
 
 void Item::fillAccICIterJacob(SpMatDsptr)
 {
+	//Do nothing.
 }
 
 void MbD::Item::fillCollisionDerivativeICError(FColDsptr)
@@ -521,10 +550,12 @@ void MbD::Item::fillCollisionpFpydot(SpMatDsptr)
 
 void Item::setqsudot(FColDsptr)
 {
+	assert(false);
 }
 
 void Item::setqsuddotlam(FColDsptr)
 {
+	//Do nothing.
 }
 
 std::shared_ptr<StateData> Item::stateData()
@@ -540,6 +571,7 @@ void MbD::Item::storeCollisionState()
 
 void Item::discontinuityAtaddTypeTo(double, std::shared_ptr<std::vector<DiscontinuityType>>)
 {
+	assert(false);
 }
 
 void MbD::Item::discontinuityAtICAddTo(std::shared_ptr<std::vector<DiscontinuityType>>)
@@ -557,14 +589,23 @@ double Item::checkForDynDiscontinuityBetweenand(double, double t)
 
 void Item::constraintsReport()
 {
+	assert(false);
 }
 
 void Item::setqsu(FColDsptr)
 {
+	//Do nothing.
 }
 
 void Item::useEquationNumbers()
 {
+	//Do nothing.
+}
+
+double MbD::Item::value()
+{
+	assert(false);
+	return 0.0;
 }
 
 void Item::logString(std::string& str)
@@ -614,11 +655,12 @@ void MbD::Item::preStatic()
 
 void Item::postPosIC()
 {
+	//Do nothing.
 }
 
 void Item::postPosICIteration()
 {
-	this->calcPostDynCorrectorIteration();
+	calcPostDynCorrectorIteration();
 }
 
 void MbD::Item::postStatic()
@@ -633,12 +675,10 @@ void MbD::Item::postStaticIteration()
 
 void Item::fillPosICError(FColDsptr)
 {
-}
-
-void Item::fillPosICJacob(FMatDsptr)
-{
+	//Do nothing.
 }
 
 void Item::fillPosICJacob(SpMatDsptr)
 {
+	//Do nothing.
 }

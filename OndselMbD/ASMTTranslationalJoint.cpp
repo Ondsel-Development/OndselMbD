@@ -14,12 +14,14 @@ using namespace MbD;
 
 std::shared_ptr<ASMTTranslationalJoint> MbD::ASMTTranslationalJoint::With()
 {
-	return std::make_shared<ASMTTranslationalJoint>();
+	auto inst = std::make_shared<ASMTTranslationalJoint>();
+	inst->initialize();
+	return inst;
 }
 
 std::shared_ptr<Joint> MbD::ASMTTranslationalJoint::mbdClassNew()
 {
-    return CREATE<TranslationalJoint>::With();
+	return TranslationalJoint::With();
 }
 
 void MbD::ASMTTranslationalJoint::storeOnLevel(std::ofstream& os, size_t level)

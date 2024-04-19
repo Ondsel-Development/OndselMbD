@@ -7,25 +7,35 @@
  ***************************************************************************/
  
 #include "ParallelAxesJoint.h"
-#include "CREATE.h"
 #include "System.h"
 
 using namespace MbD;
 
-MbD::ParallelAxesJoint::ParallelAxesJoint()
-{
-}
-
 MbD::ParallelAxesJoint::ParallelAxesJoint(const char*)
 {
+	assert(false);
+}
+
+std::shared_ptr<ParallelAxesJoint> MbD::ParallelAxesJoint::With()
+{
+	auto inst = std::make_shared<ParallelAxesJoint>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<ParallelAxesJoint> MbD::ParallelAxesJoint::With(const char* str)
+{
+	auto inst = std::make_shared<ParallelAxesJoint>(str);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::ParallelAxesJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 0));
-		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 1));
+		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 1));
 		this->root()->hasChanged = true;
 	}
 	else {

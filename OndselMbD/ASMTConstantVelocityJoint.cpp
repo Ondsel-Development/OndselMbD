@@ -14,10 +14,12 @@ using namespace MbD;
 
 std::shared_ptr<ASMTConstantVelocityJoint> MbD::ASMTConstantVelocityJoint::With()
 {
-    return std::make_shared<ASMTConstantVelocityJoint>();
+	auto inst = std::make_shared<ASMTConstantVelocityJoint>();
+	inst->initialize();
+	return inst;
 }
 
 std::shared_ptr<Joint> MbD::ASMTConstantVelocityJoint::mbdClassNew()
 {
-    return CREATE<ConstantVelocityJoint>::With();
+	return ConstantVelocityJoint::With();
 }

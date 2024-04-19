@@ -6,7 +6,6 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
 
-#include <algorithm>
 
 #include "Polynomial.h"
 #include "Constant.h"
@@ -28,6 +27,13 @@ MbD::Polynomial::Polynomial(Symsptr var, std::shared_ptr<std::vector<Symsptr>> c
 	assert(!coefficients->empty());
 	xx = var;
 	coeffs->insert(coeffs->end(), coefficients->begin(), coefficients->end());
+}
+
+std::shared_ptr<Polynomial> MbD::Polynomial::With()
+{
+	auto inst = std::make_shared<Polynomial>();
+	inst->initialize();
+	return inst;
 }
 
 Symsptr MbD::Polynomial::expandUntil(Symsptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
@@ -66,10 +72,10 @@ Symsptr MbD::Polynomial::differentiateWRTx()
 	}
 	auto poly1 = std::make_shared<Polynomial>(xx, newCoeffs);
 	//Differentiate coeffs
-	auto coeffDerivs = std::make_shared<std::vector<Symsptr>>();
+	auto coeffDerivs = std::make_shared<std::vector<Symsptr>>(coeffs->size());
 	std::transform(coeffs->begin(),
 		coeffs->end(),
-		std::back_inserter(*coeffDerivs),
+		coeffDerivs->begin(),
 		[&](auto& coeff) { return coeff->differentiateWRT(xx); }
 	);
 	auto poly2 = std::make_shared<Polynomial>(xx, coeffDerivs);

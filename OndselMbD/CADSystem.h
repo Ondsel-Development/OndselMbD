@@ -23,6 +23,8 @@ namespace MbD {
 			mbdSystem->initialize();
 			mbdSystem->externalSystem->cadSystem = this;
 		}
+		static std::shared_ptr<CADSystem> With();
+		void initialize();
 
 		void outputFor(AnalysisType type);
 		void logString(std::string& str);

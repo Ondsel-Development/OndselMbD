@@ -11,20 +11,22 @@
 #include "FunctionX.h"
 
 namespace MbD {
-    class Cosine : public FunctionX
-    {
-        //
-    public:
-        Cosine() = default;
-        Cosine(Symsptr arg);
-        double getValue() override;
-        Symsptr differentiateWRTx() override;
-        Symsptr integrateWRTx() override;
-        Symsptr copyWith(Symsptr arg) override;
-        Symsptr clonesptr() override;
+	class Cosine : public FunctionX
+	{
+		//
+	public:
+		Cosine() = default;
+		Cosine(Symsptr arg);
+		static std::shared_ptr<Cosine> With();
+		
+		double getValue() override;
+		Symsptr differentiateWRTx() override;
+		Symsptr integrateWRTx() override;
+		Symsptr copyWith(Symsptr arg) override;
+		Symsptr clonesptr() override;
 
-        std::ostream& printOn(std::ostream& s) const override;
+		std::ostream& printOn(std::ostream& s) const override;
 
-    };
+	};
 }
 

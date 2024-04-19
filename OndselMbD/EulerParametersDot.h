@@ -12,7 +12,6 @@
 #include "FullColumn.h"
 #include "FullMatrix.h"
 #include "EulerParameters.h"
-//#include "CREATE.h" //Cannot use CREATE.h in subclasses of std::vector. Why?
 
 namespace MbD {
 
@@ -24,11 +23,15 @@ namespace MbD {
 		EulerParametersDot(size_t count) : EulerArray<T>(count) {}
 		EulerParametersDot(size_t count, const T& value) : EulerArray<T>(count, value) {}
 		EulerParametersDot(std::initializer_list<T> list) : EulerArray<T>{ list } {}
-		static std::shared_ptr<EulerParametersDot<T>> FromqEOpAndOmegaOpO(std::shared_ptr<EulerParameters<T>> qe, FColDsptr omeOpO);
+		static std::shared_ptr<EulerParametersDot<T>> With(size_t count);
 		void initialize() override;
+		static std::shared_ptr<EulerParametersDot<T>> FromqEOpAndOmegaOpO(std::shared_ptr<EulerParameters<T>> qe, FColDsptr omeOpO);
+
 		void calcAdotBdotCdot();
 		void calcpAdotpE();
 		FMatDsptr aB();
+		FMatDsptr pomeOpOpE();
+		FMatDsptr pomeOpOpEdot();
 		FColDsptr omeOpO();
 
 		std::shared_ptr<EulerParameters<T>> qE;
@@ -39,9 +42,29 @@ namespace MbD {
 	};
 
 	template<typename T>
+	inline std::shared_ptr<EulerParametersDot<T>> EulerParametersDot<T>::With(size_t count)
+	{
+		auto inst = std::make_shared<EulerParametersDot<T>>(count);
+		inst->initialize();
+		return inst;
+	}
+
+	template<typename T>
+	inline void EulerParametersDot<T>::initialize()
+	{
+		aAdot = FullMatrix<double>::With(3, 3);
+		aBdot = FullMatrix<double>::With(3, 4);
+		aCdot = FullMatrix<double>::With(3, 4);
+		pAdotpE = std::make_shared<FullColumn<FMatDsptr>>(4);
+		for (size_t i = 0; i < 4; i++)
+		{
+			pAdotpE->at(i) = FullMatrix<double>::With(3, 3);
+		}
+	}
+
+	template<typename T>
 	inline std::shared_ptr<EulerParametersDot<T>> EulerParametersDot<T>::FromqEOpAndOmegaOpO(std::shared_ptr<EulerParameters<T>> qEOp, FColDsptr omeOpO)
 	{
-		//auto answer = CREATE<EulerParametersDot<T>>::With(4);	//Cannot use CREATE.h in subclasses of std::vector. Why?
 		auto answer = std::make_shared<EulerParametersDot<T>>(4);
 		answer->initialize();	
 		qEOp->calcABC();
@@ -50,19 +73,6 @@ namespace MbD {
 		answer->qE = qEOp;
 		answer->calc();
 		return answer;
-	}
-
-	template<typename T>
-	inline void EulerParametersDot<T>::initialize()
-	{
-		aAdot = std::make_shared<FullMatrix<double>>(3, 3);
-		aBdot = std::make_shared<FullMatrix<double>>(3, 4);
-		aCdot = std::make_shared<FullMatrix<double>>(3, 4);
-		pAdotpE = std::make_shared<FullColumn<FMatDsptr>>(4);
-		for (size_t i = 0; i < 4; i++)
-		{
-			pAdotpE->at(i) = std::make_shared<FullMatrix<double>>(3, 3);
-		}
 	}
 
 	template<typename T>
@@ -182,6 +192,18 @@ namespace MbD {
 	}
 
 	template<typename T>
+	inline FMatDsptr EulerParametersDot<T>::pomeOpOpE()
+	{
+		return EulerParameters<T>::pBpEtimesColumn(this)->times(2.0);
+	}
+
+	template<typename T>
+	inline FMatDsptr EulerParametersDot<T>::pomeOpOpEdot()
+	{
+		return aB()->times(2.0);
+	}
+
+	template<typename T>
 	inline FColDsptr EulerParametersDot<T>::omeOpO()
 	{
 		auto aaa = this->aB();
@@ -195,8 +217,8 @@ namespace MbD {
 	inline void EulerParametersDot<T>::calc()
 	{
 		qE->calc();
-		this->calcAdotBdotCdot();
-		this->calcpAdotpE();
+		calcAdotBdotCdot();
+		calcpAdotpE();
 	}
 }
 

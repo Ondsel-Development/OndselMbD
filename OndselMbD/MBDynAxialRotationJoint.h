@@ -10,18 +10,20 @@
 #include "MBDynJoint.h"
 
 namespace MbD {
-    class ASMTJoint;
-    class ASMTRotationalMotion;
+	class ASMTJoint;
+	class ASMTRotationalMotion;
 
-    class MBDynAxialRotationJoint : public MBDynJoint
-    {
-    public:
-        void parseMBDyn(std::string line) override;
-        void createASMT() override;
-        std::shared_ptr<ASMTJoint> asmtClassNew() override;
-        void outputLine(size_t i, std::ostream& os) override;
+	class MBDynAxialRotationJoint : public MBDynJoint
+	{
+	public:
+		static std::shared_ptr<MBDynAxialRotationJoint> With();
 
-        std::shared_ptr<ASMTRotationalMotion> asmtMotion;
-    };
+		void parseMBDyn(std::string line) override;
+		void createASMT() override;
+		std::shared_ptr<ASMTJoint> asmtClassNew() override;
+		void outputLine(size_t i, std::ostream& os) override;
+
+		std::shared_ptr<ASMTRotationalMotion> asmtMotion;
+	};
 
 }

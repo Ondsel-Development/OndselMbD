@@ -11,11 +11,11 @@
 #include <iomanip>
 
 #include "SymbolicParser.h"
+#include "Symbolic.h"
 #include "BasicUserFunction.h"
 #include "Constant.h"
 #include "Sum.h"
 #include "Product.h"
-#include "CREATE.h"
 #include "Power.h"
 #include "Abs.h"
 #include "ArcTan.h"
@@ -31,11 +31,20 @@
 #include "Functions.h"
 #include "Transitions.h"
 
+using namespace MbD;
+
 MbD::SymbolicParser::SymbolicParser()
 {
 	variables = std::make_shared<std::map<std::string, Symsptr>>();
 	stack = std::make_shared<std::stack<Symsptr>>();
 	buffer = std::make_shared<std::stringstream>();
+}
+
+std::shared_ptr<SymbolicParser> MbD::SymbolicParser::With()
+{
+	auto inst = std::make_shared<SymbolicParser>();
+	inst->initialize();
+	return inst;
 }
 
 void MbD::SymbolicParser::initialize()
@@ -536,5 +545,18 @@ bool MbD::SymbolicParser::isNextLineTag(char c) const
 		}
 	}
 	return false;
+}
+
+void MbD::SymbolicParser::initVariables()
+{
+	auto varsSet = this->variablesSet();
+	for (auto& each : *varsSet) {
+		variables->insert(std::make_pair(each->getName(), each));
+	}
+}
+
+std::shared_ptr<std::set<Symbolic*>> MbD::SymbolicParser::variablesSet()
+{
+	return std::make_shared<std::set<Symbolic*>>();
 }
 

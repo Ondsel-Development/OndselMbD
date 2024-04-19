@@ -11,15 +11,16 @@
 #include "FunctionXcParameter.h"
 
 namespace MbD {
-    class FunctionFromData : public FunctionXcParameter
-    {
-        //xvalue xs ys 
-    public:
-        FunctionFromData() = default;
-        FunctionFromData(Symsptr arg);
+	class FunctionFromData : public FunctionXcParameter
+	{
+		//xvalue xs ys 
+	public:
+		FunctionFromData() = default;
+		FunctionFromData(Symsptr arg);
+		static std::shared_ptr<FunctionFromData> With();
 
-        double xvalue = std::numeric_limits<double>::min();
-        std::shared_ptr<std::vector<double>> xs, ys;
-    };
+		double xvalue = std::numeric_limits<double>::min();
+		std::shared_ptr<std::vector<double>> xs, ys;
+	};
 }
 

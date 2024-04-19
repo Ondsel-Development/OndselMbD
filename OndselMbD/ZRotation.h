@@ -15,8 +15,11 @@ namespace MbD {
 	{
 		//
 	public:
-		ZRotation();
+		ZRotation() {}
 		ZRotation(const char* str);
+		static std::shared_ptr<ZRotation> With();
+		static std::shared_ptr<ZRotation> With(const char* str);
+
 		void initializeGlobally() override;
 	};
 }

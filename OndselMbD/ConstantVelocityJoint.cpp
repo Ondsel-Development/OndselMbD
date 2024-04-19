@@ -9,17 +9,28 @@
 #include "ConstantVelocityJoint.h"
 #include "System.h"
 #include "AtPointConstraintIJ.h"
-#include "CREATE.h"
 #include "ConstVelConstraintIJ.h"
+#include "EndFrameqc.h"
 
 using namespace MbD;
 
-MbD::ConstantVelocityJoint::ConstantVelocityJoint()
-{
-}
-
 MbD::ConstantVelocityJoint::ConstantVelocityJoint(const char* str) : AtPointJoint(str)
 {
+	assert(false);
+}
+
+std::shared_ptr<ConstantVelocityJoint> MbD::ConstantVelocityJoint::With()
+{
+	auto inst = std::make_shared<ConstantVelocityJoint>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<ConstantVelocityJoint> MbD::ConstantVelocityJoint::With(const char* str)
+{
+	auto inst = std::make_shared<ConstantVelocityJoint>(str);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::ConstantVelocityJoint::initializeGlobally()

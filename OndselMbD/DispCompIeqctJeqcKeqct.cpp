@@ -11,12 +11,16 @@
 
 using namespace MbD;
 
-DispCompIeqctJeqcKeqct::DispCompIeqctJeqcKeqct()
-{
-}
-
 DispCompIeqctJeqcKeqct::DispCompIeqctJeqcKeqct(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk) : DispCompIeqcJeqcKeqct(frmi, frmj, frmk, axisk)
 {
+	assert(false);
+}
+
+std::shared_ptr<DispCompIeqctJeqcKeqct> MbD::DispCompIeqctJeqcKeqct::With(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk)
+{
+	auto inst = std::make_shared<DispCompIeqctJeqcKeqct>(frmi, frmj, frmk, axisk);
+	inst->initialize();
+	return inst;
 }
 
 void DispCompIeqctJeqcKeqct::preVelIC()
@@ -36,8 +40,8 @@ void DispCompIeqctJeqcKeqct::preAccIC()
 	auto& mpprIeJeOptpt = efrmIqct->pprOeOptpt;
 	for (size_t i = 0; i < 4; i++)
 	{
-		ppriIeJeKepEIpt->atiminusNumber(i, aAjOKe->dot(mpprIeJeOpEITpt->at(i)));
-		ppriIeJeKepEKpt->atiminusNumber(i, pAjOKepEKT->at(i)->dot(mprIeJeOpt));
+		ppriIeJeKepEIpt->atminusNumber(i, aAjOKe->dot(mpprIeJeOpEITpt->at(i)));
+		ppriIeJeKepEKpt->atminusNumber(i, pAjOKepEKT->at(i)->dot(mprIeJeOpt));
 	}
 	ppriIeJeKeptpt +=  -(2.0 * pAjOKept->dot(mprIeJeOpt)) - aAjOKe->dot(mpprIeJeOptpt);
 }

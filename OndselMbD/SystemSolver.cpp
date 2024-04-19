@@ -6,15 +6,14 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
 
-#include <vector>
-#include <set>
-#include <algorithm>
+//#include <vector>
+//#include <set>
+//#include <algorithm>
 
 #include "SystemSolver.h"
 #include "System.h"
 #include "NewtonRaphson.h"
 #include "PosICNewtonRaphson.h"
-#include "CREATE.h"
 #include "RedundantConstraint.h"
 #include "NotKinematicError.h"
 #include "ICKineIntegrator.h"
@@ -35,15 +34,27 @@ using namespace MbD;
 
 //class PosICNewtonRaphson;
 
-void SystemSolver::setSystem(Solver*)
+MbD::SystemSolver::SystemSolver(System* x) : system(x) 
 {
-	//Do not use
-	assert(false);
+	//Do nothing.
+}
+
+std::shared_ptr<SystemSolver> MbD::SystemSolver::With()
+{
+	auto inst = std::make_shared<SystemSolver>();
+	inst->initialize();
+	return inst;
 }
 
 void SystemSolver::initialize()
 {
 	tstartPasts = std::make_shared<std::vector<double>>();
+}
+
+void SystemSolver::setSystem(Solver*)
+{
+	//Do not use
+	assert(false);
 }
 
 void SystemSolver::initializeLocally()
@@ -55,6 +66,7 @@ void SystemSolver::initializeLocally()
 
 void SystemSolver::initializeGlobally()
 {
+	//Do nothing.
 }
 
 void SystemSolver::runAllIC()
@@ -83,21 +95,21 @@ void SystemSolver::runAllIC()
 
 void SystemSolver::runPosIC()
 {
-	icTypeSolver = CREATE<PosICNewtonRaphson>::With();
+	icTypeSolver = PosICNewtonRaphson::With();
 	icTypeSolver->setSystem(this);
 	icTypeSolver->run();
 }
 
 void SystemSolver::runVelIC()
 {
-	icTypeSolver = CREATE<VelICSolver>::With();
+	icTypeSolver = VelICSolver::With();
 	icTypeSolver->setSystem(this);
 	icTypeSolver->run();
 }
 
 void SystemSolver::runAccIC()
 {
-	icTypeSolver = CREATE<AccICNewtonRaphson>::With();
+	icTypeSolver = AccICNewtonRaphson::With();
 	icTypeSolver->setSystem(this);
 	icTypeSolver->run();
 }
@@ -143,21 +155,24 @@ bool SystemSolver::needToRedoPosIC()
 
 void SystemSolver::preCollision()
 {
+	assert(false);
 }
 
 void SystemSolver::runCollisionDerivativeIC()
 {
+	assert(false);
 }
 
 void SystemSolver::runBasicCollision()
 {
+	assert(false);
 }
 
 void SystemSolver::runBasicKinematic()
 {
 	if (tstart == tend) return;
 	try {
-		basicIntegrator = CREATE<KineIntegrator>::With();
+		basicIntegrator = KineIntegrator::With();
 		basicIntegrator->setSystem(this);
 		basicIntegrator->run();
 	}
@@ -181,7 +196,7 @@ void MbD::SystemSolver::runDragStep(std::shared_ptr<std::vector<std::shared_ptr<
 void SystemSolver::runQuasiKinematic()
 {
 	try {
-		basicIntegrator = CREATE<ICKineIntegrator>::With();
+		basicIntegrator = ICKineIntegrator::With();
 		basicIntegrator->setSystem(this);
 		basicIntegrator->run();
 	}
@@ -193,7 +208,7 @@ void SystemSolver::runQuasiKinematic()
 void MbD::SystemSolver::runBasicDynamic()
 {
 	try {
-		basicIntegrator = CREATE<DynIntegrator>::With();
+		basicIntegrator = DynIntegrator::With();
 		basicIntegrator->setSystem(this);
 		basicIntegrator->run();
 	}
@@ -204,21 +219,21 @@ void MbD::SystemSolver::runBasicDynamic()
 
 void SystemSolver::runPosKine()
 {
-	icTypeSolver = CREATE<PosKineNewtonRaphson>::With();
+	icTypeSolver = PosKineNewtonRaphson::With();
 	icTypeSolver->setSystem(this);
 	icTypeSolver->run();
 }
 
 void SystemSolver::runVelKine()
 {
-	icTypeSolver = CREATE<VelKineSolver>::With();
+	icTypeSolver = VelKineSolver::With();
 	icTypeSolver->setSystem(this);
 	icTypeSolver->run();
 }
 
 void SystemSolver::runAccKine()
 {
-	icTypeSolver = CREATE<AccKineNewtonRaphson>::With();
+	icTypeSolver = AccKineNewtonRaphson::With();
 	icTypeSolver->setSystem(this);
 	icTypeSolver->run();
 }
@@ -234,21 +249,21 @@ void MbD::SystemSolver::runPosICDrag(std::shared_ptr<std::vector<std::shared_ptr
 
 void SystemSolver::runPosICKine()
 {
-	icTypeSolver = CREATE<PosICKineNewtonRaphson>::With();
+	icTypeSolver = PosICKineNewtonRaphson::With();
 	icTypeSolver->setSystem(this);
 	icTypeSolver->run();
 }
 
 void SystemSolver::runVelICKine()
 {
-	icTypeSolver = CREATE<VelICKineSolver>::With();
+	icTypeSolver = VelICKineSolver::With();
 	icTypeSolver->setSystem(this);
 	icTypeSolver->run();
 }
 
 void SystemSolver::runAccICKine()
 {
-	icTypeSolver = CREATE<AccICKineNewtonRaphson>::With();
+	icTypeSolver = AccICKineNewtonRaphson::With();
 	icTypeSolver->setSystem(this);
 	icTypeSolver->run();
 }

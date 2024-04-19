@@ -9,15 +9,29 @@
 #include "ConstVelConstraintIqcJqc.h"
 #include "DirectionCosineIeqcJeqc.h"
 #include "EndFrameqc.h"
-#include "CREATE.h"
 
 using namespace MbD;
 
 MbD::ConstVelConstraintIqcJqc::ConstVelConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : ConstVelConstraintIqcJc(frmi, frmj)
 {
-	pGpEJ = std::make_shared<FullRow<double>>(4);
-	ppGpEIpEJ = std::make_shared<FullMatrix<double>>(4, 4);
-	ppGpEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+	pGpEJ = FullRow<double>::With(4);
+	ppGpEIpEJ = FullMatrix<double>::With(4, 4);
+	ppGpEJpEJ = FullMatrix<double>::With(4, 4);
+}
+
+std::shared_ptr<ConstVelConstraintIqcJqc> MbD::ConstVelConstraintIqcJqc::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	auto inst = std::make_shared<ConstVelConstraintIqcJqc>(frmi, frmj);
+	inst->initialize();
+	return inst;
+}
+
+void MbD::ConstVelConstraintIqcJqc::initialize()
+{
+	ConstVelConstraintIqcJc::initialize();
+	pGpEJ = FullRow<double>::With(4);
+	ppGpEIpEJ = FullMatrix<double>::With(4, 4);
+	ppGpEJpEJ = FullMatrix<double>::With(4, 4);
 }
 
 void MbD::ConstVelConstraintIqcJqc::calcPostDynCorrectorIteration()
@@ -33,7 +47,7 @@ void MbD::ConstVelConstraintIqcJqc::calcPostDynCorrectorIteration()
 	auto& ppA10IeJepEJpEJ = aA10IeqcJeqc->ppAijIeJepEJpEJ;
 	for (size_t i = 0; i < 4; i++)
 	{
-		pGpEJ->atiput(i, pA01IeJepEJ->at(i) + pA10IeJepEJ->at(i));
+		pGpEJ->atput(i, pA01IeJepEJ->at(i) + pA10IeJepEJ->at(i));
 	}
 	for (size_t i = 0; i < 4; i++)
 	{
@@ -43,7 +57,7 @@ void MbD::ConstVelConstraintIqcJqc::calcPostDynCorrectorIteration()
 		for (size_t j = 0; j < 4; j++)
 		{
 			auto ppGpEIpEJij = ppA01IeJepEIpEJi->at(j) + ppA10IeJepEIpEJi->at(j);
-			ppGpEIpEJi->atiput(j, ppGpEIpEJij);
+			ppGpEIpEJi->atput(j, ppGpEIpEJij);
 		}
 	}
 	for (size_t i = 0; i < 4; i++)
@@ -51,12 +65,12 @@ void MbD::ConstVelConstraintIqcJqc::calcPostDynCorrectorIteration()
 		auto& ppGpEJpEJi = ppGpEJpEJ->at(i);
 		auto& ppA01IeJepEJpEJi = ppA01IeJepEJpEJ->at(i);
 		auto& ppA10IeJepEJpEJi = ppA10IeJepEJpEJ->at(i);
-		ppGpEJpEJi->atiput(i, ppA01IeJepEJpEJi->at(i) + ppA10IeJepEJpEJi->at(i));
+		ppGpEJpEJi->atput(i, ppA01IeJepEJpEJi->at(i) + ppA10IeJepEJpEJi->at(i));
 		for (size_t j = i + 1; j < 4; j++)
 		{
 			auto ppGpEJpEJij = ppA01IeJepEJpEJi->at(j) + ppA10IeJepEJpEJi->at(j);
-			ppGpEJpEJi->atiput(j, ppGpEJpEJij);
-			ppGpEJpEJ->atijput(j, i, ppGpEJpEJij);
+			ppGpEJpEJi->atput(j, ppGpEJpEJij);
+			ppGpEJpEJ->atandput(j, i, ppGpEJpEJij);
 		}
 	}
 
@@ -65,7 +79,7 @@ void MbD::ConstVelConstraintIqcJqc::calcPostDynCorrectorIteration()
 void MbD::ConstVelConstraintIqcJqc::fillAccICIterError(FColDsptr col)
 {
 	ConstVelConstraintIqcJc::fillAccICIterError(col);
-	col->atiplusFullVectortimes(iqEJ, pGpEJ, lam);
+	col->atplusFullVectortimes(iqEJ, pGpEJ, lam);
 	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
 	auto qEdotI = efrmIqc->qEdot();
 	auto efrmJqc = std::static_pointer_cast<EndFrameqc>(frmJ);
@@ -74,55 +88,47 @@ void MbD::ConstVelConstraintIqcJqc::fillAccICIterError(FColDsptr col)
 	sum += pGpEJ->timesFullColumn(efrmJqc->qEddot());
 	sum += 2.0 * qEdotI->transposeTimesFullColumn(ppGpEIpEJ->timesFullColumn(qEdotJ));
 	sum += qEdotJ->transposeTimesFullColumn(ppGpEJpEJ->timesFullColumn(qEdotJ));
-	col->atiplusNumber(iG, sum);
+	col->atplusNumber(iG, sum);
 }
 
 void MbD::ConstVelConstraintIqcJqc::fillPosICError(FColDsptr col)
 {
 	ConstVelConstraintIqcJc::fillPosICError(col);
-	col->atiplusFullVectortimes(iqEJ, pGpEJ, lam);
+	col->atplusFullVectortimes(iqEJ, pGpEJ, lam);
 }
 
 void MbD::ConstVelConstraintIqcJqc::fillPosICJacob(SpMatDsptr mat)
 {
 	ConstVelConstraintIqcJc::fillPosICJacob(mat);
-	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
-	mat->atijplusFullColumn(iqEJ, iG, pGpEJ->transpose());
+	mat->atandplusFullRow(iG, iqEJ, pGpEJ);
+	mat->atandplusFullColumn(iqEJ, iG, pGpEJ->transpose());
 	auto ppGpEIpEJlam = ppGpEIpEJ->times(lam);
-	mat->atijplusFullMatrix(iqEI, iqEJ, ppGpEIpEJlam);
-	mat->atijplusTransposeFullMatrix(iqEJ, iqEI, ppGpEIpEJlam);
-	mat->atijplusFullMatrixtimes(iqEJ, iqEJ, ppGpEJpEJ, lam);
+	mat->atandplusFullMatrix(iqEI, iqEJ, ppGpEIpEJlam);
+	mat->atandplusTransposeFullMatrix(iqEJ, iqEI, ppGpEIpEJlam);
+	mat->atandplusFullMatrixtimes(iqEJ, iqEJ, ppGpEJpEJ, lam);
 }
 
 void MbD::ConstVelConstraintIqcJqc::fillPosKineJacob(SpMatDsptr mat)
 {
 	ConstVelConstraintIqcJc::fillPosKineJacob(mat);
-	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
+	mat->atandplusFullRow(iG, iqEJ, pGpEJ);
 }
 
 void MbD::ConstVelConstraintIqcJqc::fillVelICJacob(SpMatDsptr mat)
 {
 	ConstVelConstraintIqcJc::fillVelICJacob(mat);
-	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
-	mat->atijplusFullColumn(iqEJ, iG, pGpEJ->transpose());
+	mat->atandplusFullRow(iG, iqEJ, pGpEJ);
+	mat->atandplusFullColumn(iqEJ, iG, pGpEJ->transpose());
 }
 
 void MbD::ConstVelConstraintIqcJqc::initA01IeJe()
 {
-	aA01IeJe = CREATE<DirectionCosineIeqcJeqc>::With(frmI, frmJ, 0, 1);
+	aA01IeJe = DirectionCosineIeqcJeqc::With(frmI, frmJ, 0, 1);
 }
 
 void MbD::ConstVelConstraintIqcJqc::initA10IeJe()
 {
-	aA10IeJe = CREATE<DirectionCosineIeqcJeqc>::With(frmI, frmJ, 1, 0);
-}
-
-void MbD::ConstVelConstraintIqcJqc::initialize()
-{
-	ConstVelConstraintIqcJc::initialize();
-	pGpEJ = std::make_shared<FullRow<double>>(4);
-	ppGpEIpEJ = std::make_shared<FullMatrix<double>>(4, 4);
-	ppGpEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+	aA10IeJe = DirectionCosineIeqcJeqc::With(frmI, frmJ, 1, 0);
 }
 
 void MbD::ConstVelConstraintIqcJqc::useEquationNumbers()
@@ -134,15 +140,15 @@ void MbD::ConstVelConstraintIqcJqc::useEquationNumbers()
 void MbD::ConstVelConstraintIqcJqc::fillpFpy(SpMatDsptr mat)
 {
 	ConstVelConstraintIqcJc::fillpFpy(mat);
-	mat->atijplusFullRow(iG, iqEJ, pGpEJ);
+	mat->atandplusFullRow(iG, iqEJ, pGpEJ);
 	auto ppGpEIpEJlam = ppGpEIpEJ->times(lam);
-	mat->atijplusFullMatrix(iqEI, iqEJ, ppGpEIpEJlam);
-	mat->atijplusTransposeFullMatrix(iqEJ, iqEI, ppGpEIpEJlam);
-	mat->atijplusFullMatrixtimes(iqEJ, iqEJ, ppGpEJpEJ, lam);
+	mat->atandplusFullMatrix(iqEI, iqEJ, ppGpEIpEJlam);
+	mat->atandplusTransposeFullMatrix(iqEJ, iqEI, ppGpEIpEJlam);
+	mat->atandplusFullMatrixtimes(iqEJ, iqEJ, ppGpEJpEJ, lam);
 }
 
 void MbD::ConstVelConstraintIqcJqc::fillpFpydot(SpMatDsptr mat)
 {
 	ConstVelConstraintIqcJc::fillpFpydot(mat);
-	mat->atijplusFullColumn(iqEJ, iG, pGpEJ->transpose());
+	mat->atandplusFullColumn(iqEJ, iG, pGpEJ->transpose());
 }

@@ -15,8 +15,11 @@ namespace MbD {
 	{
 		//
 	public:
-		PlanarJoint();
+		PlanarJoint() {}
 		PlanarJoint(const char* str);
+		static std::shared_ptr<PlanarJoint> With();
+		static std::shared_ptr<PlanarJoint> With(const char* str);
+
 		void initializeGlobally() override;
 
 	};

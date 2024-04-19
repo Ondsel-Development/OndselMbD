@@ -21,8 +21,10 @@ namespace MbD {
 	{
 		//
 	public:
-		EndFrameqct2();
+		EndFrameqct2() {}
 		EndFrameqct2(const char* str);
+		static std::shared_ptr<EndFrameqct2> With(const char* str);
+		
 		void initpPhiThePsiptBlks() override;
 		void initppPhiThePsiptptBlks() override;
 		void evalAme() override;

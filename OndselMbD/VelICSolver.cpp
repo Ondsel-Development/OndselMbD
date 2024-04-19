@@ -13,6 +13,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<VelICSolver> MbD::VelICSolver::With()
+{
+	auto inst = std::make_shared<VelICSolver>();
+	inst->initialize();
+	return inst;
+}
+
 void VelICSolver::assignEquationNumbers()
 {
 	auto parts = system->parts();
@@ -59,19 +66,19 @@ void VelICSolver::runBasic()
 		this->assignEquationNumbers();
 		system->partsJointsMotionsDo([](std::shared_ptr<Item> item) { item->useEquationNumbers(); });
 		auto qsudotOld = std::make_shared<FullColumn<double>>(nqsu);
-		auto qsudotWeights = std::make_shared<DiagonalMatrix<double>>(nqsu);
+		auto qsudotWeights = DiagonalMatrix<double>::With(nqsu);
 		errorVector = std::make_shared<FullColumn<double>>(n);
 		jacobian = std::make_shared<SparseMatrix<double>>(n, n);
 		system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillqsudot(qsudotOld); });
 		system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillqsudotWeights(qsudotWeights); });
 		errorVector->zeroSelf();
-		errorVector->atiplusFullColumn(0, qsudotWeights->timesFullColumn(qsudotOld));
+		errorVector->atplusFullColumn(0, qsudotWeights->timesFullColumn(qsudotOld));
 		system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillVelICError(errorVector); });
 		jacobian->zeroSelf();
-		jacobian->atijplusDiagonalMatrix(0, 0, qsudotWeights);
+		jacobian->atandplusDiagonalMatrix(0, 0, qsudotWeights);
 		system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillVelICJacob(jacobian); });
 		matrixSolver = this->matrixSolverClassNew();
-		this->solveEquations();
+		solveEquations();
 		auto& qsudotlam = this->x;
 		system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->setqsudotlam(qsudotlam); });
 		system->partsJointsMotionsDo([](std::shared_ptr<Item> item) { item->postVelIC(); });

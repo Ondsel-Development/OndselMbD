@@ -14,9 +14,11 @@ namespace MbD {
 	class CartesianFrame : public Item
 	{
 	public:
-		CartesianFrame();
+		CartesianFrame() {}
 		CartesianFrame(const char* str);
+		static std::shared_ptr<CartesianFrame> With(const char* str);
 		void initialize() override;
+		
 	};
 }
 

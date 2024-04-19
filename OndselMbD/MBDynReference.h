@@ -14,13 +14,17 @@ namespace MbD {
 	class MBDynReference : public MBDynItem
 	{
 	public:
+		static std::shared_ptr<MBDynReference> With();
 		void initialize() override;
+
 		void parseMBDyn(std::string line) override;
+		void readPosition(std::vector<std::string>& args);
+		void readOrientation(std::vector<std::string>& args);
 		void readVelocity(std::vector<std::string>& args);
 		void readOmega(std::vector<std::string>& args);
 
-		std::string refString, name;
-		FColDsptr rOfO, vOfO, omeOfO;
-		FMatDsptr aAOf;
+		std::string refString, baseRefName;
+		FColDsptr rFfF, vFfF, omeFfF;
+		FMatDsptr aAFf;
 	};
 }

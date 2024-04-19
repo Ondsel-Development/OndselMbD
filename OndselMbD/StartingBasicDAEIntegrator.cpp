@@ -9,15 +9,21 @@
 #include <memory>
 
 #include "StartingBasicDAEIntegrator.h"
-#include "CREATE.h"
 
 using namespace MbD;
 
 
+std::shared_ptr<StartingBasicDAEIntegrator> MbD::StartingBasicDAEIntegrator::With()
+{
+	auto inst = std::make_shared<StartingBasicDAEIntegrator>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::StartingBasicDAEIntegrator::initialize()
 {
 	BasicDAEIntegrator::initialize();
-	startingBDF = CREATE<StableStartingBDF>::With();
+	startingBDF = StableStartingBDF::With();
 	startingBDF->timeNodes = tpast;
 }
 

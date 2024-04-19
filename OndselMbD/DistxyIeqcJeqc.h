@@ -15,8 +15,10 @@ namespace MbD {
 	{
 		//pdistxypXJ pdistxypEJ ppdistxypXIpXJ ppdistxypXIpEJ ppdistxypEIpXJ ppdistxypEIpEJ ppdistxypXJpXJ ppdistxypXJpEJ ppdistxypEJpEJ
 	public:
-		DistxyIeqcJeqc();
+		DistxyIeqcJeqc() {}
 		DistxyIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj);
+		static std::shared_ptr<DistxyIeqcJeqc> With(EndFrmsptr frmi, EndFrmsptr frmj);
+		void initialize() override;
 
 		void calc_ppdistxypEIpEJ();
 		void calc_ppdistxypEIpXJ();
@@ -29,7 +31,6 @@ namespace MbD {
 		void calc_pdistxypXJ();
 		void calcPostDynCorrectorIteration() override;
 		void init_xyIeJeIe() override;
-		void initialize() override;
 		FMatDsptr ppvaluepEIpEJ() override;
 		FMatDsptr ppvaluepEIpXJ() override;
 		FMatDsptr ppvaluepEJpEJ() override;

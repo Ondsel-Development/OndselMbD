@@ -11,20 +11,22 @@
 #include "KinematicIeJe.h"
 
 namespace MbD {
-    class DispCompIecJecKec : public KinematicIeJe
-    {
-        //efrmK axisK riIeJeKe aAjOKe rIeJeO 
-    public:
-        DispCompIecJecKec();
-        DispCompIecJecKec(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
+	class DispCompIecJecKec : public KinematicIeJe
+	{
+		//efrmK axisK riIeJeKe aAjOKe rIeJeO 
+	public:
+		DispCompIecJecKec() {}
+		DispCompIecJecKec(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk) : KinematicIeJe(frmi, frmj), efrmK(frmk), axisK(axisk) {}
+		static std::shared_ptr<DispCompIecJecKec> With(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
+		
+		PartFrame* partFrameK();
+		double value() override;
 
-        double value() override;
-
-        EndFrmsptr efrmK;
-        size_t axisK;
-        double riIeJeKe;
-        FColDsptr aAjOKe;
-        FColDsptr rIeJeO;
-    };
+		EndFrmsptr efrmK;
+		size_t axisK;
+		double riIeJeKe;
+		FColDsptr aAjOKe;
+		FColDsptr rIeJeO;
+	};
 }
 

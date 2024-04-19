@@ -12,17 +12,21 @@
 #include "Symbolic.h"
 #include "Time.h"
 #include "EulerParameters.h"
-#include "CREATE.h"
 #include "EulerAngleszxz.h"
 #include "EulerAngleszxzDot.h"
 #include "EulerAngleszxzDDot.h"
 
 using namespace MbD;
 
-EndFrameqct2::EndFrameqct2() {
+EndFrameqct2::EndFrameqct2(const char* str) : EndFrameqct(str) {
+	assert(false);
 }
 
-EndFrameqct2::EndFrameqct2(const char* str) : EndFrameqct(str) {
+std::shared_ptr<EndFrameqct2> MbD::EndFrameqct2::With(const char* str)
+{
+	auto inst = std::make_shared<EndFrameqct2>(str);
+	inst->initialize();
+	return inst;
 }
 
 void EndFrameqct2::initpPhiThePsiptBlks()

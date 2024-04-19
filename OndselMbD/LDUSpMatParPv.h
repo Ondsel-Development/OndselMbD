@@ -11,11 +11,12 @@
 #include "LDUSpMat.h"
 
 namespace MbD {
-    class LDUSpMatParPv : public LDUSpMat
-    {
-        //
-    public:
+	class LDUSpMatParPv : public LDUSpMat
+	{
+		//
+	public:
+		static std::shared_ptr<LDUSpMatParPv> With();
 
-    };
+	};
 }
 

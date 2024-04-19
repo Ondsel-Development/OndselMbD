@@ -5,9 +5,16 @@
 
 using namespace MbD;
 
+std::shared_ptr<MomentOfInertiaSolver> MbD::MomentOfInertiaSolver::With()
+{
+	auto inst = std::make_shared<MomentOfInertiaSolver>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MomentOfInertiaSolver::example1()
 {
-	auto aJpp = std::make_shared<FullMatrix<double>>(ListListD{
+	auto aJpp = FullMatrix<double>::With(ListListD{
 		{ 1, 0, 0 },
 		{ 0, 2, 0 },
 		{ 0, 0, 3 }
@@ -81,11 +88,11 @@ void MbD::MomentOfInertiaSolver::forwardEliminateWithPivot(size_t p)
 		auto& rowi = aJcmPcopy->at(i);
 		auto aip = rowi->at(p);
 		if (aip != 0) {
-			rowi->atiput(p, 0.0);
+			rowi->atput(p, 0.0);
 			auto factor = aip / app;
 			for (size_t j = p + 1; j < 3; j++)
 			{
-				rowi->atiminusNumber(j, factor * rowp->at(j));
+				rowi->atminusNumber(j, factor * rowp->at(j));
 			}
 		}
 	}
@@ -93,10 +100,12 @@ void MbD::MomentOfInertiaSolver::forwardEliminateWithPivot(size_t p)
 
 void MbD::MomentOfInertiaSolver::backSubstituteIntoDU()
 {
+	assert(false);
 }
 
 void MbD::MomentOfInertiaSolver::postSolve()
 {
+	assert(false);
 }
 
 FColDsptr MbD::MomentOfInertiaSolver::basicSolvewithsaveOriginal(FMatDsptr, FColDsptr, bool)
@@ -111,10 +120,12 @@ FColDsptr MbD::MomentOfInertiaSolver::basicSolvewithsaveOriginal(SpMatDsptr, FCo
 
 void MbD::MomentOfInertiaSolver::preSolvewithsaveOriginal(FMatDsptr, FColDsptr, bool)
 {
+	//Do nothing.
 }
 
 void MbD::MomentOfInertiaSolver::preSolvewithsaveOriginal(SpMatDsptr, FColDsptr, bool)
 {
+	//Do nothing.
 }
 
 double MbD::MomentOfInertiaSolver::getmatrixArowimaxMagnitude(size_t)
@@ -124,6 +135,7 @@ double MbD::MomentOfInertiaSolver::getmatrixArowimaxMagnitude(size_t)
 
 void MbD::MomentOfInertiaSolver::doPivoting(size_t)
 {
+	//Do nothing.
 }
 
 void MbD::MomentOfInertiaSolver::setm(double mass)
@@ -238,10 +250,10 @@ void MbD::MomentOfInertiaSolver::calcAPp()
 		if (eigenvector1->at(1) < 0.0) eigenvector1->negateSelf();
 		eigenvector2 = eigenvector0->cross(eigenvector1);
 	}
-	aAPp = std::make_shared<FullMatrix<double>>(3, 3);
-	aAPp->atijputFullColumn(0, 0, eigenvector0);
-	aAPp->atijputFullColumn(0, 1, eigenvector1);
-	aAPp->atijputFullColumn(0, 2, eigenvector2);
+	aAPp = FullMatrix<double>::With(3, 3);
+	aAPp->atandputFullColumn(0, 0, eigenvector0);
+	aAPp->atandputFullColumn(0, 1, eigenvector1);
+	aAPp->atandputFullColumn(0, 2, eigenvector2);
 }
 
 FColDsptr MbD::MomentOfInertiaSolver::eigenvectorFor(double lam)
@@ -254,8 +266,8 @@ FColDsptr MbD::MomentOfInertiaSolver::eigenvectorFor(double lam)
 	auto eigenvector = std::make_shared<FullColumn<double>>(3);
 	for (size_t i = 0; i < 3; i++)
 	{
-		colOrder->atiput(i, i);
-		aJcmPcopy->atijminusNumber(i, i, lam);
+		colOrder->atput(i, i);
+		aJcmPcopy->atandminusNumber(i, i, lam);
 	}
 	for (size_t p = 0; p < 3; p++)
 	{
@@ -285,7 +297,7 @@ FColDsptr MbD::MomentOfInertiaSolver::eigenvectorFor(double lam)
 	auto dum = std::make_shared<FullColumn<double>>(ListD{ e0, e1, e2 });
 	for (size_t i = 0; i < 3; i++)
 	{
-		eigenvector->atiput(colOrder->at(i), dum->at(i));
+		eigenvector->atput(colOrder->at(i), dum->at(i));
 	}
 	return eigenvector;
 }
@@ -295,7 +307,7 @@ void MbD::MomentOfInertiaSolver::calcJppFromDiagJcmP()
 	//"Eigenvalues are orders from smallest to largest."
 
 	double average;
-	auto sortedJ = std::make_shared<DiagonalMatrix<double>>();
+	auto sortedJ = DiagonalMatrix<double>::With();
 	sortedJ->push_back(aJcmP->at(0)->at(0));
 	sortedJ->push_back(aJcmP->at(1)->at(1));
 	sortedJ->push_back(aJcmP->at(2)->at(2));
@@ -326,7 +338,7 @@ void MbD::MomentOfInertiaSolver::calcJppFromDiagJcmP()
 			lam2 = average;
 		}
 	}
-	aJpp = std::make_shared<DiagonalMatrix<double>>(ListD{ lam0, lam1, lam2 });
+	aJpp = DiagonalMatrix<double>::With(ListD{ lam0, lam1, lam2 });
 }
 
 void MbD::MomentOfInertiaSolver::calcJppFromFullJcmP()
@@ -351,7 +363,7 @@ void MbD::MomentOfInertiaSolver::calcJppFromFullJcmP()
 	auto phiDiv3 = modifiedArcCos(-q / std::sqrt(-p * p * p)) / 3.0;
 	auto twoSqrtMinusp = 2.0 * std::sqrt(-p);
 	auto piDiv3 = OS_M_PI / 3.0;
-	auto sortedJ = std::make_shared<DiagonalMatrix<double>>();
+	auto sortedJ = DiagonalMatrix<double>::With();
 	sortedJ->push_back(twoSqrtMinusp * std::cos(phiDiv3));
 	sortedJ->push_back(twoSqrtMinusp * -std::cos(phiDiv3 + piDiv3));
 	sortedJ->push_back(twoSqrtMinusp * -std::cos(phiDiv3 - piDiv3));
@@ -382,7 +394,7 @@ void MbD::MomentOfInertiaSolver::calcJppFromFullJcmP()
 			lam2 = average;
 		}
 	}
-	aJpp = std::make_shared<DiagonalMatrix<double>>(ListD{ lam0, lam1, lam2 });
+	aJpp = DiagonalMatrix<double>::With(ListD{ lam0, lam1, lam2 });
 }
 
 double MbD::MomentOfInertiaSolver::modifiedArcCos(double val)

@@ -11,6 +11,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<MBDynRevolutePinJoint> MbD::MBDynRevolutePinJoint::With()
+{
+	auto inst = std::make_shared<MBDynRevolutePinJoint>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MBDynRevolutePinJoint::parseMBDyn(std::string line)
 {
 	MBDynJoint::parseMBDyn(line);

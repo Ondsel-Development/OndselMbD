@@ -9,7 +9,6 @@
 #include <cmath>
 
 #include "DifferenceOperator.h"
-#include "CREATE.h"
 #include "SingularMatrixError.h"
 #include "FullRow.h"
 #include "LDUFullMatParPvRobust.h"
@@ -17,13 +16,18 @@
 using namespace MbD;
 
 FRowDsptr DifferenceOperator::OneOverFactorials = []() {
-	auto oneOverFactorials = std::make_shared<FullRow<double>>(10);
+	auto oneOverFactorials = FullRow<double>::With(10);
 	for (size_t i = 0; i < oneOverFactorials->size(); i++)
 	{
 		oneOverFactorials->at(i) = 1.0 / std::tgamma(i + 1);
 	}
 	return oneOverFactorials;
 }();
+
+void DifferenceOperator::initialize()
+{
+	//Do nothing
+}
 
 void DifferenceOperator::calcOperatorMatrix()
 {
@@ -43,11 +47,6 @@ void DifferenceOperator::calcOperatorMatrix()
 	}
 }
 
-void DifferenceOperator::initialize()
-{
-	//Do nothing
-}
-
 void MbD::DifferenceOperator::initializeLocally()
 {
 	assert(false);
@@ -65,13 +64,14 @@ void DifferenceOperator::setorder(size_t o)
 
 void MbD::DifferenceOperator::formTaylorMatrix()
 {
+	//Subclasses must implement.
 	assert(false);
 }
 
 void DifferenceOperator::instantiateTaylorMatrix()
 {
 	if (taylorMatrix == nullptr || (taylorMatrix->nrow() != (order + 1))) {
-		taylorMatrix = std::make_shared<FullMatrix<double>>(order + 1, order + 1);
+		taylorMatrix = FullMatrix<double>::With(order + 1, order + 1);
 	}
 }
 
@@ -90,7 +90,7 @@ void DifferenceOperator::formTaylorRowwithTimeNodederivative(size_t i, size_t ii
 	{
 		hipower = hipower * hi;
 		auto aij = hipower * OneOverFactorials->at(j - k);
-		rowi->atiput(j, aij);
+		rowi->atput(j, aij);
 	}
 }
 
@@ -102,10 +102,10 @@ void DifferenceOperator::settime(double t)
 void MbD::DifferenceOperator::formDegenerateTaylorRow(size_t i) const
 {
 	auto& rowi = taylorMatrix->at(i);
-	rowi->atiput(0, 1.0);
+	rowi->atput(0, 1.0);
 	for (size_t i = 1; i < order + 1; i++)
 	{
-		rowi->atiput(i, 0.0);
+		rowi->atput(i, 0.0);
 	}
 }
 

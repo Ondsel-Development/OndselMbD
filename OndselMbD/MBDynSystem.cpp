@@ -1,12 +1,10 @@
 #include <string>
 #include <cassert>
 #include <fstream>	
-#include <algorithm>
 #include <numeric>
 #include <iomanip>
 
 #include "MBDynSystem.h"
-#include "CREATE.h"
 #include "FullColumn.h"
 #include "MBDynInitialValue.h"
 #include "MBDynData.h"
@@ -62,6 +60,7 @@ void MbD::MBDynSystem::parseMBDyn(std::vector<std::string>& lines)
 	readLabels(lines);
 	readVariables(lines);
 	readReferences(lines);
+	readScalarFunctions(lines);
 	readNodesBlock(lines);
 	readElementsBlock(lines);
 	assert(lines.empty());
@@ -107,18 +106,19 @@ void MbD::MBDynSystem::createASMT()
 	for (auto& node : *nodes) node->createASMT();
 	for (auto& body : *bodies) body->createASMT();
 	for (auto& joint : *joints) joint->createASMT();
+	for (auto& plugin : *plugins) plugin->createASMT();
 	if (gravity) gravity->createASMT();
 }
 
 std::shared_ptr<MBDynNode> MbD::MBDynSystem::nodeAt(std::string nodeName)
 {
 	for (auto& node : *nodes) {
-		if (node->name == nodeName) return node;
+		if (node->label == nodeName) return node;
 	}
 	return nullptr;
 }
 
-int MbD::MBDynSystem::nodeidAt(std::string nodeName)
+int MbD::MBDynSystem::labelIDat(std::string nodeName)
 {
 	return labels->at(nodeName);
 }
@@ -140,7 +140,7 @@ std::vector<std::string> MbD::MBDynSystem::nodeNames()
 {
 	auto nodeNames = std::vector<std::string>();
 	for (auto& node : *nodes) {
-		nodeNames.push_back(node->name);
+		nodeNames.push_back(node->label);
 	}
 	return nodeNames;
 }
@@ -269,6 +269,11 @@ void MbD::MBDynSystem::readReferences(std::vector<std::string>& lines)
 	parseMBDynReferences(lines);
 }
 
+void MbD::MBDynSystem::readScalarFunctions(std::vector<std::string>& lines)
+{
+	parseMBDynScalarFunctions(lines);
+}
+
 void MbD::MBDynSystem::readNodesBlock(std::vector<std::string>& lines)
 {
 	std::vector<std::string> tokens{ "begin:", "nodes" };
@@ -343,6 +348,7 @@ MBDynSystem* MbD::MBDynSystem::root()
 
 void MbD::MBDynSystem::initialize()
 {
+	assert(false);
 }
 
 void MbD::MBDynSystem::parseMBDynData(std::vector<std::string>& lines)
@@ -361,7 +367,7 @@ void MbD::MBDynSystem::parseMBDynNodes(std::vector<std::string>& lines)
 	while (true) {
 		auto it = findLineWith(lines, tokens);
 		if (it != lines.end()) {
-			auto structural = std::make_shared<MBDynStructural>();
+			auto structural = MBDynStructural::newStructural(*it);
 			structural->owner = this;
 			structural->parseMBDyn(*it);
 			nodes->push_back(structural);
@@ -379,11 +385,17 @@ void MbD::MBDynSystem::parseMBDynElements(std::vector<std::string>& lines)
 	lines.erase(lines.begin());
 	bodies = std::make_shared<std::vector<std::shared_ptr<MBDynBody>>>();
 	joints = std::make_shared<std::vector<std::shared_ptr<MBDynJoint>>>();
+	plugins = std::make_shared<std::vector<std::shared_ptr<MBDynPlugin>>>();
 	drives = std::make_shared<std::vector<std::shared_ptr<MBDynDrive>>>();
+	forces = std::make_shared<std::vector<std::shared_ptr<MBDynForce>>>();
+	genels = std::make_shared<std::vector<std::shared_ptr<MBDynGenel>>>();
 	std::vector<std::string> bodyTokens{ "body:" };
 	std::vector<std::string> jointTokens{ "joint:" };
+	std::vector<std::string> setTokens{ "set:" };
 	std::vector<std::string> driveTokens{ "drive", "caller:" };
 	std::vector<std::string> gravityTokens{ "gravity" };
+	std::vector<std::string> forceTokens{ "force:" };
+	std::vector<std::string> genelTokens{ "genel:" };
 	std::vector<std::string>::iterator it;
 	while (true) {
 		it = findLineWith(lines, bodyTokens);
@@ -397,7 +409,6 @@ void MbD::MBDynSystem::parseMBDynElements(std::vector<std::string>& lines)
 		}
 		it = findLineWith(lines, jointTokens);
 		if (it != lines.end()) {
-			//auto joint = std::make_shared<MBDynJoint>();
 			auto joint = MBDynJoint::newJoint(*it);
 			joint->owner = this;
 			joint->parseMBDyn(*it);
@@ -405,9 +416,18 @@ void MbD::MBDynSystem::parseMBDynElements(std::vector<std::string>& lines)
 			lines.erase(it);
 			continue;
 		}
+		it = findLineWith(lines, setTokens);
+		if (it != lines.end()) {
+			auto plugin = MBDynPlugin::newPlugin(*it);
+			plugin->owner = this;
+			plugin->parseMBDyn(*it);
+			plugins->push_back(plugin);
+			lines.erase(it);
+			continue;
+		}
 		it = findLineWith(lines, driveTokens);
 		if (it != lines.end()) {
-			auto drive = std::make_shared<MBDynDrive>();
+			auto drive = MBDynDrive::newDrive(*it);
 			drive->owner = this;
 			drive->parseMBDyn(*it);
 			drives->push_back(drive);
@@ -420,6 +440,24 @@ void MbD::MBDynSystem::parseMBDynElements(std::vector<std::string>& lines)
 			grav->owner = this;
 			grav->parseMBDyn(*it);
 			gravity = grav;
+			lines.erase(it);
+			continue;
+		}
+		it = findLineWith(lines, forceTokens);
+		if (it != lines.end()) {
+			auto force = MBDynForce::newForce(*it);
+			force->owner = this;
+			force->parseMBDyn(*it);
+			forces->push_back(force);
+			lines.erase(it);
+			continue;
+		}
+		it = findLineWith(lines, genelTokens);
+		if (it != lines.end()) {
+			auto genel = MBDynGenel::newGenel(*it);
+			genel->owner = this;
+			genel->parseMBDyn(*it);
+			genels->push_back(genel);
 			lines.erase(it);
 			continue;
 		}
@@ -442,12 +480,14 @@ void MbD::MBDynSystem::parseMBDynVariables(std::vector<std::string>& lines)
 			iss >> str;
 			iss >> variable;
 			iss >> str;
-			iss >> str;
+			str = iss.str();
+			auto previousPos = str.find("=");
+			str = str.substr(previousPos + 1);
 			auto parser = std::make_shared<SymbolicParser>();
 			parser->variables = variables;
 			auto userFunc = std::make_shared<BasicUserFunction>(str, 1.0);
 			parser->parseUserFunction(userFunc);
-			auto& sym = parser->stack->top();
+			auto sym = parser->stack->top()->simplified();
 			//auto val = sym->getValue();
 			variables->insert(std::make_pair(variable, sym));
 			lines.erase(it);
@@ -461,7 +501,7 @@ void MbD::MBDynSystem::parseMBDynVariables(std::vector<std::string>& lines)
 void MbD::MBDynSystem::parseMBDynLabels(std::vector<std::string>& lines)
 {
 	labels = std::make_shared<std::map<std::string, int>>();
-	std::string str, label;
+	std::string str;
 	int intValue;
 	std::vector<std::string> tokens{ "set:", "integer" };
 	while (true) {
@@ -493,7 +533,27 @@ void MbD::MBDynSystem::parseMBDynReferences(std::vector<std::string>& lines)
 			auto reference = std::make_shared<MBDynReference>();
 			reference->owner = this;
 			reference->parseMBDyn(*it);
-			references->insert(std::make_pair(reference->name, reference));
+			references->insert(std::make_pair(reference->label, reference));
+			lines.erase(it);
+		}
+		else {
+			break;
+		}
+	}
+}
+
+void MbD::MBDynSystem::parseMBDynScalarFunctions(std::vector<std::string>& lines)
+{
+	scalarFunctions = std::make_shared<std::map<std::string, std::shared_ptr<MBDynScalarFunction>>>();
+	std::string str, refName;
+	std::vector<std::string> tokens{ "scalar", "function:" };
+	while (true) {
+		auto it = findLineWith(lines, tokens);
+		if (it != lines.end()) {
+			auto reference = std::make_shared<MBDynScalarFunction>();
+			reference->owner = this;
+			reference->parseMBDyn(*it);
+			scalarFunctions->insert(std::make_pair(reference->label, reference));
 			lines.erase(it);
 		}
 		else {

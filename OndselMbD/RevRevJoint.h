@@ -15,8 +15,11 @@ namespace MbD {
 	{
 		//
 	public:
-		RevRevJoint();
+		RevRevJoint() {}
 		RevRevJoint(const char* str);
+		static std::shared_ptr<RevRevJoint> With();
+		static std::shared_ptr<RevRevJoint> With(const char* str);
+
 		void initializeGlobally() override;
 
 

@@ -11,12 +11,14 @@
 #include "MatrixDecomposition.h"
 
 namespace MbD {
-    class MatrixLDU : public MatrixDecomposition
-    {
-        //
-    public:
-        FColDsptr forAndBackSubsaveOriginal(FColDsptr fullCol, bool saveOriginal) override;
+	class MatrixLDU : public MatrixDecomposition
+	{
+		//
+	public:
+		static std::shared_ptr<MatrixLDU> With();
 
-    };
+		FColDsptr forAndBackSubsaveOriginal(FColDsptr fullCol, bool saveOriginal) override;
+
+	};
 }
 

@@ -17,18 +17,24 @@ using namespace MbD;
 
 Constraint::Constraint() : Item()
 {
-	aConstant = 0.0;
 }
 
 Constraint::Constraint(const char* str) : Item(str)
 {
+	assert(false);
+}
+
+std::shared_ptr<Constraint> MbD::Constraint::With(const char* str)
+{
+	auto inst = std::make_shared<Constraint>(str);
+	inst->initialize();
+	return inst;
 }
 
 void Constraint::initialize()
 {
-	auto now = std::chrono::high_resolution_clock::now();
-	auto nanoseconds = now.time_since_epoch().count();
-	name = std::to_string(nanoseconds);
+	Item::initialize();
+	aConstant = 0.0;
 }
 
 void Constraint::postInput()
@@ -58,12 +64,14 @@ void Constraint::fillEssenConstraints(std::shared_ptr<Constraint> sptr, std::sha
 		essenConstraints->push_back(sptr);
 	}
 }
+
 void Constraint::fillDispConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints)
 {
 	if (this->type() == displacement) {
 		dispConstraints->push_back(sptr);
 	}
 }
+
 void Constraint::fillPerpenConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints)
 {
 	if (this->type() == perpendicular) {
@@ -111,17 +119,17 @@ void MbD::Constraint::fillDynError(FColDsptr col)
 
 void Constraint::fillqsulam(FColDsptr col)
 {
-	col->atiput(iG, lam);
+	col->atput(iG, lam);
 }
 
 void MbD::Constraint::fillpqsumu(FColDsptr col)
 {
-	col->atiput(iG, mu);
+	col->atput(iG, mu);
 }
 
 void MbD::Constraint::fillpqsumudot(FColDsptr col)
 {
-	col->atiput(iG, lam);
+	col->atput(iG, lam);
 }
 
 void Constraint::setqsulam(FColDsptr col)
@@ -136,7 +144,7 @@ void Constraint::setqsudotlam(FColDsptr col)
 
 void Constraint::fillPosICError(FColDsptr col)
 {
-	col->atiplusNumber(iG, aG);
+	col->atplusNumber(iG, aG);
 }
 
 void Constraint::removeRedundantConstraints(std::shared_ptr<std::vector<size_t>>)
@@ -168,12 +176,12 @@ void Constraint::preDyn()
 
 void Constraint::fillPosKineError(FColDsptr col)
 {
-	col->atiplusNumber(iG, aG);
+	col->atplusNumber(iG, aG);
 }
 
 void Constraint::fillqsuddotlam(FColDsptr col)
 {
-	col->atiput(iG, lam);
+	col->atput(iG, lam);
 }
 
 void Constraint::preAccIC()
@@ -200,24 +208,25 @@ void Constraint::addToJointForceI(FColDsptr)
 
 void Constraint::addToJointTorqueI(FColDsptr)
 {
+	assert(false);
 }
 
 void Constraint::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints) {
-    Item::fillConstraints(allConstraints);
+	Item::fillConstraints(allConstraints);
 }
 
 void Constraint::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) {
-    Item::fillRedundantConstraints(redunConstraints);
+	Item::fillRedundantConstraints(redunConstraints);
 }
 
 void Constraint::fillDispConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints) {
-    Item::fillDispConstraints(dispConstraints);
+	Item::fillDispConstraints(dispConstraints);
 }
 
 void Constraint::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) {
-    Item::fillEssenConstraints(essenConstraints);
+	Item::fillEssenConstraints(essenConstraints);
 }
 
 void Constraint::fillPerpenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints) {
-    Item::fillPerpenConstraints(perpenConstraints);
+	Item::fillPerpenConstraints(perpenConstraints);
 }

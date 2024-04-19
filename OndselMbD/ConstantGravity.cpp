@@ -5,12 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "ConstantGravity.h"
 #include "System.h"
 #include "Part.h"
 
 using namespace MbD;
+
+std::shared_ptr<ConstantGravity> MbD::ConstantGravity::With()
+{
+	auto inst = std::make_shared<ConstantGravity>();
+	inst->initialize();
+	return inst;
+}
 
 void MbD::ConstantGravity::fillAccICIterError(FColDsptr col)
 {
@@ -20,21 +27,16 @@ void MbD::ConstantGravity::fillAccICIterError(FColDsptr col)
 void MbD::ConstantGravity::fillDynError(FColDsptr col)
 {
 	for (auto& part : *(root()->parts)) {
-		col->atiplusFullColumntimes(part->iqX(), gXYZ, part->m);
+		col->atplusFullColumntimes(part->iqX(), gXYZ, part->m);
 	}
 }
 
-void MbD::ConstantGravity::postDynPredictor()
+void MbD::ConstantGravity::fillStaticError(FColDsptr col)
 {
-	//Do nothing.
+	fillDynError(col);
 }
 
-void MbD::ConstantGravity::fillpFpy(SpMatDsptr mat)
-{
-	//Do nothing.
-}
-
-void MbD::ConstantGravity::fillpFpydot(SpMatDsptr mat)
+void MbD::ConstantGravity::postAccICIteration()
 {
 	//Do nothing.
 }
@@ -49,7 +51,37 @@ void MbD::ConstantGravity::preDynOutput()
 	//Do nothing.
 }
 
+void MbD::ConstantGravity::postDynPredictor()
+{
+	//Do nothing.
+}
+
+void MbD::ConstantGravity::postInput()
+{
+	//Do nothing.
+}
+
+void MbD::ConstantGravity::postStaticIteration()
+{
+	//Do nothing.
+}
+
+void MbD::ConstantGravity::preAccIC()
+{
+	//Do nothing.
+}
+
 void MbD::ConstantGravity::postDynOutput()
+{
+	//Do nothing.
+}
+
+void MbD::ConstantGravity::preStatic()
+{
+	//Do nothing.
+}
+
+void MbD::ConstantGravity::simUpdateAll()
 {
 	//Do nothing.
 }

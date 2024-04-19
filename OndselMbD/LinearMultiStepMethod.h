@@ -15,6 +15,8 @@ namespace MbD {
 	{
 		//
 	public:
+		static std::shared_ptr<LinearMultiStepMethod> With();
+		
 		FColDsptr derivativeatpresentpast(size_t n, double t, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast);
 		virtual FColDsptr derivativepresentpast(size_t order, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast);
 		virtual double pvdotpv();

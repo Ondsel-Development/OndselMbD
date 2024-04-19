@@ -5,7 +5,9 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
+#include <cassert>
+
 #include "Reciprocal.h"
 #include "Negative.h"
 #include "Power.h"
@@ -16,6 +18,14 @@ using namespace MbD;
 
 MbD::Reciprocal::Reciprocal(Symsptr arg) : FunctionX(arg)
 {
+	assert(false);
+}
+
+std::shared_ptr<Reciprocal> MbD::Reciprocal::With()
+{
+	auto inst = std::make_shared<Reciprocal>();
+	inst->initialize();
+	return inst;
 }
 
 double MbD::Reciprocal::getValue()

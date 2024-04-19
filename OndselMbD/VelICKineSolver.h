@@ -11,11 +11,12 @@
 #include "VelICSolver.h"
 
 namespace MbD {
-    class VelICKineSolver : public VelICSolver
-    {
-        //Kinematics with under constrained system
-    public:
+	class VelICKineSolver : public VelICSolver
+	{
+		//Kinematics with under constrained system
+	public:
+		static std::shared_ptr<VelICKineSolver> With();
 
-    };
+	};
 }
 

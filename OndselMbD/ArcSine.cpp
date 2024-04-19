@@ -6,12 +6,22 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
 
+//#include <cassert>
+
 #include "ArcSine.h"
 
 using namespace MbD;
 
 MbD::ArcSine::ArcSine(Symsptr arg) : FunctionX(arg)
 {
+	assert(false);
+}
+
+std::shared_ptr<ArcSine> MbD::ArcSine::With()
+{
+	auto inst = std::make_shared<ArcSine>();
+	inst->initialize();
+	return inst;
 }
 
 double MbD::ArcSine::getValue()

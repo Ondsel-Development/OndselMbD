@@ -9,7 +9,6 @@
 #include <functional>
 
 #include "GeneralSpline.h"
-#include "CREATE.h"
 #include "GESpMatParPvMarkoFast.h"
 #include "DifferentiatedGeneralSpline.h"
 #include "Numeric.h"
@@ -18,6 +17,14 @@ using namespace MbD;
 
 MbD::GeneralSpline::GeneralSpline(Symsptr arg) : AnyGeneralSpline(arg)
 {
+	assert(false);
+}
+
+std::shared_ptr<GeneralSpline> MbD::GeneralSpline::With()
+{
+	auto inst = std::make_shared<GeneralSpline>();
+	inst->initialize();
+	return inst;
 }
 
 double MbD::GeneralSpline::getValue()
@@ -75,7 +82,7 @@ void MbD::GeneralSpline::computeDerivatives()
 	{
 		double h = xs->at(i + 1) - xs->at(i);
 		hmax = std::max(hmax, std::abs(h));
-		hs->atiput(i, h);
+		hs->atput(i, h);
 	}
 	for (size_t i = 0; i < n - 1; i++)
 	{
@@ -83,8 +90,8 @@ void MbD::GeneralSpline::computeDerivatives()
 		double hbar = hs->at(i) / hmax;
 		for (size_t j = 1; j < p; j++)
 		{
-			matrix->atijput(offset + j, offset + j - 1, 1.0);
-			matrix->atijput(offset + j, offset + j - 1 + p, -1.0);
+			matrix->atandput(offset + j, offset + j - 1, 1.0);
+			matrix->atandput(offset + j, offset + j - 1 + p, -1.0);
 		}
 		double dum = 1.0;
 		for (size_t j = 0; j < p; j++)
@@ -92,16 +99,16 @@ void MbD::GeneralSpline::computeDerivatives()
 			dum = dum * hbar / (j + 1);
 			for (size_t k = j; k < p; k++)
 			{
-				matrix->atijput(offset + k - j, offset + k, dum);
+				matrix->atandput(offset + k - j, offset + k, dum);
 			}
 		}
-		bvector->atiput(offset, ys->at(i + 1) - ys->at(i));
+		bvector->atput(offset, ys->at(i + 1) - ys->at(i));
 	}
 	if (isCyclic()) {
 		for (size_t j = 1; j < p + 1; j++)
 		{
-			matrix->atijput(np - j, np - j, 1.0);
-			matrix->atijput(np - j, p - j, -1.0);
+			matrix->atandput(np - j, np - j, 1.0);
+			matrix->atandput(np - j, p - j, -1.0);
 		}
 	}
 	else {
@@ -109,22 +116,22 @@ void MbD::GeneralSpline::computeDerivatives()
 		auto count = 0;
 		auto npass = 0;
 		while (count < p) {
-			matrix->atijput(np - count, np - npass, 1.0);
+			matrix->atandput(np - count, np - npass, 1.0);
 			count++;
 			if (count < p) {
-				matrix->atijput(np - count, p - npass, 1.0);
+				matrix->atandput(np - count, p - npass, 1.0);
 				count++;
 			}
 		}
 		npass = npass + 1;
 	}
-	auto solver = CREATE<GESpMatParPvMarkoFast>::With();
+	auto solver = GESpMatParPvMarkoFast::With();
 	auto derivsVector = solver->solvewithsaveOriginal(matrix, bvector, false);
-	derivs = std::make_shared<FullMatrix<double>>(n, p);
+	derivs = FullMatrix<double>::With(n, p);
 	auto hmaxpowers = std::make_shared<FullColumn<double>>(p);
 	for (size_t j = 0; j < p; j++)
 	{
-		hmaxpowers->atiput(j, std::pow(hmax, j + 1));
+		hmaxpowers->atput(j, std::pow(hmax, j + 1));
 	}
 	for (size_t i = 0; i < n; i++)
 	{
@@ -132,7 +139,7 @@ void MbD::GeneralSpline::computeDerivatives()
 		derivsi->equalArrayAt(derivsVector, (i - 1) * p + 1);
 		for (size_t j = 0; j < p; j++)
 		{
-			derivsi->atiput(j, derivsi->at(j) / hmaxpowers->at(j));
+			derivsi->atput(j, derivsi->at(j) / hmaxpowers->at(j));
 		}
 	}
 }

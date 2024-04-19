@@ -7,18 +7,28 @@
  ***************************************************************************/
  
 #include "ScrewJoint.h"
-#include "CREATE.h"
 #include "System.h"
 #include "ScrewConstraintIJ.h"
 
 using namespace MbD;
 
-MbD::ScrewJoint::ScrewJoint()
-{
-}
-
 MbD::ScrewJoint::ScrewJoint(const char* str) : Joint(str)
 {
+	assert(false);
+}
+
+std::shared_ptr<ScrewJoint> MbD::ScrewJoint::With()
+{
+	auto inst = std::make_shared<ScrewJoint>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<ScrewJoint> MbD::ScrewJoint::With(const char* str)
+{
+	auto inst = std::make_shared<ScrewJoint>(str);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::ScrewJoint::initializeGlobally()

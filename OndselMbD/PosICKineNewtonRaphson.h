@@ -11,17 +11,19 @@
 #include "AnyPosICNewtonRaphson.h"
 
 namespace MbD {
-    class PosICKineNewtonRaphson : public AnyPosICNewtonRaphson
-    {
-        //Kinematics with under constrained system
-    public:
-        void run() override;
-        void iterate() override;
-        void initializeGlobally() override;
-        void assignEquationNumbers() override;
-        void preRun() override;
-        bool isConverged() override;
+	class PosICKineNewtonRaphson : public AnyPosICNewtonRaphson
+	{
+		//Kinematics with under constrained system
+	public:
+		static std::shared_ptr<PosICKineNewtonRaphson> With();
 
-    };
+		void run() override;
+		void iterate() override;
+		void initializeGlobally() override;
+		void assignEquationNumbers() override;
+		void preRun() override;
+		bool isConverged() override;
+
+	};
 }
 

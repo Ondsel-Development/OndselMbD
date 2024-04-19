@@ -1,22 +1,61 @@
 #include <regex>
 
 #include "MBDynDrive.h"
+#include "MBDynDriveElement.h"
+#include "MBDynDriveCosine.h"
+#include "MBDynDriveMeter.h"
+#include "MBDynDriveRamp.h"
+#include "MBDynDriveSine.h"
+#include "MBDynDriveString.h"
 
 using namespace MbD;
+
+std::shared_ptr<MBDynDrive> MbD::MBDynDrive::newDrive(std::string statement)
+{
+	if (lineHasTokens(2, statement, "cosine")) {
+		return std::make_shared<MBDynDriveCosine>();
+	}
+	if (lineHasTokens(2, statement, "element")) {
+		return std::make_shared<MBDynDriveElement>();
+	}
+	if (lineHasTokens(2, statement, "meter")) {
+		return std::make_shared<MBDynDriveMeter>();
+	}
+	if (lineHasTokens(2, statement, "ramp")) {
+		return std::make_shared<MBDynDriveRamp>();
+	}
+	if (lineHasTokens(2, statement, "sine")) {
+		return std::make_shared<MBDynDriveSine>();
+	}
+	if (lineHasTokens(2, statement, "string")) {
+		return std::make_shared<MBDynDriveString>();
+	}
+	assert(false);
+	return std::shared_ptr<MBDynDrive>();
+}
 
 void MbD::MBDynDrive::parseMBDyn(std::string line)
 {
 	driveString = line;
 	arguments = collectArgumentsFor("drive caller", line);
-	auto iss = std::istringstream(arguments.at(0));
-	iss >> name;
-	arguments.erase(arguments.begin());
-	assert(readStringOffTop(arguments) == "name");
-	iss = std::istringstream(arguments.at(0));
-	iss >> driveName;
-	driveName = std::regex_replace(driveName, std::regex("\""), "");
-	arguments.erase(arguments.begin());
+	readLabel(arguments);
+	auto str = arguments[0];
+	if (str == "name") {
+		arguments.erase(arguments.begin());
+		driveName = readStringOffTop(arguments);
+		driveName = std::regex_replace(driveName, std::regex("\""), "");
+	}
 	readFunction(arguments);
+
+	//auto iss = std::istringstream(arguments.at(0));
+	//iss >> name;
+	//arguments.erase(arguments.begin());
+	//assert(readStringOffTop(arguments) == "name");
+	//iss = std::istringstream(arguments.at(0));
+	//iss >> driveName;
+	//driveName = std::regex_replace(driveName, std::regex("\""), "");
+	//arguments.erase(arguments.begin());
+	//readFunction(arguments);
 }
 
 void MbD::MBDynDrive::readFunction(std::vector<std::string>& args)
@@ -149,9 +188,24 @@ void MbD::MBDynDrive::readFunction(std::vector<std::string>& args)
 		auto steps_between_spikes = readStringOffTop(args);
 		formula = steps_between_spikes;
 		}
+	else if (str == "element") {
+		readDriveElement(args);
+	}
 	else {
 		assert(false);
 	}
+}
+
+void MbD::MBDynDrive::readDriveElement(std::vector<std::string>& args)
+{
+	std::string elementLabel, elementType, str, component, direct, output, yesno;
+	elementLabel = readStringOffTop(args);
+	elementType = readStringOffTop(args);
+	str = readStringOffTop(args);
+	component = readStringOffTop(args);
+	direct = readStringOffTop(args);
+	output = readStringOffTop(args);
+	yesno = readStringOffTop(args);
 }
 
 void MbD::MBDynDrive::createASMT()

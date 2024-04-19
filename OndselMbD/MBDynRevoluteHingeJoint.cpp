@@ -11,6 +11,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<MBDynRevoluteHingeJoint> MbD::MBDynRevoluteHingeJoint::With()
+{
+	auto inst = std::make_shared<MBDynRevoluteHingeJoint>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::MBDynRevoluteHingeJoint::parseMBDyn(std::string line)
 {
 	MBDynJoint::parseMBDyn(line);

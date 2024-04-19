@@ -7,11 +7,26 @@
  ***************************************************************************/
 
 #include "BasicIntegrator.h"
-#include "CREATE.h"
 #include "StableBackwardDifference.h"
 #include "IntegratorInterface.h"
 
 using namespace MbD;
+
+std::shared_ptr<BasicIntegrator> MbD::BasicIntegrator::With()
+{
+	auto inst = std::make_shared<BasicIntegrator>();
+	inst->initialize();
+	return inst;
+}
+
+void BasicIntegrator::initialize()
+{
+	Solver::initialize();
+	//statistics = IdentityDictionary new.
+	tpast = std::make_shared<std::vector<double>>();
+	opBDF = StableBackwardDifference::With();
+	opBDF->timeNodes = tpast;
+}
 
 void BasicIntegrator::initializeLocally()
 {
@@ -32,6 +47,7 @@ void BasicIntegrator::postFirstStep()
 
 void BasicIntegrator::postRun()
 {
+	//Do nothing.
 }
 
 void BasicIntegrator::postStep()
@@ -70,22 +86,13 @@ void BasicIntegrator::incrementTime()
 	this->setorder(orderNew);
 	h = hnew;
 	this->settnew(t + (direction * h));
-	this->calcOperatorMatrix();
+	calcOperatorMatrix();
 	system->incrementTime(tnew);
 }
 
 void BasicIntegrator::incrementTry()
 {
 	iTry++;
-}
-
-void BasicIntegrator::initialize()
-{
-	Solver::initialize();
-	//statistics = IdentityDictionary new.
-	tpast = std::make_shared<std::vector<double>>();
-	opBDF = CREATE<StableBackwardDifference>::With();
-	opBDF->timeNodes = tpast;
 }
 
 void BasicIntegrator::logString(std::string& str)
@@ -118,6 +125,7 @@ void BasicIntegrator::preFirstStep()
 
 void BasicIntegrator::preRun()
 {
+	//Do nothing.
 }
 
 void BasicIntegrator::preStep()

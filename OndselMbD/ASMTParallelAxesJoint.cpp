@@ -12,12 +12,14 @@
 
 using namespace MbD;
 
-std::shared_ptr<Joint> MbD::ASMTParallelAxesJoint::mbdClassNew()
-{
-    return CREATE<ParallelAxesJoint>::With();
-}
-
 std::shared_ptr<ASMTParallelAxesJoint> MbD::ASMTParallelAxesJoint::With()
 {
-    return std::make_shared<ASMTParallelAxesJoint>();
+	auto inst = std::make_shared<ASMTParallelAxesJoint>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<Joint> MbD::ASMTParallelAxesJoint::mbdClassNew()
+{
+	return ParallelAxesJoint::With();
 }

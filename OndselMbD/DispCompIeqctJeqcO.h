@@ -11,24 +11,25 @@
 #include "DispCompIeqcJeqcO.h"
 
 namespace MbD {
-    class DispCompIeqctJeqcO : public DispCompIeqcJeqcO
-    {
-        //priIeJeOpt ppriIeJeOpEIpt ppriIeJeOptpt 
-    public:
-        DispCompIeqctJeqcO();
-        DispCompIeqctJeqcO(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis);
+	class DispCompIeqctJeqcO : public DispCompIeqcJeqcO
+	{
+		//priIeJeOpt ppriIeJeOpEIpt ppriIeJeOptpt 
+	public:
+		DispCompIeqctJeqcO() {}
+		DispCompIeqctJeqcO(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisO) : DispCompIeqcJeqcO(frmi, frmj, axisO) {}
+		static std::shared_ptr<DispCompIeqctJeqcO> With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis);
 
-        void calcPostDynCorrectorIteration() override;
-        void initializeGlobally() override;
-        FRowDsptr ppvaluepEIpt() override;
-        double ppvalueptpt() override;
-        void preAccIC() override;
-        void preVelIC() override;
-        double pvaluept() override;
+		void calcPostDynCorrectorIteration() override;
+		void initializeGlobally() override;
+		FRowDsptr ppvaluepEIpt() override;
+		double ppvalueptpt() override;
+		void preAccIC() override;
+		void preVelIC() override;
+		double pvaluept() override;
 
-        double priIeJeOpt;
-        FRowDsptr ppriIeJeOpEIpt;
-        double ppriIeJeOptpt;
-    };
+		double priIeJeOpt;
+		FRowDsptr ppriIeJeOpEIpt;
+		double ppriIeJeOptpt;
+	};
 }
 

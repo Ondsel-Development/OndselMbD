@@ -11,23 +11,22 @@
 
 using namespace MbD;
 
-DispCompIecJecKeqc::DispCompIecJecKeqc()
+std::shared_ptr<DispCompIecJecKeqc> MbD::DispCompIecJecKeqc::With(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk)
 {
-}
-
-DispCompIecJecKeqc::DispCompIecJecKeqc(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk) : DispCompIecJecKec(frmi, frmj, frmk, axisk)
-{
+	auto inst = std::make_shared<DispCompIecJecKeqc>(frmi, frmj, frmk, axisk);
+	inst->initialize();
+	return inst;
 }
 
 void DispCompIecJecKeqc::initialize()
 {
-    priIeJeKepEK = std::make_shared<FullRow<double>>(4);
-    ppriIeJeKepEKpEK = std::make_shared<FullMatrix<double>>(4, 4);
+	priIeJeKepEK = FullRow<double>::With(4);
+	ppriIeJeKepEKpEK = FullMatrix<double>::With(4, 4);
 }
 
 void DispCompIecJecKeqc::initializeGlobally()
 {
-    ppAjOKepEKpEK = std::static_pointer_cast<EndFrameqc>(efrmK)->ppAjOepEpE(axisK);
+	ppAjOKepEKpEK = std::static_pointer_cast<EndFrameqc>(efrmK)->ppAjOepEpE(axisK);
 }
 
 void DispCompIecJecKeqc::calcPostDynCorrectorIteration()
@@ -57,7 +56,7 @@ void DispCompIecJecKeqc::calcPostDynCorrectorIteration()
 
 FMatDsptr DispCompIecJecKeqc::ppvaluepEKpEK()
 {
-    return ppriIeJeKepEKpEK;
+	return ppriIeJeKepEKpEK;
 }
 
 FRowDsptr MbD::DispCompIecJecKeqc::pvaluepEK()

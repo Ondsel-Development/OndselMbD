@@ -6,11 +6,18 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
-#include <cassert>
+//#include <cassert>
 
 #include "GESpMatParPv.h"
 
 using namespace MbD;
+
+std::shared_ptr<GESpMatParPv> MbD::GESpMatParPv::With()
+{
+	//Should not create abstract class.
+	assert(false);
+	return std::shared_ptr<GESpMatParPv>();
+}
 
 void GESpMatParPv::forwardEliminateWithPivot(size_t p)
 {
@@ -74,4 +81,5 @@ void GESpMatParPv::backSubstituteIntoDU()
 
 void GESpMatParPv::postSolve()
 {
+	//Do nothing.
 }

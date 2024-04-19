@@ -11,33 +11,34 @@
 #include "DispCompIeqcJeqcKeqc.h"
 
 namespace MbD {
-    class DispCompIeqcJeqcKeqct : public DispCompIeqcJeqcKeqc
-    {
-        //priIeJeKept ppriIeJeKepXIpt ppriIeJeKepEIpt ppriIeJeKepXJpt ppriIeJeKepEJpt ppriIeJeKepEKpt ppriIeJeKeptpt 
-    public:
-        DispCompIeqcJeqcKeqct();
-        DispCompIeqcJeqcKeqct(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
+	class DispCompIeqcJeqcKeqct : public DispCompIeqcJeqcKeqc
+	{
+		//priIeJeKept ppriIeJeKepXIpt ppriIeJeKepEIpt ppriIeJeKepXJpt ppriIeJeKepEJpt ppriIeJeKepEKpt ppriIeJeKeptpt 
+	public:
+		DispCompIeqcJeqcKeqct() {}
+		DispCompIeqcJeqcKeqct(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
+		static std::shared_ptr<DispCompIeqcJeqcKeqct> With(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
+		void initialize() override;
 
-        void calcPostDynCorrectorIteration() override;
-        void initialize() override;
-        void initializeGlobally() override;
-        FRowDsptr ppvaluepXIpt() override;
-        FRowDsptr ppvaluepEIpt() override;
-        FRowDsptr ppvaluepEKpt() override;
-        FRowDsptr ppvaluepXJpt() override;
-        FRowDsptr ppvaluepEJpt() override;
-        double ppvalueptpt() override;
-        double pvaluept() override;
-        void preAccIC() override;
-        void preVelIC() override;
+		void calcPostDynCorrectorIteration() override;
+		void initializeGlobally() override;
+		FRowDsptr ppvaluepXIpt() override;
+		FRowDsptr ppvaluepEIpt() override;
+		FRowDsptr ppvaluepEKpt() override;
+		FRowDsptr ppvaluepXJpt() override;
+		FRowDsptr ppvaluepEJpt() override;
+		double ppvalueptpt() override;
+		double pvaluept() override;
+		void preAccIC() override;
+		void preVelIC() override;
 
-        double priIeJeKept;
-        FRowDsptr ppriIeJeKepXIpt;
-        FRowDsptr ppriIeJeKepEIpt;
-        FRowDsptr ppriIeJeKepXJpt;
-        FRowDsptr ppriIeJeKepEJpt;
-        FRowDsptr ppriIeJeKepEKpt;
-        double ppriIeJeKeptpt;
-    };
+		double priIeJeKept;
+		FRowDsptr ppriIeJeKepXIpt;
+		FRowDsptr ppriIeJeKepEIpt;
+		FRowDsptr ppriIeJeKepXJpt;
+		FRowDsptr ppriIeJeKepEJpt;
+		FRowDsptr ppriIeJeKepEKpt;
+		double ppriIeJeKeptpt;
+	};
 }
 

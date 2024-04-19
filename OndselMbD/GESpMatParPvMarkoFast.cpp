@@ -15,6 +15,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<GESpMatParPvMarkoFast> MbD::GESpMatParPvMarkoFast::With()
+{
+	auto inst = std::make_shared<GESpMatParPvMarkoFast>();
+	inst->initialize();
+	return inst;
+}
+
 void GESpMatParPvMarkoFast::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
 	//assert(false);
@@ -38,7 +45,7 @@ void GESpMatParPvMarkoFast::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr
 		if (maxRowMagnitude == 0) throwSingularMatrixError("");
 		auto scaling = 1.0 / maxRowMagnitude;
 		matrixA->at(i) = spRowi->timesconditionedWithTol(scaling, singularPivotTolerance);
-		rightHandSideB->atitimes(i, scaling);
+		rightHandSideB->attimes(i, scaling);
 	}
 }
 

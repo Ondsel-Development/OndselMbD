@@ -11,10 +11,12 @@
 #include "Extrapolator.h"
 
 namespace MbD {
-    class Interpolator : public Extrapolator
-    {
-        //
-    public:
+	class Interpolator : public Extrapolator
+	{
+		//
+	public:
+		static std::shared_ptr<Interpolator> With();
 
-    };
+
+	};
 }

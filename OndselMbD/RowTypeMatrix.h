@@ -20,15 +20,15 @@ namespace MbD {
 		RowTypeMatrix(size_t m) : Array<T>(m) {}
 		RowTypeMatrix(std::initializer_list<T> list) : Array<T>{ list } {}
 		void copyFrom(std::shared_ptr<RowTypeMatrix<T>> x);
-		virtual void zeroSelf() override = 0;
-		//double maxMagnitude() override;
+		virtual void zeroSelf() override;
 		size_t numberOfElements() override;
-        size_t nrow() {
-            return this->size();
-        }
-        size_t ncol() {
-            return this->at(0)->numberOfElements();
-        }
+		size_t nrow() {
+			return this->size();
+		}
+		size_t ncol() {
+			return this->at(0)->numberOfElements();
+		}
+		std::string to_CSV() override;
 	};
 
 	template<typename T>
@@ -38,21 +38,29 @@ namespace MbD {
 			this->at(i)->copyFrom(x->at(i));
 		}
 	}
-	//template<typename T>
-	//inline double RowTypeMatrix<T>::maxMagnitude()
-	//{
-	//	double max = 0.0;
-	//	for (size_t i = 0; i < this->size(); i++)
-	//	{
-	//		double element = this->at(i)->maxMagnitude();
-	//		if (max < element) max = element;
-	//	}
-	//	return max;
-	//}
+	template<typename T>
+	inline void RowTypeMatrix<T>::zeroSelf()
+	{
+		//Subclasses must implement.
+		assert(false);
+	}
+
 	template<typename T>
 	inline size_t RowTypeMatrix<T>::numberOfElements()
 	{
 		return this->nrow() * this->ncol();
+	}
+
+	template<typename T>
+	inline std::string RowTypeMatrix<T>::to_CSV()
+	{
+		std::stringstream ss;
+		ss << std::setprecision(std::numeric_limits<double>::max_digits10);
+		auto n = this->size();
+		for (size_t i = 0; i < n; i++) {
+			ss << this->at(i)->to_CSV();
+		}
+		return ss.str();
 	}
 }
 

@@ -9,6 +9,8 @@
 
 #include "ASMTItemIJ.h"
 #include "Joint.h"
+#include "ASMTAssembly.h"
+#include "EndFrameqc.h"
 
 using namespace MbD;
 
@@ -18,30 +20,47 @@ MbD::ASMTItemIJ::ASMTItemIJ()
 	cTIO = std::make_shared<std::vector<std::shared_ptr<FullColumn<double>>>>();
 }
 
-void MbD::ASMTItemIJ::setMarkerI(std::string mkrI)
+std::shared_ptr<ASMTItemIJ> MbD::ASMTItemIJ::With()
+{
+	auto inst = std::make_shared<ASMTItemIJ>();
+	inst->initialize();
+	return inst;
+}
+
+void MbD::ASMTItemIJ::initialize()
+{
+	//Do nothing.
+}
+
+void MbD::ASMTItemIJ::parseASMT(std::vector<std::string>& lines)
+{
+	readName(lines);
+	readMarkerI(lines);
+	readMarkerJ(lines);
+}
+
+void MbD::ASMTItemIJ::setMarkerI(std::shared_ptr<ASMTMarker> mkrI)
 {
 	markerI = mkrI;
 }
 
-void MbD::ASMTItemIJ::setMarkerJ(std::string mkrJ)
+void MbD::ASMTItemIJ::setMarkerJ(std::shared_ptr<ASMTMarker> mkrJ)
 {
 	markerJ = mkrJ;
 }
 
 void MbD::ASMTItemIJ::readMarkerI(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("MarkerI") != std::string::npos);
-	lines.erase(lines.begin());
-	markerI = readString(lines[0]);
-	lines.erase(lines.begin());
+	assert(readStringOffTop(lines) == "MarkerI");
+	auto markerName = readStringOffTop(lines);
+	markerI = root()->markerAt(markerName);
 }
 
 void MbD::ASMTItemIJ::readMarkerJ(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("MarkerJ") != std::string::npos);
-	lines.erase(lines.begin());
-	markerJ = readString(lines[0]);
-	lines.erase(lines.begin());
+	assert(readStringOffTop(lines) == "MarkerJ");
+	auto markerName = readStringOffTop(lines);
+	markerJ = root()->markerAt(markerName);
 }
 
 void MbD::ASMTItemIJ::readFXonIs(std::vector<std::string>& lines)
@@ -89,9 +108,9 @@ void MbD::ASMTItemIJ::readTZonIs(std::vector<std::string>& lines)
 void MbD::ASMTItemIJ::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level + 1, "MarkerI");
-	storeOnLevelString(os, level + 2, markerI);
+	storeOnLevelString(os, level + 2, markerI->name);
 	storeOnLevelString(os, level + 1, "MarkerJ");
-	storeOnLevelString(os, level + 2, markerJ);
+	storeOnLevelString(os, level + 2, markerJ->name);
 }
 
 void MbD::ASMTItemIJ::storeOnTimeSeries(std::ofstream& os)

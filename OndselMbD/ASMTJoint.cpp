@@ -12,11 +12,11 @@
 
 using namespace MbD;
 
-void MbD::ASMTJoint::parseASMT(std::vector<std::string>& lines)
+std::shared_ptr<ASMTJoint> MbD::ASMTJoint::With()
 {
-	readName(lines);
-	readMarkerI(lines);
-	readMarkerJ(lines);
+	auto inst = std::make_shared<ASMTJoint>();
+	inst->initialize();
+	return inst;
 }
 
 void MbD::ASMTJoint::readJointSeries(std::vector<std::string>& lines)

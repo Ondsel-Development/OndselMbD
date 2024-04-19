@@ -12,6 +12,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTCompoundJoint> MbD::ASMTCompoundJoint::With()
+{
+	auto inst = std::make_shared<ASMTCompoundJoint>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::ASMTCompoundJoint::parseASMT(std::vector<std::string>& lines)
 {
 	ASMTJoint::parseASMT(lines);

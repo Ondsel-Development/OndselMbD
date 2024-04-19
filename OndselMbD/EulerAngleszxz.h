@@ -21,18 +21,31 @@ namespace MbD {
 		//Used by EndFrameqct
 	public:
 		EulerAngleszxz() : EulerArray<T>(3) {}
+		static std::shared_ptr<EulerAngleszxz<T>> With();
 		void initialize() override;
+
 		void calc() override;
 
 		FMatDsptr phiA, theA, psiA, aA;
 	};
+
+	template<typename T>
+	inline std::shared_ptr<EulerAngleszxz<T>> EulerAngleszxz<T>::With()
+	{
+		auto inst = std::make_shared<EulerAngleszxz<T>>();
+		inst->initialize();
+		return inst;
+	}
+
 	template<typename T>
 	inline void EulerAngleszxz<T>::initialize()
 	{
+		EulerArray<T>::initialize();
 		phiA = FullMatrix<T>::identitysptr(3);
 		theA = FullMatrix<T>::identitysptr(3);
 		psiA = FullMatrix<T>::identitysptr(3);
 	}
+
 	template<typename T>
 	inline void EulerAngleszxz<T>::calc()
 	{

@@ -12,16 +12,18 @@
 #include "ForceTorqueData.h"
 
 namespace MbD {
-    class ASMTMotion : public ASMTConstraintSet
-    {
-        //
-    public:
-        void readMotionSeries(std::vector<std::string>& lines);
-        virtual void initMarkers();
-        void storeOnLevel(std::ofstream& os, size_t level) override;
-        void storeOnTimeSeries(std::ofstream& os) override;
+	class ASMTMotion : public ASMTConstraintSet
+	{
+		//
+	public:
+		static std::shared_ptr<ASMTMotion> With();
+		
+		void readMotionSeries(std::vector<std::string>& lines);
+		virtual void initMarkers();
+		void storeOnLevel(std::ofstream& os, size_t level) override;
+		void storeOnTimeSeries(std::ofstream& os) override;
 
-        std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueData>>> motionSeries;
+		std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueData>>> motionSeries;
 
-    };
+	};
 }

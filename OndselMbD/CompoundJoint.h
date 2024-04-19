@@ -15,8 +15,10 @@ namespace MbD {
 	{
 		//distanceIJ
 	public:
-		CompoundJoint();
+		CompoundJoint() {}
 		CompoundJoint(const char* str);
+		static std::shared_ptr<CompoundJoint> With();
+		static std::shared_ptr<CompoundJoint> With(const char* str);
 
 		double distanceIJ = 0.0;
 	};

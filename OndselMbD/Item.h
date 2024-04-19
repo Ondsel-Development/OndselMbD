@@ -8,8 +8,8 @@
  
 #pragma once
 
-#include <string>
-#include <vector>
+//#include <string>
+//#include <vector>
 
 #include "FullColumn.h"
 #include "FullRow.h"
@@ -23,13 +23,15 @@ namespace MbD {
 	class Constraint;
 	class StateData;
 
-	class Item
+	class Item : public std::enable_shared_from_this<Item>
 	{
 		//name
 	public:
 		Item();
-		Item(const char* str);
-		virtual ~Item() {}
+		Item(const char* str) : name(str) {}
+		static std::shared_ptr<Item> With(const char* str);
+		virtual void initialize();
+
 		virtual System* root();
 		void noop();
 
@@ -55,7 +57,6 @@ namespace MbD {
 		virtual void fillpFpy(SpMatDsptr mat);
 		virtual void fillpFpydot(SpMatDsptr mat);
 		virtual void fillPosICError(FColDsptr col);
-		virtual void fillPosICJacob(FMatDsptr mat);
 		virtual void fillPosICJacob(SpMatDsptr mat);
 		virtual void fillPosKineError(FColDsptr col);
 		virtual void fillPosKineJacob(SpMatDsptr mat);
@@ -72,11 +73,10 @@ namespace MbD {
 		virtual void fillqsuWeightsSmall(FColDsptr col);
 		virtual void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints);
 		virtual void fillStaticError(FColDsptr col);
-		virtual void fillStaticJacob(FMatDsptr mat);
+		virtual void fillStaticJacob(SpMatDsptr mat);
 		virtual void fillVelICError(FColDsptr col);
 		virtual void fillVelICJacob(SpMatDsptr mat);
 		virtual void getString(std::string str);
-		virtual void initialize();
 		virtual void initializeGlobally();
 		virtual void initializeLocally();
 		virtual bool isJointForce();
@@ -149,6 +149,7 @@ namespace MbD {
 		virtual double suggestSmallerOrAcceptDynFirstStepSize(double hnew);
 		virtual double suggestSmallerOrAcceptDynStepSize(double hnew);
 		virtual void useEquationNumbers();
+		virtual double value();
 
 		virtual std::ostream& printOn(std::ostream& s) const;
 		friend std::ostream& operator<<(std::ostream& s, const Item& item)

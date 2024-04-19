@@ -6,10 +6,10 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
 
-#include <algorithm>
 
 #include "StepFunction.h"
 #include "Constant.h"
+#include <cassert>
 
 using namespace MbD;
 
@@ -22,4 +22,11 @@ MbD::StepFunction::StepFunction(Symsptr var, std::shared_ptr<std::vector<double>
 	std::transform(trans->begin(), trans->end(), transitions->begin(),
 		[&](auto& constant) { return sptrConstant(constant); }
 	);
+}
+
+std::shared_ptr<StepFunction> MbD::StepFunction::With()
+{
+	auto inst = std::make_shared<StepFunction>();
+	inst->initialize();
+	return inst;
 }

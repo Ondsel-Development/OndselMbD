@@ -29,64 +29,71 @@
 #include "MBDynRevoluteHingeJoint.h"
 #include "MBDynRevolutePinJoint.h"
 #include "MBDynSphericalHingeJoint.h"
+#include "MBDynRodJoint.h"
 
 using namespace MbD;
 
 std::shared_ptr<MBDynJoint> MbD::MBDynJoint::newJoint(std::string statement)
 {
 	std::vector<std::string> tokens;
-	tokens = { "axial", "rotation" };
+	tokens = { "axial ", "rotation," };
 	if (lineHasTokens(statement, tokens)) {
 		return std::make_shared<MBDynAxialRotationJoint>();
 	}
-	tokens = { "clamp" };
+	tokens = { "clamp," };
 	if (lineHasTokens(statement, tokens)) {
 		return std::make_shared<MBDynClampJoint>();
 	}
-	tokens = { "drive", "hinge" };
+	tokens = { "drive ", "hinge," };
 	if (lineHasTokens(statement, tokens)) {
 		return std::make_shared<MBDynDriveHingeJoint>();
 	}
-	tokens = { "in", "line" };
+	tokens = { "in ", "line," };
 	if (lineHasTokens(statement, tokens)) {
 		return std::make_shared<MBDynInLineJoint>();
 	}
-	tokens = { "in", "plane" };
+	tokens = { "in ", "plane," };
 	if (lineHasTokens(statement, tokens)) {
 		return std::make_shared<MBDynInPlaneJoint>();
 	}
-	tokens = { "prismatic" };
+	tokens = { "prismatic," };
 	if (lineHasTokens(statement, tokens)) {
 		return std::make_shared<MBDynPrismaticJoint>();
 	}
-	tokens = { "revolute", "hinge" };
+	tokens = { "revolute ", "hinge," };
 	if (lineHasTokens(statement, tokens)) {
 		return std::make_shared<MBDynRevoluteHingeJoint>();
 	}
-	tokens = { "revolute", "pin" };
+	tokens = { "revolute ", "pin," };
 	if (lineHasTokens(statement, tokens)) {
 		return std::make_shared<MBDynRevolutePinJoint>();
 	}
-	tokens = { "spherical", "hinge" };
+	tokens = { "spherical ", "hinge," };
 	if (lineHasTokens(statement, tokens)) {
 		return std::make_shared<MBDynSphericalHingeJoint>();
 	}
-	tokens = { "total", "joint" };
+	tokens = { "total ", "joint," };
 	if (lineHasTokens(statement, tokens)) {
 		return std::make_shared<MBDynTotalJoint>();
 	}
+	tokens = { "rod," };
+	if (lineHasTokens(statement, tokens)) {
+		return std::make_shared<MBDynRodJoint>();
+	}
+	assert(false);
 	return std::make_shared<MBDynJoint>();
 }
 
 void MbD::MBDynJoint::initialize()
 {
+	assert(false);
 }
 
 void MbD::MBDynJoint::parseMBDyn(std::string line)
 {
 	jointString = line;
 	arguments = collectArgumentsFor("joint", line);
-	readName(arguments);
+	readLabel(arguments);
 	readJointType(arguments);
 	readMarkerI(arguments);
 	readMarkerJ(arguments);
@@ -222,9 +229,9 @@ void MbD::MBDynJoint::createASMT()
 	auto asmtAsm = asmtAssembly();
 	auto asmtJoint = asmtClassNew();
 	asmtItem = asmtJoint;
-	asmtJoint->setName(name);
-	asmtJoint->setMarkerI(mkr1->asmtItem->fullName(""));
-	asmtJoint->setMarkerJ(mkr2->asmtItem->fullName(""));
+	asmtJoint->setName(label);
+	asmtJoint->setMarkerI(std::static_pointer_cast<ASMTMarker>(mkr1->asmtItem));
+	asmtJoint->setMarkerJ(std::static_pointer_cast<ASMTMarker>(mkr2->asmtItem));
 	asmtAsm->addJoint(asmtJoint);
 }
 
@@ -236,7 +243,7 @@ std::shared_ptr<ASMTJoint> MbD::MBDynJoint::asmtClassNew()
 
 void MbD::MBDynJoint::outputLine(size_t i, std::ostream& os)
 {
-	auto id = nodeidAt(name);
+	auto id = labelIDat(label);
 	auto asmtJoint = std::static_pointer_cast<ASMTJoint>(asmtItem);
 	auto aFII = asmtJoint->aFII(i);
 	auto aTII = asmtJoint->aTII(i);

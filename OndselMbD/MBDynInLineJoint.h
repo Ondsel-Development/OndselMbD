@@ -15,6 +15,8 @@ namespace MbD {
 	class MBDynInLineJoint : public MBDynJoint
 	{
 	public:
+		static std::shared_ptr<MBDynInLineJoint> With();
+
 		void parseMBDyn(std::string line) override;
 		void createASMT() override;
 		std::shared_ptr<ASMTJoint> asmtClassNew() override;

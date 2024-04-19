@@ -9,8 +9,6 @@
 #pragma once
 
 #include <stdexcept>
-#include <memory>
-#include <vector>
 
 #include "FullColumn.h"
 
@@ -30,7 +28,7 @@ namespace MbD {
 		{
 		}
 
-		virtual ~SingularMatrixError() noexcept {}
+		//virtual ~SingularMatrixError() noexcept {}
 
 		virtual std::shared_ptr<std::vector<size_t>> getRedundantEqnNos() const noexcept {
 			return redundantEqnNos;

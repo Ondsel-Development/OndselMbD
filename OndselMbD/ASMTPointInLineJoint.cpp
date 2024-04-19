@@ -14,12 +14,14 @@ using namespace MbD;
 
 std::shared_ptr<ASMTPointInLineJoint> MbD::ASMTPointInLineJoint::With()
 {
-	return std::make_shared<ASMTPointInLineJoint>();
+	auto inst = std::make_shared<ASMTPointInLineJoint>();
+	inst->initialize();
+	return inst;
 }
 
 std::shared_ptr<Joint> MbD::ASMTPointInLineJoint::mbdClassNew()
 {
-    return CREATE<PointInLineJoint>::With();
+	return PointInLineJoint::With();
 }
 
 void MbD::ASMTPointInLineJoint::storeOnLevel(std::ofstream& os, size_t level)

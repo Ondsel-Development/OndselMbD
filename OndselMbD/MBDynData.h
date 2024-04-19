@@ -13,7 +13,9 @@ namespace MbD {
 	class MBDynData : public MBDynBlock
 	{
 	public:
+		static std::shared_ptr<MBDynData> With();
 		void initialize() override;
+
 		void parseMBDyn(std::vector<std::string>& lines) override;
 
 	};

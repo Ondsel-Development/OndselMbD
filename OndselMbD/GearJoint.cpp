@@ -7,18 +7,28 @@
  ***************************************************************************/
  
 #include "GearJoint.h"
-#include "CREATE.h"
 #include "GearConstraintIJ.h"
 #include "System.h"
 
 using namespace MbD;
 
-MbD::GearJoint::GearJoint()
-{
-}
-
 MbD::GearJoint::GearJoint(const char*)
 {
+	assert(false);
+}
+
+std::shared_ptr<GearJoint> MbD::GearJoint::With()
+{
+	auto inst = std::make_shared<GearJoint>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<GearJoint> MbD::GearJoint::With(const char* str)
+{
+	auto inst = std::make_shared<GearJoint>(str);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::GearJoint::initializeGlobally()

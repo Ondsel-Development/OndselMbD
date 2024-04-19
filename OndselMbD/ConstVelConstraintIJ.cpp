@@ -15,16 +15,23 @@ using namespace MbD;
 
 ConstVelConstraintIJ::ConstVelConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj)
 {
+	assert(false);
 }
 
 std::shared_ptr<ConstVelConstraintIJ> MbD::ConstVelConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	assert(frmi->isEndFrameqc());
 	assert(frmj->isEndFrameqc());
-	auto constVelCon = std::make_shared<ConstVelConstraintIqcJqc>(frmi, frmj);
-	constVelCon->initA01IeJe();
-	constVelCon->initA10IeJe();
-	return constVelCon;
+	auto inst = std::make_shared<ConstVelConstraintIqcJqc>(frmi, frmj);
+	inst->initA01IeJe();
+	inst->initA10IeJe();
+	return inst;
+}
+
+void ConstVelConstraintIJ::initialize()
+{
+	this->initA01IeJe();
+	this->initA10IeJe();
 }
 
 void ConstVelConstraintIJ::calcPostDynCorrectorIteration()
@@ -40,12 +47,6 @@ void MbD::ConstVelConstraintIJ::initA01IeJe()
 void MbD::ConstVelConstraintIJ::initA10IeJe()
 {
 	assert(false);
-}
-
-void ConstVelConstraintIJ::initialize()
-{
-	this->initA01IeJe();
-	this->initA10IeJe();
 }
 
 void ConstVelConstraintIJ::initializeGlobally()

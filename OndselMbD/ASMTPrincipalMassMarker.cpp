@@ -12,14 +12,16 @@
 
 using namespace MbD;
 
-MbD::ASMTPrincipalMassMarker::ASMTPrincipalMassMarker()
-{
-	name = "MassMarker";
-}
-
 std::shared_ptr<ASMTPrincipalMassMarker> MbD::ASMTPrincipalMassMarker::With()
 {
-	return std::make_shared<ASMTPrincipalMassMarker>();
+	auto inst = std::make_shared<ASMTPrincipalMassMarker>();
+	inst->initialize();
+	return inst;
+}
+
+void MbD::ASMTPrincipalMassMarker::initialize()
+{
+	name = "MassMarker";
 }
 
 void MbD::ASMTPrincipalMassMarker::parseASMT(std::vector<std::string>& lines)
@@ -36,11 +38,11 @@ void MbD::ASMTPrincipalMassMarker::parseASMT(std::vector<std::string>& lines)
 	lines.erase(lines.begin());
 	assert(lines[0] == (leadingTabs + "RotationMatrix"));
 	lines.erase(lines.begin());
-	rotationMatrix = std::make_shared<FullMatrix<double>>(3);
+	rotationMatrix = FullMatrix<double>::With(3);
 	for (size_t i = 0; i < 3; i++)
 	{
 		auto row = readRowOfDoubles(lines[0]);
-		rotationMatrix->atiput(i, row);
+		rotationMatrix->atput(i, row);
 		lines.erase(lines.begin());
 	}
 	assert(lines[0] == (leadingTabs + "Mass"));
@@ -49,12 +51,12 @@ void MbD::ASMTPrincipalMassMarker::parseASMT(std::vector<std::string>& lines)
 	lines.erase(lines.begin());
 	assert(lines[0] == (leadingTabs + "MomentOfInertias"));
 	lines.erase(lines.begin());
-	momentOfInertias = std::make_shared<DiagonalMatrix<double>>(3);
+	momentOfInertias = DiagonalMatrix<double>::With(3);
 	auto row = readRowOfDoubles(lines[0]);
 	lines.erase(lines.begin());
 	for (size_t i = 0; i < 3; i++)
 	{
-		momentOfInertias->atiput(i, row->at(i));
+		momentOfInertias->atput(i, row->at(i));
 	}
 	assert(lines[0] == (leadingTabs + "Density"));
 	lines.erase(lines.begin());
@@ -80,7 +82,7 @@ void MbD::ASMTPrincipalMassMarker::setMomentOfInertias(DiagMatDsptr mat)
 // Overloads to simplify syntax.
 void MbD::ASMTPrincipalMassMarker::setMomentOfInertias(double a, double b, double c)
 {
-	momentOfInertias = std::make_shared<DiagonalMatrix<double>>(ListD{ a, b, c });
+	momentOfInertias = DiagonalMatrix<double>::With(ListD{ a, b, c });
 }
 
 void MbD::ASMTPrincipalMassMarker::storeOnLevel(std::ofstream& os, size_t level)
@@ -101,5 +103,5 @@ void MbD::ASMTPrincipalMassMarker::zeroMass()
 {
 	mass = 0.0;
 	density = 0.0;
-	momentOfInertias = std::make_shared<DiagonalMatrix<double>>(ListD{ 0.0, 0.0, 0.0 });
+	momentOfInertias = DiagonalMatrix<double>::With(ListD{ 0.0, 0.0, 0.0 });
 }

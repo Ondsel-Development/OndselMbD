@@ -8,13 +8,20 @@
  
 #include "DistanceConstraintIqcJc.h"
 #include "EndFrameqc.h"
-#include "CREATE.h"
 #include "DistIeqcJec.h"
 
 using namespace MbD;
 
 MbD::DistanceConstraintIqcJc::DistanceConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : DistanceConstraintIJ(frmi, frmj)
 {
+	assert(false);
+}
+
+std::shared_ptr<DistanceConstraintIqcJc> MbD::DistanceConstraintIqcJc::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	auto inst = std::make_shared<DistanceConstraintIqcJc>(frmi, frmj);
+	inst->initialize();
+	return inst;
 }
 
 void MbD::DistanceConstraintIqcJc::addToJointForceI(FColDsptr col)
@@ -33,7 +40,7 @@ void MbD::DistanceConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 	for (size_t i = 0; i < 4; i++)
 	{
 		auto dum = cForceT->timesFullColumn(pAOIppEI->at(i)->timesFullColumn(rIpIeIp));
-		fpAOIppEIrIpIeIp->atiput(i, dum);
+		fpAOIppEIrIpIeIp->atput(i, dum);
 	}
 	auto lampGpE = pGpEI->transpose()->times(lam);
 	auto c2Torque = aBOIp->timesFullColumn(lampGpE->minusFullColumn(fpAOIppEIrIpIeIp));
@@ -52,8 +59,8 @@ void MbD::DistanceConstraintIqcJc::calcPostDynCorrectorIteration()
 
 void MbD::DistanceConstraintIqcJc::fillAccICIterError(FColDsptr col)
 {
-	col->atiplusFullVectortimes(iqXI, pGpXI, lam);
-	col->atiplusFullVectortimes(iqEI, pGpEI, lam);
+	col->atplusFullVectortimes(iqXI, pGpXI, lam);
+	col->atplusFullVectortimes(iqEI, pGpEI, lam);
 	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
 	auto qXdotI = efrmIqc->qXdot();
 	auto qEdotI = efrmIqc->qEdot();
@@ -62,46 +69,46 @@ void MbD::DistanceConstraintIqcJc::fillAccICIterError(FColDsptr col)
 	sum += qXdotI->transposeTimesFullColumn(ppGpXIpXI->timesFullColumn(qXdotI));
 	sum += 2.0 * (qXdotI->transposeTimesFullColumn(ppGpXIpEI->timesFullColumn(qEdotI)));
 	sum += qEdotI->transposeTimesFullColumn(ppGpEIpEI->timesFullColumn(qEdotI));
-	col->atiplusNumber(iG, sum);
+	col->atplusNumber(iG, sum);
 }
 
 void MbD::DistanceConstraintIqcJc::fillPosICError(FColDsptr col)
 {
 	DistanceConstraintIJ::fillPosICError(col);
-	col->atiplusFullVectortimes(iqXI, pGpXI, lam);
-	col->atiplusFullVectortimes(iqEI, pGpEI, lam);
+	col->atplusFullVectortimes(iqXI, pGpXI, lam);
+	col->atplusFullVectortimes(iqEI, pGpEI, lam);
 }
 
 void MbD::DistanceConstraintIqcJc::fillPosICJacob(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqXI, pGpXI);
-	mat->atijplusFullColumn(iqXI, iG, pGpXI->transpose());
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
-	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
-	mat->atijplusFullMatrixtimes(iqXI, iqXI, ppGpXIpXI, lam);
+	mat->atandplusFullRow(iG, iqXI, pGpXI);
+	mat->atandplusFullColumn(iqXI, iG, pGpXI->transpose());
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullColumn(iqEI, iG, pGpEI->transpose());
+	mat->atandplusFullMatrixtimes(iqXI, iqXI, ppGpXIpXI, lam);
 	auto ppGpXIpEIlam = ppGpXIpEI->times(lam);
-	mat->atijplusFullMatrix(iqXI, iqEI, ppGpXIpEIlam);
-	mat->atijplusTransposeFullMatrix(iqEI, iqXI, ppGpXIpEIlam);
-	mat->atijplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
+	mat->atandplusFullMatrix(iqXI, iqEI, ppGpXIpEIlam);
+	mat->atandplusTransposeFullMatrix(iqEI, iqXI, ppGpXIpEIlam);
+	mat->atandplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
 }
 
 void MbD::DistanceConstraintIqcJc::fillPosKineJacob(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqXI, pGpXI);
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullRow(iG, iqXI, pGpXI);
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
 }
 
 void MbD::DistanceConstraintIqcJc::fillVelICJacob(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqXI, pGpXI);
-	mat->atijplusFullColumn(iqXI, iG, pGpXI->transpose());
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
-	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
+	mat->atandplusFullRow(iG, iqXI, pGpXI);
+	mat->atandplusFullColumn(iqXI, iG, pGpXI->transpose());
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullColumn(iqEI, iG, pGpEI->transpose());
 }
 
 void MbD::DistanceConstraintIqcJc::init_distIeJe()
 {
-	distIeJe = CREATE<DistIeqcJec>::With(frmI, frmJ);
+	distIeJe = DistIeqcJec::With(frmI, frmJ);
 }
 
 void MbD::DistanceConstraintIqcJc::useEquationNumbers()
@@ -113,17 +120,17 @@ void MbD::DistanceConstraintIqcJc::useEquationNumbers()
 
 void MbD::DistanceConstraintIqcJc::fillpFpy(SpMatDsptr mat)
 {
-	mat->atijplusFullRow(iG, iqXI, pGpXI);
-	mat->atijplusFullRow(iG, iqEI, pGpEI);
-	mat->atijplusFullMatrixtimes(iqXI, iqXI, ppGpXIpXI, lam);
+	mat->atandplusFullRow(iG, iqXI, pGpXI);
+	mat->atandplusFullRow(iG, iqEI, pGpEI);
+	mat->atandplusFullMatrixtimes(iqXI, iqXI, ppGpXIpXI, lam);
 	auto ppGpXIpEIlam = ppGpXIpEI->times(lam);
-	mat->atijplusFullMatrix(iqXI, iqEI, ppGpXIpEIlam);
-	mat->atijplusTransposeFullMatrix(iqEI, iqXI, ppGpXIpEIlam);
-	mat->atijplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
+	mat->atandplusFullMatrix(iqXI, iqEI, ppGpXIpEIlam);
+	mat->atandplusTransposeFullMatrix(iqEI, iqXI, ppGpXIpEIlam);
+	mat->atandplusFullMatrixtimes(iqEI, iqEI, ppGpEIpEI, lam);
 }
 
 void MbD::DistanceConstraintIqcJc::fillpFpydot(SpMatDsptr mat)
 {
-	mat->atijplusFullColumn(iqXI, iG, pGpXI->transpose());
-	mat->atijplusFullColumn(iqEI, iG, pGpEI->transpose());
+	mat->atandplusFullColumn(iqXI, iG, pGpXI->transpose());
+	mat->atandplusFullColumn(iqEI, iG, pGpEI->transpose());
 }

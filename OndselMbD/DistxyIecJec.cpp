@@ -10,12 +10,22 @@
 
 using namespace MbD;
 
-MbD::DistxyIecJec::DistxyIecJec()
-{
-}
-
 MbD::DistxyIecJec::DistxyIecJec(EndFrmsptr frmi, EndFrmsptr frmj) : KinematicIeJe(frmi, frmj)
 {
+	assert(false);
+}
+
+std::shared_ptr<DistxyIecJec> MbD::DistxyIecJec::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	auto inst = std::make_shared<DistxyIecJec>(frmi, frmj);
+	inst->initialize();
+	return inst;
+}
+
+void MbD::DistxyIecJec::initialize()
+{
+	KinematicIeJe::initialize();
+	this->init_xyIeJeIe();
 }
 
 void MbD::DistxyIecJec::calcPostDynCorrectorIteration()
@@ -23,12 +33,6 @@ void MbD::DistxyIecJec::calcPostDynCorrectorIteration()
 	auto x = xIeJeIe->value();
 	auto y = yIeJeIe->value();
 	distxy = std::sqrt(x * x + (y * y));
-}
-
-void MbD::DistxyIecJec::initialize()
-{
-	KinematicIeJe::initialize();
-	this->init_xyIeJeIe();
 }
 
 void MbD::DistxyIecJec::initializeGlobally()

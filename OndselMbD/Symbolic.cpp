@@ -18,11 +18,20 @@
 #include "Product.h"
 #include "Sum.h"
 #include "Power.h"
+#include "MbDSymbolicFunction.h"
 
 using namespace MbD;
 
-Symbolic::Symbolic()
+std::shared_ptr<Symbolic> MbD::Symbolic::With()
 {
+	auto inst = std::make_shared<Symbolic>();
+	inst->initialize();
+	return inst;
+}
+
+void Symbolic::initialize()
+{
+	//Do nothing.
 }
 
 Symsptr MbD::Symbolic::times(Symsptr arg, Symsptr arg1)
@@ -77,10 +86,6 @@ Symsptr MbD::Symbolic::sum(Symsptr arg, Symsptr arg1)
 			return std::make_shared<Sum>(arg, arg1);
 		}
 	}
-}
-
-void Symbolic::initialize()
-{
 }
 
 Symsptr MbD::Symbolic::differentiateWRT(Symsptr)
@@ -217,6 +222,32 @@ bool MbD::Symbolic::isVariable()
 void MbD::Symbolic::setIntegrationConstant(double integConstant)
 {
 	assert(false);
+}
+
+const std::string& MbD::Symbolic::getName() const
+{
+	assert(false);
+	return std::string("");
+}
+
+void MbD::Symbolic::fillKineIJs(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> kineIJs)
+{
+	//Do nothing.
+}
+
+void MbD::Symbolic::fillKinedotIJs(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> kinedotIJs)
+{
+	//Do nothing.
+}
+
+void MbD::Symbolic::fillJointForces(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> jointActions)
+{
+	//Do nothing.
+}
+
+void MbD::Symbolic::fillJointTorques(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> jointActions)
+{
+	//Do nothing.
 }
 
 Symsptr MbD::Symbolic::raisedTo(Symsptr x, Symsptr y)

@@ -11,6 +11,13 @@
 
 using namespace MbD;
 
+std::shared_ptr<ASMTMotion> MbD::ASMTMotion::With()
+{
+	auto inst = std::make_shared<ASMTMotion>();
+	inst->initialize();
+	return inst;
+}
+
 void MbD::ASMTMotion::readMotionSeries(std::vector<std::string>& lines)
 {
 	std::string str = lines[0];
@@ -31,6 +38,7 @@ void MbD::ASMTMotion::readMotionSeries(std::vector<std::string>& lines)
 
 void MbD::ASMTMotion::initMarkers()
 {
+	assert(false);
 }
 
 void ASMTMotion::storeOnLevel(std::ofstream&, size_t)

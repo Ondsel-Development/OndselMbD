@@ -10,17 +10,19 @@
 #include "MBDynJoint.h"
 
 namespace MbD {
-    class ASMTJoint;
+	class ASMTJoint;
 
-    class MBDynRevolutePinJoint : public MBDynJoint
-    {
-        //Note: this is equivalent to a revolute hinge (see Section 8.12.38) when one node is grounded.
+	class MBDynRevolutePinJoint : public MBDynJoint
+	{
+		//Note: this is equivalent to a revolute hinge (see Section 8.12.38) when one node is grounded.
 
-    public:
-        void parseMBDyn(std::string line) override;
-        void createASMT() override;
-        std::shared_ptr<ASMTJoint> asmtClassNew() override;
+	public:
+		static std::shared_ptr<MBDynRevolutePinJoint> With();
 
-    };
+		void parseMBDyn(std::string line) override;
+		void createASMT() override;
+		std::shared_ptr<ASMTJoint> asmtClassNew() override;
+
+	};
 }
 

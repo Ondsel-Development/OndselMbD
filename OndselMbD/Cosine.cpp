@@ -5,7 +5,9 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
+#include <cassert>
+
 #include "Cosine.h"
 #include "Sine.h"
 #include "Negative.h"
@@ -14,16 +16,24 @@ using namespace MbD;
 
 MbD::Cosine::Cosine(Symsptr arg) : FunctionX(arg)
 {
+	assert(false);
+}
+
+std::shared_ptr<Cosine> MbD::Cosine::With()
+{
+	auto inst = std::make_shared<Cosine>();
+	inst->initialize();
+	return inst;
 }
 
 double MbD::Cosine::getValue()
 {
-    return std::cos(xx->getValue());
+	return std::cos(xx->getValue());
 }
 
 Symsptr MbD::Cosine::differentiateWRTx()
 {
-    return std::make_shared<Negative>(std::make_shared<Sine>(xx));
+	return std::make_shared<Negative>(std::make_shared<Sine>(xx));
 }
 
 Symsptr MbD::Cosine::copyWith(Symsptr arg)

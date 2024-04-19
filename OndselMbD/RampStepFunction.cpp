@@ -1,8 +1,8 @@
-#include <algorithm>
 
 #include "RampStepFunction.h"
 #include "Constant.h"
 #include "Polynomial.h"
+#include <cassert>
 
 using namespace MbD;
 
@@ -14,6 +14,13 @@ MbD::RampStepFunction::RampStepFunction(Symsptr var, std::shared_ptr<std::vector
 	double y0 = consts->at(0);
 	double y1 = consts->at(1);
 	initFunctionsTransitions(var, x0, y0, x1, y1);
+}
+
+std::shared_ptr<RampStepFunction> MbD::RampStepFunction::With()
+{
+	auto inst = std::make_shared<RampStepFunction>();
+	inst->initialize();
+	return inst;
 }
 
 void MbD::RampStepFunction::arguments(Symsptr args)

@@ -6,18 +6,12 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
 
-#include <algorithm>
 #include <cassert>
 
 #include "PiecewiseFunction.h"
 #include "Integral.h"
 
 using namespace MbD;
-
-MbD::PiecewiseFunction::PiecewiseFunction()
-{
-	noop();
-}
 
 MbD::PiecewiseFunction::PiecewiseFunction(Symsptr var, std::shared_ptr<std::vector<Symsptr>> funcs, std::shared_ptr<std::vector<Symsptr>> trans)
 {
@@ -30,12 +24,19 @@ MbD::PiecewiseFunction::PiecewiseFunction(Symsptr var, std::shared_ptr<std::vect
 	transitions->insert(transitions->end(), trans->begin(), trans->end());
 }
 
+std::shared_ptr<PiecewiseFunction> MbD::PiecewiseFunction::With()
+{
+	auto inst = std::make_shared<PiecewiseFunction>();
+	inst->initialize();
+	return inst;
+}
+
 Symsptr MbD::PiecewiseFunction::expandUntil(Symsptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
 {
-	auto expansions = std::make_shared<std::vector<Symsptr>>();
+	auto expansions = std::make_shared<std::vector<Symsptr>>(functions->size());
 	std::transform(functions->begin(),
 		functions->end(),
-		std::back_inserter(*expansions),
+		expansions->begin(),
 		[&](auto& func) { return func->expandUntil(func, set); }
 	);
 	return std::make_shared<PiecewiseFunction>(xx, expansions, transitions);
@@ -43,10 +44,10 @@ Symsptr MbD::PiecewiseFunction::expandUntil(Symsptr, std::shared_ptr<std::unorde
 
 Symsptr MbD::PiecewiseFunction::simplifyUntil(Symsptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
 {
-	auto simplifications = std::make_shared<std::vector<Symsptr>>();
+	auto simplifications = std::make_shared<std::vector<Symsptr>>(functions->size());
 	std::transform(functions->begin(),
 		functions->end(),
-		std::back_inserter(*simplifications),
+		simplifications->begin(),
 		[&](auto& func) { return func->simplifyUntil(func, set); }
 	);
 	return std::make_shared<PiecewiseFunction>(xx, simplifications, transitions);
@@ -54,10 +55,10 @@ Symsptr MbD::PiecewiseFunction::simplifyUntil(Symsptr, std::shared_ptr<std::unor
 
 Symsptr MbD::PiecewiseFunction::differentiateWRTx()
 {
-	auto derivatives = std::make_shared<std::vector<Symsptr>>();
+	auto derivatives = std::make_shared<std::vector<Symsptr>>(functions->size());
 	std::transform(functions->begin(),
 		functions->end(),
-		std::back_inserter(*derivatives),
+		derivatives->begin(),
 		[&](auto& func) { return func->differentiateWRT(xx); }
 	);
 	return std::make_shared<PiecewiseFunction>(xx, derivatives, transitions);

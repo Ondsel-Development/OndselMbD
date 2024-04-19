@@ -11,34 +11,33 @@
 #include "ConstraintIJ.h"
 
 namespace MbD {
-    class DirectionCosineIecJec;
+	class DirectionCosineIecJec;
 
-    class ConstVelConstraintIJ : public ConstraintIJ
-    {
-        //aA01IeJe aA10IeJe 
-    public:
-        ConstVelConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
+	class ConstVelConstraintIJ : public ConstraintIJ
+	{
+		//aA01IeJe aA10IeJe 
+	public:
+		ConstVelConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
+		static std::shared_ptr<ConstVelConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
+		void initialize() override;
 
-        static std::shared_ptr<ConstVelConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
-
-        void calcPostDynCorrectorIteration() override;
-        virtual void initA01IeJe();
-        virtual void initA10IeJe();
-        void initialize() override;
-        void initializeGlobally() override;
-        void initializeLocally() override;
-        void postInput() override;
-        void postPosICIteration() override;
-        void preAccIC() override;
-        void prePosIC() override;
-        void preVelIC() override;
-        void simUpdateAll() override;
-        void postDynPredictor() override;
-        void postDynCorrectorIteration() override;
-        void preDynOutput() override;
+		void calcPostDynCorrectorIteration() override;
+		virtual void initA01IeJe();
+		virtual void initA10IeJe();
+		void initializeGlobally() override;
+		void initializeLocally() override;
+		void postInput() override;
+		void postPosICIteration() override;
+		void preAccIC() override;
+		void prePosIC() override;
+		void preVelIC() override;
+		void simUpdateAll() override;
+		void postDynPredictor() override;
+		void postDynCorrectorIteration() override;
+		void preDynOutput() override;
 		void postDynOutput() override;
 
-        std::shared_ptr<DirectionCosineIecJec> aA01IeJe, aA10IeJe;
-    };
+		std::shared_ptr<DirectionCosineIecJec> aA01IeJe, aA10IeJe;
+	};
 }
 

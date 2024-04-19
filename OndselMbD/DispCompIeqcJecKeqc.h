@@ -11,26 +11,27 @@
 #include "DispCompIecJecKeqc.h"
 
 namespace MbD {
-    class DispCompIeqcJecKeqc : public DispCompIecJecKeqc
-    {
-        //priIeJeKepXI priIeJeKepEI ppriIeJeKepXIpEK ppriIeJeKepEIpEI ppriIeJeKepEIpEK 
-    public:
-        DispCompIeqcJecKeqc();
-        DispCompIeqcJecKeqc(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
+	class DispCompIeqcJecKeqc : public DispCompIecJecKeqc
+	{
+		//priIeJeKepXI priIeJeKepEI ppriIeJeKepXIpEK ppriIeJeKepEIpEI ppriIeJeKepEIpEK 
+	public:
+		DispCompIeqcJecKeqc() {}
+		DispCompIeqcJecKeqc(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk) : DispCompIecJecKeqc(frmi, frmj, frmk, axisk) {}
+		static std::shared_ptr<DispCompIeqcJecKeqc> With(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
+		void initialize() override;
 
-        void calcPostDynCorrectorIteration() override;
-        void initialize() override;
-        FRowDsptr pvaluepXI() override;
-        FRowDsptr pvaluepEI() override;
-        FMatDsptr ppvaluepXIpEK() override;
-        FMatDsptr ppvaluepEIpEK() override;
-        FMatDsptr ppvaluepEIpEI() override;
+		void calcPostDynCorrectorIteration() override;
+		FRowDsptr pvaluepXI() override;
+		FRowDsptr pvaluepEI() override;
+		FMatDsptr ppvaluepXIpEK() override;
+		FMatDsptr ppvaluepEIpEK() override;
+		FMatDsptr ppvaluepEIpEI() override;
 
-        FRowDsptr priIeJeKepXI;
-        FRowDsptr priIeJeKepEI;
-        FMatDsptr ppriIeJeKepXIpEK;
-        FMatDsptr ppriIeJeKepEIpEI;
-        FMatDsptr ppriIeJeKepEIpEK;
-    };
+		FRowDsptr priIeJeKepXI;
+		FRowDsptr priIeJeKepEI;
+		FMatDsptr ppriIeJeKepXIpEK;
+		FMatDsptr ppriIeJeKepEIpEI;
+		FMatDsptr ppriIeJeKepEIpEK;
+	};
 }
 

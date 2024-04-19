@@ -10,19 +10,25 @@
 #include <memory>
 
 #include "EndFramec.h"
+#include "PartFrame.h"
 #include "MarkerFrame.h"
 #include "EndFrameqc.h"
-#include "CREATE.h"
 
 using namespace MbD;
 
-EndFramec::EndFramec() {
+std::shared_ptr<EndFramec> MbD::EndFramec::With(const char* str)
+{
+	auto inst = std::make_shared<EndFramec>(str);
+	inst->initialize();
+	return inst;
 }
 
-EndFramec::EndFramec(const char* str) : CartesianFrame(str) {
+void EndFramec::initialize()
+{
+	assert(false);
 }
 
-FMatDsptr MbD::EndFramec::aAeO()
+FMatDsptr MbD::EndFramec::aAeO() const
 {
 	return aAOe->transpose();
 }
@@ -32,22 +38,14 @@ System* EndFramec::root()
 	return markerFrame->root();
 }
 
-void EndFramec::initialize()
-{
-}
-
 void EndFramec::setMarkerFrame(MarkerFrame* markerFrm)
 {
 	markerFrame = markerFrm;
 }
 
-MarkerFrame* EndFramec::getMarkerFrame()
+MarkerFrame* EndFramec::getMarkerFrame() const
 {
 	return markerFrame;
-}
-
-void EndFramec::initializeLocally()
-{
 }
 
 void EndFramec::initEndFrameqct()
@@ -66,9 +64,33 @@ void EndFramec::calcPostDynCorrectorIteration()
 	aAOe = markerFrame->aAOm;
 }
 
+void MbD::EndFramec::fillContactEndFrames(std::set<EndFramec*> efrms)
+{
+}
+
+FColDsptr MbD::EndFramec::ieO()
+{
+	return aAOe->column(0);
+}
+
+FColDsptr MbD::EndFramec::jeO()
+{
+	return aAOe->column(1);
+}
+
+FColDsptr MbD::EndFramec::keO()
+{
+	return aAOe->column(2);
+}
+
 FColDsptr EndFramec::aAjOe(size_t j)
 {
 	return aAOe->column(j);
+}
+
+void MbD::EndFramec::aApm(FMatDsptr mat)
+{
+	markerFrame->aApm = mat;
 }
 
 double EndFramec::riOeO(size_t i)
@@ -98,7 +120,7 @@ FMatDsptr EndFramec::aBOp()
 
 std::shared_ptr<EndFrameqc> MbD::EndFramec::newCopyEndFrameqc()
 {
-	auto frmIeqc = CREATE<EndFrameqc>::With();
+	auto frmIeqc = EndFrameqc::With();
 	markerFrame->addEndFrame(frmIeqc);
 	return frmIeqc;
 }
@@ -108,22 +130,22 @@ bool MbD::EndFramec::isEndFrameqc()
 	return false;
 }
 
-void MbD::EndFramec::fillpqsumu(FColDsptr col)
+PartFrame* MbD::EndFramec::getPartFrame()
 {
+	return markerFrame->getPartFrame();
 }
 
-void MbD::EndFramec::fillpqsumudot(FColDsptr col)
+std::shared_ptr<EulerParameters<double>> MbD::EndFramec::qEOe()
 {
+	return aAOe->asEulerParameters();
 }
 
-void MbD::EndFramec::setpqsumu(FColDsptr col)
+FColDsptr MbD::EndFramec::vOeO()
 {
+	return markerFrame->vOmO();
 }
 
-void MbD::EndFramec::setpqsumudot(FColDsptr col)
+FColDsptr MbD::EndFramec::aOeO()
 {
-}
-
-void MbD::EndFramec::setpqsumuddot(FColDsptr col)
-{
+	return markerFrame->aOmO();
 }

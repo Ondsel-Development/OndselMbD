@@ -11,11 +11,12 @@
 #include "ScrewConstraintIJ.h"
 
 namespace MbD {
-    class ScrewConstraintIqcJc : public ScrewConstraintIJ
-    {
-        //pGpXI pGpEI ppGpXIpEI ppGpEIpEI iqXI iqEI 
-    public:
+	class ScrewConstraintIqcJc : public ScrewConstraintIJ
+	{
+		//pGpXI pGpEI ppGpXIpEI ppGpEIpEI iqXI iqEI 
+	public:
 		ScrewConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj);
+		static std::shared_ptr<ScrewConstraintIqcJc> With(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void initzIeJeIe() override;
 		void initthezIeJe() override;
@@ -41,6 +42,6 @@ namespace MbD {
 		size_t iqXI, iqEI;
 
 
-    };
+	};
 }
 

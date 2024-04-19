@@ -13,7 +13,9 @@ namespace MbD {
 	class MBDynInitialValue : public MBDynBlock
 	{
 	public:
+		static std::shared_ptr<MBDynInitialValue> With();
 		void initialize() override;
+
 		void parseMBDyn(std::vector<std::string>& lines) override;
 		void readInitialTime(std::vector<std::string>& lines);
 		void readFinalTime(std::vector<std::string>& lines);

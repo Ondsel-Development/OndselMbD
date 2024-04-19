@@ -19,22 +19,35 @@ namespace MbD {
 		//phiThePsi phiAdot theAdot psiAdot aAdot 
 	public:
 		EulerAngleszxzDot() : EulerArray<T>(3) {}
+		static std::shared_ptr<EulerAngleszxzDot<T>> With();
 		void initialize() override;
+
 		void calc() override;
 
 		std::shared_ptr<EulerAngleszxz<T>> phiThePsi;
 		FMatDsptr phiAdot, theAdot, psiAdot, aAdot;
 	};
+
+	template<typename T>
+	inline std::shared_ptr<EulerAngleszxzDot<T>> EulerAngleszxzDot<T>::With()
+	{
+		auto inst = std::make_shared<EulerAngleszxzDot<T>>();
+		inst->initialize();
+		return inst;
+	}
+
 	template<typename T>
 	inline void EulerAngleszxzDot<T>::initialize()
 	{
-		phiAdot = std::make_shared<FullMatrix<double>>(3, 3);
+		EulerArray<T>::initialize();
+		phiAdot = FullMatrix<double>::With(3, 3);
 		phiAdot->zeroSelf();
-		theAdot = std::make_shared<FullMatrix<double>>(3, 3);
+		theAdot = FullMatrix<double>::With(3, 3);
 		theAdot->zeroSelf();
-		psiAdot = std::make_shared<FullMatrix<double>>(3, 3);
+		psiAdot = FullMatrix<double>::With(3, 3);
 		psiAdot->zeroSelf();
 	}
+
 	template<typename T>
 	inline void EulerAngleszxzDot<T>::calc()
 	{

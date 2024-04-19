@@ -11,22 +11,21 @@
 
 using namespace MbD;
 
-DispCompIeqcJeqcKeqc::DispCompIeqcJeqcKeqc()
+std::shared_ptr<DispCompIeqcJeqcKeqc> MbD::DispCompIeqcJeqcKeqc::With(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk)
 {
-}
-
-DispCompIeqcJeqcKeqc::DispCompIeqcJeqcKeqc(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk) : DispCompIeqcJecKeqc(frmi, frmj, frmk, axisk)
-{
+	auto inst = std::make_shared<DispCompIeqcJeqcKeqc>(frmi, frmj, frmk, axisk);
+	inst->initialize();
+	return inst;
 }
 
 void DispCompIeqcJeqcKeqc::initialize()
 {
 	DispCompIeqcJecKeqc::initialize();
-	priIeJeKepXJ = std::make_shared<FullRow<double>>(3);
-	priIeJeKepEJ = std::make_shared<FullRow<double>>(4);
-	ppriIeJeKepEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
-	ppriIeJeKepXJpEK = std::make_shared<FullMatrix<double>>(3, 4);
-	ppriIeJeKepEJpEK = std::make_shared<FullMatrix<double>>(4, 4);
+	priIeJeKepXJ = FullRow<double>::With(3);
+	priIeJeKepEJ = FullRow<double>::With(4);
+	ppriIeJeKepEJpEJ = FullMatrix<double>::With(4, 4);
+	ppriIeJeKepXJpEK = FullMatrix<double>::With(3, 4);
+	ppriIeJeKepEJpEK = FullMatrix<double>::With(4, 4);
 }
 
 void DispCompIeqcJeqcKeqc::calcPostDynCorrectorIteration()
@@ -37,30 +36,30 @@ void DispCompIeqcJeqcKeqc::calcPostDynCorrectorIteration()
 	auto& pprIeJeOpEJpEJ = frmJqc->pprOeOpEpE;
 	for (size_t i = 0; i < 3; i++)
 	{
-		priIeJeKepXJ->atiput(i, aAjOKe->at(i));
+		priIeJeKepXJ->atput(i, aAjOKe->at(i));
 	}
 	for (size_t i = 0; i < 4; i++)
 	{
-		priIeJeKepEJ->atiput(i, aAjOKe->dot(prIeJeOpEJT->at(i)));
+		priIeJeKepEJ->atput(i, aAjOKe->dot(prIeJeOpEJT->at(i)));
 	}
 	for (size_t i = 0; i < 3; i++)
 	{
 		auto& ppriIeJeKepXJipEK = ppriIeJeKepXJpEK->at(i);
 		for (size_t j = 0; j < 4; j++)
 		{
-			ppriIeJeKepXJipEK->atiput(j, pAjOKepEKT->at(j)->at(i));
+			ppriIeJeKepXJipEK->atput(j, pAjOKepEKT->at(j)->at(i));
 		}
 	}
 	for (size_t i = 0; i < 4; i++)
 	{
 		auto& pprIeJeOpEJipEJ = pprIeJeOpEJpEJ->at(i);
 		auto& ppriIeJeKepEJipEJ = ppriIeJeKepEJpEJ->at(i);
-		ppriIeJeKepEJipEJ->atiput(i, aAjOKe->dot(pprIeJeOpEJipEJ->at(i)));
+		ppriIeJeKepEJipEJ->atput(i, aAjOKe->dot(pprIeJeOpEJipEJ->at(i)));
 		for (size_t j = 0; j < 4; j++)
 		{
 			auto ppriIeJeKepEJipEJj = (aAjOKe->dot(pprIeJeOpEJipEJ->at(j)));
-			ppriIeJeKepEJipEJ->atiput(j, ppriIeJeKepEJipEJj);
-			ppriIeJeKepEJpEJ->atijput(j, i, ppriIeJeKepEJipEJj);
+			ppriIeJeKepEJipEJ->atput(j, ppriIeJeKepEJipEJj);
+			ppriIeJeKepEJpEJ->atandput(j, i, ppriIeJeKepEJipEJj);
 		}
 	}
 	for (size_t i = 0; i < 4; i++)
@@ -69,7 +68,7 @@ void DispCompIeqcJeqcKeqc::calcPostDynCorrectorIteration()
 		auto& ppriIeJeKepEJipEK = ppriIeJeKepEJpEK->at(i);
 		for (size_t j = 0; j < 4; j++)
 		{
-			ppriIeJeKepEJipEK->atiput(j, pAjOKepEKT->at(j)->dot(prIeJeOpEJTi));
+			ppriIeJeKepEJipEK->atput(j, pAjOKepEKT->at(j)->dot(prIeJeOpEJTi));
 		}
 	}
 }

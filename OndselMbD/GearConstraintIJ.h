@@ -17,11 +17,10 @@ namespace MbD {
 		//orbitIeJe orbitJeIe radiusI radiusJ 
 	public:
 		GearConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
-
 		static std::shared_ptr<GearConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
+		void initialize() override;
 
 		void calcPostDynCorrectorIteration() override;
-		void initialize() override;
 		void initializeGlobally() override;
 		void initializeLocally() override;
 		virtual void initorbitsIJ();
@@ -34,7 +33,7 @@ namespace MbD {
 		void simUpdateAll() override;
 		void postDynPredictor() override;
 		void postDynCorrectorIteration() override;
-        void preDynOutput() override;
+		void preDynOutput() override;
 		void postDynOutput() override;
 
 		std::shared_ptr<OrbitAngleZIecJec> orbitIeJe, orbitJeIe;

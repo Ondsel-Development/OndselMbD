@@ -10,13 +10,6 @@
 
 using namespace MbD;
 
-std::shared_ptr<ForceTorqueItem> MbD::ForceTorqueItem::With(EndFrmsptr frmi, EndFrmsptr frmj)
-{
-	auto inst = std::make_shared<ForceTorqueItem>(frmi, frmj);
-	inst->initialize();
-	return inst;
-}
-
 void MbD::ForceTorqueItem::fillStaticError(FColDsptr col)
 {
 	assert(false);
@@ -40,18 +33,6 @@ void MbD::ForceTorqueItem::postCollisionCorrectorIteration()
 void MbD::ForceTorqueItem::postCollisionPredictor()
 {
 	assert(false);
-}
-
-FColDsptr MbD::ForceTorqueItem::aFX() const
-{
-	assert(false);
-	return FColDsptr();
-}
-
-FColDsptr MbD::ForceTorqueItem::aTX() const
-{
-	assert(false);
-	return FColDsptr();
 }
 
 FColDsptr MbD::ForceTorqueItem::getFTIeO() const

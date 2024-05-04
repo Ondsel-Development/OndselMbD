@@ -18,13 +18,12 @@ namespace MbD {
 		//xIeJeIe thezIeJe pitchRadius 
 	public:
 		RackPinConstraintIJ() {}
-		RackPinConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
+		RackPinConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj) {}
 		static std::shared_ptr<RackPinConstraintIJ> With();
 		static std::shared_ptr<RackPinConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
 		void initialize() override;
 
 		void calcPostDynCorrectorIteration() override;
-		virtual void init_xthez();
 		virtual void initxIeJeIe();
 		virtual void initthezIeJe();
 		void initializeGlobally() override;

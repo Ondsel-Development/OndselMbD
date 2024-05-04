@@ -8,6 +8,7 @@
 
 #include "MBDynRevolutePinJoint.h"
 #include "ASMTJoint.h"
+#include "ASMTAssembly.h"
 
 using namespace MbD;
 
@@ -25,11 +26,9 @@ void MbD::MBDynRevolutePinJoint::parseMBDyn(std::string line)
 
 void MbD::MBDynRevolutePinJoint::createASMT()
 {
-	MBDynJoint::createASMT();
-}
-
-std::shared_ptr<ASMTJoint> MbD::MBDynRevolutePinJoint::asmtClassNew()
-{
 	assert(false);
-	return std::make_shared<ASMTJoint>();
+	auto asmtJoint = ASMTJoint::With();
+	asmtAssembly()->addJoint(asmtJoint);
+	asmtItem = asmtJoint;
+	MBDynJoint::createASMT();
 }

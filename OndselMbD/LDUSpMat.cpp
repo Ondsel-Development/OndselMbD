@@ -20,8 +20,8 @@ std::shared_ptr<LDUSpMat> MbD::LDUSpMat::With()
 
 FColDsptr LDUSpMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
-	this->decomposesaveOriginal(spMat, saveOriginal);
-	FColDsptr answer = this->forAndBackSubsaveOriginal(fullCol, saveOriginal);
+	decomposesaveOriginal(spMat, saveOriginal);
+	FColDsptr answer = forAndBackSubsaveOriginal(fullCol, saveOriginal);
 	return answer;
 }
 

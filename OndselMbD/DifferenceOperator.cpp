@@ -36,7 +36,7 @@ void DifferenceOperator::calcOperatorMatrix()
 	//valuedot(time) : = (operatorMatrix at : 2) timesColumn : series.
 	//valueddot(time) : = (operatorMatrix at : 3) timesColumn : series.
 
-	this->formTaylorMatrix();
+	formTaylorMatrix();
 	try {
 		auto matrixSolver = std::make_shared<LDUFullMatParPvRobust>();
 		operatorMatrix = matrixSolver->inversesaveOriginal(taylorMatrix, false);

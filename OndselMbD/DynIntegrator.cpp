@@ -91,14 +91,14 @@ void MbD::DynIntegrator::checkForDiscontinuity()
 		return;
 	}
 	else {
-		this->checkForOutputThrough(tstartNew);
-		this->interpolateAt(tstartNew);
+		checkForOutputThrough(tstartNew);
+		interpolateAt(tstartNew);
 		system->tstartPastsAddFirst(tstart);
 		system->tstart = tstartNew;
 		system->toutFirst = tout;
 		auto discontinuityTypes = std::make_shared<std::vector<DiscontinuityType>>();
 		system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->discontinuityAtaddTypeTo(tstartNew, discontinuityTypes); });
-		this->throwDiscontinuityError("", discontinuityTypes);
+		throwDiscontinuityError("", discontinuityTypes);
 	}
 }
 
@@ -178,7 +178,7 @@ void MbD::DynIntegrator::run()
 				ss << "MbD: Check to see if the error tolerance is too demanding." << std::endl;
 				ss << "MbD: Check to see if a curve-curve is about to have multiple contact points." << std::endl;
 				auto str = ss.str();
-				this->logString(str);
+				logString(str);
 				throw SimulationStoppingError("");
 			}
 		}
@@ -189,7 +189,7 @@ void MbD::DynIntegrator::run()
 			ss << "MbD: Check to see if a curve-curve is about to have multiple contact points." << std::endl;
 			ss << "MbD: If they are not, lower the permitted minimum step size." << std::endl;
 			auto str = ss.str();
-			this->logString(str);
+			logString(str);
 			throw SimulationStoppingError("");
 		}
 	}
@@ -197,7 +197,7 @@ void MbD::DynIntegrator::run()
 		std::stringstream ss;
 		ss << "MbD: Check to see if the error tolerance is too demanding." << std::endl;
 		auto str = ss.str();
-		this->logString(str);
+		logString(str);
 		throw SimulationStoppingError("");
 	}
 }

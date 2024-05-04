@@ -31,8 +31,8 @@ void DispCompIecJecKeqc::initializeGlobally()
 
 void DispCompIecJecKeqc::calcPostDynCorrectorIteration()
 {
-	auto frmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
-	auto frmJqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto frmIqc = std::static_pointer_cast<EndFrameqc>(efrmI);
+	auto frmJqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	auto efrmKqc = std::static_pointer_cast<EndFrameqc>(efrmK);
 	aAjOKe = efrmKqc->aAjOe(axisK);
 	rIeJeO = frmJqc->rOeO->minusFullColumn(frmIqc->rOeO);

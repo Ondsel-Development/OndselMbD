@@ -15,7 +15,7 @@ namespace MbD {
 	{
 		//pGpXJ pGpEJ ppGpXIpXJ ppGpEIpXJ ppGpXJpXJ ppGpXIpEJ ppGpEIpEJ ppGpXJpEJ ppGpEJpEJ iqXJ iqEJ 
 	public:
-		DistancexyConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj);
+		DistancexyConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : DistancexyConstraintIqcJc(frmi, frmj) {}
 		static std::shared_ptr<DistancexyConstraintIqcJqc> With(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void calc_pGpXJ();

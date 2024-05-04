@@ -15,10 +15,6 @@
 
 using namespace MbD;
 
-ZRotation::ZRotation(const char* str) : PrescribedMotion(str) {
-	assert(false);
-}
-
 std::shared_ptr<ZRotation> MbD::ZRotation::With()
 {
 	auto inst = std::make_shared<ZRotation>();
@@ -37,9 +33,9 @@ void ZRotation::initializeGlobally()
 {
 	if (constraints->empty()) {
 		initMotions();
-		auto dirCosCon = DirectionCosineConstraintIJ::With(frmI, frmJ, 1, 0);
+		auto dirCosCon = DirectionCosineConstraintIJ::With(efrmI, efrmJ, 1, 0);
 		addConstraint(dirCosCon);
-		this->root()->hasChanged = true;
+		root()->hasChanged = true;
 	}
 	else {
 		PrescribedMotion::initializeGlobally();

@@ -29,21 +29,9 @@ void MbD::MBDynDriveHingeJoint::parseMBDyn(std::string line)
 
 void MbD::MBDynDriveHingeJoint::createASMT()
 {
-	mkr1->createASMT();
-	if (mkr2) mkr2->createASMT();
-	auto asmtAsm = asmtAssembly();
-	auto asmtMotion = std::make_shared<ASMTRotationalMotion>();
-	asmtItem = asmtMotion;
-	asmtMotion->setName(label);
-	asmtMotion->setMarkerI(std::static_pointer_cast<ASMTMarker>(mkr1->asmtItem));
-	asmtMotion->setMarkerJ(std::static_pointer_cast<ASMTMarker>(mkr2->asmtItem));
+	auto asmtMotion = ASMTRotationalMotion::With();
 	asmtMotion->setRotationZ(formula);
-	asmtAsm->addMotion(asmtMotion);
-	return;
-}
-
-std::shared_ptr<ASMTJoint> MbD::MBDynDriveHingeJoint::asmtClassNew()
-{
-	assert(false);
-	return std::make_shared<ASMTJoint>();
+	asmtAssembly()->addMotion(asmtMotion);
+	asmtItem = asmtMotion;
+	MBDynJoint::createASMT();
 }

@@ -24,6 +24,13 @@ std::shared_ptr<ArcTan> MbD::ArcTan::With()
 	return inst;
 }
 
+std::shared_ptr<ArcTan> MbD::ArcTan::With(Symsptr arg)
+{
+	auto inst = std::make_shared<ArcTan>(arg);
+	inst->initialize();
+	return inst;
+}
+
 double MbD::ArcTan::getValue()
 {
 	return std::atan(xx->getValue());
@@ -31,7 +38,7 @@ double MbD::ArcTan::getValue()
 
 Symsptr MbD::ArcTan::copyWith(Symsptr arg)
 {
-	return std::make_shared<ArcTan>(arg);
+	return ArcTan::With(arg);
 }
 
 std::ostream& MbD::ArcTan::printOn(std::ostream& s) const

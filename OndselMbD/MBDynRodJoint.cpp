@@ -1,4 +1,6 @@
 #include "MBDynRodJoint.h"
+#include "ASMTAssembly.h"
+#include "ASMTForceTorqueInLine.h"
 
 using namespace MbD;
 
@@ -23,20 +25,18 @@ void MbD::MBDynRodJoint::parseMBDyn(std::string line)
 
 void MbD::MBDynRodJoint::readMarkerI(std::vector<std::string>& args)
 {
-	mkr1 = std::make_shared<MBDynMarker>();
-	mkr1->owner = this;
-	mkr1->nodeStr = readStringOffTop(args);
-	auto _nodeNames = nodeNames();
+	mkr1 = MBDynMarker::With();
+	mkr1->container = this;
+	mkr1->nodeStr = readStringNoSpacesOffTop(args);
 	mkr1->rPmP = readPosition(args);
 	mkr1->aAPm = FullMatrix<double>::identitysptr(3);
 }
 
 void MbD::MBDynRodJoint::readMarkerJ(std::vector<std::string>& args)
 {
-	mkr2 = std::make_shared<MBDynMarker>();
-	mkr2->owner = this;
-	mkr2->nodeStr = readStringOffTop(args);
-	auto _nodeNames = nodeNames();
+	mkr2 = MBDynMarker::With();
+	mkr2->container = this;
+	mkr2->nodeStr = readStringNoSpacesOffTop(args);
 	mkr2->rPmP = readPosition(args);
 	mkr2->aAPm = FullMatrix<double>::identitysptr(3);
 }
@@ -62,4 +62,17 @@ void MbD::MBDynRodJoint::readConstitutiveLaw(std::vector<std::string>& args)
 	else {
 		assert(false);
 	}
+}
+
+void MbD::MBDynRodJoint::createASMT()
+{
+	auto asmtForTor = ASMTForceTorqueInLine::With();
+	std::stringstream ss;
+	ss << std::setprecision(std::numeric_limits<double>::max_digits10);
+	ss << stiffness << '*' << "(rIJ(self) - " << rodLength << ')';
+	asmtForTor->tensionFunc = ss.str();
+	asmtForTor->twistFunc = "0";
+	asmtAssembly()->addForceTorque(asmtForTor);
+	asmtItem = asmtForTor;
+	MBDynJoint::createASMT();
 }

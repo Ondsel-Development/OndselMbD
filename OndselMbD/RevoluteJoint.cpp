@@ -13,11 +13,6 @@
 
 using namespace MbD;
 
-RevoluteJoint::RevoluteJoint(const char* str) : AtPointJoint(str)
-{
-	assert(false);
-}
-
 std::shared_ptr<RevoluteJoint> MbD::RevoluteJoint::With()
 {
 	auto inst = std::make_shared<RevoluteJoint>();
@@ -37,11 +32,11 @@ void RevoluteJoint::initializeGlobally()
 	if (constraints->empty())
 	{
 		createAtPointConstraints();
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 0));
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 1));
-		this->root()->hasChanged = true;
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 1));
+		root()->hasChanged = true;
 	}
 	else {
-		Joint::initializeGlobally();
+		JointIJ::initializeGlobally();
 	}
 }

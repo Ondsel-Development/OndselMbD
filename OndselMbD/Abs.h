@@ -18,6 +18,7 @@ namespace MbD {
 		Abs() = default;
 		Abs(Symsptr arg);
 		static std::shared_ptr<Abs> With();
+		static std::shared_ptr<Abs> With(Symsptr arg);
 		double getValue() override;
 		Symsptr copyWith(Symsptr arg) override;
 

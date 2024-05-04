@@ -32,47 +32,36 @@ void MbD::ASMTTranslationalMotion::parseASMT(std::vector<std::string>& lines)
 	readTranslationZ(lines);
 }
 
-void MbD::ASMTTranslationalMotion::initMarkers()
+void MbD::ASMTTranslationalMotion::createMbD()
 {
-	auto jt = root()->jointAt(motionJoint);
-	markerI = jt->markerI;
-	markerJ = jt->markerJ;
-}
-
-void MbD::ASMTTranslationalMotion::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
-{
-	ASMTMotion::createMbD(mbdSys, mbdUnits);
+	ASMTMotion::createMbD();
 	auto parser = std::make_shared<SymbolicParser>();
-	parser->owner = this;
-	auto geoTime = owner->root()->geoTime();
+	parser->container = this;
+	auto geoTime = container->root()->geoTime();
 	parser->variables->insert(std::make_pair("time", geoTime));
 	auto userFunc = std::make_shared<BasicUserFunction>(translationZ, 1.0);
 	parser->parseUserFunction(userFunc);
 	auto& zIJ = parser->stack->top();
-	zIJ = Symbolic::times(zIJ, sptrConstant(1.0 / mbdUnits->length));
-	zIJ->createMbD(mbdSys, mbdUnits);
+	zIJ = Symbolic::times(zIJ, sptrConstant(asmtUnits()->length));
+	zIJ->createMbD();
 	std::static_pointer_cast<ZTranslation>(mbdObject)->zBlk = zIJ->simplified(zIJ);
 }
 
-std::shared_ptr<Joint> MbD::ASMTTranslationalMotion::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTTranslationalMotion::mbdClassNew()
 {
 	return ZTranslation::With();
 }
 
 void MbD::ASMTTranslationalMotion::readMotionJoint(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("MotionJoint") != std::string::npos);
-	lines.erase(lines.begin());
-	motionJoint = readString(lines[0]);
-	lines.erase(lines.begin());
+	assert(readStringNoSpacesOffTop(lines) == "MotionJoint");
+	motionJoint = readStringNoSpacesOffTop(lines);
 }
 
 void MbD::ASMTTranslationalMotion::readTranslationZ(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("TranslationZ") != std::string::npos);
-	lines.erase(lines.begin());
-	translationZ = readString(lines[0]);
-	lines.erase(lines.begin());
+	assert(readStringNoSpacesOffTop(lines) == "TranslationZ");
+	translationZ = readStringNoSpacesOffTop(lines);
 }
 
 void MbD::ASMTTranslationalMotion::storeOnLevel(std::ofstream& os, size_t level)

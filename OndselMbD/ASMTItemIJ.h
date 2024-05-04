@@ -21,7 +21,7 @@ namespace MbD {
 	{
 		//
 	public:
-		ASMTItemIJ();
+		ASMTItemIJ() {}
 		static std::shared_ptr<ASMTItemIJ> With();
 		void initialize() override;
 
@@ -38,10 +38,14 @@ namespace MbD {
 		void readTZonIs(std::vector<std::string>& lines);
 		void storeOnLevel(std::ofstream& os, size_t level) override;
 		void storeOnTimeSeries(std::ofstream& os) override;
+		FMatDsptr aAOI(size_t i);
 		FColDsptr aFII(size_t i);
 		FColDsptr aFIO(size_t i);
 		FColDsptr aTII(size_t i);
 		FColDsptr aTIO(size_t i);
+		virtual bool isJoint();
+		virtual bool isMotion();
+		virtual bool isForceTorque();
 
 		std::shared_ptr<ASMTMarker> markerI, markerJ;
 		std::shared_ptr<std::vector<std::shared_ptr<FullColumn<double>>>> cFIO;

@@ -20,6 +20,7 @@ namespace MbD {
 		void readMarkerJ(std::vector<std::string>& args) override;
 		void readRodLength(std::vector<std::string>& args);
 		void readConstitutiveLaw(std::vector<std::string>& args);
+		void createASMT() override;
 
 		double rodLength, stiffness;
 	};

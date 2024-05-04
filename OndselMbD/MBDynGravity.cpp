@@ -42,7 +42,7 @@ void MbD::MBDynGravity::readFunction(std::vector<std::string>&)
 
 void MbD::MBDynGravity::createASMT()
 {
-	auto asmtGravity = std::make_shared<ASMTConstantGravity>();
+	auto asmtGravity = ASMTConstantGravity::With();
 	asmtGravity->setg(gvec);
 	asmtAssembly()->setConstantGravity(asmtGravity);
 }

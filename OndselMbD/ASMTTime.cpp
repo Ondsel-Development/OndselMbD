@@ -9,6 +9,7 @@
 #include <cassert>
 
 #include "ASMTTime.h"
+#include "Units.h"
 #include "Time.h"
 #include "Constant.h"
 #include "Product.h"
@@ -28,13 +29,15 @@ void MbD::ASMTTime::deleteMbD()
 	expression = nullptr;
 }
 
-void MbD::ASMTTime::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+void MbD::ASMTTime::createMbD()
 {
-	auto& mbdTime = mbdSys->time;
+	//asmtTime * asmtUnits->time = SI Units seconds
+	//mbdTime * mbdUnits->time = SI Units seconds. This will be done later by mbdSys nondimensionalization
+	auto& mbdTime = mbdSys()->time;	//mbdTime is in SI seconds at this point
 	if (xx == mbdTime) return;
-	auto timeScale = sptrConstant(mbdUnits->time);
+	auto timeScale = sptrConstant(1.0 / asmtUnits()->time);
 	auto geoTime = std::make_shared<Product>(timeScale, mbdTime);
-	this->xexpression(mbdTime, geoTime->simplified(geoTime));
+	xexpression(mbdTime, geoTime->simplified(geoTime));
 }
 
 Symsptr MbD::ASMTTime::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>>)

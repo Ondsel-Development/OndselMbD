@@ -11,15 +11,6 @@
 
 using namespace MbD;
 
-MbD::DispCompIeqcJeqcIe::DispCompIeqcJeqcIe(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis) : DispCompIeqcJecIe(frmi, frmj, axis)
-{
-	priIeJeIepXJ = FullRow<double>::With(3);
-	priIeJeIepEJ = FullRow<double>::With(4);
-	ppriIeJeIepEIpXJ = FullMatrix<double>::With(4, 3);
-	ppriIeJeIepEIpEJ = FullMatrix<double>::With(4, 4);
-	ppriIeJeIepEJpEJ = FullMatrix<double>::With(4, 4);
-}
-
 std::shared_ptr<DispCompIeqcJeqcIe> MbD::DispCompIeqcJeqcIe::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis)
 {
 	auto inst = std::make_shared<DispCompIeqcJeqcIe>(frmi, frmj, axis);
@@ -39,7 +30,7 @@ void MbD::DispCompIeqcJeqcIe::initialize()
 
 void MbD::DispCompIeqcJeqcIe::calc_ppvaluepEIpEJ()
 {
-	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	auto& prIeJeOpEJ = frmJeqc->prOeOpE;
 	ppriIeJeIepEIpEJ = pAjOIepEIT->timesFullMatrix(prIeJeOpEJ);
 }
@@ -51,7 +42,7 @@ void MbD::DispCompIeqcJeqcIe::calc_ppvaluepEIpXJ()
 
 void MbD::DispCompIeqcJeqcIe::calc_ppvaluepEJpEJ()
 {
-	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	auto pprIeJeOpEJpEJ = frmJeqc->pprOeOpEpE;
 	for (size_t i = 0; i < 4; i++)
 	{
@@ -68,7 +59,7 @@ void MbD::DispCompIeqcJeqcIe::calc_ppvaluepEJpEJ()
 
 void MbD::DispCompIeqcJeqcIe::calc_pvaluepEJ()
 {
-	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	auto prIeJeOpEJT = frmJeqc->prOeOpE->transpose();
 	for (size_t i = 0; i < 4; i++)
 	{

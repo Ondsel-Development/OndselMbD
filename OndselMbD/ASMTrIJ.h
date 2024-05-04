@@ -19,7 +19,8 @@ namespace MbD {
 		ASMTrIJ() {}
 		static std::shared_ptr<ASMTrIJ> With();
 		
-		std::shared_ptr<KinematicIeJe> mbdClassNew() override;
+		std::shared_ptr<KinematicIJ> mbdClassNew() override;
+		double asmtUnit() override;
 
 	};
 }

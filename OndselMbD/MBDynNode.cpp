@@ -13,7 +13,7 @@ std::shared_ptr<MBDynNode> MbD::MBDynNode::With()
 
 void MbD::MBDynNode::initialize()
 {
-	assert(false);
+	//Do nothing.
 }
 
 void MbD::MBDynNode::parseMBDyn(std::vector<std::string>&)

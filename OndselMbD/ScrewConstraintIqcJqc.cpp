@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "corecrt_math_defines.h"
 
 #include "ScrewConstraintIqcJqc.h"
@@ -15,15 +15,6 @@
 
 using namespace MbD;
 
-MbD::ScrewConstraintIqcJqc::ScrewConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : ScrewConstraintIqcJc(frmi, frmj)
-{
-	pGpXJ = FullRow<double>::With(3);
-	pGpEJ = FullRow<double>::With(4);
-	ppGpEIpXJ = FullMatrix<double>::With(4, 3);
-	ppGpEIpEJ = FullMatrix<double>::With(4, 4);
-	ppGpEJpEJ = FullMatrix<double>::With(4, 4);
-}
-
 std::shared_ptr<ScrewConstraintIqcJqc> MbD::ScrewConstraintIqcJqc::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	auto inst = std::make_shared<ScrewConstraintIqcJqc>(frmi, frmj);
@@ -31,14 +22,24 @@ std::shared_ptr<ScrewConstraintIqcJqc> MbD::ScrewConstraintIqcJqc::With(EndFrmsp
 	return inst;
 }
 
+void MbD::ScrewConstraintIqcJqc::initialize()
+{
+	ScrewConstraintIqcJc::initialize();
+	pGpXJ = FullRow<double>::With(3);
+	pGpEJ = FullRow<double>::With(4);
+	ppGpEIpXJ = FullMatrix<double>::With(4, 3);
+	ppGpEIpEJ = FullMatrix<double>::With(4, 4);
+	ppGpEJpEJ = FullMatrix<double>::With(4, 4);
+}
+
 void MbD::ScrewConstraintIqcJqc::initzIeJeIe()
 {
-	zIeJeIe = std::make_shared<DispCompIeqcJeqcIe>(frmI, frmJ, 2);
+	zIeJeIe = DispCompIeqcJeqcIe::With(efrmI, efrmJ, 2);
 }
 
 void MbD::ScrewConstraintIqcJqc::initthezIeJe()
 {
-	thezIeJe = std::make_shared<AngleZIeqcJeqc>(frmI, frmJ);
+	thezIeJe = AngleZIeqcJeqc::With(efrmI, efrmJ);
 }
 
 void MbD::ScrewConstraintIqcJqc::calc_pGpEJ()
@@ -65,7 +66,7 @@ void MbD::ScrewConstraintIqcJqc::calc_ppGpEIpXJ()
 void MbD::ScrewConstraintIqcJqc::calc_ppGpEJpEJ()
 {
 	ppGpEJpEJ = zIeJeIe->ppvaluepEJpEJ()->times(2.0 * OS_M_PI)
-			->minusFullMatrix(thezIeJe->ppvaluepEJpEJ()->times(pitch));
+		->minusFullMatrix(thezIeJe->ppvaluepEJpEJ()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJqc::calcPostDynCorrectorIteration()
@@ -83,8 +84,8 @@ void MbD::ScrewConstraintIqcJqc::fillAccICIterError(FColDsptr col)
 	ScrewConstraintIqcJc::fillAccICIterError(col);
 	col->atplusFullVectortimes(iqXJ, pGpXJ, lam);
 	col->atplusFullVectortimes(iqEJ, pGpEJ, lam);
-	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
-	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(efrmI);
+	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	auto qEdotI = frmIeqc->qEdot();
 	auto qXdotJ = frmJeqc->qXdot();
 	auto qEdotJ = frmJeqc->qEdot();
@@ -136,16 +137,10 @@ void MbD::ScrewConstraintIqcJqc::fillVelICJacob(SpMatDsptr mat)
 	mat->atandplusFullColumn(iqEJ, iG, pGpEJ->transpose());
 }
 
-void MbD::ScrewConstraintIqcJqc::init_zthez()
-{
-	zIeJeIe = DispCompIeqcJeqcIe::With(frmI, frmJ, 2);
-	thezIeJe = AngleZIeqcJeqc::With(frmJ, frmI);
-}
-
 void MbD::ScrewConstraintIqcJqc::useEquationNumbers()
 {
 	ScrewConstraintIqcJc::useEquationNumbers();
-	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	iqXJ = frmJeqc->iqX();
 	iqEJ = frmJeqc->iqE();
 }

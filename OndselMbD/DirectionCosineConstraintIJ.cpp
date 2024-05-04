@@ -44,7 +44,7 @@ void DirectionCosineConstraintIJ::initializeGlobally()
 
 void DirectionCosineConstraintIJ::initaAijIeJe()
 {
-	aAijIeJe = DirectionCosineIecJec::With(frmI, frmJ, axisI, axisJ);
+	aAijIeJe = DirectionCosineIecJec::With(efrmI, efrmJ, axisI, axisJ);
 }
 
 void DirectionCosineConstraintIJ::postInput()

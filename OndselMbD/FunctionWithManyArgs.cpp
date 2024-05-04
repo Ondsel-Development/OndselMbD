@@ -49,9 +49,9 @@ std::shared_ptr<std::vector<Symsptr>> FunctionWithManyArgs::getTerms()
 	return terms;
 }
 
-void MbD::FunctionWithManyArgs::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+void MbD::FunctionWithManyArgs::createMbD()
 {
-	for (auto& term : *terms) term->createMbD(mbdSys, mbdUnits);
+	for (auto& term : *terms) term->createMbD();
 }
 
 void MbD::FunctionWithManyArgs::arguments(Symsptr)

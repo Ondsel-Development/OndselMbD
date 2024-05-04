@@ -18,7 +18,8 @@ namespace MbD {
 		Exponential() = default;
 		Exponential(Symsptr arg);
 		static std::shared_ptr<Exponential> With();
-		
+		static std::shared_ptr<Exponential> With(Symsptr arg);
+
 		double getValue() override;
 		Symsptr copyWith(Symsptr arg) override;
 

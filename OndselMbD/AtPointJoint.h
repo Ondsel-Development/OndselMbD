@@ -8,15 +8,15 @@
  
 #pragma once
 
-#include "Joint.h"
+#include "JointIJ.h"
 
 namespace MbD {
-	class AtPointJoint : public Joint
+	class AtPointJoint : public JointIJ
 	{
 		//
 	public:
 		AtPointJoint() {}
-		AtPointJoint(const char* str);
+		AtPointJoint(const char* str) : JointIJ(str) {}
 		static std::shared_ptr<AtPointJoint> With();
 		static std::shared_ptr<AtPointJoint> With(const char* str);
 

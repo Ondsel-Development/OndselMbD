@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-MbD::DistanceConstraintIJ::DistanceConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj)
-{
-	assert(false);
-}
-
 std::shared_ptr<DistanceConstraintIJ> MbD::DistanceConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	assert(frmi->isEndFrameqc());
@@ -29,7 +24,7 @@ std::shared_ptr<DistanceConstraintIJ> MbD::DistanceConstraintIJ::With(EndFrmsptr
 void MbD::DistanceConstraintIJ::initialize()
 {
 	ConstraintIJ::initialize();
-	this->init_distIeJe();
+	init_distIeJe();
 }
 
 void MbD::DistanceConstraintIJ::calcPostDynCorrectorIteration()

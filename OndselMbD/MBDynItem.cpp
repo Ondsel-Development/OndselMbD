@@ -29,7 +29,7 @@ void MbD::MBDynItem::initialize()
 
 MBDynSystem* MbD::MBDynItem::root()
 {
-	return owner->root();
+	return container->root();
 }
 
 void MbD::MBDynItem::noop()
@@ -130,48 +130,67 @@ bool MbD::MBDynItem::lineHasTokens(int narg, ...)
 	va_list ap;
 	va_start(ap, narg);
 	std::string line = va_arg(ap, std::string);
-	std::vector<std::string> tokens;
+	size_t index = 0;
 	for (int i = 2; i <= narg; i++) {
-		std::string str = va_arg(ap, char*);
-		tokens.push_back(str);
+		std::string token = va_arg(ap, char*);
+		index = line.find(token, index);
+		if (index == std::string::npos) {
+			va_end(ap);
+			return false;
+		}
+		index++;
 	}
 	va_end(ap);
-	return lineHasTokens(line, tokens);
+	return true;
 }
+
+//bool MbD::MBDynItem::lineHasTokens(int narg, ...)
+//{
+//	va_list ap;
+//	va_start(ap, narg);
+//	std::string line = va_arg(ap, std::string);
+//	std::vector<std::string> tokens;
+//	for (int i = 2; i <= narg; i++) {
+//		std::string str = va_arg(ap, char*);
+//		tokens.push_back(str);
+//	}
+//	va_end(ap);
+//	return lineHasTokens(line, tokens);
+//}
 
 std::shared_ptr<std::vector<std::shared_ptr<MBDynNode>>> MbD::MBDynItem::mbdynNodes()
 {
-	return owner->mbdynNodes();
+	return container->mbdynNodes();
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<MBDynBody>>> MbD::MBDynItem::mbdynBodies()
 {
-	return owner->mbdynBodies();
+	return container->mbdynBodies();
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<MBDynJoint>>> MbD::MBDynItem::mbdynJoints()
 {
-	return owner->mbdynJoints();
+	return container->mbdynJoints();
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<MBDynDrive>>> MbD::MBDynItem::mbdynDrives()
 {
-	return owner->mbdynDrives();
+	return container->mbdynDrives();
 }
 
 std::vector<std::string> MbD::MBDynItem::nodeNames()
 {
-	return owner->nodeNames();
+	return container->nodeNames();
 }
 
 std::shared_ptr<std::map<std::string, Symsptr>> MbD::MBDynItem::mbdynVariables()
 {
-	return owner->mbdynVariables();
+	return container->mbdynVariables();
 }
 
 std::shared_ptr<std::map<std::string, std::shared_ptr<MBDynReference>>> MbD::MBDynItem::mbdynReferences()
 {
-	return owner->mbdynReferences();
+	return container->mbdynReferences();
 }
 
 void MbD::MBDynItem::createASMT()
@@ -181,22 +200,22 @@ void MbD::MBDynItem::createASMT()
 
 std::shared_ptr<MBDynNode> MbD::MBDynItem::nodeAt(std::string nodeName)
 {
-	return owner->nodeAt(nodeName);
+	return container->nodeAt(nodeName);
 }
 
 int MbD::MBDynItem::labelIDat(std::string nodeName)
 {
-	return owner->labelIDat(nodeName);
+	return container->labelIDat(nodeName);
 }
 
 std::shared_ptr<MBDynBody> MbD::MBDynItem::bodyWithNode(std::string nodeName)
 {
-	return owner->bodyWithNode(nodeName);
+	return container->bodyWithNode(nodeName);
 }
 
 std::shared_ptr<ASMTAssembly> MbD::MBDynItem::asmtAssembly()
 {
-	return owner->asmtAssembly();
+	return container->asmtAssembly();
 }
 
 std::string MbD::MBDynItem::formulaFromDrive(std::string driveName, std::string varName)
@@ -252,7 +271,7 @@ FColDsptr MbD::MBDynItem::readPosition(std::vector<std::string>& args)
 	}
 	else if (str.find("reference") != std::string::npos) {
 		args.erase(args.begin());
-		auto refName = readStringOffTop(args);
+		auto refName = readStringNoSpacesOffTop(args);
 		auto& ref = mbdynReferences()->at(refName);
 		auto rFfF = readBasicPosition(args);
 		auto& rOFO = ref->rFfF;
@@ -284,7 +303,7 @@ FMatDsptr MbD::MBDynItem::readOrientation(std::vector<std::string>& args)
 	auto str = args.at(0); //Must copy string
 	if (str.find("reference") != std::string::npos) {
 		args.erase(args.begin());
-		auto refName = readStringOffTop(args);
+		auto refName = readStringNoSpacesOffTop(args);
 		auto& ref = mbdynReferences()->at(refName);
 		auto aAFf = readBasicOrientation(args);
 		auto& aAOF = ref->aAFf;
@@ -316,12 +335,12 @@ FMatDsptr MbD::MBDynItem::readBasicOrientation(std::vector<std::string>& args)
 	parser->variables = mbdynVariables();
 	auto str = args.at(0);	//Must copy string
 	if (str.find("euler") != std::string::npos) {
-		str = readStringOffTop(args);
+		str = readStringNoSpacesOffTop(args);
 		std::string substr = "euler";
 		auto pos = str.find(substr);
 		assert(pos != std::string::npos);
 		str.erase(0, pos + substr.length());
-		auto euler = std::make_shared<EulerAngles<Symsptr>>();
+		auto euler = EulerAngles<Symsptr>::With();
 		if (str.length() == 0) {
 			euler->rotOrder = std::make_shared<std::vector<size_t>>(std::initializer_list<size_t>{ 1, 2, 3 });
 		}
@@ -471,13 +490,17 @@ std::string MbD::MBDynItem::popOffTop(std::vector<std::string>& args)
 	return str;
 }
 
-std::string MbD::MBDynItem::readStringOffTop(std::vector<std::string>& args)
+std::string MbD::MBDynItem::readStringNoSpacesOffTop(std::vector<std::string>& args)
 {
-	auto iss = std::istringstream(args.at(0));
-	args.erase(args.begin());
-	std::string str;
-	iss >> str;
+	//Return top string without whitespaces.
+	std::string str = popOffTop(args);
+	str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
 	return str;
+}
+
+std::string MbD::MBDynItem::stringOffTopHas(std::vector<std::string>& args, std::string token)
+{
+	return std::string();
 }
 
 FRowDsptr MbD::MBDynItem::readRowOfDoubles(std::string& line)
@@ -490,15 +513,16 @@ FColDsptr MbD::MBDynItem::readColumnOfDoubles(std::string& line)
 	return FColDsptr();
 }
 
+int MbD::MBDynItem::readIntOffTop(std::vector<std::string>& args)
+{
+	auto str = readStringNoSpacesOffTop(args);
+	return readInt(str);
+}
+
 double MbD::MBDynItem::readDoubleOffTop(std::vector<std::string>& args)
 {
-	auto str = readStringOffTop(args);
+	auto str = readStringNoSpacesOffTop(args);
 	return readDouble(str);
-	//auto iss = std::istringstream(args.at(0));
-	//args.erase(args.begin());
-	//double d;
-	//iss >> d;
-	//return d;
 }
 
 double MbD::MBDynItem::readDouble(std::string& line)
@@ -513,20 +537,16 @@ double MbD::MBDynItem::readDouble(std::string& line)
 
 size_t MbD::MBDynItem::readInt(std::string& line)
 {
-	assert(false);
-	return 0;
+	std::istringstream iss(line);
+	size_t i;
+	iss >> i;
+	return i;
 }
 
 bool MbD::MBDynItem::readBool(std::string& line)
 {
 	assert(false);
 	return false;
-}
-
-std::string MbD::MBDynItem::readString(std::string& line)
-{
-	assert(false);
-	return std::string();
 }
 
 std::string MbD::MBDynItem::asmtFormula(std::string mbdynFormula)
@@ -565,7 +585,7 @@ std::string MbD::MBDynItem::asmtFormulaIntegral(std::string mbdynFormula)
 
 void MbD::MBDynItem::readLabel(std::vector<std::string>& args)
 {
-	label = readStringOffTop(args);
+	label = readStringNoSpacesOffTop(args);
 }
 
 std::string MbD::MBDynItem::readJointTypeOffTop(std::vector<std::string>& args)

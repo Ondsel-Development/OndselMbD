@@ -15,7 +15,7 @@ namespace MbD {
 	{
 		//pGpXJ pGpEJ ppGpXIpXJ ppGpEIpXJ ppGpXJpXJ ppGpXIpEJ ppGpEIpEJ ppGpXJpEJ ppGpEJpEJ iqXJ iqEJ 
 	public:
-		DistanceConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj);
+		DistanceConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : DistanceConstraintIqcJc(frmi, frmj) {}
 		static std::shared_ptr<DistanceConstraintIqcJqc> With(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void calcPostDynCorrectorIteration() override;

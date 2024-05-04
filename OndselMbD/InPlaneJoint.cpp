@@ -11,11 +11,6 @@
 
 using namespace MbD;
 
-MbD::InPlaneJoint::InPlaneJoint(const char*)
-{
-	assert(false);
-}
-
 void MbD::InPlaneJoint::initializeGlobally()
 {
 	//Subclasses must implement.
@@ -24,7 +19,7 @@ void MbD::InPlaneJoint::initializeGlobally()
 
 void MbD::InPlaneJoint::createInPlaneConstraint()
 {
-	auto tranCon = TranslationConstraintIJ::With(frmI, frmJ, 2);
+	auto tranCon = TranslationConstraintIJ::With(efrmI, efrmJ, 2);
 	tranCon->setConstant(offset);
 	addConstraint(tranCon);
 }

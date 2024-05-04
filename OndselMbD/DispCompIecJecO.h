@@ -8,16 +8,17 @@
  
 #pragma once
 
-#include "KinematicIeJe.h"
+#include "KinematicIJ.h"
 
 namespace MbD {
-	class DispCompIecJecO : public KinematicIeJe
+	class DispCompIecJecO : public KinematicIJ
 	{
 		//axis riIeJeO 
 	public:
 		DispCompIecJecO() {}
-		DispCompIecJecO(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisO) : KinematicIeJe(frmi, frmj), axis(axisO) {}
+		DispCompIecJecO(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisO) : KinematicIJ(frmi, frmj), axis(axisO) {}
 		static std::shared_ptr<DispCompIecJecO> With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis);
+		void withFrmIfrmJaxis(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis) override;
 
 		void calcPostDynCorrectorIteration() override;
 		double value() override;

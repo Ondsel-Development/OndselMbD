@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-MbD::FixedJoint::FixedJoint(const char* str) : AtPointJoint(str)
-{
-	assert(false);
-}
-
 std::shared_ptr<FixedJoint> MbD::FixedJoint::With()
 {
 	auto inst = std::make_shared<FixedJoint>();
@@ -36,15 +31,15 @@ void MbD::FixedJoint::initializeGlobally()
 	if (constraints->empty())
 	{
 		createAtPointConstraints();
-		//addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 0, 1));
-		//addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 1, 2));
-		//addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 0));
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 1, 0));
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 0));
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 1));
-		this->root()->hasChanged = true;
+		//addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 0, 1));
+		//addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 1, 2));
+		//addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 1, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 1));
+		root()->hasChanged = true;
 	}
 	else {
-		Joint::initializeGlobally();
+		JointIJ::initializeGlobally();
 	}
 }

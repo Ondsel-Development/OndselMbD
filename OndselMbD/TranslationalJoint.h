@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		TranslationalJoint() {}
-		TranslationalJoint(const char* str);
+		TranslationalJoint(const char* str) : InLineJoint(str) {}
 		static std::shared_ptr<TranslationalJoint> With();
 		static std::shared_ptr<TranslationalJoint> With(const char* str);
 

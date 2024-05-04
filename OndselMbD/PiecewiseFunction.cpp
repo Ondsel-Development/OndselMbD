@@ -31,6 +31,13 @@ std::shared_ptr<PiecewiseFunction> MbD::PiecewiseFunction::With()
 	return inst;
 }
 
+std::shared_ptr<PiecewiseFunction> MbD::PiecewiseFunction::With(Symsptr var, std::shared_ptr<std::vector<Symsptr>> funcs, std::shared_ptr<std::vector<Symsptr>> trans)
+{
+	auto inst = std::make_shared<PiecewiseFunction>(var, funcs, trans);
+	inst->initialize();
+	return inst;
+}
+
 Symsptr MbD::PiecewiseFunction::expandUntil(Symsptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
 {
 	auto expansions = std::make_shared<std::vector<Symsptr>>(functions->size());
@@ -39,7 +46,7 @@ Symsptr MbD::PiecewiseFunction::expandUntil(Symsptr, std::shared_ptr<std::unorde
 		expansions->begin(),
 		[&](auto& func) { return func->expandUntil(func, set); }
 	);
-	return std::make_shared<PiecewiseFunction>(xx, expansions, transitions);
+	return PiecewiseFunction::With(xx, expansions, transitions);
 }
 
 Symsptr MbD::PiecewiseFunction::simplifyUntil(Symsptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
@@ -50,7 +57,7 @@ Symsptr MbD::PiecewiseFunction::simplifyUntil(Symsptr, std::shared_ptr<std::unor
 		simplifications->begin(),
 		[&](auto& func) { return func->simplifyUntil(func, set); }
 	);
-	return std::make_shared<PiecewiseFunction>(xx, simplifications, transitions);
+	return PiecewiseFunction::With(xx, simplifications, transitions);
 }
 
 Symsptr MbD::PiecewiseFunction::differentiateWRTx()
@@ -61,7 +68,7 @@ Symsptr MbD::PiecewiseFunction::differentiateWRTx()
 		derivatives->begin(),
 		[&](auto& func) { return func->differentiateWRT(xx); }
 	);
-	return std::make_shared<PiecewiseFunction>(xx, derivatives, transitions);
+	return PiecewiseFunction::With(xx, derivatives, transitions);
 }
 
 Symsptr MbD::PiecewiseFunction::integrateWRT(Symsptr var)

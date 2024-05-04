@@ -14,11 +14,6 @@
 
 using namespace MbD;
 
-MbD::ConstantVelocityJoint::ConstantVelocityJoint(const char* str) : AtPointJoint(str)
-{
-	assert(false);
-}
-
 std::shared_ptr<ConstantVelocityJoint> MbD::ConstantVelocityJoint::With()
 {
 	auto inst = std::make_shared<ConstantVelocityJoint>();
@@ -38,21 +33,21 @@ void MbD::ConstantVelocityJoint::initializeGlobally()
 	if (constraints->empty())
 	{
 		createAtPointConstraints();
-		auto constVelIJ = ConstVelConstraintIJ::With(frmI, frmJ);
+		auto constVelIJ = ConstVelConstraintIJ::With(efrmI, efrmJ);
 		constVelIJ->setConstant(0.0);
 		addConstraint(constVelIJ);
-		this->root()->hasChanged = true;
+		root()->hasChanged = true;
 	}
 	else {
-		Joint::initializeGlobally();
+		JointIJ::initializeGlobally();
 	}
 }
 
-void MbD::ConstantVelocityJoint::connectsItoJ(EndFrmsptr frmIe, EndFrmsptr frmJe)
+void MbD::ConstantVelocityJoint::connectsItoJ(EndFrmsptr frmi, EndFrmsptr frmj)
 {
-	//"Subsequent prescribed motions may make frmIe, frmJe become prescribed end frames."
+	//"Subsequent prescribed motions may make frmi, frmj become prescribed end frames."
 	//"Use newCopyEndFrameqc to prevent efrms from becoming EndFrameqct."
 
-	frmI = frmIe->newCopyEndFrameqc();
-	frmJ = frmJe->newCopyEndFrameqc();
+	efrmI = frmi->newCopyEndFrameqc();
+	efrmJ = frmj->newCopyEndFrameqc();
 }

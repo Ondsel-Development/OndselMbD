@@ -31,7 +31,7 @@ namespace MbD {
 		Symsptr integrateWRT(Symsptr var) override;
 		virtual Symsptr differentiateWRTx();
 		virtual Symsptr integrateWRTx();
-		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+		void createMbD() override;
 		double getValue() override;
 		bool isConstant() override;
 

@@ -16,7 +16,7 @@ namespace MbD {
 		//prIeJepXJ prIeJepEJ pprIeJepXIpXJ pprIeJepEIpXJ pprIeJepXJpXJ pprIeJepXIpEJ pprIeJepEIpEJ pprIeJepXJpEJ pprIeJepEJpEJ prIeJeOpEJT 
 	public:
 		DistIeqcJeqc() {}
-		DistIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj);
+		DistIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj) : DistIeqcJec(frmi, frmj) {}
 		static std::shared_ptr<DistIeqcJeqc> With();
 		static std::shared_ptr<DistIeqcJeqc> With(EndFrmsptr frmi, EndFrmsptr frmj);
 		void initialize() override;

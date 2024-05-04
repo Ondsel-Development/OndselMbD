@@ -51,7 +51,7 @@ double Variable::getValue()
 
 std::ostream& Variable::printOn(std::ostream& s) const
 {
-	return s << this->name;
+	return s << name;
 }
 
 void Variable::setValue(double val)

@@ -17,12 +17,11 @@ namespace MbD {
 	{
 		//zIeJeIe thezIeJe pitch 
 	public:
-		ScrewConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
+		ScrewConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj) {}
 		static std::shared_ptr<ScrewConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
 		void initialize() override;
 
 		void calcPostDynCorrectorIteration() override;
-		virtual void init_zthez();
 		virtual void initzIeJeIe();
 		virtual void initthezIeJe();
 		void initializeGlobally() override;

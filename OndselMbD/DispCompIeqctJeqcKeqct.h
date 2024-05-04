@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		DispCompIeqctJeqcKeqct() {}
-		DispCompIeqctJeqcKeqct(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
+		DispCompIeqctJeqcKeqct(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk) : DispCompIeqcJeqcKeqct(frmi, frmj, frmk, axisk) {}
 		static std::shared_ptr<DispCompIeqctJeqcKeqct> With(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
 
 		void preAccIC() override;

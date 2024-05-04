@@ -14,25 +14,20 @@
 
 using namespace MbD;
 
-MbD::ScrewConstraintIJ::ScrewConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj)
-{
-	assert(false);
-}
-
 std::shared_ptr<ScrewConstraintIJ> MbD::ScrewConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	assert(frmi->isEndFrameqc());
 	assert(frmj->isEndFrameqc());
 	auto inst = std::make_shared<ScrewConstraintIqcJqc>(frmi, frmj);
-	inst->initzIeJeIe();
-	inst->initthezIeJe();
+	inst->initialize();
 	return inst;
 }
 
 void MbD::ScrewConstraintIJ::initialize()
 {
 	ConstraintIJ::initialize();
-	this->init_zthez();
+	initzIeJeIe();
+	initthezIeJe();
 }
 
 void MbD::ScrewConstraintIJ::calcPostDynCorrectorIteration()
@@ -40,11 +35,6 @@ void MbD::ScrewConstraintIJ::calcPostDynCorrectorIteration()
 	auto z = zIeJeIe->value();
 	auto thez = thezIeJe->thez;
 	aG = (2.0 * OS_M_PI * z) - (pitch * thez) - aConstant;
-}
-
-void MbD::ScrewConstraintIJ::init_zthez()
-{
-	assert(false);
 }
 
 void MbD::ScrewConstraintIJ::initzIeJeIe()

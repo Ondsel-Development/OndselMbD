@@ -2,28 +2,34 @@
 
 using namespace MbD;
 
-MbD::ForceTorqueGeneral::ForceTorqueGeneral(EndFrmsptr frmi, EndFrmsptr frmj)
+std::shared_ptr<ForceTorqueGeneral> MbD::ForceTorqueGeneral::OnFrmIandFrmJ(EndFrmsptr frmi, EndFrmsptr frmj)
 {
-	assert(false);
-}
-
-MbD::ForceTorqueGeneral::ForceTorqueGeneral(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk)
-{
-	assert(false);
-}
-
-std::shared_ptr<ForceTorqueGeneral> MbD::ForceTorqueGeneral::With(EndFrmsptr frmi, EndFrmsptr frmj)
-{
-	auto inst = std::make_shared<ForceTorqueGeneral>(frmi, frmj);
+	auto inst = std::make_shared<ForceTorqueGeneral>();
 	inst->initialize();
+	inst->onFrmIandFrmJ(frmi, frmj);
 	return inst;
 }
 
-std::shared_ptr<ForceTorqueGeneral> MbD::ForceTorqueGeneral::With(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk)
+std::shared_ptr<ForceTorqueGeneral> MbD::ForceTorqueGeneral::OnFrmIandFrmJwrtFrmK(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk)
 {
-	auto inst = std::make_shared<ForceTorqueGeneral>(frmi, frmj, frmk);
+	auto inst = std::make_shared<ForceTorqueGeneral>();
 	inst->initialize();
+	inst->onFrmIandFrmJwrtFrmK(frmi, frmj, frmk);
 	return inst;
+}
+
+void MbD::ForceTorqueGeneral::onFrmIandFrmJ(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	forceVector = ForceVector::OnFrmIandFrmJ(frmi, frmj);
+	torqueVector = TorqueVector::OnFrmIandFrmJ(frmi, frmj);
+}
+
+void MbD::ForceTorqueGeneral::onFrmIandFrmJwrtFrmK(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk)
+{
+	efrmI = frmi;
+	efrmJ = frmj;
+	forceVector = ForceVector::OnFrmIandFrmJwrtFrmK(frmi, frmj, frmk);
+	torqueVector = TorqueVector::OnFrmIandFrmJwrtFrmK(frmi, frmj, frmk);
 }
 
 void MbD::ForceTorqueGeneral::initializeGlobally()
@@ -34,19 +40,18 @@ void MbD::ForceTorqueGeneral::initializeGlobally()
 
 void MbD::ForceTorqueGeneral::initializeLocally()
 {
-	assert(false);
+	forceVector->initializeLocally();
+	torqueVector->initializeLocally();
 }
 
 FColDsptr MbD::ForceTorqueGeneral::aFX() const
 {
-	assert(false);
-	return FColDsptr();
+	return forceVector->getFTIeO();
 }
 
 FColDsptr MbD::ForceTorqueGeneral::aTX() const
 {
-	assert(false);
-	return FColDsptr();
+	return torqueVector->getFTIeO();
 }
 
 void MbD::ForceTorqueGeneral::postAccICIteration()
@@ -57,62 +62,73 @@ void MbD::ForceTorqueGeneral::postAccICIteration()
 
 void MbD::ForceTorqueGeneral::postCollisionCorrectorIteration()
 {
-	assert(false);
+	forceVector->postCollisionCorrectorIteration();
+	torqueVector->postCollisionCorrectorIteration();
 }
 
 void MbD::ForceTorqueGeneral::postCollisionPredictor()
 {
-	assert(false);
+	forceVector->postCollisionPredictor();
+	torqueVector->postCollisionPredictor();
 }
 
 void MbD::ForceTorqueGeneral::postDynCorrectorIteration()
 {
-	assert(false);
+	forceVector->postDynCorrectorIteration();
+	torqueVector->postDynCorrectorIteration();
 }
 
 void MbD::ForceTorqueGeneral::postDynOutput()
 {
-	assert(false);
+	forceVector->postDynOutput();
+	torqueVector->postDynOutput();
 }
 
 void MbD::ForceTorqueGeneral::postDynPredictor()
 {
-	assert(false);
+	forceVector->postDynPredictor();
+	torqueVector->postDynPredictor();
 }
 
 void MbD::ForceTorqueGeneral::postInput()
 {
-	assert(false);
+	forceVector->postInput();
+	torqueVector->postInput();
 }
 
 void MbD::ForceTorqueGeneral::postStaticIteration()
 {
-	assert(false);
+	forceVector->postStaticIteration();
+	torqueVector->postStaticIteration();
 }
 
 void MbD::ForceTorqueGeneral::preAccIC()
 {
-	assert(false);
+	forceVector->preAccIC();
+	torqueVector->preAccIC();
 }
 
 void MbD::ForceTorqueGeneral::preDynOutput()
 {
-	assert(false);
+	forceVector->preDynOutput();
+	torqueVector->preDynOutput();
 }
 
 void MbD::ForceTorqueGeneral::preStatic()
 {
-	assert(false);
+	forceVector->preStatic();
+	torqueVector->preStatic();
 }
 
 void MbD::ForceTorqueGeneral::simUpdateAll()
 {
-	assert(false);
+	forceVector->simUpdateAll();
+	torqueVector->simUpdateAll();
 }
 
-void MbD::ForceTorqueGeneral::torqueFunctions(FColDsptr col)
+void MbD::ForceTorqueGeneral::torqueFunctions(FColsptr<Symsptr> col)
 {
-	assert(false);
+	torqueVector->functions(col);
 }
 
 void MbD::ForceTorqueGeneral::fillAccICIterError(FColDsptr col)
@@ -129,32 +145,37 @@ void MbD::ForceTorqueGeneral::fillAccICIterJacob(SpMatDsptr mat)
 
 void MbD::ForceTorqueGeneral::fillDynError(FColDsptr col)
 {
-	assert(false);
+	forceVector->fillDynError(col);
+	torqueVector->fillDynError(col);
 }
 
 void MbD::ForceTorqueGeneral::fillpFpy(SpMatDsptr mat)
 {
-	assert(false);
+	forceVector->fillpFpy(mat);
+	torqueVector->fillpFpy(mat);
 }
 
 void MbD::ForceTorqueGeneral::fillpFpydot(SpMatDsptr mat)
 {
-	assert(false);
+	forceVector->fillpFpydot(mat);
+	torqueVector->fillpFpydot(mat);
 }
 
 void MbD::ForceTorqueGeneral::fillStaticError(FColDsptr col)
 {
-	assert(false);
+	forceVector->fillStaticError(col);
+	torqueVector->fillStaticError(col);
 }
 
 void MbD::ForceTorqueGeneral::fillStaticJacob(SpMatDsptr mat)
 {
-	assert(false);
+	forceVector->fillStaticJacob(mat);
+	torqueVector->fillStaticJacob(mat);
 }
 
-void MbD::ForceTorqueGeneral::forceFunctions(FColDsptr col)
+void MbD::ForceTorqueGeneral::forceFunctions(FColsptr<Symsptr> col)
 {
-	assert(false);
+	forceVector->functions(col);
 }
 
 void MbD::ForceTorqueGeneral::useEquationNumbers()

@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-MbD::RackPinConstraintIJ::RackPinConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj)
-{
-	assert(false);
-}
-
 std::shared_ptr<RackPinConstraintIJ> MbD::RackPinConstraintIJ::With()
 {
 	auto inst = std::make_shared<RackPinConstraintIJ>();
@@ -29,15 +24,15 @@ std::shared_ptr<RackPinConstraintIJ> MbD::RackPinConstraintIJ::With(EndFrmsptr f
 	assert(frmi->isEndFrameqc());
 	assert(frmj->isEndFrameqc());
 	auto inst = std::make_shared<RackPinConstraintIqcJqc>(frmi, frmj);
-	inst->initxIeJeIe();
-	inst->initthezIeJe();
+	inst->initialize();
 	return inst;
 }
 
 void MbD::RackPinConstraintIJ::initialize()
 {
 	ConstraintIJ::initialize();
-	this->init_xthez();
+	initxIeJeIe();
+	initthezIeJe();
 }
 
 void MbD::RackPinConstraintIJ::calcPostDynCorrectorIteration()
@@ -45,11 +40,6 @@ void MbD::RackPinConstraintIJ::calcPostDynCorrectorIteration()
 	auto x = xIeJeIe->value();
 	auto thez = thezIeJe->value();
 	aG = x + (pitchRadius * thez) - aConstant;
-}
-
-void MbD::RackPinConstraintIJ::init_xthez()
-{
-	assert(false);
 }
 
 void MbD::RackPinConstraintIJ::initxIeJeIe()

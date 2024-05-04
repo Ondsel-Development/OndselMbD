@@ -8,17 +8,18 @@
 
 #pragma once
 
-#include "KinematicIeJe.h"
+#include "KinematicIJ.h"
 
 namespace MbD {
-	class KinematicDotIeJe : public KinematicIeJe
+	class KinematicDotIeJe : public KinematicIJ
 	{
 		//
 	public:
 		KinematicDotIeJe() {}
-		KinematicDotIeJe(EndFrmsptr frmi, EndFrmsptr frmj);
+		KinematicDotIeJe(EndFrmsptr frmi, EndFrmsptr frmj) : KinematicIJ(frmi, frmj) {}
+		static std::shared_ptr<KinematicDotIeJe> With();
 		static std::shared_ptr<KinematicDotIeJe> With(EndFrmsptr frmi, EndFrmsptr frmj);
-		
+
 		bool isKineIJ() override;
 		bool isKinedotIJ() override;
 		virtual FRowDsptr pvaluepEdotI();

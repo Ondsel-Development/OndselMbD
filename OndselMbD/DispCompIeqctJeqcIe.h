@@ -15,8 +15,8 @@ namespace MbD {
 	{
 		//priIeJeIept ppriIeJeIepXIpt ppriIeJeIepEIpt ppriIeJeIepXJpt ppriIeJeIepEJpt ppriIeJeIeptpt 
 	public:
-		DispCompIeqctJeqcIe();
-		DispCompIeqctJeqcIe(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis);
+		DispCompIeqctJeqcIe() {}
+		DispCompIeqctJeqcIe(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis) : DispCompIeqcJeqcIe(frmi, frmj, axis) {}
 		static std::shared_ptr<DispCompIeqctJeqcIe> With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis);
 		void initialize() override;
 

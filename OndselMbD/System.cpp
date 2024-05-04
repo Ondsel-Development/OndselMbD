@@ -5,13 +5,13 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include<algorithm>
 
 #include "System.h"
 #include "Part.h"
-#include "Joint.h"
-#include "ForceTorqueItem.h"
+#include "JointIJ.h"
+#include "ForceTorqueIJ.h"
 #include "SystemSolver.h"
 #include "Time.h"
 #include "ExternalSystem.h"
@@ -42,8 +42,9 @@ void System::initialize()
 	externalSystem = std::make_shared<ExternalSystem>();
 	time = std::make_shared<Time>();
 	parts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
-	jointsMotions = std::make_shared<std::vector<std::shared_ptr<Joint>>>();
-	forcesTorques = std::make_shared<std::vector<std::shared_ptr<ForceTorqueItem>>>();
+	jointsMotions = std::make_shared<std::vector<std::shared_ptr<JointIJ>>>();
+	forcesTorques = std::make_shared<std::vector<std::shared_ptr<ForceTorqueIJ>>>();
+	fields = std::make_shared<std::vector<std::shared_ptr<ConstantGravity>>>();
 	systemSolver = std::make_shared<SystemSolver>(this);
 }
 
@@ -58,22 +59,75 @@ void System::addPart(std::shared_ptr<Part> part)
 	parts->push_back(part);
 }
 
-void MbD::System::addJoint(std::shared_ptr<Joint> joint)
+void MbD::System::addJoint(std::shared_ptr<JointIJ> joint)
 {
-	joint->owner = this;
+	joint->container = this;
 	jointsMotions->push_back(joint);
 }
 
 void MbD::System::addMotion(std::shared_ptr<PrescribedMotion> motion)
 {
-	motion->owner = this;
+	motion->container = this;
 	jointsMotions->push_back(motion);
 }
 
-void MbD::System::addForceTorque(std::shared_ptr<ForceTorqueItem> forTor)
+void MbD::System::addForceTorque(std::shared_ptr<ForceTorqueIJ> forTor)
 {
-	forTor->owner = this;
+	forTor->container = this;
 	forcesTorques->push_back(forTor);
+}
+
+void MbD::System::addGravity(std::shared_ptr<ConstantGravity> grav)
+{
+	grav->container = this;
+	fields->push_back(grav);
+}
+
+void MbD::System::calcCharacteristicDimensions()
+{
+	//mbdUnits are in SI units at input.
+	auto unitTime = calcCharacteristicTime();
+	auto unitMass = calcCharacteristicMass();
+	auto unitLength = calcCharacteristicLength();
+	auto unitAngle = 1.0;
+	mbdUnits = std::make_shared<Units>(unitTime, unitMass, unitLength, unitAngle);
+	mbdUnits = std::make_shared<Units>(1.0, 1.0, 1.0, 1.0);	//for debug
+}
+
+double MbD::System::calcCharacteristicTime() const
+{
+	return std::abs(systemSolver->hout);
+}
+
+double MbD::System::calcCharacteristicMass() const
+{
+	auto n = parts->size();
+	double sumOfSquares = 0.0;
+	for (size_t i = 0; i < n; i++)
+	{
+		auto mass = parts->at(i)->m;
+		sumOfSquares += mass * mass;
+	}
+	auto rmsMass = std::sqrt(sumOfSquares / n);
+	if (rmsMass <= 0) rmsMass = 1.0;
+	return rmsMass;
+}
+
+double MbD::System::calcCharacteristicLength() const
+{
+	auto lengths = std::make_shared<std::vector<double>>();
+	auto connectorList = this->connectorList();
+	for (auto& connector : *connectorList) {
+		auto& efrmI = connector->efrmI;
+		lengths->push_back(efrmI->rpmp()->length());
+		auto& efrmJ = connector->efrmJ;
+		lengths->push_back(efrmJ->rpmp()->length());
+	}
+	auto n = lengths->size();
+	double sumOfSquares = std::accumulate(lengths->begin(), lengths->end(), 0.0, [](double sum, double l) { return sum + l * l; });
+	auto rmsLength = std::sqrt(sumOfSquares / std::max(n, size_t(1)));
+	if (rmsLength <= 0) rmsLength = 1.0;
+	return rmsLength;
 }
 
 void System::runKINEMATIC(std::shared_ptr<System> self)
@@ -96,6 +150,7 @@ void System::runKINEMATIC(std::shared_ptr<System> self)
 void MbD::System::runDYNAMIC(std::shared_ptr<System> self)
 {
 	externalSystem->preMbDrun(self);
+	calcCharacteristicDimensions();
 	while (true)
 	{
 		initializeLocally();
@@ -130,6 +185,7 @@ void System::clear()
 	parts->clear();
 	jointsMotions->clear();
 	forcesTorques->clear();
+	fields->clear();
 }
 
 void MbD::System::runPreDrag(std::shared_ptr<System> self)
@@ -158,7 +214,7 @@ std::shared_ptr<std::vector<std::string>> System::discontinuitiesAtIC()
 	return std::make_shared<std::vector<std::string>>();
 }
 
-void System::jointsMotionsDo(const std::function<void(std::shared_ptr<Joint>)>& f) const
+void System::jointsMotionsDo(const std::function<void(std::shared_ptr<JointIJ>)>& f) const
 {
 	std::for_each(jointsMotions->begin(), jointsMotions->end(), f);
 }
@@ -174,6 +230,7 @@ void System::partsJointsMotionsForcesTorquesDo(const std::function<void(std::sha
 	std::for_each(parts->begin(), parts->end(), f);
 	std::for_each(jointsMotions->begin(), jointsMotions->end(), f);
 	std::for_each(forcesTorques->begin(), forcesTorques->end(), f);
+	std::for_each(fields->begin(), fields->end(), f);
 }
 
 void System::logString(std::string& str)
@@ -194,36 +251,44 @@ void System::mbdTimeValue(double t) const
 std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> System::essentialConstraints() const
 {
 	auto essenConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
-	this->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillEssenConstraints(essenConstraints); });
+	partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillEssenConstraints(essenConstraints); });
 	return essenConstraints;
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> System::displacementConstraints() const
 {
 	auto dispConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
-	this->jointsMotionsDo([&](std::shared_ptr<Joint> joint) { joint->fillDispConstraints(dispConstraints); });
+	jointsMotionsDo([&](std::shared_ptr<JointIJ> joint) { joint->fillDispConstraints(dispConstraints); });
 	return dispConstraints;
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> System::perpendicularConstraints() const
 {
 	auto perpenConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
-	this->jointsMotionsDo([&](std::shared_ptr<Joint> joint) { joint->fillPerpenConstraints(perpenConstraints); });
+	jointsMotionsDo([&](std::shared_ptr<JointIJ> joint) { joint->fillPerpenConstraints(perpenConstraints); });
 	return perpenConstraints;
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> System::allRedundantConstraints() const
 {
 	auto redunConstraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
-	this->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillRedundantConstraints(redunConstraints); });
+	partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillRedundantConstraints(redunConstraints); });
 	return redunConstraints;
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> System::allConstraints() const
 {
 	auto constraints = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
-	this->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillConstraints(constraints); });
+	partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillConstraints(constraints); });
 	return constraints;
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<ItemIJ>>> MbD::System::connectorList() const
+{
+	auto list = std::make_shared<std::vector<std::shared_ptr<ItemIJ>>>();
+	list->insert(list->end(), jointsMotions->begin(), jointsMotions->end());
+	list->insert(list->end(), forcesTorques->begin(), forcesTorques->end());
+	return list;
 }
 
 double System::maximumMass() const

@@ -8,16 +8,16 @@
 
 #pragma once
 
-#include "ForceTorqueItem.h"
+#include "ForceTorqueIJ.h"
 #include "MarkerFrame.h"
-#include "ForTorActReactInLine.h"
+#include "ForceTorqueActReactInLine.h"
 
 namespace MbD {
-	class ForceTorqueInLine : public ForceTorqueItem
+	class ForceTorqueInLine : public ForceTorqueIJ
 	{
 		//
 	public:
-		ForceTorqueInLine(EndFrmsptr frmi, EndFrmsptr frmj) : ForceTorqueItem(frmi, frmj) {}
+		ForceTorqueInLine(EndFrmsptr frmi, EndFrmsptr frmj) : ForceTorqueIJ(frmi, frmj) {}
 		static std::shared_ptr<ForceTorqueInLine> With(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		FColDsptr aFX() const override;
@@ -47,6 +47,6 @@ namespace MbD {
 		void twist(Symsptr twistFunc);
 		void useEquationNumbers() override;
 
-		std::shared_ptr<ForTorActReactInLine> forceInLine, torqueInLine;
+		std::shared_ptr<ForceTorqueActReactInLine> forceInLine, torqueInLine;
 	};
 }

@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		CylSphJoint() {}
-		CylSphJoint(const char* str);
+		CylSphJoint(const char* str) : CompoundJoint(str) {}
 		static std::shared_ptr<CylSphJoint> With();
 		static std::shared_ptr<CylSphJoint> With(const char* str);
 		

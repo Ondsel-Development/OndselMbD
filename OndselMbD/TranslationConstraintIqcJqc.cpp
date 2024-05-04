@@ -21,7 +21,7 @@ std::shared_ptr<TranslationConstraintIqcJqc> MbD::TranslationConstraintIqcJqc::W
 
 void TranslationConstraintIqcJqc::initriIeJeIe()
 {
-	riIeJeIe = DispCompIeqcJeqcKeqc::With(frmI, frmJ, frmI, axisI);
+	riIeJeIe = DispCompIeqcJeqcKeqc::With(efrmI, efrmJ, efrmI, axisI);
 }
 
 void TranslationConstraintIqcJqc::calcPostDynCorrectorIteration()
@@ -37,7 +37,7 @@ void TranslationConstraintIqcJqc::calcPostDynCorrectorIteration()
 void TranslationConstraintIqcJqc::useEquationNumbers()
 {
 	TranslationConstraintIqcJc::useEquationNumbers();
-	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	iqXJ = frmJeqc->iqX();
 	iqEJ = frmJeqc->iqE();
 }
@@ -107,8 +107,8 @@ void TranslationConstraintIqcJqc::fillAccICIterError(FColDsptr col)
 	TranslationConstraintIqcJc::fillAccICIterError(col);
 	col->atplusFullVectortimes(iqXJ, pGpXJ, lam);
 	col->atplusFullVectortimes(iqEJ, pGpEJ, lam);
-	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
-	auto efrmJqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(efrmI);
+	auto efrmJqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	auto qEdotI = efrmIqc->qEdot();
 	auto qXdotJ = efrmJqc->qXdot();
 	auto qEdotJ = efrmJqc->qEdot();

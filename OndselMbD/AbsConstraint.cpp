@@ -26,16 +26,16 @@ std::shared_ptr<AbsConstraint> MbD::AbsConstraint::With(size_t axis)
 void AbsConstraint::calcPostDynCorrectorIteration()
 {
 	if (axis < 3) {
-		aG = static_cast<PartFrame*>(owner)->qX->at(axis);
+		aG = static_cast<PartFrame*>(container)->qX->at(axis);
 	}
 	else {
-		aG = static_cast<PartFrame*>(owner)->qE->at(axis - 3);
+		aG = static_cast<PartFrame*>(container)->qE->at(axis - 3);
 	}
 }
 
 void AbsConstraint::useEquationNumbers()
 {
-	iqXminusOnePlusAxis = static_cast<PartFrame*>(owner)->iqX + axis;
+	iqXminusOnePlusAxis = static_cast<PartFrame*>(container)->iqX + axis;
 }
 
 void MbD::AbsConstraint::fillpFpy(SpMatDsptr mat)
@@ -67,13 +67,13 @@ void AbsConstraint::fillPosKineJacob(SpMatDsptr mat)
 
 void AbsConstraint::fillVelICJacob(SpMatDsptr mat)
 {
-	this->fillPosICJacob(mat);
+	fillPosICJacob(mat);
 }
 
 void AbsConstraint::fillAccICIterError(FColDsptr col)
 {
 	col->atplusNumber(iqXminusOnePlusAxis, lam);
-	auto partFrame = static_cast<PartFrame*>(owner);
+	auto partFrame = static_cast<PartFrame*>(container);
 		double sum;
 		if (axis < 3) {
 			sum = partFrame->qXddot->at(axis);

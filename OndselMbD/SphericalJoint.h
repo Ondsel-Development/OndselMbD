@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		SphericalJoint() {}
-		SphericalJoint(const char* str);
+		SphericalJoint(const char* str) : AtPointJoint(str) {}
 		static std::shared_ptr<SphericalJoint> With();
 		static std::shared_ptr<SphericalJoint> With(const char* str);
 

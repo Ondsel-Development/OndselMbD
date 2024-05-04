@@ -95,6 +95,6 @@ void MbD::ForceBasicqcVector::fillpFpydotpFTOpXdotjpFTOpEdotjpartj(SpMatDsptr ma
 
 void MbD::ForceBasicqcVector::useEquationNumbers()
 {
-	ForTorBasic::useEquationNumbers();
+	ForceTorqueBasic::useEquationNumbers();
 	iqX = std::static_pointer_cast<EndFrameqc>(endFrame)->iqX();
 }

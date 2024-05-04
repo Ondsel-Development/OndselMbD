@@ -8,15 +8,15 @@
  
 #pragma once
 
-#include "Joint.h"
+#include "JointIJ.h"
 
 namespace MbD {
-	class InPlaneJoint : public Joint
+	class InPlaneJoint : public JointIJ
 	{
 		//offset
 	public:
 		InPlaneJoint() {}
-		InPlaneJoint(const char* str);
+		InPlaneJoint(const char* str) : JointIJ(str) {}
 		
 		virtual void initializeGlobally();
 

@@ -1,5 +1,5 @@
 #include "ForceTorqueInLine.h"
-#include "ForTorFunction.h"
+#include "ForceTorqueFunction.h"
 
 using namespace MbD;
 
@@ -7,8 +7,8 @@ std::shared_ptr<ForceTorqueInLine> MbD::ForceTorqueInLine::With(EndFrmsptr frmi,
 {
 	auto inst = std::make_shared<ForceTorqueInLine>(frmi, frmj);
 	//inst->initialize();	//Need to pass arguments.
-	inst->forceInLine = ForTorActReactInLine::ForceOnFrmIandFrmJ(frmi, frmj);
-	inst->torqueInLine = ForTorActReactInLine::TorqueOnFrmIandFrmJ(frmi, frmj);
+	inst->forceInLine = ForceTorqueActReactInLine::ForceOnFrmIandFrmJ(frmi, frmj);
+	inst->torqueInLine = ForceTorqueActReactInLine::TorqueOnFrmIandFrmJ(frmi, frmj);
 	return inst;
 }
 

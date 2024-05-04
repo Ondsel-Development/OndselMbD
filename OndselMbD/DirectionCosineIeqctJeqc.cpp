@@ -28,7 +28,7 @@ void DirectionCosineIeqctJeqc::initialize()
 
 void DirectionCosineIeqctJeqc::initializeGlobally()
 {
-	ppAjOJepEJpEJ = std::static_pointer_cast<EndFrameqc>(frmJ)->ppAjOepEpE(axisJ);
+	ppAjOJepEJpEJ = std::static_pointer_cast<EndFrameqc>(efrmJ)->ppAjOepEpE(axisJ);
 }
 
 FRowDsptr MbD::DirectionCosineIeqctJeqc::ppvaluepEIpt()
@@ -50,14 +50,14 @@ void DirectionCosineIeqctJeqc::calcPostDynCorrectorIteration()
 {
 	//"ppAjOIepEIpEI is not longer constant and must be set before any calculation."
 
-	ppAjOIepEIpEI = std::static_pointer_cast<EndFrameqc>(frmI)->ppAjOepEpE(axisI);
+	ppAjOIepEIpEI = std::static_pointer_cast<EndFrameqc>(efrmI)->ppAjOepEpE(axisI);
 	DirectionCosineIeqcJeqc::calcPostDynCorrectorIteration();
 }
 
 void DirectionCosineIeqctJeqc::preVelIC()
 {
 	Item::preVelIC();
-	auto pAjOIept = std::static_pointer_cast<EndFrameqct>(frmI)->pAjOept(axisI);
+	auto pAjOIept = std::static_pointer_cast<EndFrameqct>(efrmI)->pAjOept(axisI);
 	pAijIeJept = pAjOIept->dot(aAjOJe);
 }
 
@@ -70,9 +70,9 @@ void DirectionCosineIeqctJeqc::preAccIC()
 {
 	//| ppAjOIepEITpt ppAjOIeptpt ppAjOIepEITpti pAjOIept |
 	Item::preAccIC();
-	auto pAjOIept = std::static_pointer_cast<EndFrameqct>(frmI)->pAjOept(axisI);
-	auto ppAjOIepEITpt = std::static_pointer_cast<EndFrameqct>(frmI)->ppAjOepETpt(axisI);
-	auto ppAjOIeptpt = std::static_pointer_cast<EndFrameqct>(frmI)->ppAjOeptpt(axisI);
+	auto pAjOIept = std::static_pointer_cast<EndFrameqct>(efrmI)->pAjOept(axisI);
+	auto ppAjOIepEITpt = std::static_pointer_cast<EndFrameqct>(efrmI)->ppAjOepETpt(axisI);
+	auto ppAjOIeptpt = std::static_pointer_cast<EndFrameqct>(efrmI)->ppAjOeptpt(axisI);
 	for (size_t i = 0; i < 4; i++)
 	{
 		auto& ppAjOIepEITpti = ppAjOIepEITpt->at(i);

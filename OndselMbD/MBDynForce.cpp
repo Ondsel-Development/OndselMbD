@@ -10,7 +10,7 @@ std::shared_ptr<MBDynForce> MbD::MBDynForce::newForce(std::string statement)
 	std::vector<std::string> tokens;
 	tokens = { "absolute" };
 	if (lineHasTokens(statement, tokens)) {
-		return std::make_shared<MBDynAbsoluteForce>();
+		return MBDynAbsoluteForce::With();
 	}
 	assert(false);
 	return std::shared_ptr<MBDynForce>();

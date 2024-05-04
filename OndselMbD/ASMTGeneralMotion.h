@@ -21,8 +21,8 @@ namespace MbD {
 		void readrIJI(std::vector<std::string>& lines);
 		void readangIJJ(std::vector<std::string>& lines);
 		void readRotationOrder(std::vector<std::string>& lines);
-		std::shared_ptr<Joint> mbdClassNew() override;
-		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+		std::shared_ptr<JointIJ> mbdClassNew() override;
+		void createMbD() override;
 		void storeOnLevel(std::ofstream& os, size_t level) override;
 		void storeOnTimeSeries(std::ofstream& os) override;
 

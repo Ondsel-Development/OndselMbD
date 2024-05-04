@@ -68,7 +68,7 @@ void EndFrameqct::initializeGlobally()
 
 void EndFrameqct::initprmemptBlks()
 {
-	auto& mbdTime = this->root()->time;
+	auto& mbdTime = root()->time;
 	prmemptBlks = std::make_shared< FullColumn<Symsptr>>(3);
 	for (size_t i = 0; i < 3; i++) {
 		auto& disp = rmemBlks->at(i);
@@ -80,7 +80,7 @@ void EndFrameqct::initprmemptBlks()
 
 void EndFrameqct::initpprmemptptBlks()
 {
-	auto& mbdTime = this->root()->time;
+	auto& mbdTime = root()->time;
 	pprmemptptBlks = std::make_shared< FullColumn<Symsptr>>(3);
 	for (size_t i = 0; i < 3; i++) {
 		auto& vel = prmemptBlks->at(i);
@@ -92,7 +92,7 @@ void EndFrameqct::initpprmemptptBlks()
 
 void EndFrameqct::initpPhiThePsiptBlks()
 {
-	auto& mbdTime = this->root()->time;
+	auto& mbdTime = root()->time;
 	pPhiThePsiptBlks = std::make_shared< FullColumn<Symsptr>>(3);
 	for (size_t i = 0; i < 3; i++) {
 		auto& angle = phiThePsiBlks->at(i);
@@ -108,7 +108,7 @@ void EndFrameqct::initpPhiThePsiptBlks()
 
 void EndFrameqct::initppPhiThePsiptptBlks()
 {
-	auto& mbdTime = this->root()->time;
+	auto& mbdTime = root()->time;
 	ppPhiThePsiptptBlks = std::make_shared< FullColumn<Symsptr>>(3);
 	for (size_t i = 0; i < 3; i++) {
 		auto& angleVel = pPhiThePsiptBlks->at(i);
@@ -122,8 +122,8 @@ void EndFrameqct::initppPhiThePsiptptBlks()
 
 void EndFrameqct::postInput()
 {
-	this->evalrmem();
-	this->evalAme();
+	evalrmem();
+	evalAme();
 	Item::postInput();
 }
 
@@ -157,9 +157,9 @@ void EndFrameqct::calcPostDynCorrectorIteration()
 
 void EndFrameqct::prePosIC()
 {
-	time = this->root()->mbdTimeValue();
-	this->evalrmem();
-	this->evalAme();
+	time = root()->mbdTimeValue();
+	evalrmem();
+	evalAme();
 	EndFrameqc::prePosIC();
 }
 
@@ -192,12 +192,12 @@ void EndFrameqct::evalAme()
 
 void EndFrameqct::preVelIC()
 {
-	time = this->root()->mbdTimeValue();
-	this->evalrmem();
-	this->evalAme();
+	time = root()->mbdTimeValue();
+	evalrmem();
+	evalAme();
 	Item::preVelIC();
-	this->evalprmempt();
-	this->evalpAmept();
+	evalprmempt();
+	evalpAmept();
 	auto& aAOm = markerFrame->aAOm;
 	prOeOpt = aAOm->timesFullColumn(prmempt);
 	pAOept = aAOm->timesFullMatrix(pAmept);
@@ -349,18 +349,18 @@ FColDsptr EndFrameqct::rpep()
 
 void EndFrameqct::preAccIC()
 {
-	time = this->root()->mbdTimeValue();
-	this->evalrmem();
-	this->evalAme();
+	time = root()->mbdTimeValue();
+	evalrmem();
+	evalAme();
 	Item::preVelIC();
-	this->evalprmempt();
-	this->evalpAmept();
+	evalprmempt();
+	evalpAmept();
 	auto& aAOm = markerFrame->aAOm;
 	prOeOpt = aAOm->timesFullColumn(prmempt);
 	pAOept = aAOm->timesFullMatrix(pAmept);
 	Item::preAccIC();
-	this->evalpprmemptpt();
-	this->evalppAmeptpt();
+	evalpprmemptpt();
+	evalppAmeptpt();
 	aAOm = markerFrame->aAOm;
 	pprOeOptpt = aAOm->timesFullColumn(pprmemptpt);
 	ppAOeptpt = aAOm->timesFullMatrix(ppAmeptpt);
@@ -373,24 +373,24 @@ bool MbD::EndFrameqct::isEndFrameqc()
 
 void MbD::EndFrameqct::postDynPredictor()
 {	
-	time = this->root()->mbdTimeValue();
-	this->evalrmem();
-	this->evalAme();
+	time = root()->mbdTimeValue();
+	evalrmem();
+	evalAme();
 	EndFrameqc::postDynPredictor();
 }
 
 void MbD::EndFrameqct::preDynOutput()
 {
-	time = this->root()->mbdTimeValue();
-	this->evalrmem();
-	this->evalAme();
+	time = root()->mbdTimeValue();
+	evalrmem();
+	evalAme();
 	EndFrameqc::preDynOutput();
 }
 
 void MbD::EndFrameqct::postDynOutput()
 {
-	time = this->root()->mbdTimeValue();
-	this->evalrmem();
-	this->evalAme();
+	time = root()->mbdTimeValue();
+	evalrmem();
+	evalAme();
 	EndFrameqc::postDynOutput();
 }

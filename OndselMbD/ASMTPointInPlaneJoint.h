@@ -16,10 +16,10 @@ namespace MbD {
 		//
 	public:
 		static std::shared_ptr<ASMTPointInPlaneJoint> With();
-		std::shared_ptr<Joint> mbdClassNew() override;
+		std::shared_ptr<JointIJ> mbdClassNew() override;
 		void parseASMT(std::vector<std::string>& lines) override;
 		void readOffset(std::vector<std::string>& lines);
-		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+		void createMbD() override;
 		void storeOnLevel(std::ofstream& os, size_t level) override;
 		void storeOnTimeSeries(std::ofstream& os) override;
 	};

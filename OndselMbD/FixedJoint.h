@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		FixedJoint() {}
-		FixedJoint(const char* str);
+		FixedJoint(const char* str) : AtPointJoint(str) {}
 		static std::shared_ptr<FixedJoint> With();
 		static std::shared_ptr<FixedJoint> With(const char* str);
 		

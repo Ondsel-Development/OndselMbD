@@ -19,7 +19,7 @@ std::shared_ptr<ASMTSphericalJoint> MbD::ASMTSphericalJoint::With()
 	return inst;
 }
 
-std::shared_ptr<Joint> MbD::ASMTSphericalJoint::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTSphericalJoint::mbdClassNew()
 {
 	return SphericalJoint::With();
 }

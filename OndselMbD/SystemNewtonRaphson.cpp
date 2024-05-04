@@ -27,10 +27,10 @@ std::shared_ptr<SystemNewtonRaphson> MbD::SystemNewtonRaphson::With()
 
 void SystemNewtonRaphson::initializeGlobally()
 {
-	this->assignEquationNumbers();
+	assignEquationNumbers();
 	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->useEquationNumbers(); });
-	this->createVectorsAndMatrices();
-	matrixSolver = this->matrixSolverClassNew();
+	createVectorsAndMatrices();
+	matrixSolver = matrixSolverClassNew();
 }
 
 void MbD::SystemNewtonRaphson::assignEquationNumbers()
@@ -78,7 +78,7 @@ void SystemNewtonRaphson::handleSingularMatrix()
 		if (str.find("GESpMatParPvPrecise") != std::string::npos) {
 			str = "MbD: Singular Matrix Error. ";
 			system->logString(str);
-			matrixSolver = this->matrixSolverClassNew();
+			matrixSolver = matrixSolverClassNew();
 		}
 		else {
 			assert(false);

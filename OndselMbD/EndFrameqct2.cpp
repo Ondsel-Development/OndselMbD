@@ -18,10 +18,6 @@
 
 using namespace MbD;
 
-EndFrameqct2::EndFrameqct2(const char* str) : EndFrameqct(str) {
-	assert(false);
-}
-
 std::shared_ptr<EndFrameqct2> MbD::EndFrameqct2::With(const char* str)
 {
 	auto inst = std::make_shared<EndFrameqct2>(str);
@@ -31,14 +27,14 @@ std::shared_ptr<EndFrameqct2> MbD::EndFrameqct2::With(const char* str)
 
 void EndFrameqct2::initpPhiThePsiptBlks()
 {
-	auto& mbdTime = this->root()->time;
+	auto& mbdTime = root()->time;
 	auto eulerAngles = std::static_pointer_cast<EulerAngles<Symsptr>>(phiThePsiBlks);
 	pPhiThePsiptBlks = eulerAngles->differentiateWRT(mbdTime);
 }
 
 void EndFrameqct2::initppPhiThePsiptptBlks()
 {
-	auto& mbdTime = this->root()->time;
+	auto& mbdTime = root()->time;
 	auto eulerAnglesDot = std::static_pointer_cast<EulerAnglesDot<Symsptr>>(pPhiThePsiptBlks);
 	ppPhiThePsiptptBlks = eulerAnglesDot->differentiateWRT(mbdTime);
 }

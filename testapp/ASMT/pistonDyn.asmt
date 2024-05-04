@@ -358,7 +358,7 @@ Assembly
 				MotionJoint
 					/Assembly1/Joint1
 				RotationZ
-					2.0d*pi*time
+					2.0*pi*time
 		GeneralConstraintSets
 	ForceTorques
 	ConstantGravity

@@ -18,6 +18,14 @@ std::shared_ptr<DispCompIecJecKec> MbD::DispCompIecJecKec::With(EndFrmsptr frmi,
 	return inst;
 }
 
+void MbD::DispCompIecJecKec::withFrmIfrmJfrmKaxis(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axis)
+{
+	efrmI = frmi;
+	efrmJ = frmj;
+	efrmK = frmk;
+	axisK = axis;
+}
+
 PartFrame* MbD::DispCompIecJecKec::partFrameK()
 {
 	return efrmK->getPartFrame();

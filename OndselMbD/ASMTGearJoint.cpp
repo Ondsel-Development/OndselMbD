@@ -9,6 +9,7 @@
 
 #include "ASMTGearJoint.h"
 #include "GearJoint.h"
+#include "Units.h"
 
 using namespace MbD;
 
@@ -19,7 +20,7 @@ std::shared_ptr<ASMTGearJoint> MbD::ASMTGearJoint::With()
 	return inst;
 }
 
-std::shared_ptr<Joint> MbD::ASMTGearJoint::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTGearJoint::mbdClassNew()
 {
 	return GearJoint::With();
 }
@@ -55,12 +56,13 @@ void MbD::ASMTGearJoint::readRadiusJ(std::vector<std::string>& lines)
 	}
 }
 
-void MbD::ASMTGearJoint::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+void MbD::ASMTGearJoint::createMbD()
 {
-	ASMTJoint::createMbD(mbdSys, mbdUnits);
+	ASMTJoint::createMbD();
 	auto gearJoint = std::static_pointer_cast<GearJoint>(mbdObject);
-	gearJoint->radiusI = radiusI;
-	gearJoint->radiusJ = radiusJ;
+	auto asmtUnts = asmtUnits();
+	gearJoint->radiusI = radiusI * asmtUnts->length;
+	gearJoint->radiusJ = radiusJ * asmtUnts->length;
 }
 
 void MbD::ASMTGearJoint::storeOnLevel(std::ofstream& os, size_t level)

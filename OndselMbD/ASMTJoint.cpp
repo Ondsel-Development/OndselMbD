@@ -8,7 +8,7 @@
 #include <fstream>	
 
 #include "ASMTJoint.h"
-#include "Joint.h"
+#include "JointIJ.h"
 
 using namespace MbD;
 
@@ -53,4 +53,9 @@ void MbD::ASMTJoint::storeOnTimeSeries(std::ofstream& os)
 	label = label.substr(15, label.size() - 15);
 	os << label << "Series\t" << fullName("") << std::endl;
 	ASMTItemIJ::storeOnTimeSeries(os);
+}
+
+bool MbD::ASMTJoint::isJoint()
+{
+	return true;
 }

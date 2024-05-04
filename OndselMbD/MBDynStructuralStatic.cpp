@@ -14,7 +14,7 @@ void MbD::MBDynStructuralStatic::parseMBDyn(std::string line)
 	strucString = line;
 	arguments = collectArgumentsFor("structural", line);
 	readLabel(arguments);
-	auto nodeType = readStringOffTop(arguments);
+	auto nodeType = readStringNoSpacesOffTop(arguments);
 	assert(nodeType == "static");
 	readPosition(arguments);
 	readOrientation(arguments);

@@ -140,7 +140,7 @@ void MbD::AccNewtonRaphson::handleSingularMatrix()
 		str = typeid(r).name();
 		if (str.find("GESpMatParPvPrecise") != std::string::npos) {
 			logSingularMatrixMessage();
-			matrixSolver->throwSingularMatrixError("AccAccNewtonRaphson");
+			matrixSolver->throwSingularMatrixError("AccNewtonRaphson");
 		} else {
 			assert(false);
 		}

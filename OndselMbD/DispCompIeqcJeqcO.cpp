@@ -23,13 +23,13 @@ void DispCompIeqcJeqcO::initializeGlobally()
 	DispCompIeqcJecO::initializeGlobally();
 	priIeJeOpXJ = FullRow<double>::With(3, 0.0);
 	priIeJeOpXJ->at(axis) = 1.0;
-	ppriIeJeOpEJpEJ = std::static_pointer_cast<EndFrameqc>(frmJ)->ppriOeOpEpE(axis);
+	ppriIeJeOpEJpEJ = std::static_pointer_cast<EndFrameqc>(efrmJ)->ppriOeOpEpE(axis);
 }
 
 void DispCompIeqcJeqcO::calcPostDynCorrectorIteration()
 {
 	DispCompIeqcJecO::calcPostDynCorrectorIteration();
-	priIeJeOpEJ = std::static_pointer_cast<EndFrameqc>(frmJ)->priOeOpE(axis);
+	priIeJeOpEJ = std::static_pointer_cast<EndFrameqc>(efrmJ)->priOeOpE(axis);
 }
 
 FRowDsptr DispCompIeqcJeqcO::pvaluepXJ()

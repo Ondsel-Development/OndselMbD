@@ -16,7 +16,7 @@ namespace MbD {
 		//pthezpXJ pthezpEJ ppthezpXIpXJ ppthezpXIpEJ ppthezpEIpXJ ppthezpEIpEJ ppthezpXJpXJ ppthezpXJpEJ ppthezpEJpEJ 
 	public:
 		OrbitAngleZIeqcJeqc();
-		OrbitAngleZIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj);
+		OrbitAngleZIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj) : OrbitAngleZIeqcJec(frmi, frmj) {}
 		static std::shared_ptr<OrbitAngleZIeqcJeqc> With(EndFrmsptr frmi, EndFrmsptr frmj);
 		void initialize() override;
 

@@ -65,7 +65,7 @@ bool MbD::Constant::isOne()
 	return value == 1.0;
 }
 
-void MbD::Constant::createMbD(std::shared_ptr<System>, std::shared_ptr<Units>)
+void MbD::Constant::createMbD()
 {
 	return;
 }
@@ -77,5 +77,5 @@ double MbD::Constant::getValue()
 
 std::ostream& Constant::printOn(std::ostream& s) const
 {
-	return s << this->value;
+	return s << value;
 }

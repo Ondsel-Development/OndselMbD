@@ -11,11 +11,6 @@
 
 using namespace MbD;
 
-MbD::DistIeqcJeqc::DistIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj) : DistIeqcJec(frmi, frmj)
-{
-	assert(false);
-}
-
 std::shared_ptr<DistIeqcJeqc> MbD::DistIeqcJeqc::With()
 {
 	auto inst = std::make_shared<DistIeqcJeqc>();
@@ -48,7 +43,7 @@ void MbD::DistIeqcJeqc::calcPrivate()
 {
 	DistIeqcJec::calcPrivate();
 	if (rIeJe == 0.0) return;
-	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	auto& prIeJeOpEJ = frmJeqc->prOeOpE;
 	auto prIeJeOpEJT = prIeJeOpEJ->transpose();
 	auto& pprIeJeOpEJpEJ = frmJeqc->pprOeOpEpE;
@@ -180,7 +175,7 @@ FMatDsptr MbD::DistIeqcJeqc::ppvaluepXJpXJ()
 FMatDsptr MbD::DistIeqcJeqc::puIeJeOpEJ()
 {
 	auto answer = FullMatrix<double>::With(3, 4);
-	auto prIeJeOpEJ = std::static_pointer_cast<EndFrameqc>(frmJ)->prOeOpE;
+	auto prIeJeOpEJ = std::static_pointer_cast<EndFrameqc>(efrmJ)->prOeOpE;
 	auto oneOverrIeJe = 1.0 / rIeJe;
 	auto oneOverrIeJeSq = oneOverrIeJe / rIeJe;
 	for (size_t i = 0; i < 3; i++) {

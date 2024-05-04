@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "FullColumn.h"
@@ -23,6 +23,8 @@ namespace MbD {
 	class System;
 	class Constant;
 	class Item;
+	class Part;
+	class StateData;
 
 	class ASMTItem : public std::enable_shared_from_this<ASMTItem>
 	{
@@ -44,7 +46,7 @@ namespace MbD {
 		void setName(std::string str);
 		virtual void parseASMT(std::vector<std::string>& lines);
 		std::string popOffTop(std::vector<std::string>& args);
-		std::string readStringOffTop(std::vector<std::string>& args);
+		std::string readStringNoSpacesOffTop(std::vector<std::string>& args);
 		FRowDsptr readRowOfDoubles(std::string& line);
 		FColDsptr readColumnOfDoubles(std::string& line);
 		double readDouble(std::string& line);
@@ -56,11 +58,14 @@ namespace MbD {
 		virtual std::string fullName(std::string partialName);
 		void readDoublesInto(std::string& str, std::string label, FRowDsptr& row);
 		virtual void deleteMbD();
-		virtual void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits);
+		virtual void createMbD();
 		virtual void updateFromMbD();
+		virtual std::shared_ptr<StateData> dataFromMbD();
 		virtual void compareResults(AnalysisType type);
 		virtual void outputResults(AnalysisType type);
+		std::shared_ptr<Units> asmtUnits();
 		std::shared_ptr<Units> mbdUnits();
+		std::shared_ptr<System> mbdSys();
 		std::shared_ptr<Constant> sptrConstant(double value);
 		virtual void storeOnLevel(std::ofstream& os, size_t level);
 		virtual void storeOnLevelTabs(std::ofstream& os, size_t level);
@@ -78,8 +83,9 @@ namespace MbD {
 		void logString(const char* chars);
 
 		std::string name;
-		ASMTItem* owner = nullptr;
+		ASMTItem* container = nullptr;
 		std::shared_ptr<Item> mbdObject;
+		std::shared_ptr<std::vector<std::shared_ptr<StateData>>> dataSeries = std::make_shared<std::vector<std::shared_ptr<StateData>>>();
 	};
 }
 

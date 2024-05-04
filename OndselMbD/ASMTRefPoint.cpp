@@ -27,13 +27,13 @@ void MbD::ASMTRefPoint::parseASMT(std::vector<std::string>& lines)
 
 std::string MbD::ASMTRefPoint::fullName(std::string partialName)
 {
-	return owner->fullName(partialName);
+	return container->fullName(partialName);
 }
 
-void MbD::ASMTRefPoint::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+void MbD::ASMTRefPoint::createMbD()
 {
 	for (auto& marker : *markers) {
-		marker->createMbD(mbdSys, mbdUnits);
+		marker->createMbD();
 	}
 }
 

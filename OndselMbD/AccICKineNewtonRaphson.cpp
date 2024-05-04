@@ -32,18 +32,17 @@ void MbD::AccICKineNewtonRaphson::iterate()
 {
 	//Keep for debugging
 	iterNo = SIZE_MAX;
-	this->fillY();
+	fillY();
 	calcyNorm();
 	yNorms->push_back(yNorm);
 
 	while (true) {
 		incrementIterNo();
 		fillPyPx();
-		//std::cout << *pypx << std::endl;
-		outputSpreadsheet();
+		//outputSpreadsheet();
 		solveEquations();
 		calcDXNormImproveRootCalcYNorm();
-		if (this->isConverged()) {
+		if (isConverged()) {
 			//std::cout << "iterNo = " << iterNo << std::endl;
 			break;
 		}

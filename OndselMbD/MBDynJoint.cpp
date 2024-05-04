@@ -12,6 +12,7 @@
 #include "ASMTMarker.h"
 #include "ASMTPart.h"
 #include "ASMTJoint.h"
+#include "ASMTForceTorque.h"
 #include "ASMTAssembly.h"
 #include "ASMTRevoluteJoint.h"
 #include "ASMTRotationalMotion.h"
@@ -38,55 +39,55 @@ std::shared_ptr<MBDynJoint> MbD::MBDynJoint::newJoint(std::string statement)
 	std::vector<std::string> tokens;
 	tokens = { "axial ", "rotation," };
 	if (lineHasTokens(statement, tokens)) {
-		return std::make_shared<MBDynAxialRotationJoint>();
+		return MBDynAxialRotationJoint::With();
 	}
 	tokens = { "clamp," };
 	if (lineHasTokens(statement, tokens)) {
-		return std::make_shared<MBDynClampJoint>();
+		return MBDynClampJoint::With();
 	}
 	tokens = { "drive ", "hinge," };
 	if (lineHasTokens(statement, tokens)) {
-		return std::make_shared<MBDynDriveHingeJoint>();
+		return MBDynDriveHingeJoint::With();
 	}
 	tokens = { "in ", "line," };
 	if (lineHasTokens(statement, tokens)) {
-		return std::make_shared<MBDynInLineJoint>();
+		return MBDynInLineJoint::With();
 	}
 	tokens = { "in ", "plane," };
 	if (lineHasTokens(statement, tokens)) {
-		return std::make_shared<MBDynInPlaneJoint>();
+		return MBDynInPlaneJoint::With();
 	}
 	tokens = { "prismatic," };
 	if (lineHasTokens(statement, tokens)) {
-		return std::make_shared<MBDynPrismaticJoint>();
+		return MBDynPrismaticJoint::With();
 	}
 	tokens = { "revolute ", "hinge," };
 	if (lineHasTokens(statement, tokens)) {
-		return std::make_shared<MBDynRevoluteHingeJoint>();
+		return MBDynRevoluteHingeJoint::With();
 	}
 	tokens = { "revolute ", "pin," };
 	if (lineHasTokens(statement, tokens)) {
-		return std::make_shared<MBDynRevolutePinJoint>();
+		return MBDynRevolutePinJoint::With();
 	}
 	tokens = { "spherical ", "hinge," };
 	if (lineHasTokens(statement, tokens)) {
-		return std::make_shared<MBDynSphericalHingeJoint>();
+		return MBDynSphericalHingeJoint::With();
 	}
 	tokens = { "total ", "joint," };
 	if (lineHasTokens(statement, tokens)) {
-		return std::make_shared<MBDynTotalJoint>();
+		return MBDynTotalJoint::With();
 	}
 	tokens = { "rod," };
 	if (lineHasTokens(statement, tokens)) {
-		return std::make_shared<MBDynRodJoint>();
+		return MBDynRodJoint::With();
 	}
 	assert(false);
-	return std::make_shared<MBDynJoint>();
+	return std::shared_ptr<MBDynJoint>();
 }
 
 void MbD::MBDynJoint::initialize()
 {
-	assert(false);
+	//Do nothing.
 }
 
 void MbD::MBDynJoint::parseMBDyn(std::string line)
@@ -107,9 +108,9 @@ void MbD::MBDynJoint::readJointType(std::vector<std::string>& args)
 
 void MbD::MBDynJoint::readMarkerI(std::vector<std::string>& args)
 {
-	mkr1 = std::make_shared<MBDynMarker>();
-	mkr1->owner = this;
-	mkr1->nodeStr = readStringOffTop(args);
+	mkr1 = MBDynMarker::With();
+	mkr1->container = this;
+	mkr1->nodeStr = readStringNoSpacesOffTop(args);
 	auto _nodeNames = nodeNames();
 	std::string nodeName;
 	auto it = std::find_if(args.begin(), args.end(), [&](const std::string& s) {
@@ -126,17 +127,17 @@ void MbD::MBDynJoint::readMarkerI(std::vector<std::string>& args)
 void MbD::MBDynJoint::readMarkerJ(std::vector<std::string>& args)
 {
 	if (args.empty()) return;
-	mkr2 = std::make_shared<MBDynMarker>();
-	mkr2->owner = this;
-	mkr2->nodeStr = readStringOffTop(args);
+	mkr2 = MBDynMarker::With();
+	mkr2->container = this;
+	mkr2->nodeStr = readStringNoSpacesOffTop(args);
 	mkr2->parseMBDyn(args);
 }
 
 void MbD::MBDynJoint::readTotalJointMarkerI(std::vector<std::string>& args)
 {
-	mkr1 = std::make_shared<MBDynMarker>();
-	mkr1->owner = this;
-	mkr1->nodeStr = readStringOffTop(args);
+	mkr1 = MBDynMarker::With();
+	mkr1->container = this;
+	mkr1->nodeStr = readStringNoSpacesOffTop(args);
 	auto _nodeNames = nodeNames();
 	std::string nodeName;
 	auto it = std::find_if(args.begin(), args.end(), [&](const std::string& s) {
@@ -153,18 +154,18 @@ void MbD::MBDynJoint::readTotalJointMarkerI(std::vector<std::string>& args)
 void MbD::MBDynJoint::readTotalJointMarkerJ(std::vector<std::string>& args)
 {
 	if (args.empty()) return;
-	mkr2 = std::make_shared<MBDynMarker>();
-	mkr2->owner = this;
-	mkr2->nodeStr = readStringOffTop(args);
+	mkr2 = MBDynMarker::With();
+	mkr2->container = this;
+	mkr2->nodeStr = readStringNoSpacesOffTop(args);
 	mkr2->parseMBDynTotalJointMarker(args);
 }
 
 void MbD::MBDynJoint::readClampMarkerJ(std::vector<std::string>& args)
 {
 	if (args.empty()) return;
-	mkr2 = std::make_shared<MBDynMarker>();
-	mkr2->owner = this;
-	mkr2->nodeStr = readStringOffTop(args);
+	mkr2 = MBDynMarker::With();
+	mkr2->container = this;
+	mkr2->nodeStr = readStringNoSpacesOffTop(args);
 	mkr2->parseMBDynClamp(args);
 }
 
@@ -190,7 +191,7 @@ void MbD::MBDynJoint::readFunction(std::vector<std::string>& args)
 		args.erase(args.begin());
 		auto vec3 = readVector3(args);
 		assert(vec3->at(0) == 0 && vec3->at(1) == 0 && vec3->at(2) == 1);
-		assert(readStringOffTop(args) == "string");
+		assert(readStringNoSpacesOffTop(args) == "string");
 		formula = popOffTop(args);
 		formula = std::regex_replace(formula, std::regex("\""), "");
 	}
@@ -209,16 +210,16 @@ void MbD::MBDynJoint::readTotalJointFunction(std::vector<std::string>& args)
 	std::vector<std::string> tokens{ "position", "constraint" };
 	assert(lineHasTokens(args[0], tokens));
 	args.erase(args.begin());
-	assert(readStringOffTop(args) == "active");
-	assert(readStringOffTop(args) == "active");
-	assert(readStringOffTop(args) == "active");
-	assert(readStringOffTop(args) == "null");
+	assert(readStringNoSpacesOffTop(args) == "active");
+	assert(readStringNoSpacesOffTop(args) == "active");
+	assert(readStringNoSpacesOffTop(args) == "active");
+	assert(readStringNoSpacesOffTop(args) == "null");
 	std::vector<std::string> tokens1{ "orientation", "constraint" };
 	assert(lineHasTokens(args[0], tokens1));
 	args.erase(args.begin());
-	assert(readStringOffTop(args) == "active");
-	assert(readStringOffTop(args) == "active");
-	assert(readStringOffTop(args) == "rotation");
+	assert(readStringNoSpacesOffTop(args) == "active");
+	assert(readStringNoSpacesOffTop(args) == "active");
+	assert(readStringNoSpacesOffTop(args) == "rotation");
 	readFunction(args);
 }
 
@@ -226,19 +227,10 @@ void MbD::MBDynJoint::createASMT()
 {
 	mkr1->createASMT();
 	if (mkr2) mkr2->createASMT();
-	auto asmtAsm = asmtAssembly();
-	auto asmtJoint = asmtClassNew();
-	asmtItem = asmtJoint;
-	asmtJoint->setName(label);
-	asmtJoint->setMarkerI(std::static_pointer_cast<ASMTMarker>(mkr1->asmtItem));
-	asmtJoint->setMarkerJ(std::static_pointer_cast<ASMTMarker>(mkr2->asmtItem));
-	asmtAsm->addJoint(asmtJoint);
-}
-
-std::shared_ptr<ASMTJoint> MbD::MBDynJoint::asmtClassNew()
-{
-	assert(false);
-	return std::make_shared<ASMTJoint>();
+	auto asmtItemIJ = std::static_pointer_cast<ASMTItemIJ>(asmtItem);
+	asmtItemIJ->setName(label);
+	asmtItemIJ->setMarkerI(std::static_pointer_cast<ASMTMarker>(mkr1->asmtItem));
+	asmtItemIJ->setMarkerJ(std::static_pointer_cast<ASMTMarker>(mkr2->asmtItem));
 }
 
 void MbD::MBDynJoint::outputLine(size_t i, std::ostream& os)

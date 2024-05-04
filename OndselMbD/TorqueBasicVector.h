@@ -10,10 +10,10 @@
 
 #pragma once
 
-#include "ForTorBasic.h"
+#include "ForceTorqueBasic.h"
 
 namespace MbD {
-	class TorqueBasicVector : public ForTorBasic
+	class TorqueBasicVector : public ForceTorqueBasic
 	{
 		//
 	public:

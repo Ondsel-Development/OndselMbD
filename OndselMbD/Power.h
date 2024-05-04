@@ -18,6 +18,7 @@ namespace MbD {
 		Power() {}
 		Power(Symsptr base, Symsptr exp);
 		static std::shared_ptr<Power> With();
+		static std::shared_ptr<Power> With(Symsptr base, Symsptr exp);
 
 		Symsptr differentiateWRTx() override;
 		Symsptr differentiateWRTy() override;

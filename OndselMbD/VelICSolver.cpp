@@ -56,14 +56,14 @@ void VelICSolver::run()
 {
 	std::string str = "MbD: Solving for velocity initial conditions.";
 	system->logString(str);
-	this->runBasic();
+	runBasic();
 }
 
 void VelICSolver::runBasic()
 {
 	//| qsudotOld qsudotWeights qsudotlam |
 		system->partsJointsMotionsDo([](std::shared_ptr<Item> item) { item->preVelIC(); });
-		this->assignEquationNumbers();
+		assignEquationNumbers();
 		system->partsJointsMotionsDo([](std::shared_ptr<Item> item) { item->useEquationNumbers(); });
 		auto qsudotOld = std::make_shared<FullColumn<double>>(nqsu);
 		auto qsudotWeights = DiagonalMatrix<double>::With(nqsu);
@@ -77,9 +77,9 @@ void VelICSolver::runBasic()
 		jacobian->zeroSelf();
 		jacobian->atandplusDiagonalMatrix(0, 0, qsudotWeights);
 		system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillVelICJacob(jacobian); });
-		matrixSolver = this->matrixSolverClassNew();
+		matrixSolver = matrixSolverClassNew();
 		solveEquations();
-		auto& qsudotlam = this->x;
+		auto& qsudotlam = x;
 		system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->setqsudotlam(qsudotlam); });
 		system->partsJointsMotionsDo([](std::shared_ptr<Item> item) { item->postVelIC(); });
 }

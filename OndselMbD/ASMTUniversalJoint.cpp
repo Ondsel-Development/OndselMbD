@@ -19,7 +19,7 @@ std::shared_ptr<ASMTUniversalJoint> MbD::ASMTUniversalJoint::With()
 	return inst;
 }
 
-std::shared_ptr<Joint> MbD::ASMTUniversalJoint::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTUniversalJoint::mbdClassNew()
 {
 	return UniversalJoint::With();
 }

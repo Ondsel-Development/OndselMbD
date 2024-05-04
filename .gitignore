@@ -39,3 +39,7 @@ cmake-build-debug
 .idea
 *.7z
 LibreSpace/
+*.FCBak
+BungeeOrig/
+*.csv#
+temp/

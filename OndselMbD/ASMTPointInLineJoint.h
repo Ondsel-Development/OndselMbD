@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		static std::shared_ptr<ASMTPointInLineJoint> With();
-		std::shared_ptr<Joint> mbdClassNew() override;
+		std::shared_ptr<JointIJ> mbdClassNew() override;
 		void storeOnLevel(std::ofstream& os, size_t level) override;
 		void storeOnTimeSeries(std::ofstream& os) override;
 

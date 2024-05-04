@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-MbD::DistanceConstraintIqcJc::DistanceConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : DistanceConstraintIJ(frmi, frmj)
-{
-	assert(false);
-}
-
 std::shared_ptr<DistanceConstraintIqcJc> MbD::DistanceConstraintIqcJc::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	auto inst = std::make_shared<DistanceConstraintIqcJc>(frmi, frmj);
@@ -32,7 +27,7 @@ void MbD::DistanceConstraintIqcJc::addToJointForceI(FColDsptr col)
 void MbD::DistanceConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 {
 	auto cForceT = pGpXI->times(lam);
-	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	auto rIpIeIp = frmIeqc->rpep();
 	auto pAOIppEI = frmIeqc->pAOppE();
 	auto aBOIp = frmIeqc->aBOp();
@@ -61,7 +56,7 @@ void MbD::DistanceConstraintIqcJc::fillAccICIterError(FColDsptr col)
 {
 	col->atplusFullVectortimes(iqXI, pGpXI, lam);
 	col->atplusFullVectortimes(iqEI, pGpEI, lam);
-	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	auto qXdotI = efrmIqc->qXdot();
 	auto qEdotI = efrmIqc->qEdot();
 	auto sum = pGpXI->timesFullColumn(efrmIqc->qXddot());
@@ -108,12 +103,12 @@ void MbD::DistanceConstraintIqcJc::fillVelICJacob(SpMatDsptr mat)
 
 void MbD::DistanceConstraintIqcJc::init_distIeJe()
 {
-	distIeJe = DistIeqcJec::With(frmI, frmJ);
+	distIeJe = DistIeqcJec::With(efrmI, efrmJ);
 }
 
 void MbD::DistanceConstraintIqcJc::useEquationNumbers()
 {
-	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	iqXI = frmIeqc->iqX();
 	iqEI = frmIeqc->iqE();
 }

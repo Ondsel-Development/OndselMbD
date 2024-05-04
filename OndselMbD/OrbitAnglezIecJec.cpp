@@ -13,11 +13,6 @@
 
 using namespace MbD;
 
-MbD::OrbitAngleZIecJec::OrbitAngleZIecJec(EndFrmsptr frmi, EndFrmsptr frmj) : KinematicIeJe(frmi, frmj)
-{
-	assert(false);
-}
-
 std::shared_ptr<OrbitAngleZIecJec> MbD::OrbitAngleZIecJec::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	auto inst = std::make_shared<OrbitAngleZIecJec>(frmi, frmj);
@@ -27,8 +22,8 @@ std::shared_ptr<OrbitAngleZIecJec> MbD::OrbitAngleZIecJec::With(EndFrmsptr frmi,
 
 void MbD::OrbitAngleZIecJec::initialize()
 {
-	KinematicIeJe::initialize();
-	this->init_xyIeJeIe();
+	KinematicIJ::initialize();
+	init_xyIeJeIe();
 }
 
 void MbD::OrbitAngleZIecJec::calcPostDynCorrectorIteration()
@@ -78,22 +73,22 @@ void MbD::OrbitAngleZIecJec::postInput()
 			thez = Numeric::arcTan0to2piYoverX(y, x);
 		}
 	}
-	KinematicIeJe::postInput();
+	KinematicIJ::postInput();
 }
 
 void MbD::OrbitAngleZIecJec::postPosICIteration()
 {
 	xIeJeIe->postPosICIteration();
 	yIeJeIe->postPosICIteration();
-	KinematicIeJe::postPosICIteration();
+	KinematicIJ::postPosICIteration();
 }
 
 void MbD::OrbitAngleZIecJec::preAccIC()
 {
-	if (thez == std::numeric_limits<double>::min()) this->prePosIC();
+	if (thez == std::numeric_limits<double>::min()) prePosIC();
 	xIeJeIe->preAccIC();
 	yIeJeIe->preAccIC();
-	KinematicIeJe::preAccIC();
+	KinematicIJ::preAccIC();
 }
 
 void MbD::OrbitAngleZIecJec::prePosIC()
@@ -101,21 +96,21 @@ void MbD::OrbitAngleZIecJec::prePosIC()
 	xIeJeIe->prePosIC();
 	yIeJeIe->prePosIC();
 	assert(thez != std::numeric_limits<double>::min());
-	KinematicIeJe::prePosIC();
+	KinematicIJ::prePosIC();
 }
 
 void MbD::OrbitAngleZIecJec::preVelIC()
 {
 	xIeJeIe->preVelIC();
 	yIeJeIe->preVelIC();
-	KinematicIeJe::preVelIC();
+	KinematicIJ::preVelIC();
 }
 
 void MbD::OrbitAngleZIecJec::simUpdateAll()
 {
 	xIeJeIe->simUpdateAll();
 	yIeJeIe->simUpdateAll();
-	KinematicIeJe::simUpdateAll();
+	KinematicIJ::simUpdateAll();
 }
 
 double MbD::OrbitAngleZIecJec::value()
@@ -127,26 +122,26 @@ void MbD::OrbitAngleZIecJec::postDynPredictor()
 {
 	xIeJeIe->postDynPredictor();
 	yIeJeIe->postDynPredictor();
-	KinematicIeJe::postDynPredictor();
+	KinematicIJ::postDynPredictor();
 }
 
 void MbD::OrbitAngleZIecJec::postDynCorrectorIteration()
 {
 	xIeJeIe->postDynCorrectorIteration();
 	yIeJeIe->postDynCorrectorIteration();
-	KinematicIeJe::postDynCorrectorIteration();
+	KinematicIJ::postDynCorrectorIteration();
 }
 
 void MbD::OrbitAngleZIecJec::preDynOutput()
 {
 	xIeJeIe->preDynOutput();
 	yIeJeIe->preDynOutput();
-	KinematicIeJe::preDynOutput();
+	KinematicIJ::preDynOutput();
 }
 
 void MbD::OrbitAngleZIecJec::postDynOutput()
 {
 	xIeJeIe->postDynOutput();
 	yIeJeIe->postDynOutput();
-	KinematicIeJe::postDynOutput();
+	KinematicIJ::postDynOutput();
 }

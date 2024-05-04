@@ -24,6 +24,13 @@ std::shared_ptr<Exponential> MbD::Exponential::With()
 	return inst;
 }
 
+std::shared_ptr<Exponential> MbD::Exponential::With(Symsptr arg)
+{
+	auto inst = std::make_shared<Exponential>(arg);
+	inst->initialize();
+	return inst;
+}
+
 double MbD::Exponential::getValue()
 {
 	return std::log(xx->getValue());
@@ -31,7 +38,7 @@ double MbD::Exponential::getValue()
 
 Symsptr MbD::Exponential::copyWith(Symsptr arg)
 {
-	return std::make_shared<Exponential>(arg);
+	return Exponential::With(arg);
 }
 
 std::ostream& MbD::Exponential::printOn(std::ostream& s) const

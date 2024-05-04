@@ -507,13 +507,13 @@
     <ClCompile Include="Item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Joint.cpp">
+    <ClCompile Include="JointIJ.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="KineIntegrator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="KinematicIeJe.cpp">
+    <ClCompile Include="KinematicIJ.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LDUFullMat.cpp">
@@ -1104,46 +1104,46 @@
     <ClCompile Include="ForceTorqueGeneral.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ForTorAction.cpp">
+    <ClCompile Include="ForceTorqueAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ForTorActReact.cpp">
+    <ClCompile Include="ForceTorqueActReact.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ForTorBasic.cpp">
+    <ClCompile Include="ForceTorqueBasic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ForTorFunction.cpp">
+    <ClCompile Include="ForceTorqueFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ForTorVector.cpp">
+    <ClCompile Include="ForceTorqueVector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ForTorZero.cpp">
+    <ClCompile Include="ForceTorqueZero.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ForTorActReactInLine.cpp">
+    <ClCompile Include="ForceTorqueActReactInLine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ForTorActReactComp.cpp">
+    <ClCompile Include="ForceTorqueActReactComp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ForTorActReactKComp.cpp">
+    <ClCompile Include="ForceTorqueActReactKComp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ForTorActReactOComp.cpp">
+    <ClCompile Include="ForceTorqueActReactOComp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ForTorActionInLine.cpp">
+    <ClCompile Include="ForceTorqueActionInLine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ForTorActionComp.cpp">
+    <ClCompile Include="ForceTorqueActionComp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ForTorActionKComp.cpp">
+    <ClCompile Include="ForceTorqueActionKComp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ForTorActionOComp.cpp">
+    <ClCompile Include="ForceTorqueActionOComp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ForceBasicqcVector.cpp">
@@ -1258,6 +1258,54 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ForceBasicqcsVector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EndFrameqccq.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OmeCompIecJecKec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OmeCompIecJecKeqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OmeCompIeqcJecKeqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OmeCompIeqcJeqcKeqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OmeCompIecJecO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OmeCompIeqcJecO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OmeCompIeqcJeqcO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DAngleXIecJec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DAngleYIecJec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DAngleXIeqcJec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DAngleYIeqcJec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DAngleYIeqcJeqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DAngleXIeqcJeqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemIJ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ForceTorqueIJ.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1757,13 +1805,13 @@
     <ClInclude Include="Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Joint.h">
+    <ClInclude Include="JointIJ.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="KineIntegrator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="KinematicIeJe.h">
+    <ClInclude Include="KinematicIJ.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LDUFullMat.h">
@@ -2360,46 +2408,46 @@
     <ClInclude Include="ForceTorqueGeneral.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ForTorAction.h">
+    <ClInclude Include="ForceTorqueAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ForTorActReact.h">
+    <ClInclude Include="ForceTorqueActReact.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ForTorBasic.h">
+    <ClInclude Include="ForceTorqueBasic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ForTorFunction.h">
+    <ClInclude Include="ForceTorqueFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ForTorVector.h">
+    <ClInclude Include="ForceTorqueVector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ForTorZero.h">
+    <ClInclude Include="ForceTorqueZero.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ForTorActReactInLine.h">
+    <ClInclude Include="ForceTorqueActReactInLine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ForTorActReactComp.h">
+    <ClInclude Include="ForceTorqueActReactComp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ForTorActReactKComp.h">
+    <ClInclude Include="ForceTorqueActReactKComp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ForTorActReactOComp.h">
+    <ClInclude Include="ForceTorqueActReactOComp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ForTorActionInLine.h">
+    <ClInclude Include="ForceTorqueActionInLine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ForTorActionComp.h">
+    <ClInclude Include="ForceTorqueActionComp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ForTorActionKComp.h">
+    <ClInclude Include="ForceTorqueActionKComp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ForTorActionOComp.h">
+    <ClInclude Include="ForceTorqueActionOComp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ForceBasicqcVector.h">
@@ -2514,6 +2562,54 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ForceBasicqcsVector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EndFrameqccq.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OmeCompIecJecKec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OmeCompIecJecKeqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OmeCompIeqcJecKeqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OmeCompIeqcJeqcKeqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OmeCompIecJecO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OmeCompIeqcJecO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OmeCompIeqcJeqcO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DAngleXIecJec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DAngleYIecJec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DAngleXIeqcJec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DAngleYIeqcJec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DAngleYIeqcJeqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DAngleXIeqcJeqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemIJ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ForceTorqueIJ.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

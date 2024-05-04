@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "DistancexyConstraintIJ.h"
@@ -15,7 +15,7 @@ namespace MbD {
 	{
 		//pGpXI pGpEI ppGpXIpXI ppGpXIpEI ppGpEIpEI iqXI iqEI 
 	public:
-		DistancexyConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj);
+		DistancexyConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : DistancexyConstraintIJ(frmi, frmj) {}
 		static std::shared_ptr<DistancexyConstraintIqcJc> With(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void addToJointForceI(FColDsptr col) override;

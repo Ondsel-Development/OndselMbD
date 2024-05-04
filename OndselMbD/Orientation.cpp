@@ -27,10 +27,10 @@ void MbD::Orientation::initializeGlobally()
 {
 	if (constraints->empty()) {
 		initMotions();
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 1, 0));
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 0));
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 1));
-		this->root()->hasChanged = true;
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 1, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 1));
+		root()->hasChanged = true;
 	}
 	else {
 		PrescribedMotion::initializeGlobally();

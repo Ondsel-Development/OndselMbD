@@ -106,9 +106,9 @@ Symsptr MbD::FunctionX::integrateWRTx()
 	return Symsptr();
 }
 
-void MbD::FunctionX::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+void MbD::FunctionX::createMbD()
 {
-	xx->createMbD(mbdSys, mbdUnits);
+	xx->createMbD();
 }
 
 double MbD::FunctionX::getValue()

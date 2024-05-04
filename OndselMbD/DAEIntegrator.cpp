@@ -204,9 +204,9 @@ void MbD::DAEIntegrator::useDAEStepStats(std::shared_ptr<SolverStatistics> stats
 
 void MbD::DAEIntegrator::run()
 {
-	this->preRun();
-	this->initializeLocally();
-	this->initializeGlobally();
+	preRun();
+	initializeLocally();
+	initializeGlobally();
 	if (hout > (4 * std::numeric_limits<double>::epsilon()) && (direction * tout < (direction * (tend + (0.1 * direction * hout))))) {
 		integrator->run();
 		auto startingintegrator = std::dynamic_pointer_cast<StartingBasicDAEIntegrator>(integrator);
@@ -214,7 +214,7 @@ void MbD::DAEIntegrator::run()
 		integrator = normalIntegrator;
 		integrator->run();
 	}
-	this->finalize();
-	this->reportStats();
-	this->postRun();
+	finalize();
+	reportStats();
+	postRun();
 }

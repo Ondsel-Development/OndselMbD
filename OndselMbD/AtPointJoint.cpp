@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-MbD::AtPointJoint::AtPointJoint(const char* str) : Joint(str)
-{
-	assert(false);
-}
-
 std::shared_ptr<AtPointJoint> MbD::AtPointJoint::With()
 {
 	auto inst = std::make_shared<AtPointJoint>();
@@ -33,7 +28,7 @@ std::shared_ptr<AtPointJoint> MbD::AtPointJoint::With(const char* str)
 
 void MbD::AtPointJoint::createAtPointConstraints()
 {
-	addConstraint(AtPointConstraintIJ::With(frmI, frmJ, 0));
-	addConstraint(AtPointConstraintIJ::With(frmI, frmJ, 1));
-	addConstraint(AtPointConstraintIJ::With(frmI, frmJ, 2));
+	addConstraint(AtPointConstraintIJ::With(efrmI, efrmJ, 0));
+	addConstraint(AtPointConstraintIJ::With(efrmI, efrmJ, 1));
+	addConstraint(AtPointConstraintIJ::With(efrmI, efrmJ, 2));
 }

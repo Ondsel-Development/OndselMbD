@@ -16,8 +16,9 @@ namespace MbD {
 		//
 	public:
 		Sine() = default;
-		Sine(Symsptr arg);
+		Sine(Symsptr arg) : FunctionX(arg) {}
 		static std::shared_ptr<Sine> With();
+		static std::shared_ptr<Sine> With(Symsptr arg);
 
 		double getValue() override;
 		Symsptr differentiateWRTx() override;

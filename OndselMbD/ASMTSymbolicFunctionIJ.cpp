@@ -17,11 +17,11 @@ MbD::ASMTSymbolicFunctionIJ::ASMTSymbolicFunctionIJ(std::shared_ptr<ASMTItemIJ> 
 	assert(false);
 }
 
-std::shared_ptr<KinematicIeJe> MbD::ASMTSymbolicFunctionIJ::mbdClassNew()
+std::shared_ptr<KinematicIJ> MbD::ASMTSymbolicFunctionIJ::mbdClassNew()
 {
 	//Should not create abstract class.
 	assert(false);
-	return std::shared_ptr<KinematicIeJe>();
+	return std::shared_ptr<KinematicIJ>();
 }
 
 void MbD::ASMTSymbolicFunctionIJ::withFrmIfrmJ(EndFrmsptr eFrmI, EndFrmsptr eFrmJ)
@@ -29,13 +29,19 @@ void MbD::ASMTSymbolicFunctionIJ::withFrmIfrmJ(EndFrmsptr eFrmI, EndFrmsptr eFrm
 	assert(false);
 }
 
-void MbD::ASMTSymbolicFunctionIJ::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+void MbD::ASMTSymbolicFunctionIJ::createMbD()
 {
-	auto eFrmI = std::static_pointer_cast<EndFramec>(geoIJ->markerI->mbdObject);
-	auto eFrmJ = std::static_pointer_cast<EndFramec>(geoIJ->markerJ->mbdObject);
+	auto eFrmI = std::static_pointer_cast<EndFrameqc>(geoIJ->markerI->mbdObject);
+	auto eFrmJ = std::static_pointer_cast<EndFrameqc>(geoIJ->markerJ->mbdObject);
 	auto kineIJ = mbdClassNew();
 	kineIJ->withFrmIfrmJ(eFrmI, eFrmJ);
 	auto distIeJe = MbDSymbolicFunction::With(kineIJ);
-	expression = Symbolic::times(distIeJe, sptrConstant(mbdUnits->length));
+	expression = Symbolic::times(distIeJe, sptrConstant(asmtUnit()));
 	xx = distIeJe;
+}
+
+double MbD::ASMTSymbolicFunctionIJ::asmtUnit()
+{
+	assert(false);
+	return 0.0;
 }

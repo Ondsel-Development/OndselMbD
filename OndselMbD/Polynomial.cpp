@@ -36,6 +36,20 @@ std::shared_ptr<Polynomial> MbD::Polynomial::With()
 	return inst;
 }
 
+std::shared_ptr<Polynomial> MbD::Polynomial::With(Symsptr var, std::shared_ptr<std::vector<double>> coeffs)
+{
+	auto inst = std::make_shared<Polynomial>(var, coeffs);
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<Polynomial> MbD::Polynomial::With(Symsptr var, std::shared_ptr<std::vector<Symsptr>> coeffs)
+{
+	auto inst = std::make_shared<Polynomial>(var, coeffs);
+	inst->initialize();
+	return inst;
+}
+
 Symsptr MbD::Polynomial::expandUntil(Symsptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
 {
 	auto newCoeffs = std::make_shared<std::vector<Symsptr>>();
@@ -45,7 +59,7 @@ Symsptr MbD::Polynomial::expandUntil(Symsptr, std::shared_ptr<std::unordered_set
 		auto newCoeff = coeff->expandUntil(coeff, set);
 		newCoeffs->push_back(newCoeff);
 	}
-	return std::make_shared<Polynomial>(xx, newCoeffs);
+	return Polynomial::With(xx, newCoeffs);
 }
 
 Symsptr MbD::Polynomial::simplifyUntil(Symsptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
@@ -57,7 +71,7 @@ Symsptr MbD::Polynomial::simplifyUntil(Symsptr, std::shared_ptr<std::unordered_s
 		auto newCoeff = coeff->simplifyUntil(coeff, set);
 		newCoeffs->push_back(newCoeff);
 	}
-	return std::make_shared<Polynomial>(xx, newCoeffs);
+	return Polynomial::With(xx, newCoeffs);
 }
 
 Symsptr MbD::Polynomial::differentiateWRTx()

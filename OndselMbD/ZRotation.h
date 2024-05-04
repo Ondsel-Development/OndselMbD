@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		ZRotation() {}
-		ZRotation(const char* str);
+		ZRotation(const char* str) : PrescribedMotion(str) {}
 		static std::shared_ptr<ZRotation> With();
 		static std::shared_ptr<ZRotation> With(const char* str);
 

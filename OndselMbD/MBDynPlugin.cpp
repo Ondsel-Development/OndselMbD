@@ -8,7 +8,7 @@ std::shared_ptr<MBDynPlugin> MbD::MBDynPlugin::newPlugin(std::string statement)
 	std::vector<std::string> tokens;
 	tokens = { "set:", "[", "node" };
 	if (lineHasTokens(statement, tokens)) {
-		return std::make_shared<MBDynNodePlugin>();
+		return MBDynNodePlugin::With();
 	}
 	assert(false);
 	return std::shared_ptr<MBDynPlugin>();

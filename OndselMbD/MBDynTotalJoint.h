@@ -25,7 +25,7 @@ namespace MbD {
 		void createASMT() override;
 		bool hasDOF();
 		bool hasFormulas();
-		std::shared_ptr<ASMTJoint> asmtClassNew() override;
+		std::shared_ptr<ASMTJoint> asmtJointNew();
 
 		std::vector<std::string> positionConstraints = std::vector<std::string>(3);
 		std::vector<std::string> orientationConstraints = std::vector<std::string>(3);

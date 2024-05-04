@@ -14,7 +14,9 @@ namespace MbD {
 	{
 	public:
 		MBDynStructural();
+		void initialize() override;
 		static std::shared_ptr<MBDynStructural> newStructural(std::string line);
+
 		void parseMBDyn(std::string line) override;
 		virtual void readPosition(std::vector<std::string>& args);
 		virtual void readOrientation(std::vector<std::string>& args);

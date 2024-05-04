@@ -16,12 +16,12 @@ void MbD::MBDynAbsoluteForce::parseMBDyn(std::string line)
 	forceString = line;
 	arguments = collectArgumentsFor("force", line);
 	readLabel(arguments);
-	type = readStringOffTop(arguments);
-	nodeName = readStringOffTop(arguments);
+	type = readStringNoSpacesOffTop(arguments);
+	nodeName = readStringNoSpacesOffTop(arguments);
 	rnmn = readPosition(arguments);
-	assert(readStringOffTop(arguments) == "single");
+	assert(readStringNoSpacesOffTop(arguments) == "single");
 	fn = readVector3(arguments);
-	assert(readStringOffTop(arguments) == "string");
+	assert(readStringNoSpacesOffTop(arguments) == "string");
 	formula = popOffTop(arguments);
 	formula = std::regex_replace(formula, std::regex("\""), "");
 }

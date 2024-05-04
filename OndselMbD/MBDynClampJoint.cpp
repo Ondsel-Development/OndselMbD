@@ -28,15 +28,19 @@ void MbD::MBDynClampJoint::parseMBDyn(std::string statement)
 
 void MbD::MBDynClampJoint::createASMT()
 {
+	auto asmtJoint = ASMTFixedJoint::With();
+	asmtAssembly()->addJoint(asmtJoint);
+	asmtItem = asmtJoint;
 	MBDynJoint::createASMT();
+
 }
 
 void MbD::MBDynClampJoint::readMarkerI(std::vector<std::string>& args)
 {
 	//mkr1 should be on assembly which doesn't exist in MBDyn
 	//mkr2 is on the node
-	mkr1 = std::make_shared<MBDynMarker>();
-	mkr1->owner = this;
+	mkr1 = MBDynMarker::With();
+	mkr1->container = this;
 	mkr1->nodeStr = "Assembly";
 	mkr1->rPmP = std::make_shared<FullColumn<double>>(3);
 	mkr1->aAPm = FullMatrix<double>::identitysptr(3);
@@ -45,13 +49,8 @@ void MbD::MBDynClampJoint::readMarkerI(std::vector<std::string>& args)
 void MbD::MBDynClampJoint::readMarkerJ(std::vector<std::string>& args)
 {
 	if (args.empty()) return;
-	mkr2 = std::make_shared<MBDynMarker>();
-	mkr2->owner = this;
-	mkr2->nodeStr = readStringOffTop(args);
+	mkr2 = MBDynMarker::With();
+	mkr2->container = this;
+	mkr2->nodeStr = readStringNoSpacesOffTop(args);
 	mkr2->parseMBDynClamp(args);
-}
-
-std::shared_ptr<ASMTJoint> MbD::MBDynClampJoint::asmtClassNew()
-{
-	return std::make_shared<ASMTFixedJoint>();
 }

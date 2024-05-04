@@ -19,7 +19,6 @@ namespace MbD {
 
 		void parseMBDyn(std::string line) override;
 		void createASMT() override;
-		std::shared_ptr<ASMTJoint> asmtClassNew() override;
 	};
 
 }

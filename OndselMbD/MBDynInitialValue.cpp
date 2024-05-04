@@ -16,7 +16,7 @@ std::shared_ptr<MBDynInitialValue> MbD::MBDynInitialValue::With()
 
 void MbD::MBDynInitialValue::initialize()
 {
-	assert(false);
+	//Do nothing.
 }
 
 void MbD::MBDynInitialValue::parseMBDyn(std::vector<std::string>& lines)
@@ -146,7 +146,7 @@ void MbD::MBDynInitialValue::readDerivativesCoefficient(std::vector<std::string>
 
 void MbD::MBDynInitialValue::createASMT()
 {
-	auto simulationParameters = std::make_shared<ASMTSimulationParameters>();
+	auto simulationParameters = ASMTSimulationParameters::With();
 	asmtItem = simulationParameters;
 	simulationParameters->settstart(initialTime);
 	simulationParameters->settend(finalTime);	//tstart == tend Initial Conditions only.

@@ -10,18 +10,18 @@
 
 #include <memory>
 
-#include "KinematicIeJe.h"
+#include "KinematicIJ.h"
 
 namespace MbD {
 	template<typename T>
 	class FullColumn;
 
-	class DirectionCosineIecJec : public KinematicIeJe
+	class DirectionCosineIecJec : public KinematicIJ
 	{
 		//aAijIeJe axisI axisJ aAjOIe aAjOJe 
 	public:
 		DirectionCosineIecJec();
-		DirectionCosineIecJec(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj) : KinematicIeJe(frmi, frmj), axisI(axisi), axisJ(axisj) {}
+		DirectionCosineIecJec(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj) : KinematicIJ(frmi, frmj), axisI(axisi), axisJ(axisj) {}
 		static std::shared_ptr<DirectionCosineIecJec> With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj);
 
 		void calcPostDynCorrectorIteration() override;

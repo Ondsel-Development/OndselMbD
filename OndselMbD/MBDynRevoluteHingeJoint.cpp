@@ -8,6 +8,7 @@
 
 #include "MBDynRevoluteHingeJoint.h"
 #include "ASMTRevoluteJoint.h"
+#include "ASMTAssembly.h"
 
 using namespace MbD;
 
@@ -25,10 +26,8 @@ void MbD::MBDynRevoluteHingeJoint::parseMBDyn(std::string line)
 
 void MbD::MBDynRevoluteHingeJoint::createASMT()
 {
+	auto asmtJoint = ASMTRevoluteJoint::With();
+	asmtAssembly()->addJoint(asmtJoint);
+	asmtItem = asmtJoint;
 	MBDynJoint::createASMT();
-}
-
-std::shared_ptr<ASMTJoint> MbD::MBDynRevoluteHingeJoint::asmtClassNew()
-{
-	return std::make_shared<ASMTRevoluteJoint>();
 }

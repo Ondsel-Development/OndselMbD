@@ -11,11 +11,6 @@
 
 using namespace MbD;
 
-MbD::PerpendicularJoint::PerpendicularJoint(const char*)
-{
-	assert(false);
-}
-
 std::shared_ptr<PerpendicularJoint> MbD::PerpendicularJoint::With()
 {
 	auto inst = std::make_shared<PerpendicularJoint>();
@@ -34,10 +29,10 @@ void MbD::PerpendicularJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 2));
-		this->root()->hasChanged = true;
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 2));
+		root()->hasChanged = true;
 	}
 	else {
-		Joint::initializeGlobally();
+		JointIJ::initializeGlobally();
 	}
 }

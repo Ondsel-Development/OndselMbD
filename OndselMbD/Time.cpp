@@ -15,7 +15,7 @@ using namespace MbD;
 Time::Time()
 {
 	std::string str = "t";
-	this->setName(str);
+	setName(str);
 }
 
 std::shared_ptr<Time> MbD::Time::With()

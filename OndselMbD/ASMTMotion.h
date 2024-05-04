@@ -19,10 +19,12 @@ namespace MbD {
 		static std::shared_ptr<ASMTMotion> With();
 		
 		void readMotionSeries(std::vector<std::string>& lines);
-		virtual void initMarkers();
+		void initMarkers();
 		void storeOnLevel(std::ofstream& os, size_t level) override;
 		void storeOnTimeSeries(std::ofstream& os) override;
+		bool isMotion() override;
 
+		std::string motionJoint;
 		std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueData>>> motionSeries;
 
 	};

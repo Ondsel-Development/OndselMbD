@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-MbD::DistanceConstraintIqcJqc::DistanceConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : DistanceConstraintIqcJc(frmi, frmj)
-{
-	assert(false);
-}
-
 std::shared_ptr<DistanceConstraintIqcJqc> MbD::DistanceConstraintIqcJqc::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	auto inst = std::make_shared<DistanceConstraintIqcJqc>(frmi, frmj);
@@ -43,8 +38,8 @@ void MbD::DistanceConstraintIqcJqc::fillAccICIterError(FColDsptr col)
 	DistanceConstraintIqcJc::fillAccICIterError(col);
 	col->atplusFullVectortimes(iqXJ, pGpXJ, lam);
 	col->atplusFullVectortimes(iqEJ, pGpEJ, lam);
-	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
-	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(efrmI);
+	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	auto qXdotI = frmIeqc->qXdot();
 	auto qEdotI = frmIeqc->qEdot();
 	auto qXdotJ = frmJeqc->qXdot();
@@ -113,13 +108,13 @@ void MbD::DistanceConstraintIqcJqc::fillVelICJacob(SpMatDsptr mat)
 
 void MbD::DistanceConstraintIqcJqc::init_distIeJe()
 {
-	distIeJe = DistIeqcJeqc::With(frmI, frmJ);
+	distIeJe = DistIeqcJeqc::With(efrmI, efrmJ);
 }
 
 void MbD::DistanceConstraintIqcJqc::useEquationNumbers()
 {
 	DistanceConstraintIqcJc::useEquationNumbers();
-	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	iqXJ = frmJeqc->iqX();
 	iqEJ = frmJeqc->iqE();
 }

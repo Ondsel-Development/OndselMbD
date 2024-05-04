@@ -14,8 +14,8 @@
 #include "ASMTConstantGravity.h"
 #include "ASMTSimulationParameters.h"
 #include "ASMTAnimationParameters.h"
-#include "ASMTTime.h"
 #include "Units.h"
+#include "System.h"
 
 namespace MbD {
 	class ASMTPart;
@@ -27,6 +27,7 @@ namespace MbD {
 	class SystemSolver;
 	class ASMTItemIJ;
 	class MBDynSystem;
+	class ASMTTime;
 
 	class ASMTAssembly : public ASMTSpatialContainer
 	{
@@ -78,13 +79,9 @@ namespace MbD {
 		void outputFor(AnalysisType type);
 		void preMbDrun(std::shared_ptr<System> mbdSys);
 		void postMbDrun();
-		void calcCharacteristicDimensions();
-		double calcCharacteristicTime() const;
-		double calcCharacteristicMass() const;
-		double calcCharacteristicLength() const;
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTItemIJ>>> connectorList() const;
 		void deleteMbD() override;
-		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+		void createMbD() override;
 		void outputFile(std::string filename);
 		void storeOnLevel(std::ofstream& os, size_t level) override;
 
@@ -108,9 +105,11 @@ namespace MbD {
 		void updateFromMbD() override;
 		void compareResults(AnalysisType type) override;
 		void outputResults(AnalysisType type) override;
+		void addTime(std::shared_ptr<ASMTTime> time);
 		void addPart(std::shared_ptr<ASMTPart> part);
 		void addJoint(std::shared_ptr<ASMTJoint> joint);
 		void addMotion(std::shared_ptr<ASMTMotion> motion);
+		void addForceTorque(std::shared_ptr<ASMTForceTorque> motion);
 		void setConstantGravity(std::shared_ptr<ASMTConstantGravity> constantGravity);
 		void setSimulationParameters(std::shared_ptr<ASMTSimulationParameters> simulationParameters);
 		std::shared_ptr<ASMTPart> partNamed(std::string partName) const;
@@ -135,14 +134,14 @@ namespace MbD {
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTJoint>>> joints = std::make_shared<std::vector<std::shared_ptr<ASMTJoint>>>();
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTMotion>>> motions = std::make_shared<std::vector<std::shared_ptr<ASMTMotion>>>();
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTForceTorque>>> forcesTorques = std::make_shared<std::vector<std::shared_ptr<ASMTForceTorque>>>();
-		std::shared_ptr<ASMTConstantGravity> constantGravity = std::make_shared<ASMTConstantGravity>();
-		std::shared_ptr<ASMTSimulationParameters> simulationParameters = std::make_shared<ASMTSimulationParameters>();
-		std::shared_ptr<ASMTAnimationParameters> animationParameters = std::make_shared<ASMTAnimationParameters>();
+		std::shared_ptr<ASMTConstantGravity> constantGravity = nullptr;
+		std::shared_ptr<ASMTSimulationParameters> simulationParameters = ASMTSimulationParameters::With();
+		std::shared_ptr<ASMTAnimationParameters> animationParameters = ASMTAnimationParameters::With();
 		std::shared_ptr<std::vector<double>> itimes = std::make_shared<std::vector<double>>();
 		std::shared_ptr<std::vector<double>> times = std::make_shared<std::vector<double>>();
-		std::shared_ptr<ASMTTime> asmtTime = std::make_shared<ASMTTime>();
-		std::shared_ptr<Units> mbdUnits = std::make_shared<Units>();
-		std::shared_ptr<System> mbdSystem;
+		std::shared_ptr<ASMTTime> asmtTime;
+		std::shared_ptr<Units> asmtUnits = Units::With();
+		std::shared_ptr<System> mbdSystem = System::With();
 		MBDynSystem* mbdynItem = nullptr;
 	};
 }

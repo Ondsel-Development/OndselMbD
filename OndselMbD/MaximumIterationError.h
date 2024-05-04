@@ -15,7 +15,7 @@ namespace MbD {
 	{
 
 	public:
-		explicit MaximumIterationError(const std::string& msg);
+		explicit MaximumIterationError(const std::string& msg) : std::runtime_error(msg) {}
 	};
 }
 

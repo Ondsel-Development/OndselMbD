@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-MbD::SphSphJoint::SphSphJoint(const char* str) : CompoundJoint(str)
-{
-	assert(false);
-}
-
 std::shared_ptr<SphSphJoint> MbD::SphSphJoint::With()
 {
 	auto inst = std::make_shared<SphSphJoint>();
@@ -35,10 +30,10 @@ void MbD::SphSphJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		auto distxyIJ = DistanceConstraintIJ::With(frmI, frmJ);
+		auto distxyIJ = DistanceConstraintIJ::With(efrmI, efrmJ);
 		distxyIJ->setConstant(distanceIJ);
 		addConstraint(distxyIJ);
-		this->root()->hasChanged = true;
+		root()->hasChanged = true;
 	}
 	else {
 		CompoundJoint::initializeGlobally();

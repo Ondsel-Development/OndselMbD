@@ -27,7 +27,7 @@ void AtPointConstraintIqctJqc::initializeGlobally()
 
 void AtPointConstraintIqctJqc::initriIeJeO()
 {
-	riIeJeO = DispCompIeqctJeqcO::With(frmI, frmJ, axis);
+	riIeJeO = DispCompIeqctJeqcO::With(efrmI, efrmJ, axis);
 }
 
 void AtPointConstraintIqctJqc::calcPostDynCorrectorIteration()
@@ -57,7 +57,7 @@ void AtPointConstraintIqctJqc::fillVelICError(FColDsptr col)
 void AtPointConstraintIqctJqc::fillAccICIterError(FColDsptr col)
 {
 	AtPointConstraintIqcJqc::fillAccICIterError(col);
-	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	auto qEdotI = efrmIqc->qEdot();
 	double sum = (ppGpEIpt->timesFullColumn(qEdotI)) * 2.0;
 	sum += ppGptpt;

@@ -24,6 +24,13 @@ std::shared_ptr<LogN> MbD::LogN::With()
 	return inst;
 }
 
+std::shared_ptr<LogN> MbD::LogN::With(Symsptr arg)
+{
+	auto inst = std::make_shared<LogN>(arg);
+	inst->initialize();
+	return inst;
+}
+
 double MbD::LogN::getValue()
 {
 	return std::log(xx->getValue());
@@ -31,7 +38,7 @@ double MbD::LogN::getValue()
 
 Symsptr MbD::LogN::copyWith(Symsptr arg)
 {
-	return std::make_shared<LogN>(arg);
+	return LogN::With(arg);
 }
 
 std::ostream& MbD::LogN::printOn(std::ostream& s) const

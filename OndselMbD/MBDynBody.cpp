@@ -18,7 +18,10 @@ std::shared_ptr<MBDynBody> MbD::MBDynBody::With()
 
 void MbD::MBDynBody::initialize()
 {
-	assert(false);
+	masses = std::make_shared<std::vector<double>>();
+	rPcmPs = std::make_shared<std::vector<FColDsptr>>();
+	aJmats = std::make_shared<std::vector<FMatDsptr>>();
+	aAPcms = std::make_shared<std::vector<FMatDsptr>>();
 }
 
 void MbD::MBDynBody::parseMBDyn(std::string line)
@@ -26,11 +29,20 @@ void MbD::MBDynBody::parseMBDyn(std::string line)
 	bodyString = line;
 	arguments = collectArgumentsFor("body", line);
 	readLabel(arguments);
-	nodeName = readStringOffTop(arguments);
-	readMass(arguments);
-	rPcmP = readPosition(arguments);
-	readInertiaMatrix(arguments);
-	aAPcm = readOrientation(arguments);
+	nodeName = readStringNoSpacesOffTop(arguments);
+	if (arguments[0].find("condense") != std::string::npos) {
+		arguments.erase(arguments.begin());
+		auto str = readStringNoSpacesOffTop(arguments);
+		auto num_masses = readInt(str);
+		assert(num_masses == 1);
+		for (size_t i = 0; i < num_masses; i++)
+		{
+			readMassProps(arguments);
+		}
+	}
+	else {
+		readMassProps(arguments);
+	}
 }
 
 void MbD::MBDynBody::readMass(std::vector<std::string>& args)
@@ -41,6 +53,13 @@ void MbD::MBDynBody::readMass(std::vector<std::string>& args)
 	parser->parseUserFunction(userFunc);
 	auto sym = parser->stack->top();
 	mass = sym->getValue();
+	masses->push_back(mass);
+}
+
+void MbD::MBDynBody::readPositionCM(std::vector<std::string>& args)
+{
+	rPcmP = readPosition(args);
+	rPcmPs->push_back(rPcmP);
 }
 
 void MbD::MBDynBody::readInertiaMatrix(std::vector<std::string>& args)
@@ -66,6 +85,21 @@ void MbD::MBDynBody::readInertiaMatrix(std::vector<std::string>& args)
 	else {
 		aJmat = readBasicOrientation(args);
 	}
+	aJmats->push_back(aJmat);
+}
+
+void MbD::MBDynBody::readOrientationCM(std::vector<std::string>& args)
+{
+	aAPcm = readOrientation(args);
+	aAPcms->push_back(aAPcm);
+}
+
+void MbD::MBDynBody::readMassProps(std::vector<std::string>& args)
+{
+	readMass(args);
+	readPositionCM(args);
+	readInertiaMatrix(args);
+	readOrientationCM(args);
 }
 
 void MbD::MBDynBody::createASMT()

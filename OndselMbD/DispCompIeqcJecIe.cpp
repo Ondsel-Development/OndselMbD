@@ -11,14 +11,6 @@
 
 using namespace MbD;
 
-MbD::DispCompIeqcJecIe::DispCompIeqcJecIe(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis) : DispCompIecJecIe(frmi, frmj, axis)
-{
-	priIeJeIepXI = FullRow<double>::With(3);
-	priIeJeIepEI = FullRow<double>::With(4);
-	ppriIeJeIepXIpEI = FullMatrix<double>::With(3, 4);
-	ppriIeJeIepEIpEI = FullMatrix<double>::With(4, 4);
-}
-
 std::shared_ptr<DispCompIeqcJecIe> MbD::DispCompIeqcJecIe::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis)
 {
 	auto inst = std::make_shared<DispCompIeqcJecIe>(frmi, frmj, axis);
@@ -37,7 +29,7 @@ void MbD::DispCompIeqcJecIe::initialize()
 
 void MbD::DispCompIeqcJecIe::calc_ppvaluepEIpEI()
 {
-	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	auto mprIeJeOpEIT = frmIeqc->prOeOpE->transpose();
 	auto mpprIeJeOpEIpEI = frmIeqc->pprOeOpEpE;
 	for (size_t i = 0; i < 4; i++)
@@ -71,7 +63,7 @@ void MbD::DispCompIeqcJecIe::calc_ppvaluepXIpEI()
 
 void MbD::DispCompIeqcJecIe::calc_pvaluepEI()
 {
-	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	pAjOIepEIT = frmIeqc->pAjOepET(axis);
 	auto mprIeJeOpEIT = frmIeqc->prOeOpE->transpose();
 	for (size_t i = 0; i < 4; i++)
@@ -100,7 +92,7 @@ void MbD::DispCompIeqcJecIe::calcPostDynCorrectorIteration()
 
 void MbD::DispCompIeqcJecIe::initializeGlobally()
 {
-	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	ppAjOIepEIpEI = frmIeqc->ppAjOepEpE(axis);
 }
 

@@ -8,3 +8,18 @@ std::shared_ptr<ASMTSymbolicFunction> MbD::ASMTSymbolicFunction::With()
 	inst->initialize();
 	return inst;
 }
+
+std::shared_ptr<Units> MbD::ASMTSymbolicFunction::mbdUnits()
+{
+	return container->mbdUnits();
+}
+
+std::shared_ptr<Units> MbD::ASMTSymbolicFunction::asmtUnits()
+{
+	return container->asmtUnits();
+}
+
+std::shared_ptr<System> MbD::ASMTSymbolicFunction::mbdSys()
+{
+	return container->mbdSys();
+}

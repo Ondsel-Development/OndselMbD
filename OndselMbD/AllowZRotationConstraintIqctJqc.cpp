@@ -31,8 +31,8 @@ std::shared_ptr<AllowZRotationConstraintIqctJqc> MbD::AllowZRotationConstraintIq
 
 void MbD::AllowZRotationConstraintIqctJqc::postInput()
 {
-	auto eqctI = std::static_pointer_cast<EndFrameqct>(frmI);
-	auto aAImJe = eqctI->getMarkerFrame()->aAOm->transposeTimesFullMatrix(frmJ->aAOe);
+	auto eqctI = std::static_pointer_cast<EndFrameqct>(efrmI);
+	auto aAImJe = eqctI->getMarkerFrame()->aAOm->transposeTimesFullMatrix(efrmJ->aAOe);
 	auto aEulerAngleszxz = aAImJe->eulerAngleszxz();
 	auto the1z = aEulerAngleszxz->at(1);
 	auto the2x = aEulerAngleszxz->at(2);

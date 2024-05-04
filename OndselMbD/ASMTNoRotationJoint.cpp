@@ -19,7 +19,7 @@ std::shared_ptr<ASMTNoRotationJoint> MbD::ASMTNoRotationJoint::With()
 	return inst;
 }
 
-std::shared_ptr<Joint> MbD::ASMTNoRotationJoint::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTNoRotationJoint::mbdClassNew()
 {
 	return NoRotationJoint::With();
 }

@@ -18,6 +18,7 @@ namespace MbD {
 		ArcTan() = default;
 		ArcTan(Symsptr arg);
 		static std::shared_ptr<ArcTan> With();
+		static std::shared_ptr<ArcTan> With(Symsptr arg);
 
 		double getValue() override;
 		Symsptr copyWith(Symsptr arg) override;

@@ -15,7 +15,7 @@ namespace MbD {
 	{
 		//pGpEI ppGpEIpEI iqEI 
 	public:
-		ConstVelConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj);
+		ConstVelConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : ConstVelConstraintIJ(frmi, frmj) {}
 		static std::shared_ptr<ConstVelConstraintIqcJc> With(EndFrmsptr frmi, EndFrmsptr frmj);
 		void initialize() override;
 

@@ -28,19 +28,16 @@ void MbD::MBDynAxialRotationJoint::parseMBDyn(std::string line)
 
 void MbD::MBDynAxialRotationJoint::createASMT()
 {
+	auto asmtJoint = ASMTRevoluteJoint::With();
+	asmtAssembly()->addJoint(asmtJoint);
+	asmtItem = asmtJoint;
 	MBDynJoint::createASMT();
-	auto asmtAsm = asmtAssembly();
-	asmtMotion = std::make_shared<ASMTRotationalMotion>();
+	asmtMotion = ASMTRotationalMotion::With();
 	asmtMotion->setName(label + "Motion");
 	asmtMotion->setMotionJoint(asmtItem->fullName(""));
 	asmtMotion->setRotationZ(asmtFormulaIntegral(formula));
-	asmtAsm->addMotion(asmtMotion);
+	asmtAssembly()->addMotion(asmtMotion);
 	return;
-}
-
-std::shared_ptr<ASMTJoint> MbD::MBDynAxialRotationJoint::asmtClassNew()
-{
-	return std::make_shared<ASMTRevoluteJoint>();
 }
 
 void MbD::MBDynAxialRotationJoint::outputLine(size_t i, std::ostream& os)

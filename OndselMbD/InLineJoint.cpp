@@ -10,11 +10,6 @@
 
 using namespace MbD;
 
-MbD::InLineJoint::InLineJoint(const char*)
-{
-	assert(false);
-}
-
 void MbD::InLineJoint::initializeGlobally()
 {
 	//Subclasses must implement.
@@ -23,6 +18,6 @@ void MbD::InLineJoint::initializeGlobally()
 
 void MbD::InLineJoint::createInLineConstraints()
 {
-	addConstraint(TranslationConstraintIJ::With(frmI, frmJ, 0));
-	addConstraint(TranslationConstraintIJ::With(frmI, frmJ, 1));
+	addConstraint(TranslationConstraintIJ::With(efrmI, efrmJ, 0));
+	addConstraint(TranslationConstraintIJ::With(efrmI, efrmJ, 1));
 }

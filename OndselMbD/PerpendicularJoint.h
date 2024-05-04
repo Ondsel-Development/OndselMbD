@@ -8,15 +8,15 @@
  
 #pragma once
 
-#include "Joint.h"
+#include "JointIJ.h"
 
 namespace MbD {
-	class PerpendicularJoint : public Joint
+	class PerpendicularJoint : public JointIJ
 	{
 		//
 	public:
 		PerpendicularJoint() {}
-		PerpendicularJoint(const char* str);
+		PerpendicularJoint(const char* str) : JointIJ(str) {}
 		static std::shared_ptr<PerpendicularJoint> With();
 		static std::shared_ptr<PerpendicularJoint> With(const char* str);
 

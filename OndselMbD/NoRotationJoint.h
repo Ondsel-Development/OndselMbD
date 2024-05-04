@@ -8,15 +8,15 @@
  
 #pragma once
 
-#include "Joint.h"
+#include "JointIJ.h"
 
 namespace MbD {
-	class NoRotationJoint : public Joint
+	class NoRotationJoint : public JointIJ
 	{
 		//
 	public:
 		NoRotationJoint() {}
-		NoRotationJoint(const char* str);
+		NoRotationJoint(const char* str) : JointIJ(str) {}
 		static std::shared_ptr<NoRotationJoint> With();
 		static std::shared_ptr<NoRotationJoint> With(const char* str);
 

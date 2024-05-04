@@ -22,15 +22,17 @@
 
 #include "Item.h"
 #include "MbDMath.h"
+#include "ConstantGravity.h"
+#include "Units.h"
 
 namespace MbD {
 	class Part;
-	class Joint;
+	class JointIJ;
 	class SystemSolver;
 	class Time;
 	class Constraint;
 	class PrescribedMotion;
-	class ForceTorqueItem;
+	class ForceTorqueIJ;
 	class ExternalSystem;
 	class SolverStatistics;
 
@@ -53,7 +55,7 @@ namespace MbD {
 		void runKINEMATIC(std::shared_ptr<System> self);
 		void runDYNAMIC(std::shared_ptr<System> self);
 		std::shared_ptr<std::vector<std::string>> discontinuitiesAtIC();
-		void jointsMotionsDo(const std::function <void(std::shared_ptr<Joint>)>& f) const;
+		void jointsMotionsDo(const std::function <void(std::shared_ptr<JointIJ>)>& f) const;
 		void partsJointsMotionsDo(const std::function <void(std::shared_ptr<Item>)>& f) const;
 		void partsJointsMotionsForcesTorquesDo(const std::function <void(std::shared_ptr<Item>)>& f) const;
 		void logString(std::string& str) override;
@@ -64,11 +66,16 @@ namespace MbD {
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpendicularConstraints() const;
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allRedundantConstraints() const;
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints() const;
+		std::shared_ptr<std::vector<std::shared_ptr<ItemIJ>>> connectorList() const;
 		void addPart(std::shared_ptr<Part> part);
-		void addJoint(std::shared_ptr<Joint> joint);
+		void addJoint(std::shared_ptr<JointIJ> joint);
 		void addMotion(std::shared_ptr<PrescribedMotion> motion);
-		void addForceTorque(std::shared_ptr<ForceTorqueItem> forTor);
-
+		void addForceTorque(std::shared_ptr<ForceTorqueIJ> forTor);
+		void addGravity(std::shared_ptr<ConstantGravity> grav);
+		void calcCharacteristicDimensions();
+		double calcCharacteristicTime() const;
+		double calcCharacteristicMass() const;
+		double calcCharacteristicLength() const;
 		double maximumMass() const;
 		double maximumMomentOfInertia() const;
 		double translationLimit() const;
@@ -79,10 +86,12 @@ namespace MbD {
 
 		std::shared_ptr<ExternalSystem> externalSystem;
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts;
-		std::shared_ptr<std::vector<std::shared_ptr<Joint>>> jointsMotions;
-		std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueItem>>> forcesTorques;
+		std::shared_ptr<std::vector<std::shared_ptr<JointIJ>>> jointsMotions;
+		std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueIJ>>> forcesTorques;
+		std::shared_ptr<std::vector<std::shared_ptr<ConstantGravity>>> fields;
 		bool hasChanged = false;
 		std::shared_ptr<SystemSolver> systemSolver;
+		std::shared_ptr<Units> mbdUnits = Units::With();
 
 		std::shared_ptr<Time> time;
 	};

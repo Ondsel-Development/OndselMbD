@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-MbD::RevCylJoint::RevCylJoint(const char* str) : CompoundJoint(str)
-{
-	assert(false);
-}
-
 std::shared_ptr<RevCylJoint> MbD::RevCylJoint::With()
 {
 	auto inst = std::make_shared<RevCylJoint>();
@@ -35,12 +30,12 @@ void MbD::RevCylJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		auto distxyIJ = DistancexyConstraintIJ::With(frmI, frmJ);
+		auto distxyIJ = DistancexyConstraintIJ::With(efrmI, efrmJ);
 		distxyIJ->setConstant(distanceIJ);
 		addConstraint(distxyIJ);
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 0));
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 1));
-		this->root()->hasChanged = true;
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 1));
+		root()->hasChanged = true;
 	}
 	else {
 		CompoundJoint::initializeGlobally();

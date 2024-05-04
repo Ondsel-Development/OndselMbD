@@ -61,9 +61,9 @@ void BasicIntegrator::initializeGlobally()
 	//"Get info from system and prepare for start of simulation."
 	//"Integrator asks system for info. Not system setting integrator."
 
-	this->sett(system->tstart);
-	this->direction = system->direction;
-	this->orderMax = system->orderMax();
+	sett(system->tstart);
+	direction = system->direction;
+	orderMax = system->orderMax();
 }
 
 void BasicIntegrator::setSystem(Solver* sys)
@@ -82,10 +82,10 @@ void BasicIntegrator::incrementTime()
 
 	if (tpast->size() > (orderMax + 1)) { tpast->pop_back(); }
 	auto istepNew = istep + 1;
-	this->iStep(istepNew);
-	this->setorder(orderNew);
+	iStep(istepNew);
+	setorder(orderNew);
 	h = hnew;
-	this->settnew(t + (direction * h));
+	settnew(t + (direction * h));
 	calcOperatorMatrix();
 	system->incrementTime(tnew);
 }
@@ -102,14 +102,14 @@ void BasicIntegrator::logString(std::string& str)
 
 void BasicIntegrator::run()
 {
-	this->preRun();
-	this->initializeLocally();
-	this->initializeGlobally();
-	this->firstStep();
-	this->subsequentSteps();
-	this->finalize();
-	this->reportStats();
-	this->postRun();
+	preRun();
+	initializeLocally();
+	initializeGlobally();
+	firstStep();
+	subsequentSteps();
+	finalize();
+	reportStats();
+	postRun();
 }
 
 void BasicIntegrator::selectOrder()
@@ -147,7 +147,7 @@ void BasicIntegrator::setorder(size_t o)
 void BasicIntegrator::settnew(double t)
 {
 	tnew = t;
-	this->settime(t);
+	settime(t);
 }
 
 void BasicIntegrator::sett(double tt)
@@ -174,5 +174,5 @@ FColDsptr BasicIntegrator::yDerivat(size_t n, double time)
 
 void BasicIntegrator::subsequentSteps()
 {
-	while (_continue) { this->nextStep(); }
+	while (_continue) { nextStep(); }
 }

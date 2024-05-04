@@ -165,8 +165,8 @@ void MbD::DistxyIeqcJec::calcPostDynCorrectorIteration()
 
 void MbD::DistxyIeqcJec::init_xyIeJeIe()
 {
-	xIeJeIe = DispCompIeqcJecIe::With(frmI, frmJ, 0);
-	yIeJeIe = DispCompIeqcJecIe::With(frmI, frmJ, 1);
+	xIeJeIe = DispCompIeqcJecIe::With(efrmI, efrmJ, 0);
+	yIeJeIe = DispCompIeqcJecIe::With(efrmI, efrmJ, 1);
 }
 
 FMatDsptr MbD::DistxyIeqcJec::ppvaluepEIpEI()

@@ -53,7 +53,7 @@ namespace MbD {
 		virtual void addTerm(Symsptr trm);
 		virtual double getValue();
 		virtual void setValue(double val);
-		virtual void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits);
+		virtual void createMbD();
 		virtual Symsptr clonesptr();
 		std::shared_ptr<Constant> sptrConstant(double value);
 		virtual bool isVariable();

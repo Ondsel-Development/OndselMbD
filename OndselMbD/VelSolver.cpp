@@ -39,8 +39,8 @@ void VelSolver::handleSingularMatrix()
 	else {
 		str = typeid(r).name();
 		if (str.find("GESpMatParPvPrecise") != std::string::npos) {
-			this->logSingularMatrixMessage();
-			matrixSolver = this->matrixSolverClassNew();
+			logSingularMatrixMessage();
+			matrixSolver = matrixSolverClassNew();
 		}
 		else {
 			assert(false);
@@ -62,10 +62,10 @@ std::shared_ptr<MatrixSolver> VelSolver::matrixSolverClassNew()
 void VelSolver::solveEquations()
 {
 	try {
-		this->basicSolveEquations();
+		basicSolveEquations();
 	}
 	catch (SingularMatrixError ex) {
-		this->handleSingularMatrix();
+		handleSingularMatrix();
 	}
 }
 

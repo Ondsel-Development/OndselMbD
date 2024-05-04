@@ -72,7 +72,7 @@ void NewtonRaphson::iterate()
 	//	"
 
 	iterNo = SIZE_MAX;
-	this->fillY();
+	fillY();
 	calcyNorm();
 	yNorms->push_back(yNorm);
 
@@ -81,7 +81,7 @@ void NewtonRaphson::iterate()
 		fillPyPx();
 		solveEquations();
 		calcDXNormImproveRootCalcYNorm();
-		if (this->isConverged()) {
+		if (isConverged()) {
 			//std::cout << "iterNo = " << iterNo << std::endl;
 			break;
 		}
@@ -92,7 +92,7 @@ void NewtonRaphson::incrementIterNo()
 {
 	iterNo++;
 	if (iterNo > iterMax) {
-		this->reportStats();
+		reportStats();
 		throw MaximumIterationError("");
 	}
 }
@@ -141,7 +141,7 @@ void MbD::NewtonRaphson::xEqualxoldPlusdx()
 
 bool NewtonRaphson::isConverged()
 {
-	return this->isConvergedToNumericalLimit();
+	return isConvergedToNumericalLimit();
 }
 
 void NewtonRaphson::askSystemToUpdate()
@@ -189,11 +189,11 @@ void NewtonRaphson::calcDXNormImproveRootCalcYNorm()
 {
 	calcdxNorm();
 	dxNorms->push_back(dxNorm);
-	this->updatexold();
-	this->xEqualxoldPlusdx();
-	this->passRootToSystem();
-	this->askSystemToUpdate();
-	this->fillY();
+	updatexold();
+	xEqualxoldPlusdx();
+	passRootToSystem();
+	askSystemToUpdate();
+	fillY();
 	calcyNorm();
 	yNorms->push_back(yNorm);
 	yNormOld = yNorm;

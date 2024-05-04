@@ -13,10 +13,10 @@
 namespace MbD {
 	class CylindricalJoint : public InLineJoint
 	{
-		//frmI frmJ constraints friction 
+		//efrmI efrmJ constraints friction 
 	public:
 		CylindricalJoint() {}
-		CylindricalJoint(const char* str);
+		CylindricalJoint(const char* str) : InLineJoint(str) {}
 		static std::shared_ptr<CylindricalJoint> With();
 		static std::shared_ptr<CylindricalJoint> With(const char* str);
 		

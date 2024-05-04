@@ -78,7 +78,7 @@ void Solver::logString(std::string&)
 void Solver::logString(const char* chars)
 {
 	std::string str = chars;
-	this->logString(str);
+	logString(str);
 }
 
 void MbD::Solver::setSystem(Solver*)

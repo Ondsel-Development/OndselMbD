@@ -27,7 +27,7 @@ void AtPointConstraintIqcJqc::initializeGlobally()
 
 void AtPointConstraintIqcJqc::initriIeJeO()
 {
-	riIeJeO = DispCompIeqcJeqcO::With(frmI, frmJ, axis);
+	riIeJeO = DispCompIeqcJeqcO::With(efrmI, efrmJ, axis);
 }
 
 void AtPointConstraintIqcJqc::calcPostDynCorrectorIteration()
@@ -39,7 +39,7 @@ void AtPointConstraintIqcJqc::calcPostDynCorrectorIteration()
 void AtPointConstraintIqcJqc::useEquationNumbers()
 {
 	AtPointConstraintIqcJc::useEquationNumbers();
-	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	iqXJminusOnePlusAxis = frmJeqc->iqX() + axis;
 	iqEJ = frmJeqc->iqE();
 }
@@ -97,7 +97,7 @@ void AtPointConstraintIqcJqc::fillAccICIterError(FColDsptr col)
 	AtPointConstraintIqcJc::fillAccICIterError(col);
 	col->atplusNumber(iqXJminusOnePlusAxis, lam);
 	col->atplusFullVectortimes(iqEJ, pGpEJ, lam);
-	auto efrmJqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto efrmJqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	auto qEdotJ = efrmJqc->qEdot();
 	auto sum = efrmJqc->qXddot()->at(axis);
 	sum += pGpEJ->timesFullColumn(efrmJqc->qEddot());

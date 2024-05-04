@@ -8,6 +8,7 @@
 
 #include "MBDynSphericalHingeJoint.h"
 #include "ASMTSphericalJoint.h"
+#include "ASMTAssembly.h"
 
 using namespace MbD;
 
@@ -25,10 +26,8 @@ void MbD::MBDynSphericalHingeJoint::parseMBDyn(std::string line)
 
 void MbD::MBDynSphericalHingeJoint::createASMT()
 {
+	auto asmtJoint = ASMTSphericalJoint::With();
+	asmtAssembly()->addJoint(asmtJoint);
+	asmtItem = asmtJoint;
 	MBDynJoint::createASMT();
-}
-
-std::shared_ptr<ASMTJoint> MbD::MBDynSphericalHingeJoint::asmtClassNew()
-{
-	return std::make_shared<ASMTSphericalJoint>();
 }

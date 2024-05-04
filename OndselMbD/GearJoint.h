@@ -8,15 +8,15 @@
  
 #pragma once
 
-#include "Joint.h"
+#include "JointIJ.h"
 
 namespace MbD {
-	class GearJoint : public Joint
+	class GearJoint : public JointIJ
 	{
 		//radiusI radiusJ aConstant 
 	public:
 		GearJoint() {}
-		GearJoint(const char* str);
+		GearJoint(const char* str) : JointIJ(str) {}
 		static std::shared_ptr<GearJoint> With();
 		static std::shared_ptr<GearJoint> With(const char* str);
 		

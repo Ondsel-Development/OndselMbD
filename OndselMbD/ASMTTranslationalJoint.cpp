@@ -19,7 +19,7 @@ std::shared_ptr<ASMTTranslationalJoint> MbD::ASMTTranslationalJoint::With()
 	return inst;
 }
 
-std::shared_ptr<Joint> MbD::ASMTTranslationalJoint::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTTranslationalJoint::mbdClassNew()
 {
 	return TranslationalJoint::With();
 }

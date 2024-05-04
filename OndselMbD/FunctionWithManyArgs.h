@@ -27,7 +27,7 @@ namespace MbD {
 		static std::shared_ptr<FunctionWithManyArgs> With();
 		
 		std::shared_ptr<std::vector<Symsptr>> getTerms() override;
-		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+		void createMbD() override;
 		void arguments(Symsptr args) override;
 		bool isConstant() override;
 		void fillKineIJs(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> kineIJs) override;

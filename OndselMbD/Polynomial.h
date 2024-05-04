@@ -19,6 +19,8 @@ namespace MbD {
 		Polynomial(Symsptr var, std::shared_ptr<std::vector<double>> coeffs);
 		Polynomial(Symsptr var, std::shared_ptr<std::vector<Symsptr>> coeffs);
 		static std::shared_ptr<Polynomial> With();
+		static std::shared_ptr<Polynomial> With(Symsptr var, std::shared_ptr<std::vector<double>> coeffs);
+		static std::shared_ptr<Polynomial> With(Symsptr var, std::shared_ptr<std::vector<Symsptr>> coeffs);
 
 		Symsptr expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
 		Symsptr simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;

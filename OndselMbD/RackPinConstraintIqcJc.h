@@ -15,8 +15,9 @@ namespace MbD {
 	{
 		//pGpXI pGpEI ppGpXIpEI ppGpEIpEI iqXI iqEI 
 	public:
-		RackPinConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj);
+		RackPinConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : RackPinConstraintIJ(frmi, frmj) {}
 		static std::shared_ptr<RackPinConstraintIqcJc> With(EndFrmsptr frmi, EndFrmsptr frmj);
+		void initialize() override;
 
 		void initxIeJeIe() override;
 		void initthezIeJe() override;
@@ -32,7 +33,6 @@ namespace MbD {
 		void fillPosICJacob(SpMatDsptr mat) override;
 		void fillPosKineJacob(SpMatDsptr mat) override;
 		void fillVelICJacob(SpMatDsptr mat) override;
-		void init_xthez() override;
 		void useEquationNumbers() override;
 		void fillpFpy(SpMatDsptr mat) override;
 		void fillpFpydot(SpMatDsptr mat) override;

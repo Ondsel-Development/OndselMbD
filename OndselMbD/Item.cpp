@@ -37,7 +37,7 @@ void Item::initialize()
 
 System* Item::root()
 {
-	return owner->root();
+	return container->root();
 }
 
 void MbD::Item::noop()
@@ -136,12 +136,12 @@ void MbD::Item::registerName()
 
 void Item::fillPosKineError(FColDsptr)
 {
-	assert(false);
+	//Do nothing.
 }
 
 void Item::fillPosKineJacob(SpMatDsptr)
 {
-	assert(false);
+	//Do nothing.
 }
 
 void MbD::Item::fillpqsumu(FColDsptr)
@@ -287,7 +287,7 @@ std::string Item::classname()
 void Item::preDynFirstStep()
 {
 	//"Called before the start of the first step in the dynamic solution."
-	this->preDynStep();
+	preDynStep();
 }
 
 void MbD::Item::preDynOutput()
@@ -303,7 +303,7 @@ void MbD::Item::preDynPredictor()
 
 void Item::postDynFirstStep()
 {
-	this->postDynStep();
+	postDynStep();
 }
 
 void MbD::Item::postDynOutput()
@@ -550,7 +550,7 @@ void MbD::Item::fillCollisionpFpydot(SpMatDsptr)
 
 void Item::setqsudot(FColDsptr)
 {
-	assert(false);
+	//Do nothing.
 }
 
 void Item::setqsuddotlam(FColDsptr)
@@ -610,13 +610,13 @@ double MbD::Item::value()
 
 void Item::logString(std::string& str)
 {
-	this->root()->logString(str);
+	root()->logString(str);
 }
 
 void Item::logString(const char* chars)
 {
 	std::string str = chars;
-	this->logString(str);
+	logString(str);
 }
 
 void MbD::Item::logStringwithArgument(const char*, const char*)
@@ -645,7 +645,7 @@ void Item::prePosIC()
 
 void Item::prePosKine()
 {
-	this->prePosIC();
+	prePosIC();
 }
 
 void MbD::Item::preStatic()

@@ -11,14 +11,14 @@ std::shared_ptr<MBDynDriveElement> MbD::MBDynDriveElement::With()
 
 void MbD::MBDynDriveElement::readFunction(std::vector<std::string>& args)
 {
-	assert(readStringOffTop(arguments) == "element");
-	elementLabel = readStringOffTop(args);
-	elementType = readStringOffTop(args);
-	str = readStringOffTop(args);
-	component = readStringOffTop(args);
-	direct = readStringOffTop(args);
-	output = readStringOffTop(args);
-	yesno = readStringOffTop(args);
+	assert(readStringNoSpacesOffTop(args) == "element");
+	elementLabel = readStringNoSpacesOffTop(args);
+	elementType = readStringNoSpacesOffTop(args);
+	str = readStringNoSpacesOffTop(args);
+	component = readStringNoSpacesOffTop(args);
+	direct = readStringNoSpacesOffTop(args);
+	output = readStringNoSpacesOffTop(args);
+	yesno = readStringNoSpacesOffTop(args);
 }
 
 void MbD::MBDynDriveElement::createASMT()

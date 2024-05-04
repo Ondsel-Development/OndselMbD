@@ -37,53 +37,36 @@ void MbD::ASMTRotationalMotion::parseASMT(std::vector<std::string>& lines)
 
 void MbD::ASMTRotationalMotion::readMotionJoint(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("MotionJoint") != std::string::npos);
-	lines.erase(lines.begin());
-	motionJoint = readString(lines[0]);
-	lines.erase(lines.begin());
+	assert(readStringNoSpacesOffTop(lines) == "MotionJoint");
+	motionJoint = readStringNoSpacesOffTop(lines);
 }
 
 void MbD::ASMTRotationalMotion::readRotationZ(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("RotationZ") != std::string::npos);
-	lines.erase(lines.begin());
-	rotationZ = readString(lines[0]);
-	lines.erase(lines.begin());
+	assert(readStringNoSpacesOffTop(lines) == "RotationZ");
+	rotationZ = readStringNoSpacesOffTop(lines);
 }
 
-void MbD::ASMTRotationalMotion::initMarkers()
+void MbD::ASMTRotationalMotion::createMbD()
 {
-	if (motionJoint == "") {
-		assert(markerI->name != "");
-		assert(markerJ->name != "");
-	}
-	else {
-		auto jt = root()->jointAt(motionJoint);
-		markerI = jt->markerI;
-		markerJ = jt->markerJ;
-	}
-}
-
-void MbD::ASMTRotationalMotion::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
-{
-	ASMTMotion::createMbD(mbdSys, mbdUnits);
+	ASMTMotion::createMbD();
 	auto parser = std::make_shared<SymbolicParser>();
-	parser->owner = this;
-	auto geoTime = owner->root()->geoTime();
+	parser->container = this;
+	auto geoTime = container->root()->geoTime();
 	parser->variables->insert(std::make_pair("time", geoTime));
 	auto userFunc = std::make_shared<BasicUserFunction>(rotationZ, 1.0);
 	parser->parseUserFunction(userFunc);
 	auto& geoPhi = parser->stack->top();
 	//std::cout << *geoPhi << std::endl;
-	geoPhi = Symbolic::times(geoPhi, sptrConstant(1.0 / mbdUnits->angle));
-	geoPhi->createMbD(mbdSys, mbdUnits);
+	geoPhi = Symbolic::times(geoPhi, sptrConstant(asmtUnits()->angle));
+	geoPhi->createMbD();
 	//std::cout << *geoPhi << std::endl;
 	auto simple = geoPhi->simplified(geoPhi);
 	//std::cout << *simple << std::endl;
 	std::static_pointer_cast<ZRotation>(mbdObject)->phiBlk = simple;
 }
 
-std::shared_ptr<Joint> MbD::ASMTRotationalMotion::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTRotationalMotion::mbdClassNew()
 {
 	return ZRotation::With();
 }

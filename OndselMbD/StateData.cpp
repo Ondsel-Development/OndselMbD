@@ -19,5 +19,5 @@ std::shared_ptr<StateData> MbD::StateData::With()
 
 void StateData::initialize()
 {
-	assert(false);
+	//Do nothing.
 }

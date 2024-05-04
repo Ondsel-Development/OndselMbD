@@ -45,15 +45,15 @@ void QuasiIntegrator::run()
 	try {
 		try {
 			try {
-				this->preRun();
-				this->initializeLocally();
-				this->initializeGlobally();
+				preRun();
+				initializeLocally();
+				initializeGlobally();
 				if (hout > (4 * std::numeric_limits<double>::epsilon()) && (direction * tout < (direction * (tend + (0.1 * direction * hout))))) {
 					integrator->run();
 				}
-				this->finalize();
-				this->reportStats();
-				this->postRun();
+				finalize();
+				reportStats();
+				postRun();
 			}
 			catch (SingularMatrixError ex) {
 				std::stringstream ss;
@@ -63,7 +63,7 @@ void QuasiIntegrator::run()
 				ss << "MbD: Check to see if the error tolerance is too demanding." << std::endl;
 				ss << "MbD: Check to see if a curve-curve is about to have multiple contact points." << std::endl;
 				auto str = ss.str();
-				this->logString(str);
+				logString(str);
 				throw SimulationStoppingError("");
 			}
 		}
@@ -74,7 +74,7 @@ void QuasiIntegrator::run()
 			ss << "MbD: Check to see if a curve-curve is about to have multiple contact points." << std::endl;
 			ss << "MbD: If they are not, lower the permitted minimum step size." << std::endl;
 			auto str = ss.str();
-			this->logString(str);
+			logString(str);
 			throw SimulationStoppingError("");
 		}
 	}
@@ -82,7 +82,7 @@ void QuasiIntegrator::run()
 		std::stringstream ss;
 		ss << "MbD: Check to see if the error tolerance is too demanding." << std::endl;
 		auto str = ss.str();
-		this->logString(str);
+		logString(str);
 		throw SimulationStoppingError("");
 	}
 
@@ -103,9 +103,9 @@ void QuasiIntegrator::postFirstStep()
 	system->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postDynFirstStep(); });
 	if (integrator->istep > 0) {
 		//"Noise make checking at the start unreliable."
-		this->checkForDiscontinuity();
+		checkForDiscontinuity();
 	}
-	this->checkForOutputThrough(integrator->t);
+	checkForOutputThrough(integrator->t);
 }
 
 void QuasiIntegrator::preStep()
@@ -135,14 +135,14 @@ void QuasiIntegrator::checkForDiscontinuity()
 		return;
 	}
 	else {
-		this->checkForOutputThrough(tstartNew);
-		this->interpolateAt(tstartNew);
+		checkForOutputThrough(tstartNew);
+		interpolateAt(tstartNew);
 		system->tstartPastsAddFirst(tstart);
 		system->tstart = tstartNew;
 		system->toutFirst = tout;
 		auto discontinuityTypes = std::make_shared<std::vector<DiscontinuityType>>();
 		system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->discontinuityAtaddTypeTo(tstartNew, discontinuityTypes); });
-		this->throwDiscontinuityError("", discontinuityTypes);
+		throwDiscontinuityError("", discontinuityTypes);
 	}
 }
 
@@ -153,13 +153,13 @@ double QuasiIntegrator::suggestSmallerOrAcceptFirstStepSize(double hnew)
 	if (hnew2 > hmax) {
 		hnew2 = hmax;
 		std::string str = "StM: Step size is at user specified maximum.";
-		this->logString(str);
+		logString(str);
 	}
 	if (hnew2 < hmin) {
 		std::stringstream ss;
 		ss << "StM: Step size " << hnew2 << " < " << hmin << " user specified minimum.";
 		auto str = ss.str();
-		this->logString(str);
+		logString(str);
 		throw TooSmallStepSizeError("");
 	}
 	return hnew2;
@@ -171,7 +171,7 @@ double QuasiIntegrator::suggestSmallerOrAcceptStepSize(double hnew)
 	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { hnew2 = item->suggestSmallerOrAcceptDynStepSize(hnew2); });
 	if (hnew2 > hmax) {
 		hnew2 = hmax;
-		this->Solver::logString("StM: Step size is at user specified maximum.");
+		Solver::logString("StM: Step size is at user specified maximum.");
 	}
 	if (hnew2 < hmin) {
 		std::stringstream ss;
@@ -212,7 +212,7 @@ void QuasiIntegrator::interpolateAt(double tArg)
 {
 	//"Interpolate for system state at tArg and leave system in that state."
 	system->time(tArg);
-	this->runInitialConditionTypeSolution();
+	runInitialConditionTypeSolution();
 }
 
 void QuasiIntegrator::postStep()
@@ -221,9 +221,9 @@ void QuasiIntegrator::postStep()
 
 	if (integrator->istep > 0) {
 		//"Noise make checking at the start unreliable."
-		this->checkForDiscontinuity();
+		checkForDiscontinuity();
 	}
-	this->checkForOutputThrough(integrator->t);
+	checkForOutputThrough(integrator->t);
 }
 
 void QuasiIntegrator::postRun()

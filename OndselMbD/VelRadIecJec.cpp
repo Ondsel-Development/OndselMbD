@@ -17,11 +17,11 @@ std::shared_ptr<VelRadIecJec> MbD::VelRadIecJec::With(EndFrmsptr frmi, EndFrmspt
 
 void MbD::VelRadIecJec::calcPostDynCorrectorIteration()
 {
-	rIeJeO = frmJ->rOeO->minusFullColumn(frmI->rOeO);
+	rIeJeO = efrmJ->rOeO->minusFullColumn(efrmI->rOeO);
 	rIeJe = rIeJeO->length();
 	if (rIeJe == 0.0) return;
 	uIeJeO = rIeJeO->times(1.0 / rIeJe);
-	vIeJeO = frmJ->vOeO()->minusFullColumn(frmI->vOeO());
+	vIeJeO = efrmJ->vOeO()->minusFullColumn(efrmI->vOeO());
 	vIeJe = vIeJeO->dot(uIeJeO);
 }
 

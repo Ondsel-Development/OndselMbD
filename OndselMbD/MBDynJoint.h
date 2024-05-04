@@ -29,7 +29,6 @@ namespace MbD {
 		void readFunction(std::vector<std::string>& args) override;
 		void readTotalJointFunction(std::vector<std::string>& args);
 		void createASMT() override;
-		virtual std::shared_ptr<ASMTJoint> asmtClassNew();
 		virtual void outputLine(size_t i, std::ostream& os);
 
 		std::string jointString, joint_type, node_1_label, node_2_label;

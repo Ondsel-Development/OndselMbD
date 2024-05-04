@@ -15,7 +15,7 @@
 #include "ASMTRefPoint.h"
 #include "ASMTRefCurve.h"
 #include "ASMTRefSurface.h"
- //#include "ASMTPrincipalMassMarker.h"
+#include "PosVelAccData.h"
 
 
 using namespace MbD;
@@ -60,8 +60,7 @@ void MbD::ASMTSpatialContainer::setPrincipalMassMarker(std::shared_ptr<ASMTPrinc
 
 void MbD::ASMTSpatialContainer::readRefPoints(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("RefPoints") != std::string::npos);
-	lines.erase(lines.begin());
+	assert(readStringNoSpacesOffTop(lines) == "RefPoints");
 	refPoints->clear();
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
 		return s.find("RefCurves") != std::string::npos;
@@ -75,18 +74,16 @@ void MbD::ASMTSpatialContainer::readRefPoints(std::vector<std::string>& lines)
 
 void MbD::ASMTSpatialContainer::readRefPoint(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("RefPoint") != std::string::npos);
-	lines.erase(lines.begin());
+	assert(readStringNoSpacesOffTop(lines) == "RefPoint");
 	auto refPoint = ASMTRefPoint::With();
-	refPoint->owner = this;
+	refPoint->container = this;
 	refPoint->parseASMT(lines);
 	refPoints->push_back(refPoint);
 }
 
 void MbD::ASMTSpatialContainer::readRefCurves(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("RefCurves") != std::string::npos);
-	lines.erase(lines.begin());
+	assert(readStringNoSpacesOffTop(lines) == "RefCurves");
 	refCurves->clear();
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
 		return s.find("RefSurfaces") != std::string::npos;
@@ -105,8 +102,7 @@ void MbD::ASMTSpatialContainer::readRefCurve(std::vector<std::string>&)
 
 void MbD::ASMTSpatialContainer::readRefSurfaces(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("RefSurfaces") != std::string::npos);
-	lines.erase(lines.begin());
+	assert(readStringNoSpacesOffTop(lines) == "RefSurfaces");
 	refSurfaces->clear();
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
 		return s.find("Part") != std::string::npos;
@@ -249,37 +245,63 @@ void MbD::ASMTSpatialContainer::readAlphaZs(std::vector<std::string>& lines)
 	lines.erase(lines.begin());
 }
 
-void MbD::ASMTSpatialContainer::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+void MbD::ASMTSpatialContainer::createMbD()
 {
+	//Create MbD in SI units
+	auto asmtUnts = asmtUnits();
 	auto mbdPart = Part::With();
 	mbdObject = mbdPart;
 	mbdPart->name = fullName("");
-	mbdPart->m = principalMassMarker->mass / mbdUnits->mass;
-	mbdPart->aJ = principalMassMarker->momentOfInertias->times(1.0 / mbdUnits->aJ);
-	mbdPart->qX(rOcmO()->times(1.0 / mbdUnits->length));
+	mbdPart->m = principalMassMarker->mass * asmtUnts->mass;
+	mbdPart->aJ = principalMassMarker->momentOfInertias->times(asmtUnts->aJ);
+	mbdPart->qX(rOcmO()->times(asmtUnts->length));
 	mbdPart->qE(qEp());
-	mbdPart->qXdot(vOcmO()->times(1.0 / mbdUnits->velocity));
-	mbdPart->omeOpO(omeOpO()->times(1.0 / mbdUnits->omega));
+	mbdPart->qXdot(vOcmO()->times(asmtUnts->velocity));
+	mbdPart->omeOpO(omeOpO()->times(asmtUnts->omega));
 	mbdPart->qXddot(std::make_shared<FullColumn<double>>(3, 0));
 	mbdPart->qEddot(std::make_shared<FullColumn<double>>(4, 0));
-	mbdSys->addPart(mbdPart);
+	mbdSys()->addPart(mbdPart);
 	for (auto& refPoint : *refPoints) {
-		refPoint->createMbD(mbdSys, mbdUnits);
+		refPoint->createMbD();
 	}
 	for (auto& refCurve : *refCurves) {
-		refCurve->createMbD(mbdSys, mbdUnits);
+		refCurve->createMbD();
 	}
 	for (auto& refSurface : *refSurfaces) {
-		refSurface->createMbD(mbdSys, mbdUnits);
+		refSurface->createMbD();
 	}
 }
+
+//void MbD::ASMTSpatialContainer::createMbD()
+//{
+//	auto mbdPart = Part::With();
+//	mbdObject = mbdPart;
+//	mbdPart->name = fullName("");
+//	mbdPart->m = principalMassMarker->mass / mbdUnits()->mass;
+//	mbdPart->aJ = principalMassMarker->momentOfInertias->times(1.0 / mbdUnits()->aJ);
+//	mbdPart->qX(rOcmO()->times(1.0 / mbdUnits()->length));
+//	mbdPart->qE(qEp());
+//	mbdPart->qXdot(vOcmO()->times(1.0 / mbdUnits()->velocity));
+//	mbdPart->omeOpO(omeOpO()->times(1.0 / mbdUnits()->omega));
+//	mbdPart->qXddot(std::make_shared<FullColumn<double>>(3, 0));
+//	mbdPart->qEddot(std::make_shared<FullColumn<double>>(4, 0));
+//	mbdSys()->addPart(mbdPart);
+//	for (auto& refPoint : *refPoints) {
+//		refPoint->createMbD();
+//	}
+//	for (auto& refCurve : *refCurves) {
+//		refCurve->createMbD();
+//	}
+//	for (auto& refSurface : *refSurfaces) {
+//		refSurface->createMbD();
+//	}
+//}
 
 void MbD::ASMTSpatialContainer::updateMbDFromPosition3D(FColDsptr vec)
 {
 	position3D = vec;
 	auto mbdPart = std::static_pointer_cast<Part>(mbdObject);
-	auto mbdUnits = this->mbdUnits();
-	mbdPart->qX(rOcmO()->times(1.0 / mbdUnits->length));
+	mbdPart->qX(rOcmO()->times(asmtUnits()->length));
 }
 
 FColDsptr MbD::ASMTSpatialContainer::rOcmO()
@@ -328,6 +350,7 @@ void MbD::ASMTSpatialContainer::updateFromMbD()
 	omega3D = omeOPO;
 	auto aOcmO = mbdPart->qXddot()->times(mbdUnts->acceleration);
 	auto alpOPO = mbdPart->alpOpO()->times(mbdUnts->alpha);
+	alpha3D = alpOPO;
 	auto& rPcmP = principalMassMarker->position3D;
 	auto& aAPp = principalMassMarker->rotationMatrix;
 	auto aAOP = aAOp->timesTransposeFullMatrix(aAPp);
@@ -338,6 +361,7 @@ void MbD::ASMTSpatialContainer::updateFromMbD()
 	auto vOPO = vOcmO->minusFullColumn(omeOPO->cross(rPcmO));
 	velocity3D = vOPO;
 	auto aOPO = aOcmO->minusFullColumn(alpOPO->cross(rPcmO))->minusFullColumn(omeOPO->cross(omeOPO->cross(rPcmO)));
+	acceleration3D = aOPO;
 	xs->push_back(rOPO->at(0));
 	ys->push_back(rOPO->at(1));
 	zs->push_back(rOPO->at(2));
@@ -443,7 +467,7 @@ void MbD::ASMTSpatialContainer::outputResults(AnalysisType)
 void MbD::ASMTSpatialContainer::addRefPoint(std::shared_ptr<ASMTRefPoint> refPoint)
 {
 	refPoints->push_back(refPoint);
-	refPoint->owner = this;
+	refPoint->container = this;
 }
 
 void MbD::ASMTSpatialContainer::addMarker(std::shared_ptr<ASMTMarker> marker)
@@ -504,8 +528,7 @@ void MbD::ASMTSpatialContainer::setOmega3D(FColDsptr vec)
 
 void MbD::ASMTSpatialContainer::readVelocity3D(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("Velocity3D") != std::string::npos);
-	lines.erase(lines.begin());
+	assert(readStringNoSpacesOffTop(lines) == "Velocity3D");
 	std::istringstream iss(lines[0]);
 	velocity3D = FullColumn<double>::With();
 	double d;
@@ -517,8 +540,7 @@ void MbD::ASMTSpatialContainer::readVelocity3D(std::vector<std::string>& lines)
 
 void MbD::ASMTSpatialContainer::readOmega3D(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("Omega3D") != std::string::npos);
-	lines.erase(lines.begin());
+	assert(readStringNoSpacesOffTop(lines) == "Omega3D");
 	std::istringstream iss(lines[0]);
 	omega3D = FullColumn<double>::With();
 	double d;
@@ -729,4 +751,68 @@ void MbD::ASMTSpatialContainer::updateFromInputState()
 		refPoint->updateFromInputState();
 	}
 
+}
+
+std::shared_ptr<StateData> MbD::ASMTSpatialContainer::dataFromMbD()
+{
+	//"
+	//P := part frame. 
+	//p := principal frame at cm. 
+	//rOcmO := rOPO + aAOP*rPcmP. 
+	//aAOp := aAOP*aAPp. 
+	//vOcmO := vOPO + aAdotOP*rPcmP 
+	//:= vOPO + (omeOPO cross: aAOP*rPcmP). 
+	//omeOpO := omeOPO. 
+	//aOcmO := aOPO + aAddotOP*rPcmP 
+	//:= aOPO + (alpOPO cross: aAOP*rPcmP) + (omeOPO cross: (omeOPO cross: aAOP*rPcmP)). 
+	//alpOpO := alpOPO. 
+	//
+	//Therefore 
+	//aAOP := aAOp*aAPpT 
+	//rOPO := rOcmO - aAOP*rPcmP. 
+	//omeOPO := omeOpO. 
+	//vOPO	:= vOcmO - (omeOPO cross: aAOP*rPcmP). 
+	//alpOPO := alpOpO. 
+	//aOPO	:= aOcmO - (alpOPO cross: aAOP*rPcmP) - (omeOPO cross: (omeOPO cross: 
+	//aAOP*rPcmP)). 
+	//"
+
+	auto answer = PosVelAccData::With();
+	answer->rFfF = rOPO();
+	answer->aAFf = aAOP();
+	answer->vFfF = vOPO();
+	answer->omeFfF = omeOPO();
+	answer->aFfF = aOPO();
+	answer->alpFfF = alpOPO();
+	return answer;
+}
+
+FColDsptr MbD::ASMTSpatialContainer::rOPO()
+{
+	return position3D;
+}
+
+FMatDsptr MbD::ASMTSpatialContainer::aAOP()
+{
+	return rotationMatrix;
+}
+
+FColDsptr MbD::ASMTSpatialContainer::vOPO()
+{
+	return velocity3D;
+}
+
+FColDsptr MbD::ASMTSpatialContainer::omeOPO()
+{
+	return omega3D;
+}
+
+FColDsptr MbD::ASMTSpatialContainer::aOPO()
+{
+	return acceleration3D;
+}
+
+FColDsptr MbD::ASMTSpatialContainer::alpOPO()
+{
+	return alpha3D;
 }

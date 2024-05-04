@@ -35,8 +35,8 @@ namespace MbD {
 			axis->normalizeSelf();
 			this->atputFullColumn(0, axis->times(sinHalfTheta));
 			this->atput(3, cosHalfTheta);
-			this->conditionSelf();
-			this->initialize();
+			conditionSelf();
+			initialize();
 			calc();
 		}
 		static std::shared_ptr<EulerParameters<T>> With(size_t count);

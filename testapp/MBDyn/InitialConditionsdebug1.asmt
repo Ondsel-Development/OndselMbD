@@ -70,7 +70,7 @@ Assembly
 		hout
 			0.01
 		errorTol
-			9.9999999999999995e-07
+			1e-08
 	AnimationParameters
 		nframe
 			1000000

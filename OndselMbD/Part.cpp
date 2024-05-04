@@ -18,10 +18,6 @@
 
 using namespace MbD;
 
-Part::Part(const char* str) : Item(str) {
-	assert(false);
-}
-
 std::shared_ptr<Part> MbD::Part::With()
 {
 	auto inst = std::make_shared<Part>();
@@ -176,7 +172,7 @@ void Part::qEddot(FColDsptr x)
 {
 	//ToDo: Should store EulerParametersDDot
 	//ToDo: Need alpOpO too
-	partFrame->qXddot = x;
+	partFrame->qEddot = x;
 }
 
 FColDsptr Part::qEddot()
@@ -279,8 +275,8 @@ void Part::fillqsuWeights(DiagMatDsptr diagMat)
 	//"Redundant constraint removal likes equal weights."
 	//"wqE(4) = 0.0d is ok because there is always the euler parameter constraint."
 
-	auto mMax = this->root()->maximumMass();
-	auto aJiMax = this->root()->maximumMomentOfInertia();
+	auto mMax = root()->maximumMass();
+	auto aJiMax = root()->maximumMomentOfInertia();
 	double minw = 1.0e3;
 	double maxw = 1.0e6;
 	auto wqX = DiagonalMatrix<double>::With(3);
@@ -339,8 +335,8 @@ void Part::fillqsudotWeights(DiagMatDsptr diagMat)
 	//"wqEdot(4) = 0.0d is ok because there is always the euler parameter constraint."
 
 		//| mMax aJiMax maxInertia minw maxw aJi wqXdot wqEdot |
-	auto mMax = this->root()->maximumMass();
-	auto aJiMax = this->root()->maximumMomentOfInertia();
+	auto mMax = root()->maximumMass();
+	auto aJiMax = root()->maximumMomentOfInertia();
 	double maxInertia = std::max(mMax, aJiMax);
 	if (maxInertia == 0) maxInertia = 1.0;
 	double minw = 1.0e-12 * maxInertia;
@@ -530,6 +526,7 @@ void Part::calcmE()
 
 void Part::fillAccICIterError(FColDsptr col)
 {
+	//ToDo: Check for Units effect.
 	auto iqX = partFrame->iqX;
 	auto iqE = partFrame->iqE;
 	col->atminusFullColumn(iqX, mX->timesFullColumn(partFrame->qXddot));
@@ -541,6 +538,7 @@ void Part::fillAccICIterError(FColDsptr col)
 
 void Part::fillAccICIterJacob(SpMatDsptr mat)
 {
+	//ToDo: Check for Units effect.
 	auto iqX = partFrame->iqX;
 	auto iqE = partFrame->iqE;
 	mat->atandminusDiagonalMatrix(iqX, iqX, mX);
@@ -582,11 +580,11 @@ std::shared_ptr<StateData> Part::stateData()
 	//aAOP * rPcmP)).
 	//"
 
-	auto rOpO = this->qX();
+	auto rOpO = qX();
 	auto aAOp = this->aAOp();
-	auto vOpO = this->qXdot();
+	auto vOpO = qXdot();
 	auto omeOpO = this->omeOpO();
-	auto aOpO = this->qXddot();
+	auto aOpO = qXddot();
 	auto alpOpO = this->alpOpO();
 	auto answer = std::make_shared<PosVelAccData>();
 	answer->rFfF = rOpO;
@@ -643,6 +641,7 @@ void MbD::Part::postDynPredictor()
 void MbD::Part::fillDynError(FColDsptr col)
 {
 	partFrame->fillDynError(col);
+	//ToDo: Check for Units effect.
 	col->atplusFullColumn(ipX, pX->minusFullColumn(mX->timesFullColumn(partFrame->qXdot)));
 	col->atplusFullColumn(ipE, pE->minusFullColumn(mE->timesFullColumn(partFrame->qEdot)));
 	col->atminusFullColumn(partFrame->iqX, pXdot);
@@ -654,6 +653,7 @@ void MbD::Part::fillpFpy(SpMatDsptr mat)
 	mat->atandplusDiagonalMatrix(ipX, ipX, DiagonalMatrix<double>::Identity3by3);
 	mat->atandplusDiagonalMatrix(ipE, ipE, DiagonalMatrix<double>::Identity4by4);
 	auto iqE = partFrame->iqE;
+	//ToDo: Check for Units effect.
 	mat->atandminusTransposeFullMatrix(ipE, iqE, ppTpEpEdot);
 	mat->atandplusFullMatrix(iqE, iqE, ppTpEpE);
 	partFrame->fillpFpy(mat);
@@ -663,6 +663,7 @@ void MbD::Part::fillpFpydot(SpMatDsptr mat)
 {
 		auto iqX = partFrame->iqX;
 		auto iqE = partFrame->iqE;
+		//ToDo: Check for Units effect.
 		mat->atandminusDiagonalMatrix(ipX, iqX, mX);
 		mat->atandminusFullMatrix(ipE, iqE, mE);
 		mat->atandminusDiagonalMatrix(iqX, ipX, DiagonalMatrix<double>::Identity3by3);

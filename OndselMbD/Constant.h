@@ -25,7 +25,7 @@ namespace MbD {
 		Symsptr clonesptr() override;
 		bool isZero() override;
 		bool isOne() override;
-		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+		void createMbD() override;
 		double getValue() override;
 
 		std::ostream& printOn(std::ostream& s) const override;

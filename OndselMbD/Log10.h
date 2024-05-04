@@ -18,7 +18,8 @@ namespace MbD {
 		Log10() = default;
 		Log10(Symsptr arg);
 		static std::shared_ptr<Log10> With();
-		
+		static std::shared_ptr<Log10> With(Symsptr arg);
+
 		double getValue() override;
 		Symsptr copyWith(Symsptr arg) override;
 

@@ -25,6 +25,13 @@ std::shared_ptr<Power> MbD::Power::With()
 	return inst;
 }
 
+std::shared_ptr<Power> MbD::Power::With(Symsptr base, Symsptr exp)
+{
+	auto inst = std::make_shared<Power>(base, exp);
+	inst->initialize();
+	return inst;
+}
+
 Symsptr MbD::Power::differentiateWRTx()
 {
 	auto yminus1 = Symbolic::sum(y, sptrConstant(-1.0));

@@ -35,7 +35,7 @@ void MbD::VelRadIeqcJeqc::calcPostDynCorrectorIteration()
 {
 	VelRadIeqcJec::calcPostDynCorrectorIteration();
 	if (rIeJe == 0.0) return;
-	auto efrmqcJ = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto efrmqcJ = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	auto prIeJeOpEJ = efrmqcJ->prOeOpE;
 	auto prIeJeOpEJT = prIeJeOpEJ->transpose();
 	auto pvIeJeOpEJT = efrmqcJ->pvOeOpE()->transpose();

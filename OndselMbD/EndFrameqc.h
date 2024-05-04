@@ -31,6 +31,7 @@ namespace MbD {
 		void initEndFrameqct2() override;
 		FMatFColDsptr ppAjOepEpE(size_t j);
 		void calcPostDynCorrectorIteration() override;
+		FMatDsptr pAjOepE(size_t j);
 		FMatDsptr pAjOepET(size_t j);
 		FMatDsptr ppriOeOpEpE(size_t i);
 		size_t iqX();
@@ -45,6 +46,10 @@ namespace MbD {
 		FMatDsptr aBOp() override;
 		bool isEndFrameqc() override;
 		FMatDsptr pvOeOpE();
+		FColDsptr omeOeO();
+		FMatDsptr pomeOeOpE();
+		FMatDsptr pomeOeOpEdot();
+		std::shared_ptr<EndFrameqc> followEndFrame(EndFrmsptr frmi) override;
 
 		FMatDsptr prOeOpE;
 		FMatFColDsptr pprOeOpEpE;

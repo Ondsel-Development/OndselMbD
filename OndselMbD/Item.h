@@ -164,7 +164,7 @@ namespace MbD {
 		}
 
 		std::string name;
-		Item* owner = nullptr;	//Use raw pointer when pointing backwards.
+		Item* container = nullptr;	//Use raw pointer when pointing backwards.
 	};
 }
 

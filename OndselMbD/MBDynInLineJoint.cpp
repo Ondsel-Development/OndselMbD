@@ -8,6 +8,7 @@
 
 #include "MBDynInLineJoint.h"
 #include "ASMTPointInLineJoint.h"
+#include "ASMTAssembly.h"
 
 using namespace MbD;
 
@@ -25,10 +26,8 @@ void MbD::MBDynInLineJoint::parseMBDyn(std::string line)
 
 void MbD::MBDynInLineJoint::createASMT()
 {
+	auto asmtJoint = ASMTPointInLineJoint::With();
+	asmtAssembly()->addJoint(asmtJoint);
+	asmtItem = asmtJoint;
 	MBDynJoint::createASMT();
-}
-
-std::shared_ptr<ASMTJoint> MbD::MBDynInLineJoint::asmtClassNew()
-{
-	return std::make_shared<ASMTPointInLineJoint>();
 }

@@ -24,6 +24,13 @@ std::shared_ptr<Abs> MbD::Abs::With()
 	return inst;
 }
 
+std::shared_ptr<Abs> MbD::Abs::With(Symsptr arg)
+{
+	auto inst = std::make_shared<Abs>(arg);
+	inst->initialize();
+	return inst;
+}
+
 double MbD::Abs::getValue()
 {
 	return std::abs(xx->getValue());
@@ -31,7 +38,7 @@ double MbD::Abs::getValue()
 
 Symsptr MbD::Abs::copyWith(Symsptr arg)
 {
-	return std::make_shared<Abs>(arg);
+	return Abs::With(arg);
 }
 
 std::ostream& MbD::Abs::printOn(std::ostream& s) const

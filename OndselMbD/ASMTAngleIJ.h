@@ -16,6 +16,7 @@ namespace MbD {
 		//
 	public:
 		static std::shared_ptr<ASMTAngleIJ> With();
+		double asmtUnit() override;
 
 	};
 }

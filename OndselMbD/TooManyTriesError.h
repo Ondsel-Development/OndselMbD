@@ -15,6 +15,6 @@ namespace MbD {
 	{
 
 	public:
-		explicit TooManyTriesError(const std::string& msg);
+		explicit TooManyTriesError(const std::string& msg) : std::runtime_error(msg) {}
 	};
 }

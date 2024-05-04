@@ -16,8 +16,12 @@ namespace MbD {
 		//
 	public:
 		static std::shared_ptr<ASMTSymbolicFunctionIJKi> With();
+		void createMbD() override;
+		virtual void withFrmIfrmJaxis(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis);
+		virtual void withFrmIfrmJfrmK(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk);
 
-		std::string markerK;
+		std::string markerKSign;
+		std::shared_ptr<ASMTMarker> markerK;
 		size_t axisK;
 	};
 }

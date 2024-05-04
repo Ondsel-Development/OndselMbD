@@ -11,11 +11,6 @@
 
 using namespace MbD;
 
-MbD::UniversalJoint::UniversalJoint(const char* str) : AtPointJoint(str)
-{
-	assert(false);
-}
-
 std::shared_ptr<UniversalJoint> MbD::UniversalJoint::With()
 {
 	auto inst = std::make_shared<UniversalJoint>();
@@ -35,10 +30,10 @@ void MbD::UniversalJoint::initializeGlobally()
 	if (constraints->empty())
 	{
 		createAtPointConstraints();
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 2));
-		this->root()->hasChanged = true;
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 2));
+		root()->hasChanged = true;
 	}
 	else {
-		Joint::initializeGlobally();
+		JointIJ::initializeGlobally();
 	}
 }

@@ -18,15 +18,15 @@ namespace MbD {
 	
 	class ConstraintIJ : public Constraint
 	{
-		//frmI frmJ aConstant 
+		//efrmI efrmJ aConstant 
 	public:
 		ConstraintIJ() {}
-		ConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : frmI(frmi), frmJ(frmj), Constraint() {}
+		ConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : efrmI(frmi), efrmJ(frmj), Constraint() {}
 		static std::shared_ptr<ConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
 		void initialize() override;
 
 
-		EndFrmsptr frmI, frmJ;
+		EndFrmsptr efrmI, efrmJ;
 	};
 }
 

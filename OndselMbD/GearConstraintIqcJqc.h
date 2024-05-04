@@ -15,7 +15,7 @@ namespace MbD {
 	{
 		//pGpXJ pGpEJ ppGpXIpXJ ppGpXIpEJ ppGpEIpXJ ppGpEIpEJ ppGpXJpXJ ppGpXJpEJ ppGpEJpEJ iqXJ iqEJ 
 	public:
-		GearConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj);
+		GearConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : GearConstraintIqcJc(frmi, frmj) {}
 		static std::shared_ptr<GearConstraintIqcJqc> With(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void calc_pGpEJ();

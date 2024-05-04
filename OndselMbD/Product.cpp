@@ -154,10 +154,10 @@ Symsptr Product::simplifyUntil(Symsptr, std::shared_ptr<std::unordered_set<Symsp
 std::ostream& Product::printOn(std::ostream& s) const
 {
 	s << "(";
-	s << *(this->terms->at(0));
-	for (size_t i = 1; i < this->terms->size(); i++)
+	s << *(terms->at(0));
+	for (size_t i = 1; i < terms->size(); i++)
 	{
-		s << "*" << *(this->terms->at(i));
+		s << "*" << *(terms->at(i));
 	}
 	s << ")";
 	return s;

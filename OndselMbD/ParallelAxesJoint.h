@@ -8,15 +8,15 @@
  
 #pragma once
 
-#include "Joint.h"
+#include "JointIJ.h"
 
 namespace MbD {
-	class ParallelAxesJoint : public Joint
+	class ParallelAxesJoint : public JointIJ
 	{
 		//
 	public:
 		ParallelAxesJoint() {}
-		ParallelAxesJoint(const char* str);
+		ParallelAxesJoint(const char* str) : JointIJ(str) {}
 		static std::shared_ptr<ParallelAxesJoint> With();
 		static std::shared_ptr<ParallelAxesJoint> With(const char* str);
 

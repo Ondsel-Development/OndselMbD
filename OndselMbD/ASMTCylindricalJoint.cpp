@@ -19,7 +19,7 @@ std::shared_ptr<ASMTCylindricalJoint> MbD::ASMTCylindricalJoint::With()
 	return inst;
 }
 
-std::shared_ptr<Joint> MbD::ASMTCylindricalJoint::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTCylindricalJoint::mbdClassNew()
 {
 	return CylindricalJoint::With();
 }

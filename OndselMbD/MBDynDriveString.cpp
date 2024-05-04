@@ -11,10 +11,10 @@ std::shared_ptr<MBDynDriveString> MbD::MBDynDriveString::With()
 
 void MbD::MBDynDriveString::readFunction(std::vector<std::string>& args)
 {
-	assert(readStringOffTop(arguments) == "string");
+	assert(readStringNoSpacesOffTop(args) == "string");
 	expression = popOffTop(args);
-	output = readStringOffTop(args);
-	yesno = readStringOffTop(args);
+	output = readStringNoSpacesOffTop(args);
+	yesno = readStringNoSpacesOffTop(args);
 }
 
 void MbD::MBDynDriveString::createASMT()

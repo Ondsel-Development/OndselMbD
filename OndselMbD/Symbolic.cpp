@@ -104,7 +104,7 @@ Symsptr MbD::Symbolic::simplified()
 {
 	//std::cout << "sptr " << *sptr << std::endl;
 	auto set = std::make_shared<std::unordered_set<Symsptr>>();
-	auto expanded = this->expandUntil(set);
+	auto expanded = expandUntil(set);
 	//std::cout << "expanded " << *expanded << std::endl;
 	auto set1 = std::make_shared<std::unordered_set<Symsptr>>();
 	auto simplified = expanded->simplifyUntil(expanded, set1);
@@ -196,7 +196,7 @@ void MbD::Symbolic::setValue(double)
 	assert(false);
 }
 
-void MbD::Symbolic::createMbD(std::shared_ptr<System>, std::shared_ptr<Units>)
+void MbD::Symbolic::createMbD()
 {
 	assert(false);
 	return;
@@ -211,7 +211,7 @@ Symsptr MbD::Symbolic::clonesptr()
 
 std::shared_ptr<Constant> MbD::Symbolic::sptrConstant(double value)
 {
-	return std::make_shared<Constant>(value);
+	return Constant::With(value);
 }
 
 bool MbD::Symbolic::isVariable()
@@ -252,5 +252,5 @@ void MbD::Symbolic::fillJointTorques(std::shared_ptr<std::vector<std::shared_ptr
 
 Symsptr MbD::Symbolic::raisedTo(Symsptr x, Symsptr y)
 {
-	return std::make_shared<Power>(x, y);
+	return Power::With(x, y);
 }

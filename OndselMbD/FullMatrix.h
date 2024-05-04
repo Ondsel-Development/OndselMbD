@@ -26,6 +26,7 @@ namespace MbD {
 	using FColDsptr = std::shared_ptr<FullColumn<double>>;
 	template<typename T>
 	class FullRow;
+	using FRowDsptr = std::shared_ptr<FullRow<double>>;
 	template<typename T>
 	class EulerParameters;
 	template<typename T>
@@ -47,7 +48,7 @@ namespace MbD {
 		}
 		FullMatrix(size_t m, size_t n) {
 			for (size_t i = 0; i < m; i++) {
-				auto row = std::make_shared<FullRow<T>>(n);
+				auto row = FullRow<T>::With(n);
 				this->push_back(row);
 			}
 		}
@@ -117,6 +118,7 @@ namespace MbD {
 		bool equaltol(FMatsptr<T> mat, double ratio);
 		std::shared_ptr<DiagonalMatrix<T>> asDiagonalMatrix();
 		void conditionSelfWithTol(double tol);
+		FRowsptr<T> dot(FColsptr<T> col);
 
 		std::ostream& printOn(std::ostream& s) const override;
 	};
@@ -420,7 +422,7 @@ namespace MbD {
 
 	template<>
 	inline void FullMatrix<double>::identity() {
-		this->zeroSelf();
+		zeroSelf();
 		for (size_t i = 0; i < this->size(); i++) {
 			this->at(i)->at(i) = 1.0;
 		}
@@ -655,7 +657,7 @@ namespace MbD {
 	{
 		//"Given [A], compute Euler parameter."
 
-		auto traceA = this->trace();
+		auto traceA = trace();
 		T dum = 0.0;
 		T dumSq = 0.0;
 		auto qE = std::make_shared<EulerParameters<T>>(4);
@@ -882,6 +884,17 @@ namespace MbD {
 		for (auto row : *this) {
 			row->conditionSelfWithTol(tol);
 		}
+	}
+
+	template<typename T>
+	inline FRowsptr<T> FullMatrix<T>::dot(FColsptr<T> col)
+	{
+		auto answer = FullRow<T>::With(this->ncol());
+		for (size_t i = 0; i < this->nrow(); i++)
+		{
+			answer->equalSelfPlusFullRowTimes(this->at(i), col->at(i));
+		}
+		return answer;
 	}
 
 	template<typename T>

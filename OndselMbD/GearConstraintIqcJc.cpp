@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-MbD::GearConstraintIqcJc::GearConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : GearConstraintIJ(frmi, frmj)
-{
-	assert(false);
-}
-
 std::shared_ptr<GearConstraintIqcJc> MbD::GearConstraintIqcJc::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	auto inst = std::make_shared<GearConstraintIqcJc>(frmi, frmj);
@@ -32,7 +27,7 @@ void MbD::GearConstraintIqcJc::addToJointForceI(FColDsptr col)
 void MbD::GearConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 {
 	auto cForceT = pGpXI->times(lam);
-	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	auto rIpIeIp = frmIeqc->rpep();
 	auto pAOIppEI = frmIeqc->pAOppE();
 	auto aBOIp = frmIeqc->aBOp();
@@ -49,27 +44,27 @@ void MbD::GearConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 
 void MbD::GearConstraintIqcJc::calc_pGpEI()
 {
-	pGpEI = orbitJeIe->pvaluepEJ()->plusFullRow(orbitIeJe->pvaluepEI()->times(this->ratio()));
+	pGpEI = orbitJeIe->pvaluepEJ()->plusFullRow(orbitIeJe->pvaluepEI()->times(ratio()));
 }
 
 void MbD::GearConstraintIqcJc::calc_pGpXI()
 {
-	pGpXI = orbitJeIe->pvaluepXJ()->plusFullRow(orbitIeJe->pvaluepXI()->times(this->ratio()));
+	pGpXI = orbitJeIe->pvaluepXJ()->plusFullRow(orbitIeJe->pvaluepXI()->times(ratio()));
 }
 
 void MbD::GearConstraintIqcJc::calc_ppGpEIpEI()
 {
-	ppGpEIpEI = orbitJeIe->ppvaluepEJpEJ()->plusFullMatrix(orbitIeJe->ppvaluepEIpEI()->times(this->ratio()));
+	ppGpEIpEI = orbitJeIe->ppvaluepEJpEJ()->plusFullMatrix(orbitIeJe->ppvaluepEIpEI()->times(ratio()));
 }
 
 void MbD::GearConstraintIqcJc::calc_ppGpXIpEI()
 {
-	ppGpXIpEI = orbitJeIe->ppvaluepXJpEJ()->plusFullMatrix(orbitIeJe->ppvaluepXIpEI()->times(this->ratio()));
+	ppGpXIpEI = orbitJeIe->ppvaluepXJpEJ()->plusFullMatrix(orbitIeJe->ppvaluepXIpEI()->times(ratio()));
 }
 
 void MbD::GearConstraintIqcJc::calc_ppGpXIpXI()
 {
-	ppGpXIpXI = orbitJeIe->ppvaluepXJpXJ()->plusFullMatrix(orbitIeJe->ppvaluepXIpXI()->times(this->ratio()));
+	ppGpXIpXI = orbitJeIe->ppvaluepXJpXJ()->plusFullMatrix(orbitIeJe->ppvaluepXIpXI()->times(ratio()));
 }
 
 void MbD::GearConstraintIqcJc::calcPostDynCorrectorIteration()
@@ -86,7 +81,7 @@ void MbD::GearConstraintIqcJc::fillAccICIterError(FColDsptr col)
 {
 	col->atplusFullVectortimes(iqXI, pGpXI, lam);
 	col->atplusFullVectortimes(iqEI, pGpEI, lam);
-	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	auto qXdotI = efrmIqc->qXdot();
 	auto qEdotI = efrmIqc->qEdot();
 	auto sum = pGpXI->timesFullColumn(efrmIqc->qXddot());
@@ -133,13 +128,13 @@ void MbD::GearConstraintIqcJc::fillVelICJacob(SpMatDsptr mat)
 
 void MbD::GearConstraintIqcJc::initorbitsIJ()
 {
-	orbitIeJe = OrbitAngleZIeqcJec::With(frmI, frmJ);
-	orbitJeIe = OrbitAngleZIeqcJec::With(frmJ, frmI);
+	orbitIeJe = OrbitAngleZIeqcJec::With(efrmI, efrmJ);
+	orbitJeIe = OrbitAngleZIeqcJec::With(efrmJ, efrmI);
 }
 
 void MbD::GearConstraintIqcJc::useEquationNumbers()
 {
-	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	iqXI = frmIeqc->iqX();
 	iqEI = frmIeqc->iqE();
 }

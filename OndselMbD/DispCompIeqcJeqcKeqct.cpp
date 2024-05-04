@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-DispCompIeqcJeqcKeqct::DispCompIeqcJeqcKeqct(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk) : DispCompIeqcJeqcKeqc(frmi, frmj, frmk, axisk)
-{
-	assert(false);
-}
-
 std::shared_ptr<DispCompIeqcJeqcKeqct> MbD::DispCompIeqcJeqcKeqct::With(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk)
 {
 	auto inst = std::make_shared<DispCompIeqcJeqcKeqct>(frmi, frmj, frmk, axisk);
@@ -95,8 +90,8 @@ void DispCompIeqcJeqcKeqct::preAccIC()
 	auto pAjOKept = std::static_pointer_cast<EndFrameqct>(efrmK)->pAjOept(axisK);
 	auto ppAjOKepEKTpt = std::static_pointer_cast<EndFrameqct>(efrmK)->ppAjOepETpt(axisK);
 	auto ppAjOKeptpt = std::static_pointer_cast<EndFrameqct>(efrmK)->ppAjOeptpt(axisK);
-	auto prIeJeOpEIT = std::static_pointer_cast<EndFrameqc>(frmI)->prOeOpE->transpose()->negated();
-	auto prIeJeOpEJT = std::static_pointer_cast<EndFrameqc>(frmJ)->prOeOpE->transpose();
+	auto prIeJeOpEIT = std::static_pointer_cast<EndFrameqc>(efrmI)->prOeOpE->transpose()->negated();
+	auto prIeJeOpEJT = std::static_pointer_cast<EndFrameqc>(efrmJ)->prOeOpE->transpose();
 	for (size_t i = 0; i < 3; i++)
 	{
 		ppriIeJeKepXIpt->atput(i, -(pAjOKept->at(i)));

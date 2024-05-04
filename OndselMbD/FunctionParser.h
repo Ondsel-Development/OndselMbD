@@ -25,7 +25,6 @@ namespace MbD {
 		bool velocity();
 		bool force();
 		bool namedFunction() override;
-		ASMTForceTorque* container;
 		std::shared_ptr<std::map<std::string, std::shared_ptr<ASMTSymbolicFunctionIJ>>> geoIJs;
 	};
 }

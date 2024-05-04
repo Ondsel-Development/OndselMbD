@@ -32,7 +32,7 @@ namespace MbD {
 					if (i == 1) value = element;
 					i++;
 				}
-				this->insert(std::pair<const size_t, double>(index, value));
+				insert(std::pair<const size_t, double>(index, value));
 			}
 		}
 		//virtual ~SparseVector() {}
@@ -60,7 +60,7 @@ namespace MbD {
 	template<typename T>
 	inline double SparseVector<T>::rootMeanSquare()
 	{
-		return std::sqrt(this->sumOfSquares() / this->numberOfElements());
+		return std::sqrt(sumOfSquares() / numberOfElements());
 	}
 
 	template<typename T>
@@ -101,7 +101,7 @@ namespace MbD {
 	template<>
 	inline void SparseVector<double>::zeroSelf()
 	{
-		this->clear();
+		clear();
 	}
 
 	template<typename T>
@@ -154,7 +154,7 @@ namespace MbD {
 	inline void SparseVector<T>::outputCSV(std::string filename)
 	{
 		std::ofstream os(filename);
-		os << this->to_CSV();
+		os << to_CSV();
 		os.close();
 	}
 
@@ -162,7 +162,7 @@ namespace MbD {
 	inline void SparseVector<T>::appendCSV(std::string filename)
 	{
 		std::ofstream os(filename, std::ios_base::app);
-		os << this->to_CSV();
+		os << to_CSV();
 		os.close();
 	}
 

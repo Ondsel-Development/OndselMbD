@@ -16,14 +16,16 @@
 
 using namespace MbD;
 
-MbD::Reciprocal::Reciprocal(Symsptr arg) : FunctionX(arg)
-{
-	assert(false);
-}
-
 std::shared_ptr<Reciprocal> MbD::Reciprocal::With()
 {
 	auto inst = std::make_shared<Reciprocal>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<Reciprocal> MbD::Reciprocal::With(Symsptr arg)
+{
+	auto inst = std::make_shared<Reciprocal>(arg);
 	inst->initialize();
 	return inst;
 }
@@ -37,17 +39,17 @@ Symsptr MbD::Reciprocal::differentiateWRTx()
 {
 	auto two = sptrConstant(2);
 	auto sq = std::make_shared<Power>(xx, two);
-	return std::make_shared<Negative>(sq);
+	return Negative::With(sq);
 }
 
 Symsptr MbD::Reciprocal::integrateWRTx()
 {
-	return std::make_shared<Ln>(xx);
+	return Ln::With(xx);
 }
 
 Symsptr MbD::Reciprocal::copyWith(Symsptr arg)
 {
-	return std::make_shared<Reciprocal>(arg);
+	return Reciprocal::With(arg);
 }
 
 std::ostream& MbD::Reciprocal::printOn(std::ostream& s) const

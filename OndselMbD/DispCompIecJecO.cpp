@@ -18,9 +18,16 @@ std::shared_ptr<DispCompIecJecO> MbD::DispCompIecJecO::With(EndFrmsptr frmi, End
 	return inst;
 }
 
+void MbD::DispCompIecJecO::withFrmIfrmJaxis(EndFrmsptr frmi, EndFrmsptr frmj, size_t axs)
+{
+	efrmI = frmi;
+	efrmJ = frmj;
+	axis = axs;
+}
+
 void DispCompIecJecO::calcPostDynCorrectorIteration()
 {
-	riIeJeO = frmJ->riOeO(axis) - frmI->riOeO(axis);
+	riIeJeO = efrmJ->riOeO(axis) - efrmI->riOeO(axis);
 }
 
 double MbD::DispCompIecJecO::value()

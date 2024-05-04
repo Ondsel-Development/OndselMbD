@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-MbD::RevRevJoint::RevRevJoint(const char* str) : CompoundJoint(str)
-{
-	assert(false);
-}
-
 std::shared_ptr<RevRevJoint> MbD::RevRevJoint::With()
 {
 	auto inst = std::make_shared<RevRevJoint>();
@@ -35,13 +30,13 @@ void MbD::RevRevJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		auto distxyIJ = DistancexyConstraintIJ::With(frmI, frmJ);
+		auto distxyIJ = DistancexyConstraintIJ::With(efrmI, efrmJ);
 		distxyIJ->setConstant(distanceIJ);
 		addConstraint(distxyIJ);
-		addConstraint(TranslationConstraintIJ::With(frmI, frmJ, 2));
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 0));
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 1));
-		this->root()->hasChanged = true;
+		addConstraint(TranslationConstraintIJ::With(efrmI, efrmJ, 2));
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 1));
+		root()->hasChanged = true;
 	}
 	else {
 		CompoundJoint::initializeGlobally();

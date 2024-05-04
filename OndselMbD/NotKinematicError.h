@@ -15,6 +15,6 @@ namespace MbD {
 	{
 
 	public:
-		explicit NotKinematicError(const std::string& msg);
+		explicit NotKinematicError(const std::string& msg) : std::runtime_error(msg) {}
 	};
 }

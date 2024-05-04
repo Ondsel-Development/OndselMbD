@@ -34,9 +34,9 @@ void MbD::ZTranslation::initializeGlobally()
 {
 	if (constraints->empty()) {
 		initMotions();
-		auto tranCon = TranslationConstraintIJ::With(frmI, frmJ, 2);
+		auto tranCon = TranslationConstraintIJ::With(efrmI, efrmJ, 2);
 		addConstraint(tranCon);
-		this->root()->hasChanged = true;
+		root()->hasChanged = true;
 	}
 	else {
 		PrescribedMotion::initializeGlobally();

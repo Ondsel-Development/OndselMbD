@@ -51,18 +51,17 @@ void MbD::PosICNewtonRaphson::iterate()
 {
 	//Keep for debugging
 	iterNo = SIZE_MAX;
-	this->fillY();
+	fillY();
 	calcyNorm();
 	yNorms->push_back(yNorm);
 
 	while (true) {
 		incrementIterNo();
 		fillPyPx();
-		//std::cout << *pypx << std::endl;
-		outputSpreadsheet();
+		//outputSpreadsheet();
 		solveEquations();
 		calcDXNormImproveRootCalcYNorm();
-		if (this->isConverged()) {
+		if (isConverged()) {
 			//std::cout << "iterNo = " << iterNo << std::endl;
 			break;
 		}
@@ -124,15 +123,15 @@ void PosICNewtonRaphson::assignEquationNumbers()
 
 bool PosICNewtonRaphson::isConverged()
 {
-	return this->isConvergedToNumericalLimit();
+	return isConvergedToNumericalLimit();
 }
 
 void PosICNewtonRaphson::handleSingularMatrix()
 {
 	nSingularMatrixError++;
 	if (nSingularMatrixError == 1) {
-		this->lookForRedundantConstraints();
-		matrixSolver = this->matrixSolverClassNew();
+		lookForRedundantConstraints();
+		matrixSolver = matrixSolverClassNew();
 	}
 	else {
 		auto& r = *matrixSolver;
@@ -146,8 +145,8 @@ void PosICNewtonRaphson::handleSingularMatrix()
 			str = typeid(msRef).name();
 			(void) msRef;                      // also for warning suppression
 			if (str.find("GESpMatParPvPrecise") != std::string::npos) {
-				this->lookForRedundantConstraints();
-				matrixSolver = this->matrixSolverClassNew();
+				lookForRedundantConstraints();
+				matrixSolver = matrixSolverClassNew();
 			} else {
 				assert(false);
 			}

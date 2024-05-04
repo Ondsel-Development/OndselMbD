@@ -15,6 +15,7 @@ namespace MbD {
 	{
 	public:
 		static std::shared_ptr<MBDynMarker> With();
+		void initialize() override;
 
 		void parseMBDyn(std::vector<std::string>& args) override;
 		void parseMBDynTotalJointMarker(std::vector<std::string>& args);

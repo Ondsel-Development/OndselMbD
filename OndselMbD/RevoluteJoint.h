@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		RevoluteJoint() {}
-		RevoluteJoint(const char* str);
+		RevoluteJoint(const char* str) : AtPointJoint(str) {}
 		static std::shared_ptr<RevoluteJoint> With();
 		static std::shared_ptr<RevoluteJoint> With(const char* str);
 

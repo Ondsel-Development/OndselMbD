@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-MbD::ScrewJoint::ScrewJoint(const char* str) : Joint(str)
-{
-	assert(false);
-}
-
 std::shared_ptr<ScrewJoint> MbD::ScrewJoint::With()
 {
 	auto inst = std::make_shared<ScrewJoint>();
@@ -35,22 +30,22 @@ void MbD::ScrewJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		auto screwIJ = ScrewConstraintIJ::With(frmI, frmJ);
+		auto screwIJ = ScrewConstraintIJ::With(efrmI, efrmJ);
 		screwIJ->setConstant(std::numeric_limits<double>::min());
 		screwIJ->pitch = pitch;
 		addConstraint(screwIJ);
-		this->root()->hasChanged = true;
+		root()->hasChanged = true;
 	}
 	else {
-		Joint::initializeGlobally();
+		JointIJ::initializeGlobally();
 	}
 }
 
-void MbD::ScrewJoint::connectsItoJ(EndFrmsptr frmIe, EndFrmsptr frmJe)
+void MbD::ScrewJoint::connectsItoJ(EndFrmsptr frmi, EndFrmsptr frmj)
 {
-	//"Subsequent prescribed motions may make frmIe, frmJe become prescribed end frames."
+	//"Subsequent prescribed motions may make frmi, frmj become prescribed end frames."
 	//"Use newCopyEndFrameqc to prevent efrms from becoming EndFrameqct."
 
-	frmI = frmIe->newCopyEndFrameqc();
-	frmJ = frmJe->newCopyEndFrameqc();
+	efrmI = frmi->newCopyEndFrameqc();
+	efrmJ = frmj->newCopyEndFrameqc();
 }

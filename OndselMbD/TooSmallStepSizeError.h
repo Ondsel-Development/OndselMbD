@@ -15,6 +15,6 @@ namespace MbD {
 	{
 
 	public:
-		explicit TooSmallStepSizeError(const std::string& msg);
+		explicit TooSmallStepSizeError(const std::string& msg) : std::runtime_error(msg) {}
 	};
 }

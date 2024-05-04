@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-MbD::AngleJoint::AngleJoint(const char* str) : Joint(str)
-{
-	assert(false);
-}
-
 std::shared_ptr<AngleJoint> MbD::AngleJoint::With()
 {
 	auto inst = std::make_shared<AngleJoint>();
@@ -35,12 +30,12 @@ void MbD::AngleJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		auto dirCosIzJz = DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 2);
+		auto dirCosIzJz = DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 2);
 		dirCosIzJz->setConstant(std::cos(theIzJz));
 		addConstraint(dirCosIzJz);
-		this->root()->hasChanged = true;
+		root()->hasChanged = true;
 	}
 	else {
-		Joint::initializeGlobally();
+		JointIJ::initializeGlobally();
 	}
 }

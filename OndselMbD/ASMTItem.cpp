@@ -41,17 +41,17 @@ void MbD::ASMTItem::initializeLocally()
 
 ASMTAssembly* MbD::ASMTItem::root()
 {
-	return owner->root();
+	return container->root();
 }
 
 ASMTSpatialContainer* MbD::ASMTItem::partOrAssembly()
 {
-	return owner->partOrAssembly();
+	return container->partOrAssembly();
 }
 
 ASMTPart* MbD::ASMTItem::part()
 {
-	return owner->part();
+	return container->part();
 }
 
 void MbD::ASMTItem::noop()
@@ -83,12 +83,11 @@ std::string MbD::ASMTItem::popOffTop(std::vector<std::string>& args)
 	return str;
 }
 
-std::string MbD::ASMTItem::readStringOffTop(std::vector<std::string>& args)
+std::string MbD::ASMTItem::readStringNoSpacesOffTop(std::vector<std::string>& args)
 {
-	auto iss = std::istringstream(args.at(0));
-	args.erase(args.begin());
-	std::string str;
-	iss >> str;
+	//Return top string without whitespaces.
+	std::string str = popOffTop(args);
+	str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
 	return str;
 }
 
@@ -156,27 +155,26 @@ bool MbD::ASMTItem::readBool(std::string& line)
 
 std::string MbD::ASMTItem::readString(std::string& line)
 {
+	//Read string without whitespaces.
 	std::string str = line;
-	str.erase(str.begin(), std::find_if(str.begin(), str.end(), [](unsigned char ch) { return !std::isspace(ch); }));
+	str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
 	return str;
 }
 
 void MbD::ASMTItem::readName(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("Name") != std::string::npos);
-	lines.erase(lines.begin());
-	name = readString(lines[0]);
-	lines.erase(lines.begin());
+	assert(readStringNoSpacesOffTop(lines) == "Name");
+	name = readStringNoSpacesOffTop(lines);
 }
 
 std::string MbD::ASMTItem::fullName(std::string partialName)
 {
 	std::string longerName = "/" + name + partialName;
-	if (owner == nullptr) {
+	if (container == nullptr) {
 		return longerName;
 	}
 	else {
-		return owner->fullName(longerName);
+		return container->fullName(longerName);
 	}
 }
 
@@ -193,7 +191,7 @@ void MbD::ASMTItem::deleteMbD()
 	mbdObject = nullptr;
 }
 
-void MbD::ASMTItem::createMbD(std::shared_ptr<System>, std::shared_ptr<Units>)
+void MbD::ASMTItem::createMbD()
 {
 	noop();
 	assert(false);
@@ -202,6 +200,12 @@ void MbD::ASMTItem::createMbD(std::shared_ptr<System>, std::shared_ptr<Units>)
 void MbD::ASMTItem::updateFromMbD()
 {
 	assert(false);
+}
+
+std::shared_ptr<StateData> MbD::ASMTItem::dataFromMbD()
+{
+	assert(false);
+	return std::shared_ptr<StateData>();
 }
 
 void MbD::ASMTItem::compareResults(AnalysisType)
@@ -214,17 +218,24 @@ void MbD::ASMTItem::outputResults(AnalysisType)
 	assert(false);
 }
 
+std::shared_ptr<Units> MbD::ASMTItem::asmtUnits()
+{
+	return root()->asmtUnits;
+}
+
 std::shared_ptr<Units> MbD::ASMTItem::mbdUnits()
 {
-	if (owner) {
-		return owner->mbdUnits();
-	}
-	return static_cast<ASMTAssembly*>(this)->mbdUnits;
+	return mbdSys()->mbdUnits;
+}
+
+std::shared_ptr<System> MbD::ASMTItem::mbdSys()
+{
+	return root()->mbdSystem;
 }
 
 std::shared_ptr<Constant> MbD::ASMTItem::sptrConstant(double value)
 {
-	return std::make_shared<Constant>(value);
+	return Constant::With(value);
 }
 
 void MbD::ASMTItem::storeOnLevel(std::ofstream&, size_t)

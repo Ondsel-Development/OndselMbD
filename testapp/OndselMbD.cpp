@@ -29,10 +29,12 @@ void sharedptrTest();
 
 int main()
 {
-	ASMTAssembly::runDynFile("../testapp/ASMT/aaaa.asmt");
-	ASMTAssembly::runDynFile("../testapp/ASMT/springdamper.asmt");
-	MBDynSystem::runDynFile("../testapp/MBDyn/markers.mbd");
+	ASMTAssembly::runDynFile("../testapp/ASMT/piston.asmt");
 	MBDynSystem::runDynFile("../testapp/MBDyn/SingleRigidPendulum07-02-2024/MBDCaseOndsel.mbd");
+	MBDynSystem::runDynFile("../testapp/MBDyn/markers.mbd");
+	MBDynSystem::runDynFile("../testapp/MBDyn/General force using Rod joint/Bungee/MBDCase.mbd");
+	ASMTAssembly::runDynFile("../testapp/ASMT/torsion.asmt");
+	ASMTAssembly::runDynFile("../testapp/ASMT/springdamper.asmt");
 	MBDynSystem::runDynFile("../testapp/MBDyn/penduRod5deg2.mbd");
 	MBDynSystem::runDynFile("../testapp/MBDyn/penduBeam.mbd");
 	MBDynSystem::runDynFile("../testapp/MBDyn/penduRod90deg.mbd");

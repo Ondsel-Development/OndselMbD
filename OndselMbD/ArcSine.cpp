@@ -6,7 +6,7 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
 
-//#include <cassert>
+ //#include <cassert>
 
 #include "ArcSine.h"
 
@@ -24,6 +24,13 @@ std::shared_ptr<ArcSine> MbD::ArcSine::With()
 	return inst;
 }
 
+std::shared_ptr<ArcSine> MbD::ArcSine::With(Symsptr arg)
+{
+	auto inst = std::make_shared<ArcSine>(arg);
+	inst->initialize();
+	return inst;
+}
+
 double MbD::ArcSine::getValue()
 {
 	return std::asin(xx->getValue());
@@ -31,7 +38,7 @@ double MbD::ArcSine::getValue()
 
 Symsptr MbD::ArcSine::copyWith(Symsptr arg)
 {
-	return std::make_shared<ArcSine>(arg);
+	return ArcSine::With(arg);
 }
 
 std::ostream& MbD::ArcSine::printOn(std::ostream& s) const

@@ -30,7 +30,7 @@ std::shared_ptr<ASMTAngleJoint> MbD::ASMTAngleJoint::With(const char* str)
 	return inst;
 }
 
-std::shared_ptr<Joint> MbD::ASMTAngleJoint::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTAngleJoint::mbdClassNew()
 {
 	return AngleJoint::With();
 }
@@ -53,9 +53,9 @@ void MbD::ASMTAngleJoint::readTheIzJz(std::vector<std::string>& lines)
 	}
 }
 
-void MbD::ASMTAngleJoint::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+void MbD::ASMTAngleJoint::createMbD()
 {
-	ASMTJoint::createMbD(mbdSys, mbdUnits);
+	ASMTJoint::createMbD();
 	auto angleJoint = std::static_pointer_cast<AngleJoint>(mbdObject);
 	angleJoint->theIzJz = theIzJz;
 }

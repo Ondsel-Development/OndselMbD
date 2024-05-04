@@ -15,6 +15,6 @@ namespace MbD {
 	{
 
 	public:
-		explicit SimulationStoppingError(const std::string& msg);
+		explicit SimulationStoppingError(const std::string& msg) : std::runtime_error(msg) {}
 	};
 }

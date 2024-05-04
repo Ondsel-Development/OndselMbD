@@ -19,7 +19,7 @@ std::shared_ptr<ASMTPointInLineJoint> MbD::ASMTPointInLineJoint::With()
 	return inst;
 }
 
-std::shared_ptr<Joint> MbD::ASMTPointInLineJoint::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTPointInLineJoint::mbdClassNew()
 {
 	return PointInLineJoint::With();
 }

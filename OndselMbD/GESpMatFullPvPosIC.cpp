@@ -91,7 +91,7 @@ void GESpMatFullPvPosIC::doPivoting(size_t p)
 		else {
 			pivotRowLimit = *itr;
 		}
-		return this->doPivoting(p);
+		return doPivoting(p);
 	}
 	auto jp = colOrder->at(p);
 	rowPositionsOfNonZerosInPivotColumn = rowPositionsOfNonZerosInColumns->at(jp);

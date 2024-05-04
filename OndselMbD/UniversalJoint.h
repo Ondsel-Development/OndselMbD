@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		UniversalJoint() {}
-		UniversalJoint(const char* str);
+		UniversalJoint(const char* str) : AtPointJoint(str) {}
 		static std::shared_ptr<UniversalJoint> With();
 		static std::shared_ptr<UniversalJoint> With(const char* str);
 

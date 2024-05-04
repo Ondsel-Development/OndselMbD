@@ -11,7 +11,7 @@
 #include "ASMTItemIJ.h"
 
 namespace MbD {
-	class Joint;
+	class JointIJ;
 
 	class ASMTConstraintSet : public ASMTItemIJ
 	{
@@ -19,8 +19,8 @@ namespace MbD {
 	public:
 		static std::shared_ptr<ASMTConstraintSet> With();
 		
-		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
-		virtual std::shared_ptr<Joint> mbdClassNew();
+		void createMbD() override;
+		virtual std::shared_ptr<JointIJ> mbdClassNew();
 		void updateFromMbD() override;
 		void compareResults(AnalysisType type) override;
 		void outputResults(AnalysisType type) override;

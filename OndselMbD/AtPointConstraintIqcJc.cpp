@@ -27,7 +27,7 @@ void AtPointConstraintIqcJc::initializeGlobally()
 
 void AtPointConstraintIqcJc::initriIeJeO()
 {
-	riIeJeO = DispCompIeqcJecO::With(frmI, frmJ, axis);
+	riIeJeO = DispCompIeqcJecO::With(efrmI, efrmJ, axis);
 }
 
 void AtPointConstraintIqcJc::calcPostDynCorrectorIteration()
@@ -38,7 +38,7 @@ void AtPointConstraintIqcJc::calcPostDynCorrectorIteration()
 
 void AtPointConstraintIqcJc::useEquationNumbers()
 {
-	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	iqXIminusOnePlusAxis = frmIeqc->iqX() + axis;
 	iqEI = frmIeqc->iqE();
 }
@@ -90,7 +90,7 @@ void AtPointConstraintIqcJc::fillAccICIterError(FColDsptr col)
 {
 	col->atminusNumber(iqXIminusOnePlusAxis, lam);
 	col->atplusFullVectortimes(iqEI, pGpEI, lam);
-	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	auto qEdotI = efrmIqc->qEdot();
 	auto sum = -efrmIqc->qXddot()->at(axis);
 	sum += pGpEI->timesFullColumn(efrmIqc->qEddot());
@@ -107,9 +107,9 @@ void AtPointConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 {
 	auto cForceT = FullRow<double>::With(3, 0.0);
 	cForceT->atput(axis, -lam);
-	auto rIpIeIp = frmI->rpep();
-	auto pAOIppEI = frmI->pAOppE();
-	auto aBOIp = frmI->aBOp();
+	auto rIpIeIp = efrmI->rpep();
+	auto pAOIppEI = efrmI->pAOppE();
+	auto aBOIp = efrmI->aBOp();
 	auto fpAOIppEIrIpIeIp = std::make_shared<FullColumn<double>>(4, 0.0);
 	for (size_t i = 0; i < 4; i++)
 	{

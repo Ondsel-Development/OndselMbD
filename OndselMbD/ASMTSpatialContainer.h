@@ -62,7 +62,7 @@ namespace MbD {
 		void readAlphaXs(std::vector<std::string>& lines);
 		void readAlphaYs(std::vector<std::string>& lines);
 		void readAlphaZs(std::vector<std::string>& lines);
-		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+		void createMbD() override;
 		void updateMbDFromPosition3D(FColDsptr position3D);
 		FColDsptr rOcmO();
 		std::shared_ptr<EulerParameters<double>> qEp();
@@ -92,9 +92,18 @@ namespace MbD {
 		FColDsptr getVelocity3D(size_t i) const;
 		FColDsptr getOmega3D(size_t i) const;
 		virtual void updateFromInputState();
+		std::shared_ptr<StateData> dataFromMbD() override;
+		FColDsptr rOPO();
+		FMatDsptr aAOP();
+		FColDsptr vOPO();
+		FColDsptr omeOPO();
+		FColDsptr aOPO();
+		FColDsptr alpOPO();
 
 		FColDsptr velocity3D = std::make_shared<FullColumn<double>>(3);
 		FColDsptr omega3D = std::make_shared<FullColumn<double>>(3);
+		FColDsptr acceleration3D = std::make_shared<FullColumn<double>>(3);
+		FColDsptr alpha3D = std::make_shared<FullColumn<double>>(3);
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTRefPoint>>> refPoints;
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTRefCurve>>> refCurves;
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTRefSurface>>> refSurfaces;

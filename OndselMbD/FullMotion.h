@@ -23,7 +23,7 @@ namespace MbD {
 		static std::shared_ptr<FullMotion> With();
 		static std::shared_ptr<FullMotion> With(const char* str);
 
-		void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ) override;
+		void connectsItoJ(EndFrmsptr frmi, EndFrmsptr frmj) override;
 		void initializeGlobally() override;
 		void initMotions() override;
 

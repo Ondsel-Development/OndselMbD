@@ -13,6 +13,7 @@
 
 #include "FullVector.h"
  //#include "FullMatrix.h"
+ //#include "SparseMatrix.h"
 
 namespace MbD {
 	//template<typename T>
@@ -46,13 +47,14 @@ namespace MbD {
 		FullColumn(std::initializer_list<T> list) : FullVector<T>{ list } {}
 		static std::shared_ptr<FullColumn<T>> With();
 		static std::shared_ptr<FullColumn<T>> With(size_t count);
+		static std::shared_ptr<FullColumn<T>> With(size_t count, const T& value);
 
 		FColsptr<T> plusFullColumn(FColsptr<T> fullCol);
 		std::shared_ptr<FullColumn<T>> operator+(const std::shared_ptr<FullColumn<T>> fullCol);
 		FColsptr<T> plusFullColumntimes(FColsptr<T> fullCol, double factor);
 		FColsptr<T> minusFullColumn(FColsptr<T> fullCol);
 		FColsptr<T> times(T a);
-		//FMatDsptr timesFullRowtimes(FRowDsptr row, double a);
+		//FMatDsptr timesFullRowtimes(FRowDsptr row, double a);	//Why this doesn't work???
 		FColsptr<T> negated();
 		void atputFullColumn(size_t i, FColsptr<T> fullCol);
 		void atplusFullColumn(size_t i, FColsptr<T> fullCol);
@@ -85,6 +87,14 @@ namespace MbD {
 	inline std::shared_ptr<FullColumn<T>> FullColumn<T>::With(size_t count)
 	{
 		auto inst = std::make_shared<FullColumn<T>>(count);
+		inst->initialize();
+		return inst;
+	}
+
+	template<typename T>
+	inline std::shared_ptr<FullColumn<T>> FullColumn<T>::With(size_t count, const T& value)
+	{
+		auto inst = std::make_shared<FullColumn<T>>(count, value);
 		inst->initialize();
 		return inst;
 	}
@@ -242,7 +252,7 @@ namespace MbD {
 	template<typename T>
 	inline FRowsptr<T> FullColumn<T>::transpose()
 	{
-		return std::make_shared<FullRow<T>>(*this);
+		return FullRow<T>::With(*this);
 	}
 
 	template<typename T>

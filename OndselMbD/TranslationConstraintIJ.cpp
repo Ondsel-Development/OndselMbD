@@ -43,7 +43,7 @@ void TranslationConstraintIJ::initializeGlobally()
 
 void TranslationConstraintIJ::initriIeJeIe()
 {
-	riIeJeIe = DispCompIecJecKec::With(frmI, frmJ, frmI, axisI);
+	riIeJeIe = DispCompIecJecKec::With(efrmI, efrmJ, efrmI, axisI);
 }
 
 void TranslationConstraintIJ::postInput()

@@ -1,5 +1,5 @@
 #include "ForceBasicqcComp.h"
-#include "ForTorActionComp.h"
+#include "ForceTorqueActionComp.h"
 
 using namespace MbD;
 
@@ -15,7 +15,7 @@ void MbD::ForceBasicqcComp::calcPostDynCorrectorIteration()
 	//"rpep is not a constant for aMbDEndFrameqccq, qcs or qct."
 
 	auto efrmqc = std::static_pointer_cast<EndFrameqc>(endFrame);
-	auto axis = static_cast<ForTorActionComp*>(parent)->axis;
+	auto axis = static_cast<ForceTorqueActionComp*>(parent)->axis;
 	prOeOaxispET = efrmqc->prOeOpE->at(axis)->transpose();
 }
 

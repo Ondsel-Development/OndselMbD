@@ -32,13 +32,13 @@ Symsptr MbD::Negative::differentiateWRTx()
 
 Symsptr MbD::Negative::integrateWRTx()
 {
-	return std::make_shared<Negative>(xx);
+	return Negative::With(xx);
 }
 
 Symsptr MbD::Negative::expandUntil(Symsptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
 {
 	auto expand = xx->expandUntil(xx, set);
-	return std::make_shared<Negative>(expand);
+	return Negative::With(expand);
 }
 
 Symsptr MbD::Negative::simplifyUntil(Symsptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
@@ -47,12 +47,12 @@ Symsptr MbD::Negative::simplifyUntil(Symsptr, std::shared_ptr<std::unordered_set
 	if (simple->isConstant()) {
 		return sptrConstant(-simple->getValue());
 	}
-	return std::make_shared<Negative>(simple);
+	return Negative::With(simple);
 }
 
 Symsptr MbD::Negative::copyWith(Symsptr arg)
 {
-	return std::make_shared<Negative>(arg);
+	return Negative::With(arg);
 }
 
 Symsptr MbD::Negative::clonesptr()

@@ -1109,28 +1109,28 @@ Assembly
 				MotionJoint
 					/backhoe/rev1
 				RotationZ
-					(45.0d + 45.0d*sin((360.0d*time - 90.0d)*pi/180.0d))*pi/180.0d
+					(45.0 + 45.0*sin((360.0*time - 90.0)*pi/180.0))*pi/180.0
 			TranslationalMotion
 				Name
 					tmo1
 				MotionJoint
 					/backhoe/trn1
 				TranslationZ
-					0.5d + 0.3d*sin(2.0d*pi*time - pi/2.0d)
+					0.5 + 0.3*sin(2.0*pi*time - pi/2.0)
 			TranslationalMotion
 				Name
 					tmo2
 				MotionJoint
 					/backhoe/trn2
 				TranslationZ
-					1.0d + 0.3d*sin(2.0d*pi*time - pi/2.0d)
+					1.0 + 0.3*sin(2.0*pi*time - pi/2.0)
 			TranslationalMotion
 				Name
 					tmo3
 				MotionJoint
 					/backhoe/trn3
 				TranslationZ
-					0.2d + 0.3d*sin(2.0d*pi*time - pi/2.0d)
+					0.2 + 0.3*sin(2.0*pi*time - pi/2.0)
 		GeneralConstraintSets
 	ForceTorques
 	ConstantGravity

@@ -19,6 +19,12 @@ namespace MbD {
 		void parseMBDyn(std::string line) override;
 		void readPosition(std::vector<std::string>& args) override;
 		void readOrientation(std::vector<std::string>& args) override;
+		void createASMT() override;
+		void outputLine(size_t i, std::ostream& os) override;
+		FColDsptr rOmO(size_t i);
+		FMatDsptr aAOm(size_t i);
+		FColDsptr vOmO(size_t i);
+		FColDsptr omeOmO(size_t i);
 
 	};
 };

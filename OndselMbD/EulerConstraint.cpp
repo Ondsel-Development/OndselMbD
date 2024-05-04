@@ -39,7 +39,7 @@ void EulerConstraint::initialize()
 
 void EulerConstraint::calcPostDynCorrectorIteration()
 {
-	auto& qE = static_cast<PartFrame*>(owner)->qE;
+	auto& qE = static_cast<PartFrame*>(container)->qE;
 	aG = qE->sumOfSquares() - 1.0;
 	for (size_t i = 0; i < 4; i++)
 	{
@@ -49,7 +49,7 @@ void EulerConstraint::calcPostDynCorrectorIteration()
 
 void EulerConstraint::useEquationNumbers()
 {
-	iqE = static_cast<PartFrame*>(owner)->iqE;
+	iqE = static_cast<PartFrame*>(container)->iqE;
 }
 
 void EulerConstraint::fillPosICError(FColDsptr col)
@@ -88,7 +88,7 @@ void EulerConstraint::fillAccICIterError(FColDsptr col)
 	//"qdotT[2 2 2 2 diag]*qdot."
 
 	col->atplusFullVectortimes(iqE, pGpE, lam);
-	auto partFrame = static_cast<PartFrame*>(owner);
+	auto partFrame = static_cast<PartFrame*>(container);
 	double sum = pGpE->timesFullColumn(partFrame->qEddot);
 	sum += 2.0 * partFrame->qEdot->sumOfSquares();
 	col->atplusNumber(iG, sum);

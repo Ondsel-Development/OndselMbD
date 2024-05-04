@@ -35,12 +35,12 @@ void MbD::ASMTMarker::parseASMT(std::vector<std::string>& lines)
 FColDsptr MbD::ASMTMarker::rpmp()
 {
 	//p is cm
-	auto refItem = static_cast<ASMTRefItem*>(owner);
+	auto refItem = static_cast<ASMTRefItem*>(container);
 	auto& rPrefP = refItem->position3D;
 	auto& aAPref = refItem->rotationMatrix;
 	auto& rrefmref = position3D;
 	auto rPmP = rPrefP->plusFullColumn(aAPref->timesFullColumn(rrefmref));
-	auto& principalMassMarker = static_cast<ASMTPart*>(refItem->owner)->principalMassMarker;
+	auto& principalMassMarker = static_cast<ASMTPart*>(refItem->container)->principalMassMarker;
 	auto& rPcmP = principalMassMarker->position3D;
 	auto& aAPcm = principalMassMarker->rotationMatrix;
 	auto rpmp = aAPcm->transposeTimesFullColumn(rPmP->minusFullColumn(rPcmP));
@@ -50,22 +50,22 @@ FColDsptr MbD::ASMTMarker::rpmp()
 FMatDsptr MbD::ASMTMarker::aApm()
 {
 	//p is cm
-	auto refItem = static_cast<ASMTRefItem*>(owner);
+	auto refItem = static_cast<ASMTRefItem*>(container);
 	auto& aAPref = refItem->rotationMatrix;
 	auto& aArefm = rotationMatrix;
-	auto& principalMassMarker = static_cast<ASMTPart*>(refItem->owner)->principalMassMarker;
+	auto& principalMassMarker = static_cast<ASMTPart*>(refItem->container)->principalMassMarker;
 	auto& aAPcm = principalMassMarker->rotationMatrix;
 	auto aApm = aAPcm->transposeTimesFullMatrix(aAPref->timesFullMatrix(aArefm));
 	return aApm;
 }
 
-void ASMTMarker::createMbD(std::shared_ptr<System>, std::shared_ptr<Units> mbdUnits)
+void ASMTMarker::createMbD()
 {
 	auto mkr = MarkerFrame::With(name.c_str());
 	auto prt = std::static_pointer_cast<Part>(partOrAssembly()->mbdObject);
 	prt->partFrame->addMarkerFrame(mkr);
 
-	mkr->rpmp = rpmp()->times(1.0 / mbdUnits->length);
+	mkr->rpmp = rpmp()->times(asmtUnits()->length);
 	mkr->aApm = aApm();
 	mbdObject = mkr->endFrames->at(0);
 }

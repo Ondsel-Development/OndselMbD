@@ -15,6 +15,11 @@ std::shared_ptr<MBDynMarker> MbD::MBDynMarker::With()
 	return inst;
 }
 
+void MbD::MBDynMarker::initialize()
+{
+	//Do nothing.
+}
+
 void MbD::MBDynMarker::parseMBDyn(std::vector<std::string>& args)
 {
 	if (args.empty()) return;
@@ -69,7 +74,7 @@ void MbD::MBDynMarker::createASMT()
 {
 	auto asmtAsm = asmtAssembly();
 	if (nodeStr == "Assembly") {
-		auto mkr = std::make_shared<ASMTMarker>();
+		auto mkr = ASMTMarker::With();
 		asmtItem = mkr;
 		mkr->setName(asmtAsm->generateUniqueMarkerName());
 		mkr->setPosition3D(rPmP);
@@ -78,7 +83,7 @@ void MbD::MBDynMarker::createASMT()
 	}
 	else {
 		auto asmtPart = asmtAsm->partPartialNamed(nodeStr);
-		auto mkr = std::make_shared<ASMTMarker>();
+		auto mkr = ASMTMarker::With();
 		asmtItem = mkr;
 		mkr->setName(asmtPart->generateUniqueMarkerName());
 		mkr->setPosition3D(rPmP);

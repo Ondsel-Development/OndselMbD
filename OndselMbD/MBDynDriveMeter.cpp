@@ -11,7 +11,15 @@ std::shared_ptr<MBDynDriveMeter> MbD::MBDynDriveMeter::With()
 
 void MbD::MBDynDriveMeter::readFunction(std::vector<std::string>& args)
 {
-	assert(false);
+	assert(readStringNoSpacesOffTop(args) == "meter");
+	assert(readDoubleOffTop(args) == 0.0);
+	assert(readStringNoSpacesOffTop(args) == "forever");
+	assert(readStringNoSpacesOffTop(args) == "steps");
+	auto steps = readIntOffTop(args);
+	auto ss = std::stringstream();
+	ss << steps;
+	formula = ss.str();
+
 }
 
 void MbD::MBDynDriveMeter::createASMT()

@@ -26,7 +26,7 @@ namespace MbD {
 		void fillJointForces(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> jointForces) override;
 		void fillJointTorques(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> jointTorques) override;
 
-		ASMTItemIJ* container = nullptr;
+		ASMTItem* container = nullptr;
 	};
 }
 

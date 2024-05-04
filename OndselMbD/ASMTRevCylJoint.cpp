@@ -19,7 +19,7 @@ std::shared_ptr<ASMTRevCylJoint> MbD::ASMTRevCylJoint::With()
 	return inst;
 }
 
-std::shared_ptr<Joint> MbD::ASMTRevCylJoint::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTRevCylJoint::mbdClassNew()
 {
 	return RevCylJoint::With();
 }

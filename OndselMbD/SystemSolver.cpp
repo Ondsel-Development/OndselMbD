@@ -116,7 +116,7 @@ void SystemSolver::runAccIC()
 
 bool SystemSolver::needToRedoPosIC()
 {
-	auto allRedunCons = this->allRedundantConstraints();
+	auto allRedunCons = allRedundantConstraints();
 	auto newSet = std::make_shared<std::set<std::string>>();
 	for (auto& con : *allRedunCons) {
 		auto aaa = std::static_pointer_cast<RedundantConstraint>(con);
@@ -149,7 +149,7 @@ bool SystemSolver::needToRedoPosIC()
 		}
 	}
 	setsOfRedundantConstraints->push_back(newSet);
-	this->partsJointsMotionsDo([](auto item) { item->reactivateRedundantConstraints(); });
+	partsJointsMotionsDo([](auto item) { item->reactivateRedundantConstraints(); });
 	return true;
 }
 
@@ -177,7 +177,7 @@ void SystemSolver::runBasicKinematic()
 		basicIntegrator->run();
 	}
 	catch (NotKinematicError ex) {
-		this->runQuasiKinematic();
+		runQuasiKinematic();
 	}
 }
 
@@ -201,7 +201,7 @@ void SystemSolver::runQuasiKinematic()
 		basicIntegrator->run();
 	}
 	catch (DiscontinuityError ex) {
-		this->discontinuityBlock();
+		discontinuityBlock();
 	}
 }
 
@@ -213,7 +213,7 @@ void MbD::SystemSolver::runBasicDynamic()
 		basicIntegrator->run();
 	}
 	catch (DiscontinuityError ex) {
-		this->discontinuityBlock();
+		discontinuityBlock();
 	}
 }
 

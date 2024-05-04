@@ -17,7 +17,7 @@ namespace MbD {
 	{
 		//aA01IeJe aA10IeJe 
 	public:
-		ConstVelConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
+		ConstVelConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj) {}
 		static std::shared_ptr<ConstVelConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
 		void initialize() override;
 

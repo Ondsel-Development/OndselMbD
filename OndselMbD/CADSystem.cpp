@@ -42,7 +42,7 @@ void MbD::CADSystem::initialize()
 void CADSystem::outputFor(AnalysisType)
 {
 	auto str = std::to_string(mbdSystem->mbdTimeValue());
-	this->logString(str);
+	logString(str);
 	mbdSystem->partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) {
 		std::cout << std::endl;
 		std::cout << item->classname() << " " << item->name << std::endl;
@@ -848,15 +848,15 @@ void CADSystem::runPiston()
 
 void MbD::CADSystem::preMbDrun(std::shared_ptr<System>)
 {
-	assert(false);
+	//Do nothing.
 }
 
 void CADSystem::postMbDrun()
 {
-	assert(false);
+	//Do nothing.
 }
 
 void MbD::CADSystem::updateFromMbD()
 {
-	assert(false);
+	//Do nothing.
 }

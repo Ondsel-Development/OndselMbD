@@ -8,17 +8,18 @@
  
 #pragma once
 
-#include "KinematicIeJe.h"
+#include "KinematicIJ.h"
 
 namespace MbD {
-	class DispCompIecJecKec : public KinematicIeJe
+	class DispCompIecJecKec : public KinematicIJ
 	{
 		//efrmK axisK riIeJeKe aAjOKe rIeJeO 
 	public:
 		DispCompIecJecKec() {}
-		DispCompIecJecKec(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk) : KinematicIeJe(frmi, frmj), efrmK(frmk), axisK(axisk) {}
+		DispCompIecJecKec(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk) : KinematicIJ(frmi, frmj), efrmK(frmk), axisK(axisk) {}
 		static std::shared_ptr<DispCompIecJecKec> With(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
-		
+		void withFrmIfrmJfrmKaxis(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axis) override;
+
 		PartFrame* partFrameK();
 		double value() override;
 

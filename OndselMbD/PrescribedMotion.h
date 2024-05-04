@@ -9,23 +9,23 @@
 #pragma once
 #include <memory>
 
-#include "Joint.h"
+#include "JointIJ.h"
 
 namespace MbD {
 	class Symbolic;
 	using Symsptr = std::shared_ptr<Symbolic>;
 	class EndFramec;
 
-	class PrescribedMotion : public Joint
+	class PrescribedMotion : public JointIJ
 	{
 		//xBlk yBlk zBlk phiBlk theBlk psiBlk 
 	public:
 		PrescribedMotion() {}
-		PrescribedMotion(const char* str);
+		PrescribedMotion(const char* str) : JointIJ(str) {}
 		static std::shared_ptr<PrescribedMotion> With(const char* str);
 		void initialize() override;
 
-		void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ) override;
+		void connectsItoJ(EndFrmsptr frmi, EndFrmsptr frmj) override;
 		virtual void initMotions();
 
 		Symsptr xBlk;

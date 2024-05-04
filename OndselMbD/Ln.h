@@ -18,7 +18,8 @@ namespace MbD {
 		Ln() = default;
 		Ln(Symsptr arg);
 		static std::shared_ptr<Ln> With();
-		
+		static std::shared_ptr<Ln> With(Symsptr arg);
+
 		double getValue() override;
 		Symsptr copyWith(Symsptr arg) override;
 

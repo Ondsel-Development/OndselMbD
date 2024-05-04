@@ -8,20 +8,20 @@
  
 #pragma once
 
-#include "Joint.h"
+#include "JointIJ.h"
 
 namespace MbD {
-	class RackPinJoint : public Joint
+	class RackPinJoint : public JointIJ
 	{
 		//pitchRadius aConstant 
 	public:
 		RackPinJoint() {}
-		RackPinJoint(const char* str);
+		RackPinJoint(const char* str) : JointIJ(str) {}
 		static std::shared_ptr<RackPinJoint> With();
 		static std::shared_ptr<RackPinJoint> With(const char* str);
 
 		void initializeGlobally() override;
-		void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ) override;
+		void connectsItoJ(EndFrmsptr frmi, EndFrmsptr frmj) override;
 
 		double pitchRadius = 1.0, aConstant = 0.0;
 	};

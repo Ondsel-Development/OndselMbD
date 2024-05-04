@@ -107,7 +107,7 @@ namespace MbD {
 	template<typename T>
 	inline double Array<T>::rootMeanSquare()
 	{
-		return std::sqrt(this->sumOfSquares() / this->numberOfElements());
+		return std::sqrt(sumOfSquares() / numberOfElements());
 	}
 
 	template<typename T>
@@ -249,7 +249,7 @@ namespace MbD {
 	inline void Array<T>::outputCSV(std::string filename)
 	{
 		std::ofstream os(filename);
-		os << this->to_CSV();
+		os << to_CSV();
 		os.close();
 	}
 
@@ -257,7 +257,7 @@ namespace MbD {
 	inline void Array<T>::appendCSV(std::string filename)
 	{
 		std::ofstream os(filename, std::ios_base::app);
-		os << this->to_CSV();
+		os << to_CSV();
 		os.close();
 	}
 }

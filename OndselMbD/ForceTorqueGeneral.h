@@ -8,20 +8,21 @@
 
 #pragma once
 
-#include "ForceTorqueItem.h"
+#include "ForceTorqueIJ.h"
 #include "ForceVector.h"
 #include "TorqueVector.h"
 
 namespace MbD {
-	class ForceTorqueGeneral : public ForceTorqueItem
+	class ForceTorqueGeneral : public ForceTorqueIJ
 	{
 		//forceVector torqueVector 
 	public:
-		ForceTorqueGeneral(EndFrmsptr frmi, EndFrmsptr frmj);
-		ForceTorqueGeneral(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk);
-		static std::shared_ptr<ForceTorqueGeneral> With(EndFrmsptr frmi, EndFrmsptr frmj);
-		static std::shared_ptr<ForceTorqueGeneral> With(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk);
+		ForceTorqueGeneral() {}
+		static std::shared_ptr<ForceTorqueGeneral> OnFrmIandFrmJ(EndFrmsptr frmi, EndFrmsptr frmj);
+		static std::shared_ptr<ForceTorqueGeneral> OnFrmIandFrmJwrtFrmK(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk);
 
+		void onFrmIandFrmJ(EndFrmsptr frmi, EndFrmsptr frmj);
+		void onFrmIandFrmJwrtFrmK(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk);
 		FColDsptr aFX() const override;
 		FColDsptr aTX() const override;
 		void fillAccICIterError(FColDsptr col) override;
@@ -31,7 +32,7 @@ namespace MbD {
 		void fillpFpydot(SpMatDsptr mat) override;
 		void fillStaticError(FColDsptr col) override;
 		void fillStaticJacob(SpMatDsptr mat) override;
-		void forceFunctions(FColDsptr col);
+		void forceFunctions(FColsptr<Symsptr> col);
 		void initializeGlobally() override;
 		void initializeLocally() override;
 		void postAccICIteration() override;
@@ -46,7 +47,7 @@ namespace MbD {
 		void preDynOutput() override;
 		void preStatic() override;
 		void simUpdateAll() override;
-		void torqueFunctions(FColDsptr col);
+		void torqueFunctions(FColsptr<Symsptr> col);
 		void useEquationNumbers() override;
 
 		std::shared_ptr<ForceVector> forceVector;

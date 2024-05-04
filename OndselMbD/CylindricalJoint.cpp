@@ -13,11 +13,6 @@
 
 using namespace MbD;
 
-CylindricalJoint::CylindricalJoint(const char* str) : InLineJoint(str) 
-{
-	assert(false);
-}
-
 std::shared_ptr<CylindricalJoint> MbD::CylindricalJoint::With()
 {
 	auto inst = std::make_shared<CylindricalJoint>();
@@ -37,11 +32,11 @@ void CylindricalJoint::initializeGlobally()
 	if (constraints->empty())
 	{
 		createInLineConstraints();
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 0));
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 1));
-		this->root()->hasChanged = true;
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 1));
+		root()->hasChanged = true;
 	}
 	else {
-		Joint::initializeGlobally();
+		JointIJ::initializeGlobally();
 	}
 }

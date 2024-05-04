@@ -14,7 +14,7 @@ std::shared_ptr<MBDynReference> MbD::MBDynReference::With()
 
 void MbD::MBDynReference::initialize()
 {
-	assert(false);
+	//Do nothing.
 }
 
 void MbD::MBDynReference::parseMBDyn(std::string line)
@@ -36,13 +36,13 @@ void MbD::MBDynReference::readPosition(std::vector<std::string>& args)
 		args.erase(args.begin());
 		if (args[0].find("reference") != std::string::npos) {
 			args.erase(args.begin());
-			baseRefName = readStringOffTop(args);
+			baseRefName = readStringNoSpacesOffTop(args);
 			rFfF = readBasicPosition(args);
 		}
 	}
 	else if (args[0].find("reference") != std::string::npos) {
 		args.erase(args.begin());
-		baseRefName = readStringOffTop(args);
+		baseRefName = readStringNoSpacesOffTop(args);
 		rFfF = readBasicPosition(args);
 	}
 	else if (args[0].find("offset") != std::string::npos) {
@@ -63,7 +63,7 @@ void MbD::MBDynReference::readOrientation(std::vector<std::string>& args)
 	if (args.empty()) return;
 	if (args[0].find("reference") != std::string::npos) {
 		args.erase(args.begin());
-		assert(baseRefName == readStringOffTop(args));
+		assert(baseRefName == readStringNoSpacesOffTop(args));
 		aAFf = readBasicOrientation(args);
 	}
 	else if (args[0].find("hinge") != std::string::npos) {
@@ -80,7 +80,7 @@ void MbD::MBDynReference::readOrientation(std::vector<std::string>& args)
 		args.erase(args.begin());
 		if (args[0].find("reference") != std::string::npos) {
 			args.erase(args.begin());
-			assert(baseRefName == readStringOffTop(args));
+			assert(baseRefName == readStringNoSpacesOffTop(args));
 			aAFf = readBasicOrientation(args);
 		}
 	}
@@ -102,7 +102,7 @@ void MbD::MBDynReference::readVelocity(std::vector<std::string>& args)
 		args.erase(args.begin());
 		if (args[0].find("reference") != std::string::npos) {
 			args.erase(args.begin());
-			assert(baseRefName == readStringOffTop(args));
+			assert(baseRefName == readStringNoSpacesOffTop(args));
 			vFfF = readVector3(args);
 		}
 	}
@@ -125,7 +125,7 @@ void MbD::MBDynReference::readOmega(std::vector<std::string>& args)
 		args.erase(args.begin());
 		if (args[0].find("reference") != std::string::npos) {
 			args.erase(args.begin());
-			assert(baseRefName == readStringOffTop(args));
+			assert(baseRefName == readStringNoSpacesOffTop(args));
 			omeFfF = readVector3(args);
 		}
 	}

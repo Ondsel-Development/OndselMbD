@@ -30,6 +30,7 @@ namespace MbD {
 	class MBDynSystem : public MBDynItem
 	{
 	public:
+		static std::shared_ptr<MBDynSystem> With();
 		static std::shared_ptr<MBDynSystem> fromFile(const char* chars);
 		static void runFile(const char* chars);
 		static void runDynFile(const char* chars);

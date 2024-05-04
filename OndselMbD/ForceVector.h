@@ -8,17 +8,19 @@
 
 #pragma once
 
-#include "ForTorVector.h"
+#include "ForceTorqueVector.h"
 
 namespace MbD {
-	class ForceVector : public ForTorVector
+	class ForceVector : public ForceTorqueVector
 	{
 		//
 	public:
-		ForceVector(EndFrmsptr frmi, EndFrmsptr frmj);
-		ForceVector(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk);
-		static std::shared_ptr<ForceVector> With(EndFrmsptr frmi, EndFrmsptr frmj);
-		static std::shared_ptr<ForceVector> With(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk);
+		ForceVector() {}
+		static std::shared_ptr<ForceVector> OnFrmIandFrmJ(EndFrmsptr frmi, EndFrmsptr frmj);
+		static std::shared_ptr<ForceVector> OnFrmIandFrmJwrtFrmK(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk);
+
+		void onFrmIandFrmJ(EndFrmsptr frmi, EndFrmsptr frmj);
+		void onFrmIandFrmJwrtFrmK(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk);
 
 	};
 }

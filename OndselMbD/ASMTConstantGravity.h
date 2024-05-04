@@ -23,7 +23,7 @@ namespace MbD {
 		void initialize() override;
 
 		void parseASMT(std::vector<std::string>& lines) override;
-		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+		void createMbD() override;
 		FColDsptr getg() const;
 		void setg(FColDsptr g);
 

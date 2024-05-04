@@ -2,9 +2,11 @@
 
 using namespace MbD;
 
-MbD::KinematicDotIeJe::KinematicDotIeJe(EndFrmsptr frmi, EndFrmsptr frmj) : KinematicIeJe(frmi, frmj)
+std::shared_ptr<KinematicDotIeJe> MbD::KinematicDotIeJe::With()
 {
-	assert(false);
+	auto inst = std::make_shared<KinematicDotIeJe>();
+	inst->initialize();
+	return inst;
 }
 
 std::shared_ptr<KinematicDotIeJe> MbD::KinematicDotIeJe::With(EndFrmsptr frmi, EndFrmsptr frmj)

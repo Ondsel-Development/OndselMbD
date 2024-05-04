@@ -21,13 +21,12 @@ std::shared_ptr<ASMTRefItem> MbD::ASMTRefItem::With()
 void MbD::ASMTRefItem::addMarker(std::shared_ptr<ASMTMarker> marker)
 {
 	markers->push_back(marker);
-	marker->owner = this;
+	marker->container = this;
 }
 
 void MbD::ASMTRefItem::readMarkers(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("Markers") != std::string::npos);
-	lines.erase(lines.begin());
+	assert(readStringNoSpacesOffTop(lines) == "Markers");
 	markers->clear();
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
 		return s.find("RefPoint") != std::string::npos;
@@ -41,10 +40,9 @@ void MbD::ASMTRefItem::readMarkers(std::vector<std::string>& lines)
 
 void MbD::ASMTRefItem::readMarker(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("Marker") != std::string::npos);
-	lines.erase(lines.begin());
+	assert(readStringNoSpacesOffTop(lines) == "Marker");
 	auto marker = ASMTMarker::With();
-	marker->owner = this;
+	marker->container = this;
 	marker->parseASMT(lines);
 	markers->push_back(marker);
 }

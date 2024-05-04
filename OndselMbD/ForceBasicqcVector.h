@@ -8,11 +8,11 @@
 
 #pragma once
 
-#include "ForTorBasic.h"
+#include "ForceTorqueBasic.h"
 #include "Part.h"
 
 namespace MbD {
-	class ForceBasicqcVector : public ForTorBasic
+	class ForceBasicqcVector : public ForceTorqueBasic
 	{
 		//iqX prOeOpET 
 	public:

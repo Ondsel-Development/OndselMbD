@@ -1,4 +1,5 @@
 #include "ASMTrIJ.h"
+#include "Units.h"
 #include "DistIeqcJeqc.h"
 
 using namespace MbD;
@@ -10,7 +11,12 @@ std::shared_ptr<ASMTrIJ> MbD::ASMTrIJ::With()
 	return inst;
 }
 
-std::shared_ptr<KinematicIeJe> MbD::ASMTrIJ::mbdClassNew()
+std::shared_ptr<KinematicIJ> MbD::ASMTrIJ::mbdClassNew()
 {
 	return DistIeqcJeqc::With();
+}
+
+double MbD::ASMTrIJ::asmtUnit()
+{
+	return asmtUnits()->length;
 }

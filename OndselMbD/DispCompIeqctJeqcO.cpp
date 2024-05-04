@@ -21,7 +21,7 @@ std::shared_ptr<DispCompIeqctJeqcO> MbD::DispCompIeqctJeqcO::With(EndFrmsptr frm
 void DispCompIeqctJeqcO::initializeGlobally()
 {
 	//ToDo: Check why not using super classes.
-	ppriIeJeOpEJpEJ = std::static_pointer_cast<EndFrameqct>(frmJ)->ppriOeOpEpE(axis);
+	ppriIeJeOpEJpEJ = std::static_pointer_cast<EndFrameqct>(efrmJ)->ppriOeOpEpE(axis);
 }
 
 FRowDsptr MbD::DispCompIeqctJeqcO::ppvaluepEIpt()
@@ -38,13 +38,13 @@ void DispCompIeqctJeqcO::calcPostDynCorrectorIteration()
 {
 	//"ppriIeJeOpEIpEI is not a constant now."
 	DispCompIeqcJeqcO::calcPostDynCorrectorIteration();
-	ppriIeJeOpEIpEI = std::static_pointer_cast<EndFrameqct>(frmI)->ppriOeOpEpE(axis)->negated();
+	ppriIeJeOpEIpEI = std::static_pointer_cast<EndFrameqct>(efrmI)->ppriOeOpEpE(axis)->negated();
 }
 
 void DispCompIeqctJeqcO::preVelIC()
 {
 	Item::preVelIC();
-	priIeJeOpt = -(std::static_pointer_cast<EndFrameqct>(frmI)->priOeOpt(axis));
+	priIeJeOpt = -(std::static_pointer_cast<EndFrameqct>(efrmI)->priOeOpt(axis));
 }
 
 double DispCompIeqctJeqcO::pvaluept()
@@ -55,6 +55,6 @@ double DispCompIeqctJeqcO::pvaluept()
 void DispCompIeqctJeqcO::preAccIC()
 {
 	Item::preAccIC();
-	ppriIeJeOpEIpt = (std::static_pointer_cast<EndFrameqct>(frmI)->ppriOeOpEpt(axis))->negated();
-	ppriIeJeOptpt = -(std::static_pointer_cast<EndFrameqct>(frmI)->ppriOeOptpt(axis));
+	ppriIeJeOpEIpt = (std::static_pointer_cast<EndFrameqct>(efrmI)->ppriOeOpEpt(axis))->negated();
+	ppriIeJeOptpt = -(std::static_pointer_cast<EndFrameqct>(efrmI)->ppriOeOptpt(axis));
 }

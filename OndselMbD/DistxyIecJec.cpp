@@ -10,7 +10,7 @@
 
 using namespace MbD;
 
-MbD::DistxyIecJec::DistxyIecJec(EndFrmsptr frmi, EndFrmsptr frmj) : KinematicIeJe(frmi, frmj)
+MbD::DistxyIecJec::DistxyIecJec(EndFrmsptr frmi, EndFrmsptr frmj) : KinematicIJ(frmi, frmj)
 {
 	assert(false);
 }
@@ -24,8 +24,8 @@ std::shared_ptr<DistxyIecJec> MbD::DistxyIecJec::With(EndFrmsptr frmi, EndFrmspt
 
 void MbD::DistxyIecJec::initialize()
 {
-	KinematicIeJe::initialize();
-	this->init_xyIeJeIe();
+	KinematicIJ::initialize();
+	init_xyIeJeIe();
 }
 
 void MbD::DistxyIecJec::calcPostDynCorrectorIteration()
@@ -56,42 +56,42 @@ void MbD::DistxyIecJec::postInput()
 {
 	xIeJeIe->postInput();
 	yIeJeIe->postInput();
-	KinematicIeJe::postInput();
+	KinematicIJ::postInput();
 }
 
 void MbD::DistxyIecJec::postPosICIteration()
 {
 	xIeJeIe->postPosICIteration();
 	yIeJeIe->postPosICIteration();
-	KinematicIeJe::postPosICIteration();
+	KinematicIJ::postPosICIteration();
 }
 
 void MbD::DistxyIecJec::preAccIC()
 {
 	xIeJeIe->preAccIC();
 	yIeJeIe->preAccIC();
-	KinematicIeJe::preAccIC();
+	KinematicIJ::preAccIC();
 }
 
 void MbD::DistxyIecJec::prePosIC()
 {
 	xIeJeIe->prePosIC();
 	yIeJeIe->prePosIC();
-	KinematicIeJe::prePosIC();
+	KinematicIJ::prePosIC();
 }
 
 void MbD::DistxyIecJec::preVelIC()
 {
 	xIeJeIe->preVelIC();
 	yIeJeIe->preVelIC();
-	KinematicIeJe::preVelIC();
+	KinematicIJ::preVelIC();
 }
 
 void MbD::DistxyIecJec::simUpdateAll()
 {
 	xIeJeIe->simUpdateAll();
 	yIeJeIe->simUpdateAll();
-	KinematicIeJe::simUpdateAll();
+	KinematicIJ::simUpdateAll();
 }
 
 double MbD::DistxyIecJec::value()

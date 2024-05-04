@@ -16,7 +16,7 @@ using namespace MbD;
 
 FColDsptr GESpMat::solvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
-	this->timedSolvewithsaveOriginal(spMat, fullCol, saveOriginal);
+	timedSolvewithsaveOriginal(spMat, fullCol, saveOriginal);
 	return answerX;
 }
 
@@ -27,17 +27,17 @@ FColDsptr GESpMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCo
 		spMat->outputCSV("../debug.csv");
 		fullCol->appendCSV("../debug.csv");
 	}
-	this->preSolvewithsaveOriginal(spMat, fullCol, saveOriginal);
+	preSolvewithsaveOriginal(spMat, fullCol, saveOriginal);
 	if (debug) {
 		matrixA->appendCSV("../debug.csv");
 	}
 	for (size_t p = 0; p < m; p++)
 	{
-		this->doPivoting(p);
-		this->forwardEliminateWithPivot(p);
+		doPivoting(p);
+		forwardEliminateWithPivot(p);
 	}
-	this->backSubstituteIntoDU();
-	this->postSolve();
+	backSubstituteIntoDU();
+	postSolve();
 	if (debug) {
 		answerX->appendCSV("../debug.csv");
 	}

@@ -19,8 +19,8 @@ std::shared_ptr<LDUFullMat> MbD::LDUFullMat::With()
 
 FColDsptr LDUFullMat::basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
 {
-	this->decomposesaveOriginal(fullMat, saveOriginal);
-	FColDsptr answer = this->forAndBackSubsaveOriginal(fullCol, saveOriginal);
+	decomposesaveOriginal(fullMat, saveOriginal);
+	FColDsptr answer = forAndBackSubsaveOriginal(fullCol, saveOriginal);
 	return answer;
 }
 
@@ -99,16 +99,16 @@ void LDUFullMat::preSolvesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
 			colOrder->at(j) = j;
 		}
 	}
-	this->findScalingsForRowRange(0, m);
+	findScalingsForRowRange(0, m);
 }
 
 void LDUFullMat::decomposesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
 {
-	this->preSolvesaveOriginal(fullMat, saveOriginal);
+	preSolvesaveOriginal(fullMat, saveOriginal);
 	for (size_t p = 0; p < m; p++)
 	{
-		this->doPivoting(p);
-		this->forwardEliminateWithPivot(p);
+		doPivoting(p);
+		forwardEliminateWithPivot(p);
 	}
 }
 
@@ -121,14 +121,14 @@ FMatDsptr LDUFullMat::inversesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
 {
 	//"ForAndBackSub be optimized for the identity matrix."
 
-	this->decomposesaveOriginal(fullMat, saveOriginal);
+	decomposesaveOriginal(fullMat, saveOriginal);
 	rightHandSideB = std::make_shared<FullColumn<double>>(m);
 	auto matrixAinverse = std::make_shared <FullMatrix<double>>(m, n);
 	for (size_t j = 0; j < n; j++)
 	{
 		rightHandSideB->zeroSelf();
 		rightHandSideB->at(j) = 1.0;
-		this->forAndBackSubsaveOriginal(rightHandSideB, saveOriginal);
+		forAndBackSubsaveOriginal(rightHandSideB, saveOriginal);
 		matrixAinverse->atandputFullColumn(0, j, answerX);
 	}
 	return matrixAinverse;

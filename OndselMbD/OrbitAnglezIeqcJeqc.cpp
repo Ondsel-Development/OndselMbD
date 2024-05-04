@@ -11,11 +11,6 @@
 
 using namespace MbD;
 
-MbD::OrbitAngleZIeqcJeqc::OrbitAngleZIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj) : OrbitAngleZIeqcJec(frmi, frmj)
-{
-	assert(false);
-}
-
 std::shared_ptr<OrbitAngleZIeqcJeqc> MbD::OrbitAngleZIeqcJeqc::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	auto inst = std::make_shared<OrbitAngleZIeqcJeqc>(frmi, frmj);
@@ -250,8 +245,8 @@ void MbD::OrbitAngleZIeqcJeqc::calcPostDynCorrectorIteration()
 
 void MbD::OrbitAngleZIeqcJeqc::init_xyIeJeIe()
 {
-	xIeJeIe = DispCompIeqcJeqcIe::With(frmI, frmJ, 0);
-	yIeJeIe = DispCompIeqcJeqcIe::With(frmI, frmJ, 1);
+	xIeJeIe = DispCompIeqcJeqcIe::With(efrmI, efrmJ, 0);
+	yIeJeIe = DispCompIeqcJeqcIe::With(efrmI, efrmJ, 1);
 }
 
 FMatDsptr MbD::OrbitAngleZIeqcJeqc::ppvaluepEIpEJ()

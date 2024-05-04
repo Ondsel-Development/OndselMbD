@@ -11,11 +11,6 @@
 
 using namespace MbD;
 
-MbD::PointInLineJoint::PointInLineJoint(const char* str) : InLineJoint(str)
-{
-	assert(false);
-}
-
 std::shared_ptr<PointInLineJoint> MbD::PointInLineJoint::With()
 {
 	auto inst = std::make_shared<PointInLineJoint>();
@@ -35,9 +30,9 @@ void MbD::PointInLineJoint::initializeGlobally()
 	if (constraints->empty())
 	{
 		createInLineConstraints();
-		this->root()->hasChanged = true;
+		root()->hasChanged = true;
 	}
 	else {
-		Joint::initializeGlobally();
+		JointIJ::initializeGlobally();
 	}
 }

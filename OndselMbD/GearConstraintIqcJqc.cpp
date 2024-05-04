@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-MbD::GearConstraintIqcJqc::GearConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : GearConstraintIqcJc(frmi, frmj)
-{
-	assert(false);
-}
-
 std::shared_ptr<GearConstraintIqcJqc> MbD::GearConstraintIqcJqc::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	auto inst = std::make_shared<GearConstraintIqcJqc>(frmi, frmj);
@@ -26,47 +21,47 @@ std::shared_ptr<GearConstraintIqcJqc> MbD::GearConstraintIqcJqc::With(EndFrmsptr
 
 void MbD::GearConstraintIqcJqc::calc_pGpEJ()
 {
-	pGpEJ = orbitJeIe->pvaluepEI()->plusFullRow(orbitIeJe->pvaluepEJ()->times(this->ratio()));
+	pGpEJ = orbitJeIe->pvaluepEI()->plusFullRow(orbitIeJe->pvaluepEJ()->times(ratio()));
 }
 
 void MbD::GearConstraintIqcJqc::calc_pGpXJ()
 {
-	pGpXJ = orbitJeIe->pvaluepXI()->plusFullRow(orbitIeJe->pvaluepXJ()->times(this->ratio()));
+	pGpXJ = orbitJeIe->pvaluepXI()->plusFullRow(orbitIeJe->pvaluepXJ()->times(ratio()));
 }
 
 void MbD::GearConstraintIqcJqc::calc_ppGpEIpEJ()
 {
-	ppGpEIpEJ = orbitJeIe->ppvaluepEIpEJ()->transpose()->plusFullMatrix(orbitIeJe->ppvaluepEIpEJ()->times(this->ratio()));
+	ppGpEIpEJ = orbitJeIe->ppvaluepEIpEJ()->transpose()->plusFullMatrix(orbitIeJe->ppvaluepEIpEJ()->times(ratio()));
 }
 
 void MbD::GearConstraintIqcJqc::calc_ppGpEIpXJ()
 {
-	ppGpEIpXJ = orbitJeIe->ppvaluepXIpEJ()->transpose()->plusFullMatrix(orbitIeJe->ppvaluepEIpXJ()->times(this->ratio()));
+	ppGpEIpXJ = orbitJeIe->ppvaluepXIpEJ()->transpose()->plusFullMatrix(orbitIeJe->ppvaluepEIpXJ()->times(ratio()));
 }
 
 void MbD::GearConstraintIqcJqc::calc_ppGpEJpEJ()
 {
-	ppGpEJpEJ = orbitJeIe->ppvaluepEIpEI()->plusFullMatrix(orbitIeJe->ppvaluepEJpEJ()->times(this->ratio()));
+	ppGpEJpEJ = orbitJeIe->ppvaluepEIpEI()->plusFullMatrix(orbitIeJe->ppvaluepEJpEJ()->times(ratio()));
 }
 
 void MbD::GearConstraintIqcJqc::calc_ppGpXIpEJ()
 {
-	ppGpXIpEJ = orbitJeIe->ppvaluepEIpXJ()->transpose()->plusFullMatrix(orbitIeJe->ppvaluepXIpEJ()->times(this->ratio()));
+	ppGpXIpEJ = orbitJeIe->ppvaluepEIpXJ()->transpose()->plusFullMatrix(orbitIeJe->ppvaluepXIpEJ()->times(ratio()));
 }
 
 void MbD::GearConstraintIqcJqc::calc_ppGpXIpXJ()
 {
-	ppGpXIpXJ = orbitJeIe->ppvaluepXIpXJ()->transpose()->plusFullMatrix(orbitIeJe->ppvaluepXIpXJ()->times(this->ratio()));
+	ppGpXIpXJ = orbitJeIe->ppvaluepXIpXJ()->transpose()->plusFullMatrix(orbitIeJe->ppvaluepXIpXJ()->times(ratio()));
 }
 
 void MbD::GearConstraintIqcJqc::calc_ppGpXJpEJ()
 {
-	ppGpXJpEJ = orbitJeIe->ppvaluepXIpEI()->plusFullMatrix(orbitIeJe->ppvaluepXJpEJ()->times(this->ratio()));
+	ppGpXJpEJ = orbitJeIe->ppvaluepXIpEI()->plusFullMatrix(orbitIeJe->ppvaluepXJpEJ()->times(ratio()));
 }
 
 void MbD::GearConstraintIqcJqc::calc_ppGpXJpXJ()
 {
-	ppGpXJpXJ = orbitJeIe->ppvaluepXIpXI()->plusFullMatrix(orbitIeJe->ppvaluepXJpXJ()->times(this->ratio()));
+	ppGpXJpXJ = orbitJeIe->ppvaluepXIpXI()->plusFullMatrix(orbitIeJe->ppvaluepXJpXJ()->times(ratio()));
 }
 
 void MbD::GearConstraintIqcJqc::calcPostDynCorrectorIteration()
@@ -88,8 +83,8 @@ void MbD::GearConstraintIqcJqc::fillAccICIterError(FColDsptr col)
 	GearConstraintIqcJc::fillAccICIterError(col);
 	col->atplusFullVectortimes(iqXJ, pGpXJ, lam);
 	col->atplusFullVectortimes(iqEJ, pGpEJ, lam);
-	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
-	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(efrmI);
+	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	auto qXdotI = frmIeqc->qXdot();
 	auto qEdotI = frmIeqc->qEdot();
 	auto qXdotJ = frmJeqc->qXdot();
@@ -158,14 +153,14 @@ void MbD::GearConstraintIqcJqc::fillVelICJacob(SpMatDsptr mat)
 
 void MbD::GearConstraintIqcJqc::initorbitsIJ()
 {
-	orbitIeJe = OrbitAngleZIeqcJeqc::With(frmI, frmJ);
-	orbitJeIe = OrbitAngleZIeqcJeqc::With(frmJ, frmI);
+	orbitIeJe = OrbitAngleZIeqcJeqc::With(efrmI, efrmJ);
+	orbitJeIe = OrbitAngleZIeqcJeqc::With(efrmJ, efrmI);
 }
 
 void MbD::GearConstraintIqcJqc::useEquationNumbers()
 {
 	GearConstraintIqcJc::useEquationNumbers();
-	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	iqXJ = frmJeqc->iqX();
 	iqEJ = frmJeqc->iqE();
 }

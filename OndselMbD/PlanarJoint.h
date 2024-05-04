@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		PlanarJoint() {}
-		PlanarJoint(const char* str);
+		PlanarJoint(const char* str) : InPlaneJoint(str) {}
 		static std::shared_ptr<PlanarJoint> With();
 		static std::shared_ptr<PlanarJoint> With(const char* str);
 

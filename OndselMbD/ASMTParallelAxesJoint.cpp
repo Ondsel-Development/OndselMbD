@@ -19,7 +19,7 @@ std::shared_ptr<ASMTParallelAxesJoint> MbD::ASMTParallelAxesJoint::With()
 	return inst;
 }
 
-std::shared_ptr<Joint> MbD::ASMTParallelAxesJoint::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTParallelAxesJoint::mbdClassNew()
 {
 	return ParallelAxesJoint::With();
 }

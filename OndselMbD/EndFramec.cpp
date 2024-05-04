@@ -98,6 +98,11 @@ double EndFramec::riOeO(size_t i)
 	return rOeO->at(i);
 }
 
+FColDsptr MbD::EndFramec::rpmp()
+{
+	return markerFrame->rpmp;
+}
+
 FColDsptr EndFramec::rmeO()
 {
 	return rOeO->minusFullColumn(markerFrame->rOmO);
@@ -123,6 +128,12 @@ std::shared_ptr<EndFrameqc> MbD::EndFramec::newCopyEndFrameqc()
 	auto frmIeqc = EndFrameqc::With();
 	markerFrame->addEndFrame(frmIeqc);
 	return frmIeqc;
+}
+
+std::shared_ptr<EndFrameqc> MbD::EndFramec::followEndFrame(EndFrmsptr frmi)
+{
+	assert(false);
+	return std::shared_ptr<EndFrameqc>();
 }
 
 bool MbD::EndFramec::isEndFrameqc()

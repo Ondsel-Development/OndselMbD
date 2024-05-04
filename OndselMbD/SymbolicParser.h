@@ -59,7 +59,7 @@ namespace MbD {
 		void initVariables();
 		std::shared_ptr<std::set<Symbolic*>> variablesSet();
 
-		ASMTItem* owner = nullptr;
+		ASMTItem* container = nullptr;
 		std::shared_ptr<std::map<std::string, Symsptr>> variables;
 		std::shared_ptr<Units> units;
 		int mark = -1, prevEnd = -1;
@@ -69,6 +69,7 @@ namespace MbD {
 		std::shared_ptr<std::istringstream> source;
 		std::shared_ptr<std::stringstream> buffer;
 		std::shared_ptr<std::stack<Symsptr>> stack;
+
 	};
 }
 

@@ -13,11 +13,6 @@
 
 using namespace MbD;
 
-MbD::TranslationalJoint::TranslationalJoint(const char* str) : InLineJoint(str)
-{
-	assert(false);
-}
-
 std::shared_ptr<TranslationalJoint> MbD::TranslationalJoint::With()
 {
 	auto inst = std::make_shared<TranslationalJoint>();
@@ -37,12 +32,12 @@ void MbD::TranslationalJoint::initializeGlobally()
 	if (constraints->empty())
 	{
 		createInLineConstraints();
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 1, 0));
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 0));
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 1));
-		this->root()->hasChanged = true;
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 1, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 1));
+		root()->hasChanged = true;
 	}
 	else {
-		Joint::initializeGlobally();
+		JointIJ::initializeGlobally();
 	}
 }

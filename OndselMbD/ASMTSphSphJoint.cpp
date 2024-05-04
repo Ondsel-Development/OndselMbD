@@ -19,7 +19,7 @@ std::shared_ptr<ASMTSphSphJoint> MbD::ASMTSphSphJoint::With()
 	return inst;
 }
 
-std::shared_ptr<Joint> MbD::ASMTSphSphJoint::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTSphSphJoint::mbdClassNew()
 {
 	return SphSphJoint::With();
 }

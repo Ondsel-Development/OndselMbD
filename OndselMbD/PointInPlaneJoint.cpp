@@ -11,11 +11,6 @@
 
 using namespace MbD;
 
-MbD::PointInPlaneJoint::PointInPlaneJoint(const char*)
-{
-	assert(false);
-}
-
 std::shared_ptr<PointInPlaneJoint> MbD::PointInPlaneJoint::With()
 {
 	auto inst = std::make_shared<PointInPlaneJoint>();
@@ -34,10 +29,10 @@ void MbD::PointInPlaneJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		this->createInPlaneConstraint();
-		this->root()->hasChanged = true;
+		createInPlaneConstraint();
+		root()->hasChanged = true;
 	}
 	else {
-		Joint::initializeGlobally();
+		JointIJ::initializeGlobally();
 	}
 }

@@ -18,6 +18,8 @@ namespace MbD {
 	class PartFrame;
 	class MarkerFrame;
 	class EndFrameqc;
+	class EndFramec;
+	using EndFrmsptr = std::shared_ptr<EndFramec>;
 
 	class EndFramec : public CartesianFrame
 	{
@@ -42,9 +44,11 @@ namespace MbD {
 		MarkerFrame* getMarkerFrame() const;
 		void setMarkerFrame(MarkerFrame* markerFrm);
 		std::shared_ptr<EndFrameqc> newCopyEndFrameqc();
+		virtual std::shared_ptr<EndFrameqc> followEndFrame(EndFrmsptr frmi);
 		PartFrame* getPartFrame();
 		std::shared_ptr<EulerParameters<double>> qEOe();
 		double riOeO(size_t i);
+		virtual FColDsptr rpmp();
 		virtual FColDsptr rmeO();
 		virtual FColDsptr rpep();
 		virtual FColFMatDsptr pAOppE();
@@ -53,7 +57,7 @@ namespace MbD {
 		FColDsptr vOeO();
 		FColDsptr aOeO();
 
-		MarkerFrame* markerFrame; //Use raw pointer when pointing backwards.
+		MarkerFrame* markerFrame = nullptr; //Use raw pointer when pointing backwards.
 		FColDsptr rOeO = std::make_shared<FullColumn<double>>(3);
 		FMatDsptr aAOe = FullMatrix<double>::identitysptr(3);
 	};

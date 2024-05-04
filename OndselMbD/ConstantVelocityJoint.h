@@ -16,12 +16,12 @@ namespace MbD {
 		//
 	public:
 		ConstantVelocityJoint() {}
-		ConstantVelocityJoint(const char* str);
+		ConstantVelocityJoint(const char* str) : AtPointJoint(str) {}
 		static std::shared_ptr<ConstantVelocityJoint> With();
 		static std::shared_ptr<ConstantVelocityJoint> With(const char* str);
 		
 		void initializeGlobally() override;
-		void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ) override;
+		void connectsItoJ(EndFrmsptr frmi, EndFrmsptr frmj) override;
 
 
 	};

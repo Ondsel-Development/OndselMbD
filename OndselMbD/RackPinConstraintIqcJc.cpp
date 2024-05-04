@@ -13,14 +13,6 @@
 
 using namespace MbD;
 
-MbD::RackPinConstraintIqcJc::RackPinConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : RackPinConstraintIJ(frmi, frmj)
-{
-	pGpXI = FullRow<double>::With(3);
-	pGpEI = FullRow<double>::With(4);
-	ppGpXIpEI = FullMatrix<double>::With(3, 4);
-	ppGpEIpEI = FullMatrix<double>::With(4, 4);
-}
-
 std::shared_ptr<RackPinConstraintIqcJc> MbD::RackPinConstraintIqcJc::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	auto inst = std::make_shared<RackPinConstraintIqcJc>(frmi, frmj);
@@ -28,14 +20,23 @@ std::shared_ptr<RackPinConstraintIqcJc> MbD::RackPinConstraintIqcJc::With(EndFrm
 	return inst;
 }
 
+void MbD::RackPinConstraintIqcJc::initialize()
+{
+	RackPinConstraintIJ::initialize();
+	pGpXI = FullRow<double>::With(3);
+	pGpEI = FullRow<double>::With(4);
+	ppGpXIpEI = FullMatrix<double>::With(3, 4);
+	ppGpEIpEI = FullMatrix<double>::With(4, 4);
+}
+
 void MbD::RackPinConstraintIqcJc::initxIeJeIe()
 {
-	xIeJeIe = std::make_shared<DispCompIeqcJecIe>(frmI, frmJ, 0);
+	xIeJeIe = DispCompIeqcJecIe::With(efrmI, efrmJ, 0);
 }
 
 void MbD::RackPinConstraintIqcJc::initthezIeJe()
 {
-	thezIeJe = std::make_shared<AngleZIeqcJec>(frmI, frmJ);
+	thezIeJe = AngleZIeqcJec::With(efrmI, efrmJ);
 }
 
 void MbD::RackPinConstraintIqcJc::addToJointForceI(FColDsptr col)
@@ -46,7 +47,7 @@ void MbD::RackPinConstraintIqcJc::addToJointForceI(FColDsptr col)
 void MbD::RackPinConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 {
 	auto cForceT = pGpXI->times(lam);
-	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	auto rIpIeIp = frmIeqc->rpep();
 	auto pAOIppEI = frmIeqc->pAOppE();
 	auto aBOIp = frmIeqc->aBOp();
@@ -95,7 +96,7 @@ void MbD::RackPinConstraintIqcJc::fillAccICIterError(FColDsptr col)
 {
 	col->atplusFullVectortimes(iqXI, pGpXI, lam);
 	col->atplusFullVectortimes(iqEI, pGpEI, lam);
-	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	auto qXdotI = efrmIqc->qXdot();
 	auto qEdotI = efrmIqc->qEdot();
 	auto sum = pGpXI->timesFullColumn(efrmIqc->qXddot());
@@ -138,15 +139,9 @@ void MbD::RackPinConstraintIqcJc::fillVelICJacob(SpMatDsptr mat)
 	mat->atandplusFullColumn(iqEI, iG, pGpEI->transpose());
 }
 
-void MbD::RackPinConstraintIqcJc::init_xthez()
-{
-	xIeJeIe = DispCompIeqcJecIe::With(frmI, frmJ, 0);
-	thezIeJe = AngleZIeqcJec::With(frmJ, frmI);
-}
-
 void MbD::RackPinConstraintIqcJc::useEquationNumbers()
 {
-	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	iqXI = frmIeqc->iqX();
 	iqEI = frmIeqc->iqE();
 }

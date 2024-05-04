@@ -9,6 +9,7 @@
 
 #include "ASMTScrewJoint.h"
 #include "ScrewJoint.h"
+#include "Units.h"
 
 using namespace MbD;
 
@@ -19,7 +20,7 @@ std::shared_ptr<ASMTScrewJoint> MbD::ASMTScrewJoint::With()
 	return inst;
 }
 
-std::shared_ptr<Joint> MbD::ASMTScrewJoint::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTScrewJoint::mbdClassNew()
 {
 	return ScrewJoint::With();
 }
@@ -42,11 +43,11 @@ void MbD::ASMTScrewJoint::readPitch(std::vector<std::string>& lines)
 	}
 }
 
-void MbD::ASMTScrewJoint::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+void MbD::ASMTScrewJoint::createMbD()
 {
-	ASMTJoint::createMbD(mbdSys, mbdUnits);
+	ASMTJoint::createMbD();
 	auto screwJoint = std::static_pointer_cast<ScrewJoint>(mbdObject);
-	screwJoint->pitch = pitch;
+	screwJoint->pitch = pitch * asmtUnits()->length;
 }
 
 void MbD::ASMTScrewJoint::storeOnLevel(std::ofstream& os, size_t level)

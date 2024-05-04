@@ -14,14 +14,16 @@
 
 using namespace MbD;
 
-MbD::Cosine::Cosine(Symsptr arg) : FunctionX(arg)
-{
-	assert(false);
-}
-
 std::shared_ptr<Cosine> MbD::Cosine::With()
 {
 	auto inst = std::make_shared<Cosine>();
+	inst->initialize();
+	return inst;
+}
+
+std::shared_ptr<Cosine> MbD::Cosine::With(Symsptr arg)
+{
+	auto inst = std::make_shared<Cosine>(arg);
 	inst->initialize();
 	return inst;
 }
@@ -33,12 +35,12 @@ double MbD::Cosine::getValue()
 
 Symsptr MbD::Cosine::differentiateWRTx()
 {
-	return std::make_shared<Negative>(std::make_shared<Sine>(xx));
+	return Negative::With(std::make_shared<Sine>(xx));
 }
 
 Symsptr MbD::Cosine::copyWith(Symsptr arg)
 {
-	return std::make_shared<Cosine>(arg);
+	return Cosine::With(arg);
 }
 
 Symsptr MbD::Cosine::clonesptr()
@@ -49,7 +51,7 @@ Symsptr MbD::Cosine::clonesptr()
 Symsptr MbD::Cosine::integrateWRTx()
 {
 	auto sine = std::make_shared<Sine>(xx);
-	return std::make_shared<Negative>(sine);
+	return Negative::With(sine);
 
 }
 

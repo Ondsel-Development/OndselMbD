@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-MbD::DistancexyConstraintIJ::DistancexyConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj)
-{
-	assert(false);
-}
-
 std::shared_ptr<DistancexyConstraintIJ> MbD::DistancexyConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	assert(frmi->isEndFrameqc());
@@ -29,7 +24,7 @@ std::shared_ptr<DistancexyConstraintIJ> MbD::DistancexyConstraintIJ::With(EndFrm
 void MbD::DistancexyConstraintIJ::initialize()
 {
 	ConstraintIJ::initialize();
-	this->init_xyIeJeIe();
+	init_xyIeJeIe();
 }
 
 void MbD::DistancexyConstraintIJ::calcPostDynCorrectorIteration()

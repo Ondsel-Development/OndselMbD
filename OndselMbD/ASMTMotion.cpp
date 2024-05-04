@@ -8,6 +8,8 @@
 #include <fstream>	
 
 #include "ASMTMotion.h"
+#include "ASMTAssembly.h"
+#include "ASMTJoint.h"
 
 using namespace MbD;
 
@@ -38,7 +40,15 @@ void MbD::ASMTMotion::readMotionSeries(std::vector<std::string>& lines)
 
 void MbD::ASMTMotion::initMarkers()
 {
-	assert(false);
+	if (motionJoint == "") {
+		assert(markerI->name != "");
+		assert(markerJ->name != "");
+	}
+	else {
+		auto jt = root()->jointAt(motionJoint);
+		markerI = jt->markerI;
+		markerJ = jt->markerJ;
+	}
 }
 
 void ASMTMotion::storeOnLevel(std::ofstream&, size_t)
@@ -49,4 +59,9 @@ void ASMTMotion::storeOnLevel(std::ofstream&, size_t)
 void ASMTMotion::storeOnTimeSeries(std::ofstream&)
 {
 	assert(false);
+}
+
+bool MbD::ASMTMotion::isMotion()
+{
+	return true;
 }

@@ -8,15 +8,15 @@
  
 #pragma once
 
-#include "Joint.h"
+#include "JointIJ.h"
 
 namespace MbD {
-	class InLineJoint : public Joint
+	class InLineJoint : public JointIJ
 	{
 		//Abstract class. Create subclasses only.
 	public:
 		InLineJoint() {}
-		InLineJoint(const char* str);
+		InLineJoint(const char* str) : JointIJ(str) {}
 		
 		virtual void initializeGlobally();
 

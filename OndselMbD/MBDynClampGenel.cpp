@@ -16,11 +16,11 @@ void MbD::MBDynClampGenel::parseMBDyn(std::string line)
 	genelString = line;
 	arguments = collectArgumentsFor("genel", line);
 	readLabel(arguments);
-	type = readStringOffTop(arguments);
-	nodeName = readStringOffTop(arguments);
-	assert(readStringOffTop(arguments) == "abstract");
-	valueType = readStringOffTop(arguments);
-	assert(readStringOffTop(arguments) == "string");
+	type = readStringNoSpacesOffTop(arguments);
+	nodeName = readStringNoSpacesOffTop(arguments);
+	assert(readStringNoSpacesOffTop(arguments) == "abstract");
+	valueType = readStringNoSpacesOffTop(arguments);
+	assert(readStringNoSpacesOffTop(arguments) == "string");
 	formula = popOffTop(arguments);
 	formula = std::regex_replace(formula, std::regex("\""), "");
 }

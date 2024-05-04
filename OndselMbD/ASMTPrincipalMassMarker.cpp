@@ -30,8 +30,7 @@ void MbD::ASMTPrincipalMassMarker::parseASMT(std::vector<std::string>& lines)
 	auto leadingTabs = lines[0].substr(0, pos);
 	assert(lines[0] == (leadingTabs + "Name"));
 	lines.erase(lines.begin());
-	name = readString(lines[0]);
-	lines.erase(lines.begin());
+	name = readStringNoSpacesOffTop(lines);
 	assert(lines[0] == (leadingTabs + "Position3D"));
 	lines.erase(lines.begin());
 	position3D = readColumnOfDoubles(lines[0]);

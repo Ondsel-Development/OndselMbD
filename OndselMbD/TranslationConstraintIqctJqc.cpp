@@ -20,7 +20,7 @@ std::shared_ptr<TranslationConstraintIqctJqc> MbD::TranslationConstraintIqctJqc:
 
 void TranslationConstraintIqctJqc::initriIeJeIe()
 {
-	riIeJeIe = DispCompIeqctJeqcKeqct::With(frmI, frmJ, frmI, axisI);
+	riIeJeIe = DispCompIeqctJeqcKeqct::With(efrmI, efrmJ, efrmI, axisI);
 }
 
 ConstraintType TranslationConstraintIqctJqc::type()
@@ -53,8 +53,8 @@ void TranslationConstraintIqctJqc::preAccIC()
 void TranslationConstraintIqctJqc::fillAccICIterError(FColDsptr col)
 {
 	TranslationConstraintIqcJqc::fillAccICIterError(col);
-	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
-	auto efrmJqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(efrmI);
+	auto efrmJqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	auto qXdotI = efrmIqc->qXdot();
 	auto qEdotI = efrmIqc->qEdot();
 	auto qXdotJ = efrmJqc->qXdot();

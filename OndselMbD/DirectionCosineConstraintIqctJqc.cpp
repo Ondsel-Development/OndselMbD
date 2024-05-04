@@ -21,7 +21,7 @@ std::shared_ptr<DirectionCosineConstraintIqctJqc> MbD::DirectionCosineConstraint
 
 void DirectionCosineConstraintIqctJqc::initaAijIeJe()
 {
-	aAijIeJe = DirectionCosineIeqctJeqc::With(frmI, frmJ, axisI, axisJ);
+	aAijIeJe = DirectionCosineIeqctJeqc::With(efrmI, efrmJ, axisI, axisJ);
 }
 
 ConstraintType DirectionCosineConstraintIqctJqc::type()
@@ -51,8 +51,8 @@ void DirectionCosineConstraintIqctJqc::preAccIC()
 void DirectionCosineConstraintIqctJqc::fillAccICIterError(FColDsptr col)
 {
 	DirectionCosineConstraintIqcJqc::fillAccICIterError(col);
-	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
-	auto efrmJqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(efrmI);
+	auto efrmJqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	auto qEdotI = efrmIqc->qEdot();
 	auto qEdotJ = efrmJqc->qEdot();
 	double sum = (ppGpEIpt->timesFullColumn(qEdotI)) * 2.0;

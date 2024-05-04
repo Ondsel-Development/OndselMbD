@@ -59,7 +59,7 @@ void MbD::SymbolicParser::parseUserFunction(Symsptr userFunc)
 {
 	auto usrFunc = std::static_pointer_cast<BasicUserFunction>(userFunc);
 	units = usrFunc->units;
-	this->parseString(usrFunc->funcText);
+	parseString(usrFunc->funcText);
 	Symsptr func = stack->top();
 	stack->pop();
 	stack->push(Symbolic::times(func, std::make_shared<Constant>(usrFunc->myUnit)));
@@ -549,7 +549,7 @@ bool MbD::SymbolicParser::isNextLineTag(char c) const
 
 void MbD::SymbolicParser::initVariables()
 {
-	auto varsSet = this->variablesSet();
+	auto varsSet = variablesSet();
 	for (auto& each : *varsSet) {
 		variables->insert(std::make_pair(each->getName(), each));
 	}

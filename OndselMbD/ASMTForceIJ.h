@@ -16,6 +16,8 @@ namespace MbD {
 		//
 	public:
 		static std::shared_ptr<ASMTForceIJ> With();
+		void createMbD() override;
+		double asmtUnit() override;
 
 	};
 }

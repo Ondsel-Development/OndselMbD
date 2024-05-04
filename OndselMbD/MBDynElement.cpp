@@ -11,7 +11,7 @@ std::shared_ptr<MBDynElement> MbD::MBDynElement::With()
 
 void MbD::MBDynElement::initialize()
 {
-	assert(false);
+	//Do nothing.
 }
 
 void MBDynElement::parseMBDyn(std::vector<std::string> &lines) {

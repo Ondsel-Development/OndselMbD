@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-MbD::GearConstraintIJ::GearConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj)
-{
-	assert(false);
-}
-
 std::shared_ptr<GearConstraintIJ> MbD::GearConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	assert(frmi->isEndFrameqc());
@@ -29,12 +24,12 @@ std::shared_ptr<GearConstraintIJ> MbD::GearConstraintIJ::With(EndFrmsptr frmi, E
 void MbD::GearConstraintIJ::initialize()
 {
 	ConstraintIJ::initialize();
-	this->initorbitsIJ();
+	initorbitsIJ();
 }
 
 void MbD::GearConstraintIJ::calcPostDynCorrectorIteration()
 {
-	aG = orbitJeIe->value() + (this->ratio() * orbitIeJe->value()) - aConstant;
+	aG = orbitJeIe->value() + (ratio() * orbitIeJe->value()) - aConstant;
 }
 
 void MbD::GearConstraintIJ::initializeGlobally()
@@ -59,7 +54,7 @@ void MbD::GearConstraintIJ::postInput()
 	orbitIeJe->postInput();
 	orbitJeIe->postInput();
 	if (aConstant == std::numeric_limits<double>::min()) {
-		aConstant = orbitJeIe->value() + (this->ratio() * orbitIeJe->value());
+		aConstant = orbitJeIe->value() + (ratio() * orbitIeJe->value());
 	}
 	ConstraintIJ::postInput();
 }

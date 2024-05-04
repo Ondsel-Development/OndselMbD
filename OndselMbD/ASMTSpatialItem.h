@@ -36,6 +36,18 @@ namespace MbD {
 		void storeOnLevelRotationMatrix(std::ofstream& os, size_t level);
 		FColDsptr getPosition3D(size_t i);
 		FMatDsptr getRotationMatrix(size_t i);
+		FMatDsptr aAFf();
+		FMatDsptr aAOf();
+		FColDsptr rFfF();
+		FColDsptr rOfO();
+		virtual FMatDsptr aAFf(size_t i);
+		virtual FMatDsptr aAOf(size_t i);
+		virtual FColDsptr rFfF(size_t i);
+		virtual FColDsptr rOfO(size_t i);
+		virtual FColDsptr vFfF(size_t i);
+		virtual FColDsptr vOfO(size_t i);
+		virtual FColDsptr omeFfF(size_t i);
+		virtual FColDsptr omeOfO(size_t i);
 
 		FColDsptr position3D = std::make_shared<FullColumn<double>>(3);
 		FMatDsptr rotationMatrix = FullMatrix<double>::With(ListListD{

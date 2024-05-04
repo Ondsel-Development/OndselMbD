@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		RevCylJoint() {}
-		RevCylJoint(const char* str);
+		RevCylJoint(const char* str) : CompoundJoint(str) {}
 		static std::shared_ptr<RevCylJoint> With();
 		static std::shared_ptr<RevCylJoint> With(const char* str);
 

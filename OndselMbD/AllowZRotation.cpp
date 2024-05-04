@@ -44,9 +44,9 @@ void MbD::AllowZRotation::initializeGlobally()
 {
 	if (constraints->empty()) {
 		initMotions();
-		auto dirCosCon = AllowZRotationConstraintIqctJqc::With(frmI, frmJ, 1, 0);
+		auto dirCosCon = AllowZRotationConstraintIqctJqc::With(efrmI, efrmJ, 1, 0);
 		addConstraint(dirCosCon);
-		this->root()->hasChanged = true;
+		root()->hasChanged = true;
 	}
 	else {
 		PrescribedMotion::initializeGlobally();

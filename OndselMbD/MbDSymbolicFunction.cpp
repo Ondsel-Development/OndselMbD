@@ -4,11 +4,11 @@
 #include "Constant.h"
 #include "KinematicDotIeJe.h"
 #include "DispCompIecJecKec.h"
-#include "KinematicIeJe.h"
+#include "KinematicIJ.h"
 
 using namespace MbD;
 
-std::shared_ptr<MbDSymbolicFunction> MbD::MbDSymbolicFunction::With(std::shared_ptr<KinematicIeJe> kineIJ)
+std::shared_ptr<MbDSymbolicFunction> MbD::MbDSymbolicFunction::With(std::shared_ptr<KinematicIJ> kineIJ)
 {
 	auto inst = std::make_shared<MbDSymbolicFunction>(kineIJ);
 	inst->initialize();
@@ -140,32 +140,32 @@ void MbD::MbDSymbolicFunction::useEquationNumbers()
 
 FRowDsptr MbD::MbDSymbolicFunction::pvaluepEI()
 {
-	return std::static_pointer_cast<KinematicIeJe>(mbdObject)->pvaluepEI();
+	return std::static_pointer_cast<KinematicIJ>(mbdObject)->pvaluepEI();
 }
 
 FRowDsptr MbD::MbDSymbolicFunction::pvaluepXI()
 {
-	return std::static_pointer_cast<KinematicIeJe>(mbdObject)->pvaluepXI();
+	return std::static_pointer_cast<KinematicIJ>(mbdObject)->pvaluepXI();
 }
 
 FRowDsptr MbD::MbDSymbolicFunction::pvaluepEJ()
 {
-	return std::static_pointer_cast<KinematicIeJe>(mbdObject)->pvaluepEJ();
+	return std::static_pointer_cast<KinematicIJ>(mbdObject)->pvaluepEJ();
 }
 
 FRowDsptr MbD::MbDSymbolicFunction::pvaluepXJ()
 {
-	return std::static_pointer_cast<KinematicIeJe>(mbdObject)->pvaluepXJ();
+	return std::static_pointer_cast<KinematicIJ>(mbdObject)->pvaluepXJ();
 }
 
 FRowDsptr MbD::MbDSymbolicFunction::pvaluepEK()
 {
-	return std::static_pointer_cast<KinematicIeJe>(mbdObject)->pvaluepEK();
+	return std::static_pointer_cast<KinematicIJ>(mbdObject)->pvaluepEK();
 }
 
 FRowDsptr MbD::MbDSymbolicFunction::pvaluepXK()
 {
-	return std::static_pointer_cast<KinematicIeJe>(mbdObject)->pvaluepXK();
+	return std::static_pointer_cast<KinematicIJ>(mbdObject)->pvaluepXK();
 }
 
 FRowDsptr MbD::MbDSymbolicFunction::pvaluepEdotI()
@@ -206,12 +206,12 @@ SpRowDsptr MbD::MbDSymbolicFunction::pvalueplam()
 
 PartFrame* MbD::MbDSymbolicFunction::partFrameI()
 {
-	return std::static_pointer_cast<KinematicIeJe>(mbdObject)->partFrameI();
+	return std::static_pointer_cast<KinematicIJ>(mbdObject)->partFrameI();
 }
 
 PartFrame* MbD::MbDSymbolicFunction::partFrameJ()
 {
-	return std::static_pointer_cast<KinematicIeJe>(mbdObject)->partFrameJ();
+	return std::static_pointer_cast<KinematicIJ>(mbdObject)->partFrameJ();
 }
 
 PartFrame* MbD::MbDSymbolicFunction::partFrameK()

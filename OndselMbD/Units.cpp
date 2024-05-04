@@ -26,7 +26,7 @@ std::shared_ptr<Units> MbD::Units::With()
 
 void MbD::Units::initialize()
 {
-	assert(false);
+	//Do nothing.
 }
 
 void MbD::Units::calc()

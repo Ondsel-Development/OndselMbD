@@ -10,11 +10,6 @@
 
 using namespace MbD;
 
-MbD::CompoundJoint::CompoundJoint(const char* str) : Joint(str)
-{
-	assert(false);
-}
-
 std::shared_ptr<CompoundJoint> MbD::CompoundJoint::With()
 {
 	auto inst = std::make_shared<CompoundJoint>();

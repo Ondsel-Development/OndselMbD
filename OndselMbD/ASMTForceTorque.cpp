@@ -9,7 +9,8 @@
 #include "ASMTForceTorque.h"
 #include "ASMTAssembly.h"
 #include "ForceFunctionParser.h"
-#include "ForceTorqueItem.h"
+#include "ForceTorqueIJ.h"
+#include "ForceTorqueData.h"
 
 using namespace MbD;
 
@@ -22,22 +23,8 @@ std::shared_ptr<ASMTForceTorque> MbD::ASMTForceTorque::With()
 
 void MbD::ASMTForceTorque::updateFromMbD()
 {
-	//"
-	//MbD returns aFIeO and aTIeO.
-	//GEO needs aFImO and aTImO.
-	//For Motion rImIeO is not zero and is changing.
-	//aFImO = aFIeO.
-	//aTImO = aTIeO + (rImIeO cross : aFIeO).
-	//"
-	auto mbdUnts = mbdUnits();
-	auto forTor = std::static_pointer_cast<ForceTorqueItem>(mbdObject);
-	auto aFIeO = forTor->aFX()->times(mbdUnts->force);
-	auto aTIeO = forTor->aTX()->times(mbdUnts->torque);
-	auto rImIeO = forTor->frmI->rmeO()->times(mbdUnts->length);
-	auto aFIO = aFIeO;
-	auto aTIO = aTIeO->plusFullColumn(rImIeO->cross(aFIeO));
-	cFIO->push_back(aFIO);
-	cTIO->push_back(aTIO);
+	auto data = dataFromMbD();
+	dataSeries->push_back(data);
 }
 
 void MbD::ASMTForceTorque::compareResults(AnalysisType)
@@ -79,18 +66,45 @@ void MbD::ASMTForceTorque::readForceTorqueSeries(std::vector<std::string>& lines
 	readTZonIs(lines);
 }
 
-void MbD::ASMTForceTorque::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+void MbD::ASMTForceTorque::storeOnLevel(std::ofstream& os, size_t level)
 {
-	//self dataSeries : OrderedCollection new.
-	//self discontinuities : OrderedCollection new
+	assert(false);
+}
+
+void MbD::ASMTForceTorque::storeOnTimeSeries(std::ofstream& os)
+{
+	std::string label = typeid(*this).name();
+	label = label.substr(15, label.size() - 15);
+	os << label << "Series\t" << fullName("") << std::endl;
+	ASMTItemIJ::storeOnTimeSeries(os);
+}
+
+void MbD::ASMTForceTorque::createMbD()
+{
+	//Do nothing.
 }
 
 std::shared_ptr<ForceFunctionParser> MbD::ASMTForceTorque::functionParser()
 {
-	auto parser = std::make_shared<ForceFunctionParser>();
+	auto parser = ForceFunctionParser::With();
 	parser->container = this;
 	parser->initVariables();
 	parser->initgeoIJs();
 	return parser;
 
+}
+
+bool MbD::ASMTForceTorque::isForceTorque()
+{
+	return true;
+}
+
+std::shared_ptr<StateData> MbD::ASMTForceTorque::dataFromMbD()
+{
+	auto mbdUnts = mbdUnits();
+	auto mbdItem = std::static_pointer_cast<ForceTorqueIJ>(mbdObject);
+	auto answer = ForceTorqueData::With();
+	answer->aFIO = mbdItem->aFX()->times(mbdUnts->force);
+	answer->aTIO = mbdItem->aTX()->times(mbdUnts->torque);
+	return answer;
 }

@@ -17,21 +17,16 @@ namespace MbD {
 		//
 	public:
 		ForceTorqueItem() {}
-		ForceTorqueItem(EndFrmsptr frmi, EndFrmsptr frmj) : frmI(frmi), frmJ(frmj) {}
-		static std::shared_ptr<ForceTorqueItem> With(EndFrmsptr frmi, EndFrmsptr frmj);
 		
-		virtual void forceOnFrmIandFrmJ(EndFrmsptr eFrmI, EndFrmsptr eFrmJ);
-		virtual void torqueOnFrmIandFrmJ(EndFrmsptr eFrmI, EndFrmsptr eFrmJ);
+		virtual void forceOnFrmIandFrmJ(EndFrmsptr frmi, EndFrmsptr frmj);
+		virtual void torqueOnFrmIandFrmJ(EndFrmsptr frmi, EndFrmsptr frmj);
 		void fillStaticError(FColDsptr col) override;
 		void fillStaticJacob(SpMatDsptr mat) override;
 		void postAccICIteration() override;
 		void postCollisionCorrectorIteration() override;
 		void postCollisionPredictor() override;
-		virtual FColDsptr aFX() const;
-		virtual FColDsptr aTX() const;
 		virtual FColDsptr getFTIeO() const;
 
-		EndFrmsptr frmI, frmJ;
 	};
 }
 

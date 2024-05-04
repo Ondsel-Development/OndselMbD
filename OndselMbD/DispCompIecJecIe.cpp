@@ -11,11 +11,6 @@
 
 using namespace MbD;
 
-MbD::DispCompIecJecIe::DispCompIecJecIe(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis) : KinematicIeJe(frmi, frmj), axis(axis)
-{
-	assert(false);
-}
-
 std::shared_ptr<DispCompIecJecIe> MbD::DispCompIecJecIe::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis)
 {
 	auto inst = std::make_shared<DispCompIecJecIe>(frmi, frmj, axis);
@@ -23,10 +18,17 @@ std::shared_ptr<DispCompIecJecIe> MbD::DispCompIecJecIe::With(EndFrmsptr frmi, E
 	return inst;
 }
 
+void MbD::DispCompIecJecIe::withFrmIfrmJaxis(EndFrmsptr frmi, EndFrmsptr frmj, size_t axs)
+{
+	efrmI = frmi;
+	efrmJ = frmj;
+	axis = axs;
+}
+
 void MbD::DispCompIecJecIe::calc_value()
 {
-	aAjOIe = frmI->aAjOe(axis);
-	rIeJeO = frmJ->rOeO->minusFullColumn(frmI->rOeO);
+	aAjOIe = efrmI->aAjOe(axis);
+	rIeJeO = efrmJ->rOeO->minusFullColumn(efrmI->rOeO);
 	riIeJeIe = aAjOIe->dot(rIeJeO);
 }
 

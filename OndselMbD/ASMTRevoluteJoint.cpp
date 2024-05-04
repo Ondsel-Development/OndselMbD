@@ -19,7 +19,7 @@ std::shared_ptr<ASMTRevoluteJoint> MbD::ASMTRevoluteJoint::With()
 	return inst;
 }
 
-std::shared_ptr<Joint> MbD::ASMTRevoluteJoint::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTRevoluteJoint::mbdClassNew()
 {
 	return RevoluteJoint::With();
 }

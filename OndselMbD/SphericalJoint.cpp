@@ -11,11 +11,6 @@
 
 using namespace MbD;
 
-MbD::SphericalJoint::SphericalJoint(const char* str) : AtPointJoint(str)
-{
-	assert(false);
-}
-
 std::shared_ptr<SphericalJoint> MbD::SphericalJoint::With()
 {
 	auto inst = std::make_shared<SphericalJoint>();
@@ -35,9 +30,9 @@ void MbD::SphericalJoint::initializeGlobally()
 	if (constraints->empty())
 	{
 		createAtPointConstraints();
-		this->root()->hasChanged = true;
+		root()->hasChanged = true;
 	}
 	else {
-		Joint::initializeGlobally();
+		JointIJ::initializeGlobally();
 	}
 }

@@ -15,12 +15,6 @@
 
 using namespace MbD;
 
-MbD::ConstVelConstraintIqcJc::ConstVelConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : ConstVelConstraintIJ(frmi, frmj)
-{
-	pGpEI = FullRow<double>::With(4);
-	ppGpEIpEI = FullMatrix<double>::With(4, 4);
-}
-
 std::shared_ptr<ConstVelConstraintIqcJc> MbD::ConstVelConstraintIqcJc::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	auto inst = std::make_shared<ConstVelConstraintIqcJc>(frmi, frmj);
@@ -66,7 +60,7 @@ void MbD::ConstVelConstraintIqcJc::calcPostDynCorrectorIteration()
 void MbD::ConstVelConstraintIqcJc::fillAccICIterError(FColDsptr col)
 {
 	col->atplusFullVectortimes(iqEI, pGpEI, lam);
-	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	auto qEdotI = efrmIqc->qEdot();
 	double sum = 0.0;
 	sum += pGpEI->timesFullColumn(efrmIqc->qEddot());
@@ -100,17 +94,17 @@ void MbD::ConstVelConstraintIqcJc::fillVelICJacob(SpMatDsptr mat)
 
 void MbD::ConstVelConstraintIqcJc::initA01IeJe()
 {
-	aA01IeJe = DirectionCosineIeqcJec::With(frmI, frmJ, 0, 1);
+	aA01IeJe = DirectionCosineIeqcJec::With(efrmI, efrmJ, 0, 1);
 }
 
 void MbD::ConstVelConstraintIqcJc::initA10IeJe()
 {
-	aA10IeJe = DirectionCosineIeqcJec::With(frmI, frmJ, 1, 0);
+	aA10IeJe = DirectionCosineIeqcJec::With(efrmI, efrmJ, 1, 0);
 }
 
 void MbD::ConstVelConstraintIqcJc::useEquationNumbers()
 {
-	iqEI = std::static_pointer_cast<EndFrameqc>(frmI)->iqE();
+	iqEI = std::static_pointer_cast<EndFrameqc>(efrmI)->iqE();
 }
 
 void MbD::ConstVelConstraintIqcJc::fillpFpy(SpMatDsptr mat)

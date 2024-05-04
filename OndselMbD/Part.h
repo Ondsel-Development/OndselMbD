@@ -22,7 +22,7 @@ namespace MbD {
 		//ToDo: ipX ipE m aJ partFrame pX pXdot pE pEdot mX mE mEdot pTpE ppTpEpE ppTpEpEdot 
 	public:
 		Part() {}
-		Part(const char* str);
+		Part(const char* str) : Item(str) {}
 		static std::shared_ptr<Part> With();
 		static std::shared_ptr<Part> With(const char* str);
 		void initialize() override;

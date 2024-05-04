@@ -16,9 +16,10 @@ namespace MbD {
 		//
 	public:
 		Cosine() = default;
-		Cosine(Symsptr arg);
+		Cosine(Symsptr arg) : FunctionX(arg) {}
 		static std::shared_ptr<Cosine> With();
-		
+		static std::shared_ptr<Cosine> With(Symsptr arg);
+
 		double getValue() override;
 		Symsptr differentiateWRTx() override;
 		Symsptr integrateWRTx() override;

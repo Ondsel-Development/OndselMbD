@@ -10,10 +10,11 @@
 
 using namespace MbD;
 
-MbD::AngleZIeqcJec::AngleZIeqcJec(EndFrmsptr frmi, EndFrmsptr frmj) : AngleZIecJec(frmi, frmj)
+std::shared_ptr<AngleZIeqcJec> MbD::AngleZIeqcJec::With()
 {
-	pthezpEI = FullRow<double>::With(4);
-	ppthezpEIpEI = FullMatrix<double>::With(4, 4);
+	auto inst = std::make_shared<AngleZIeqcJec>();
+	inst->initialize();
+	return inst;
 }
 
 std::shared_ptr<AngleZIeqcJec> MbD::AngleZIeqcJec::With(EndFrmsptr frmi, EndFrmsptr frmj)
@@ -68,8 +69,8 @@ void MbD::AngleZIeqcJec::calcPostDynCorrectorIteration()
 
 void MbD::AngleZIeqcJec::init_aAijIeJe()
 {
-	aA00IeJe = DirectionCosineIeqcJec::With(frmI, frmJ, 0, 0);
-	aA10IeJe = DirectionCosineIeqcJec::With(frmI, frmJ, 1, 0);
+	aA00IeJe = DirectionCosineIeqcJec::With(efrmI, efrmJ, 0, 0);
+	aA10IeJe = DirectionCosineIeqcJec::With(efrmI, efrmJ, 1, 0);
 }
 
 FMatDsptr MbD::AngleZIeqcJec::ppvaluepEIpEI()

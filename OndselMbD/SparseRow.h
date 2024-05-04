@@ -44,7 +44,7 @@ namespace MbD {
 	template<>
 	inline SpRowDsptr SparseRow<double>::timesconditionedWithTol(double scaling, double tol)
 	{
-		auto answer = std::make_shared<SparseRow<double>>(this->numberOfElements());
+		auto answer = std::make_shared<SparseRow<double>>(numberOfElements());
 		for (auto const& keyValue : *this)
 		{
 			auto val = keyValue.second * scaling;
@@ -56,7 +56,7 @@ namespace MbD {
 	template<>
 	inline SpRowDsptr SparseRow<double>::conditionedWithTol(double tol)
 	{
-		auto answer = std::make_shared<SparseRow<double>>(this->numberOfElements());
+		auto answer = std::make_shared<SparseRow<double>>(numberOfElements());
 		for (auto const& keyValue : *this)
 		{
 			auto val = keyValue.second;

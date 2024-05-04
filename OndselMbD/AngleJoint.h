@@ -8,15 +8,15 @@
  
 #pragma once
 
-#include "Joint.h"
+#include "JointIJ.h"
 
 namespace MbD {
-	class AngleJoint : public Joint
+	class AngleJoint : public JointIJ
 	{
 		//theIzJz
 	public:
 		AngleJoint() {}
-		AngleJoint(const char* str);
+		AngleJoint(const char* str) : JointIJ(str) {}
 		static std::shared_ptr<AngleJoint> With();
 		static std::shared_ptr<AngleJoint> With(const char* str);
 

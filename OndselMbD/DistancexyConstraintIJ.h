@@ -16,7 +16,7 @@ namespace MbD {
 	{
 		//xIeJeIe yIeJeIe 
 	public:
-		DistancexyConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
+		DistancexyConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj) {}
 		static std::shared_ptr<DistancexyConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
 		void initialize() override;
 

@@ -17,7 +17,7 @@ namespace MbD {
 	public:
 		static std::shared_ptr<ASMTCylSphJoint> With();
 
-		std::shared_ptr<Joint> mbdClassNew() override;
+		std::shared_ptr<JointIJ> mbdClassNew() override;
 
 	};
 }

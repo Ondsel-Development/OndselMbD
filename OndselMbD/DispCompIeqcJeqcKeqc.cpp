@@ -31,7 +31,7 @@ void DispCompIeqcJeqcKeqc::initialize()
 void DispCompIeqcJeqcKeqc::calcPostDynCorrectorIteration()
 {
 	DispCompIeqcJecKeqc::calcPostDynCorrectorIteration();
-	auto frmJqc = std::static_pointer_cast<EndFrameqc>(frmJ);
+	auto frmJqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
 	auto prIeJeOpEJT = frmJqc->prOeOpE->transpose();
 	auto& pprIeJeOpEJpEJ = frmJqc->pprOeOpEpE;
 	for (size_t i = 0; i < 3; i++)

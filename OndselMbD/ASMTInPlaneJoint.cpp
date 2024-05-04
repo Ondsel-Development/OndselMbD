@@ -1,6 +1,7 @@
 
 #include "ASMTInPlaneJoint.h"
 #include "InPlaneJoint.h"
+#include "Units.h"
 
 using namespace MbD;
 
@@ -29,11 +30,11 @@ void MbD::ASMTInPlaneJoint::readOffset(std::vector<std::string>& lines)
 	}
 }
 
-void MbD::ASMTInPlaneJoint::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+void MbD::ASMTInPlaneJoint::createMbD()
 {
-	ASMTJoint::createMbD(mbdSys, mbdUnits);
+	ASMTJoint::createMbD();
 	auto inPlaneJoint = std::static_pointer_cast<InPlaneJoint>(mbdObject);
-	inPlaneJoint->offset = offset;
+	inPlaneJoint->offset = offset * asmtUnits()->length;
 }
 
 void MbD::ASMTInPlaneJoint::storeOnLevel(std::ofstream& os, size_t level)

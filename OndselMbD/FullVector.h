@@ -184,7 +184,7 @@ namespace MbD {
 	{
 		constexpr double epsilon = std::numeric_limits<double>::epsilon();
 		double tol = this->maxMagnitude() * epsilon;
-		this->conditionSelfWithTol(tol);
+		conditionSelfWithTol(tol);
 	}
 
 	template<>
@@ -210,7 +210,7 @@ namespace MbD {
 	{
 		//Return shallow copy of *this wrapped in shared_ptr
 		assert(false);
-		return std::make_shared<FullVector<T>>(*this);
+		return FullVector<T>>(*this);
 	}
 
 	template<typename T>

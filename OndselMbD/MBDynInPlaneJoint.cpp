@@ -8,6 +8,7 @@
 
 #include "MBDynInPlaneJoint.h"
 #include "ASMTPointInPlaneJoint.h"
+#include "ASMTAssembly.h"
 
 using namespace MbD;
 
@@ -25,10 +26,8 @@ void MbD::MBDynInPlaneJoint::parseMBDyn(std::string line)
 
 void MbD::MBDynInPlaneJoint::createASMT()
 {
+	auto asmtJoint = ASMTPointInPlaneJoint::With();
+	asmtAssembly()->addJoint(asmtJoint);
+	asmtItem = asmtJoint;
 	MBDynJoint::createASMT();
-}
-
-std::shared_ptr<ASMTJoint> MbD::MBDynInPlaneJoint::asmtClassNew()
-{
-	return std::make_shared<ASMTPointInPlaneJoint>();
 }

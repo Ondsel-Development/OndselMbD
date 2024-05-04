@@ -22,7 +22,7 @@ void DispCompIeqcJecO::initializeGlobally()
 {
 	priIeJeOpXI = FullRow<double>::With(3, 0.0);
 	priIeJeOpXI->at(axis) = -1.0;
-	ppriIeJeOpEIpEI = std::static_pointer_cast<EndFrameqc>(frmI)->ppriOeOpEpE(axis)->negated();
+	ppriIeJeOpEIpEI = std::static_pointer_cast<EndFrameqc>(efrmI)->ppriOeOpEpE(axis)->negated();
 }
 
 FMatDsptr MbD::DispCompIeqcJecO::ppvaluepEIpEI()
@@ -43,5 +43,5 @@ FRowDsptr MbD::DispCompIeqcJecO::pvaluepXI()
 void DispCompIeqcJecO::calcPostDynCorrectorIteration()
 {
 	DispCompIecJecO::calcPostDynCorrectorIteration();
-	priIeJeOpEI = std::static_pointer_cast<EndFrameqc>(frmI)->priOeOpE(axis)->negated();
+	priIeJeOpEI = std::static_pointer_cast<EndFrameqc>(efrmI)->priOeOpE(axis)->negated();
 }

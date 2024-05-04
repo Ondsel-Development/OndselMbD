@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		PointInPlaneJoint() {}
-		PointInPlaneJoint(const char* str);
+		PointInPlaneJoint(const char* str) : InPlaneJoint(str) {}
 		static std::shared_ptr<PointInPlaneJoint> With();
 		static std::shared_ptr<PointInPlaneJoint> With(const char* str);
 

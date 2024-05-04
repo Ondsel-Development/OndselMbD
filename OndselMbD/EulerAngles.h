@@ -41,7 +41,6 @@ namespace MbD {
 	template<typename T>
 	inline std::shared_ptr<EulerAngles<T>> EulerAngles<T>::With()
 	{
-		assert(false);
 		auto inst = std::make_shared<EulerAngles<T>>();
 		inst->initialize();
 		return inst;

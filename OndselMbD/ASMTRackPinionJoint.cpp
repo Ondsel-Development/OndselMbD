@@ -9,6 +9,7 @@
 
 #include "ASMTRackPinionJoint.h"
 #include "RackPinJoint.h"
+#include "Units.h"
 
 using namespace MbD;
 
@@ -19,7 +20,7 @@ std::shared_ptr<ASMTRackPinionJoint> MbD::ASMTRackPinionJoint::With()
 	return inst;
 }
 
-std::shared_ptr<Joint> MbD::ASMTRackPinionJoint::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTRackPinionJoint::mbdClassNew()
 {
 	return RackPinJoint::With();
 }
@@ -42,11 +43,11 @@ void MbD::ASMTRackPinionJoint::readPitchRadius(std::vector<std::string>& lines)
 	}
 }
 
-void MbD::ASMTRackPinionJoint::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+void MbD::ASMTRackPinionJoint::createMbD()
 {
-	ASMTJoint::createMbD(mbdSys, mbdUnits);
+	ASMTJoint::createMbD();
 	auto rackPinJoint = std::static_pointer_cast<RackPinJoint>(mbdObject);
-	rackPinJoint->pitchRadius = pitchRadius;
+	rackPinJoint->pitchRadius = pitchRadius * asmtUnits()->length;
 }
 
 void MbD::ASMTRackPinionJoint::storeOnLevel(std::ofstream& os, size_t level)

@@ -20,8 +20,9 @@ namespace MbD {
 		void parseASMT(std::vector<std::string>& lines) override;
 		void readTension(std::vector<std::string>& lines);
 		void readTwist(std::vector<std::string>& lines);
-		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
-		std::shared_ptr<ForceFunctionParser> functionParser();
+		void storeOnLevel(std::ofstream& os, size_t level) override;
+		void storeOnTimeSeries(std::ofstream& os) override;
+		void createMbD() override;
 
 		std::string tensionFunc, twistFunc;
 	};

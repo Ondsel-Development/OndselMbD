@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include "ForTorBasic.h"
+#include "ForceTorqueBasic.h"
 
 namespace MbD {
-	class ForceBasicqcComp : public ForTorBasic
+	class ForceBasicqcComp : public ForceTorqueBasic
 	{
 		//iqXaxis prOeOaxispET  
 	public:

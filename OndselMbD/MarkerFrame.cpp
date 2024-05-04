@@ -34,7 +34,7 @@ void MarkerFrame::initialize()
 	pAOmpE = std::make_shared<FullColumn<FMatDsptr>>(4);
 	endFrames = std::make_shared<std::vector<EndFrmsptr>>();
 	auto endFrm = EndFrameqc::With();
-	this->addEndFrame(endFrm);
+	addEndFrame(endFrm);
 }
 
 System* MarkerFrame::root()

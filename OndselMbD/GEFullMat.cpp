@@ -67,14 +67,14 @@ double GEFullMat::getmatrixArowimaxMagnitude(size_t i)
 
 FColDsptr GEFullMat::basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
 {
-	this->preSolvewithsaveOriginal(fullMat, fullCol, saveOriginal);
+	preSolvewithsaveOriginal(fullMat, fullCol, saveOriginal);
 	for (size_t p = 0; p < m; p++)
 	{
-		this->doPivoting(p);
-		this->forwardEliminateWithPivot(p);
+		doPivoting(p);
+		forwardEliminateWithPivot(p);
 	}
-	this->backSubstituteIntoDU();
-	this->postSolve();
+	backSubstituteIntoDU();
+	postSolve();
 	return answerX;
 }
 

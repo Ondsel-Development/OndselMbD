@@ -13,11 +13,11 @@ void MbD::MBDynNodePlugin::parseMBDyn(std::string line)
 {
 	pluginString = line;
 	arguments = collectArgumentsFor("set", line);
-	assert(lineHasToken(readStringOffTop(arguments), "node"));
-	varName = readStringOffTop(arguments);
-	nodeName = readStringOffTop(arguments);
-	readStringOffTop(arguments);
-	auto str = readStringOffTop(arguments);
+	assert(lineHasToken(readStringNoSpacesOffTop(arguments), "node"));
+	varName = readStringNoSpacesOffTop(arguments);
+	nodeName = readStringNoSpacesOffTop(arguments);
+	readStringNoSpacesOffTop(arguments);
+	auto str = readStringNoSpacesOffTop(arguments);
 	auto firstPos = str.find("\"", 0);
 	auto secondPos = str.find("\"", firstPos + 1);
 	_string = str.substr(firstPos + 1, secondPos - firstPos - 1);

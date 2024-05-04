@@ -38,13 +38,13 @@ void MatrixSolver::setSystem(Solver*)
 
 FColDsptr MatrixSolver::solvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
 {
-	this->timedSolvewithsaveOriginal(spMat, fullCol, saveOriginal);
+	timedSolvewithsaveOriginal(spMat, fullCol, saveOriginal);
 	return answerX;
 }
 
 FColDsptr MatrixSolver::solvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
 {
-	this->timedSolvewithsaveOriginal(fullMat, fullCol, saveOriginal);
+	timedSolvewithsaveOriginal(fullMat, fullCol, saveOriginal);
 	return answerX;
 }
 
@@ -52,7 +52,7 @@ FColDsptr MatrixSolver::timedSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr f
 {
 	auto start = std::chrono::steady_clock::now();
 
-	this->basicSolvewithsaveOriginal(spMat, fullCol, saveOriginal);
+	basicSolvewithsaveOriginal(spMat, fullCol, saveOriginal);
 
 	auto end = std::chrono::steady_clock::now();
 	auto diff = end - start;
@@ -123,7 +123,7 @@ void MatrixSolver::findScalingsForRowRange(size_t begin, size_t end)
 	rowScalings = std::make_shared<FullColumn<double>>(m);
 	for (size_t i = begin; i < end; i++)
 	{
-		double maxRowMagnitude = this->getmatrixArowimaxMagnitude(i);
+		double maxRowMagnitude = getmatrixArowimaxMagnitude(i);
 		if (maxRowMagnitude == 0.0) throwSingularMatrixError("");
 		rowScalings->at(i) = 1.0 / maxRowMagnitude;
 	}

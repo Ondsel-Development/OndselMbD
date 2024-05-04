@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		SphSphJoint() {}
-		SphSphJoint(const char* str);
+		SphSphJoint(const char* str) : CompoundJoint(str) {}
 		static std::shared_ptr<SphSphJoint> With();
 		static std::shared_ptr<SphSphJoint> With(const char* str);
 

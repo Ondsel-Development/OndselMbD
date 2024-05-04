@@ -19,10 +19,10 @@ void StableBackwardDifference::formTaylorMatrix()
 	//|	(t2 - t)	(t2 - t) ^ 2 / 2!	(t2 - t) ^ 3 / 3!|	|qdd(t)	|	|q(t2) - q(t)	|
 	//|	(t3 - t)	(t3 - t) ^ 2 / 2!	(t3 - t) ^ 3 / 3!|	|qddd(t)|	|q(t3) - q(t)	|
 
-	this->instantiateTaylorMatrix();
+	instantiateTaylorMatrix();
 	for (size_t i = 0; i < order; i++)
 	{
-		this->formTaylorRowwithTimeNodederivative(i, i, 0);
+		formTaylorRowwithTimeNodederivative(i, i, 0);
 	}
 }
 
@@ -122,7 +122,7 @@ FColDsptr MbD::StableBackwardDifference::derivativepresentpast(size_t deriv, FCo
 		}
 		else {
 			auto ySize = y->size();
-			return std::make_shared<FullColumn<double>>(ySize, 0.0);
+			return FullColumn<double>::With(ySize, 0.0);
 		}
 	}
 }

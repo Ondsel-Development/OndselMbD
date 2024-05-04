@@ -37,7 +37,7 @@ void MbD::TorqueBasicVector::fillpFpyaFTO(SpMatDsptr mat, FColDsptr aFTO)
 
 void MbD::TorqueBasicVector::fillpFpypFTOpEjpartj(SpMatDsptr mat, FMatDsptr pFTOpEj, PartFrame* partj)
 {
-	assert(false);
+	mat->atandplusFullMatrix(iqE, partj->iqE, (twoBT->timesFullMatrix(pFTOpEj)));
 }
 
 void MbD::TorqueBasicVector::fillpFpypFTOpXjpartj(SpMatDsptr mat, FMatDsptr pFTOpXj, PartFrame* partj)

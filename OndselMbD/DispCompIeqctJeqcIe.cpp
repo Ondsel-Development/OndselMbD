@@ -11,19 +11,6 @@
 
 using namespace MbD;
 
-MbD::DispCompIeqctJeqcIe::DispCompIeqctJeqcIe()
-{
-	//Do nothing.
-}
-
-MbD::DispCompIeqctJeqcIe::DispCompIeqctJeqcIe(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis) : DispCompIeqcJeqcIe(frmi, frmj, axis)
-{
-	ppriIeJeIepXIpt = FullRow<double>::With(3);
-	ppriIeJeIepEIpt = FullRow<double>::With(4);
-	ppriIeJeIepXJpt = FullRow<double>::With(3);
-	ppriIeJeIepEJpt = FullRow<double>::With(4);
-}
-
 std::shared_ptr<DispCompIeqctJeqcIe> MbD::DispCompIeqctJeqcIe::With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis)
 {
 	auto inst = std::make_shared<DispCompIeqctJeqcIe>(frmi, frmj, axis);
@@ -42,7 +29,7 @@ void MbD::DispCompIeqctJeqcIe::initialize()
 
 void MbD::DispCompIeqctJeqcIe::calc_ppvaluepEIpt()
 {
-	auto frmIeqct = std::static_pointer_cast<EndFrameqct>(frmI);
+	auto frmIeqct = std::static_pointer_cast<EndFrameqct>(efrmI);
 	auto pAjOIept = frmIeqct->pAjOept(axis);
 	auto ppAjOIepEITpt = frmIeqct->ppAjOepETpt(axis);
 	auto mprIeJeOpEIT = frmIeqct->prOeOpE->transpose();
@@ -61,8 +48,8 @@ void MbD::DispCompIeqctJeqcIe::calc_ppvaluepEIpt()
 
 void MbD::DispCompIeqctJeqcIe::calc_ppvaluepEJpt()
 {
-	auto frmIeqct = std::static_pointer_cast<EndFrameqct>(frmI);
-	auto frmJeqct = std::static_pointer_cast<EndFrameqct>(frmJ);
+	auto frmIeqct = std::static_pointer_cast<EndFrameqct>(efrmI);
+	auto frmJeqct = std::static_pointer_cast<EndFrameqct>(efrmJ);
 	auto pAjOIept = frmIeqct->pAjOept(axis);
 	auto prIeJeOpEJT = frmJeqct->prOeOpE->transpose();
 	for (size_t i = 0; i < 4; i++)
@@ -73,7 +60,7 @@ void MbD::DispCompIeqctJeqcIe::calc_ppvaluepEJpt()
 
 void MbD::DispCompIeqctJeqcIe::calc_ppvalueptpt()
 {
-	auto frmIeqct = std::static_pointer_cast<EndFrameqct>(frmI);
+	auto frmIeqct = std::static_pointer_cast<EndFrameqct>(efrmI);
 	auto pAjOIept = frmIeqct->pAjOept(axis);
 	auto ppAjOIeptpt = frmIeqct->ppAjOeptpt(axis);
 	auto mprIeJeOpt = frmIeqct->prOeOpt;
@@ -83,7 +70,7 @@ void MbD::DispCompIeqctJeqcIe::calc_ppvalueptpt()
 
 void MbD::DispCompIeqctJeqcIe::calc_ppvaluepXIpt()
 {
-	auto frmIeqct = std::static_pointer_cast<EndFrameqct>(frmI);
+	auto frmIeqct = std::static_pointer_cast<EndFrameqct>(efrmI);
 	auto pAjOIept = frmIeqct->pAjOept(axis);
 	for (size_t i = 0; i < 3; i++)
 	{
@@ -93,7 +80,7 @@ void MbD::DispCompIeqctJeqcIe::calc_ppvaluepXIpt()
 
 void MbD::DispCompIeqctJeqcIe::calc_ppvaluepXJpt()
 {
-	auto frmIeqct = std::static_pointer_cast<EndFrameqct>(frmI);
+	auto frmIeqct = std::static_pointer_cast<EndFrameqct>(efrmI);
 	auto pAjOIept = frmIeqct->pAjOept(axis);
 	for (size_t i = 0; i < 3; i++)
 	{
@@ -103,7 +90,7 @@ void MbD::DispCompIeqctJeqcIe::calc_ppvaluepXJpt()
 
 void MbD::DispCompIeqctJeqcIe::calc_pvaluept()
 {
-	auto frmIeqct = std::static_pointer_cast<EndFrameqct>(frmI);
+	auto frmIeqct = std::static_pointer_cast<EndFrameqct>(efrmI);
 	auto pAjOIept = frmIeqct->pAjOept(axis);
 	auto mprIeJeOpt = frmIeqct->prOeOpt;
 	priIeJeIept = pAjOIept->dot(rIeJeO) - aAjOIe->dot(mprIeJeOpt);
@@ -112,7 +99,7 @@ void MbD::DispCompIeqctJeqcIe::calc_pvaluept()
 void MbD::DispCompIeqctJeqcIe::calcPostDynCorrectorIteration()
 {
 	//"ppAjOIepEIpEI is not longer constant and must be set before any calculation."
-	auto frmIeqct = std::static_pointer_cast<EndFrameqct>(frmI);
+	auto frmIeqct = std::static_pointer_cast<EndFrameqct>(efrmI);
 	ppAjOIepEIpEI = frmIeqct->ppAjOepEpE(axis);
 	DispCompIeqcJeqcIe::calcPostDynCorrectorIteration();
 }

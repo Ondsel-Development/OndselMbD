@@ -21,7 +21,7 @@ std::shared_ptr<TranslationConstraintIqcJc> MbD::TranslationConstraintIqcJc::Wit
 
 void TranslationConstraintIqcJc::initriIeJeIe()
 {
-	riIeJeIe = DispCompIeqcJecKeqc::With(frmI, frmJ, frmI, axisI);
+	riIeJeIe = DispCompIeqcJecKeqc::With(efrmI, efrmJ, efrmI, axisI);
 }
 
 void TranslationConstraintIqcJc::calcPostDynCorrectorIteration()
@@ -39,7 +39,7 @@ void TranslationConstraintIqcJc::calcPostDynCorrectorIteration()
 
 void TranslationConstraintIqcJc::useEquationNumbers()
 {
-	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	iqXI = frmIeqc->iqX();
 	iqEI = frmIeqc->iqE();
 }
@@ -97,7 +97,7 @@ void TranslationConstraintIqcJc::fillAccICIterError(FColDsptr col)
 {
 	col->atplusFullVectortimes(iqXI, pGpXI, lam);
 	col->atplusFullVectortimes(iqEI, pGpEI, lam);
-	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
+	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(efrmI);
 	auto qXdotI = efrmIqc->qXdot();
 	auto qEdotI = efrmIqc->qEdot();
 	auto sum = pGpXI->timesFullColumn(efrmIqc->qXddot());
@@ -115,9 +115,9 @@ void TranslationConstraintIqcJc::addToJointForceI(FColDsptr col)
 void TranslationConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 {
 	auto cForceT = pGpXI->times(lam);
-		auto rIpIeIp = frmI->rpep();
-		auto pAOIppEI = frmI->pAOppE();
-		auto aBOIp = frmI->aBOp();
+		auto rIpIeIp = efrmI->rpep();
+		auto pAOIppEI = efrmI->pAOppE();
+		auto aBOIp = efrmI->aBOp();
 		auto fpAOIppEIrIpIeIp = std::make_shared<FullColumn<double>>(4, 0.0);
 		for (size_t i = 0; i < 4; i++)
 		{

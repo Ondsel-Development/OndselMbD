@@ -8,16 +8,16 @@
  
 #pragma once
 
-#include "KinematicIeJe.h"
+#include "KinematicIJ.h"
 #include "DirectionCosineIeqcJec.h"
 
 namespace MbD {
-	class AngleZIecJec : public KinematicIeJe
+	class AngleZIecJec : public KinematicIJ
 	{
 		//thez aA00IeJe aA10IeJe cosOverSSq sinOverSSq twoCosSinOverSSqSq dSqOverSSqSq 
 	public:
-		AngleZIecJec();
-		AngleZIecJec(EndFrmsptr frmi, EndFrmsptr frmj);
+		AngleZIecJec() {}
+		AngleZIecJec(EndFrmsptr frmi, EndFrmsptr frmj) : KinematicIJ(frmi, frmj) {}
 		void initialize() override;
 
 		void calcPostDynCorrectorIteration() override;

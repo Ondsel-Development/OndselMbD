@@ -7,6 +7,7 @@
 #include "ASMTvIJ.h"
 #include "ASMTvrIJ.h"
 #include "ASMTOmegaIJ.h"
+#include "ASMTOmegaIJKi.h"
 
 using namespace MbD;
 
@@ -47,20 +48,21 @@ bool MbD::FunctionParser::geoIJ()
 
 bool MbD::FunctionParser::displacement()
 {
-	Symsptr symfunc = nullptr;
+	std::shared_ptr<CADSymbolicFunction> symfunc = nullptr;
 	if (peekForTypevalue("word", "rIJ")) {
-		symfunc = std::make_shared<ASMTrIJ>();
+		symfunc = ASMTrIJ::With();
 	}
 	else if (peekForTypevalue("word", "angleIJz")) {
-		symfunc = std::make_shared<ASMTAngleIJz>();
+		symfunc = ASMTAngleIJz::With();
 	}
 	else if (peekForTypevalue("word", "dAngleIJx")) {
-		symfunc = std::make_shared<ASMTdAngleIJx>();
+		symfunc = ASMTdAngleIJx::With();
 	}
 	else if (peekForTypevalue("word", "dAngleIJy")) {
-		symfunc = std::make_shared<ASMTdAngleIJy>();
+		symfunc = ASMTdAngleIJy::With();
 	}
 	if (symfunc != nullptr) {
+		symfunc->container = container;
 		stack->push(symfunc);
 		if (peekForTypeNoPush("(")) {
 			auto startsize = stack->size();
@@ -83,17 +85,21 @@ bool MbD::FunctionParser::displacement()
 
 bool MbD::FunctionParser::velocity()
 {
-	Symsptr symfunc = nullptr;
+	std::shared_ptr<CADSymbolicFunction> symfunc = nullptr;
 	if (peekForTypevalue("word", "vIJ")) {
-		symfunc = std::make_shared<ASMTvIJ>();
+		symfunc = ASMTvIJ::With();
 	}
 	else if (peekForTypevalue("word", "vrIJ")) {
-		symfunc = std::make_shared<ASMTvrIJ>();
+		symfunc = ASMTvrIJ::With();
 	}
 	else if (peekForTypevalue("word", "omeIJ")) {
-		symfunc = std::make_shared<ASMTOmegaIJ>();
+		symfunc = ASMTOmegaIJ::With();
+	}
+	else if (peekForTypevalue("word", "omeIJKi")) {
+		symfunc = ASMTOmegaIJKi::With();
 	}
 	if (symfunc != nullptr) {
+		symfunc->container = container;
 		stack->push(symfunc);
 		if (peekForTypeNoPush("(")) {
 			auto startsize = stack->size();
@@ -105,9 +111,27 @@ bool MbD::FunctionParser::velocity()
 					funcIJ->geoIJ = itemIJ->geoIJ;
 					return true;
 				}
+				else if (peekForTypeNoPush(",")) {
+					auto itemIJ = std::static_pointer_cast<ASMTSymbolicFunctionIJ>(stack->top());
+					stack->pop();
+					auto funcIJ = std::static_pointer_cast<ASMTSymbolicFunctionIJKi>(stack->top());
+					funcIJ->geoIJ = itemIJ->geoIJ;
+					funcIJ->markerKSign = token;
+					assert(token == "I");	//ToDo: J and O
+					scanToken();
+					assert(peekForTypeNoPush(","));
+					assert(tokenType == "number");
+					funcIJ->axisK = (size_t)tokenNum;
+					scanToken();
+					assert(peekForTypeNoPush(")"));
+					return true;
+				}
+				else {
+					expected(") or ,");
+				}
 				expected(")");
 			}
-			expected("displacement");
+			expected("velocity");
 		}
 		expected("(");
 	}

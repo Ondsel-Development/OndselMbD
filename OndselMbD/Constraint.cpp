@@ -54,34 +54,34 @@ void Constraint::prePosKine()
 {
 	//"Preserve lam calculated from AccIC for possible use by DynIntegrator if system is not kinematic."
 	auto lamOld = lam;
-	this->prePosIC();
+	prePosIC();
 	lam = lamOld;
 }
 
 void Constraint::fillEssenConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
 {
-	if (this->type() == essential) {
+	if (type() == essential) {
 		essenConstraints->push_back(sptr);
 	}
 }
 
 void Constraint::fillDispConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints)
 {
-	if (this->type() == displacement) {
+	if (type() == displacement) {
 		dispConstraints->push_back(sptr);
 	}
 }
 
 void Constraint::fillPerpenConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints)
 {
-	if (this->type() == perpendicular) {
+	if (type() == perpendicular) {
 		perpenConstraints->push_back(sptr);
 	}
 }
 
 void Constraint::fillRedundantConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
 {
-	if (this->type() == redundant) {
+	if (type() == redundant) {
 		redunConstraints->push_back(sptr);
 	}
 }
@@ -193,7 +193,7 @@ void Constraint::preAccIC()
 void Constraint::fillAccICIterJacob(SpMatDsptr mat)
 {
 	//"Same as velIC."
-	this->fillVelICJacob(mat);
+	fillVelICJacob(mat);
 }
 
 void Constraint::setqsuddotlam(FColDsptr col)
@@ -208,7 +208,7 @@ void Constraint::addToJointForceI(FColDsptr)
 
 void Constraint::addToJointTorqueI(FColDsptr)
 {
-	assert(false);
+	//Do nothing.
 }
 
 void Constraint::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints) {

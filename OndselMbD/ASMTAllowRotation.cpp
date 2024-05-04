@@ -32,26 +32,11 @@ void MbD::ASMTAllowRotation::parseASMT(std::vector<std::string>& lines)
 
 void MbD::ASMTAllowRotation::readMotionJoint(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("MotionJoint") != std::string::npos);
-	lines.erase(lines.begin());
-	motionJoint = readString(lines[0]);
-	lines.erase(lines.begin());
+	assert(readStringNoSpacesOffTop(lines) == "MotionJoint");
+	motionJoint = readStringNoSpacesOffTop(lines);
 }
 
-void MbD::ASMTAllowRotation::initMarkers()
-{
-	if (motionJoint == "") {
-		assert(markerI->name != "");
-		assert(markerJ->name != "");
-	}
-	else {
-		auto jt = root()->jointAt(motionJoint);
-		markerI = jt->markerI;
-		markerJ = jt->markerJ;
-	}
-}
-
-std::shared_ptr<Joint> MbD::ASMTAllowRotation::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTAllowRotation::mbdClassNew()
 {
 	return AllowZRotation::With();
 }

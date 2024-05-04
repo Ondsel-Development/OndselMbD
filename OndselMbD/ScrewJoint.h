@@ -8,21 +8,21 @@
  
 #pragma once
 
-#include "Joint.h"
+#include "JointIJ.h"
 
 namespace MbD {
-	class ScrewJoint : public Joint
+	class ScrewJoint : public JointIJ
 	{
 		//
 	public:
 		ScrewJoint() {}
-		ScrewJoint(const char* str);
+		ScrewJoint(const char* str) : JointIJ(str) {}
 		static std::shared_ptr<ScrewJoint> With();
 		static std::shared_ptr<ScrewJoint> With(const char* str);
 
 		//void initializeLocally() override;
 		void initializeGlobally() override;
-		void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ) override;
+		void connectsItoJ(EndFrmsptr frmi, EndFrmsptr frmj) override;
 
 		double pitch = 1.0, aConstant = 0.0;
 	};

@@ -27,10 +27,10 @@ void MbD::Translation::initializeGlobally()
 {
 	if (constraints->empty()) {
 		initMotions();
-		addConstraint(TranslationConstraintIJ::With(frmI, frmJ, 0));
-		addConstraint(TranslationConstraintIJ::With(frmI, frmJ, 1));
-		addConstraint(TranslationConstraintIJ::With(frmI, frmJ, 2));
-		this->root()->hasChanged = true;
+		addConstraint(TranslationConstraintIJ::With(efrmI, efrmJ, 0));
+		addConstraint(TranslationConstraintIJ::With(efrmI, efrmJ, 1));
+		addConstraint(TranslationConstraintIJ::With(efrmI, efrmJ, 2));
+		root()->hasChanged = true;
 	}
 	else {
 		PrescribedMotion::initializeGlobally();

@@ -45,7 +45,7 @@ void AtPointConstraintIJ::initializeGlobally()
 
 void AtPointConstraintIJ::initriIeJeO()
 {
-	riIeJeO = DispCompIecJecO::With(frmI, frmJ, axis);
+	riIeJeO = DispCompIecJecO::With(efrmI, efrmJ, axis);
 }
 
 void AtPointConstraintIJ::postInput()

@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-MbD::NoRotationJoint::NoRotationJoint(const char*)
-{
-	assert(false);
-}
-
 std::shared_ptr<NoRotationJoint> MbD::NoRotationJoint::With()
 {
 	auto inst = std::make_shared<NoRotationJoint>();
@@ -35,12 +30,12 @@ void MbD::NoRotationJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 1, 0));
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 0));
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 1));
-		this->root()->hasChanged = true;
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 1, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 1));
+		root()->hasChanged = true;
 	}
 	else {
-		Joint::initializeGlobally();
+		JointIJ::initializeGlobally();
 	}
 }

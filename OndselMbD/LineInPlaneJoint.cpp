@@ -11,11 +11,6 @@
 
 using namespace MbD;
 
-MbD::LineInPlaneJoint::LineInPlaneJoint(const char*)
-{
-	assert(false);
-}
-
 std::shared_ptr<LineInPlaneJoint> MbD::LineInPlaneJoint::With()
 {
 	auto inst = std::make_shared<LineInPlaneJoint>();
@@ -34,11 +29,11 @@ void MbD::LineInPlaneJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		this->createInPlaneConstraint();
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 2));
-		this->root()->hasChanged = true;
+		createInPlaneConstraint();
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 2));
+		root()->hasChanged = true;
 	}
 	else {
-		Joint::initializeGlobally();
+		JointIJ::initializeGlobally();
 	}
 }

@@ -8,6 +8,7 @@
 
 #include "MBDynPrismaticJoint.h"
 #include "ASMTNoRotationJoint.h"
+#include "ASMTAssembly.h"
 
 using namespace MbD;
 
@@ -25,10 +26,8 @@ void MbD::MBDynPrismaticJoint::parseMBDyn(std::string line)
 
 void MbD::MBDynPrismaticJoint::createASMT()
 {
+	auto asmtJoint = ASMTNoRotationJoint::With();
+	asmtAssembly()->addJoint(asmtJoint);
+	asmtItem = asmtJoint;
 	MBDynJoint::createASMT();
-}
-
-std::shared_ptr<ASMTJoint> MbD::MBDynPrismaticJoint::asmtClassNew()
-{
-	return std::make_shared<ASMTNoRotationJoint>();
 }

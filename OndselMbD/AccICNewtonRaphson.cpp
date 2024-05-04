@@ -32,18 +32,17 @@ void MbD::AccICNewtonRaphson::iterate()
 {
 	//Keep for debugging
 	iterNo = SIZE_MAX;
-	this->fillY();
+	fillY();
 	calcyNorm();
 	yNorms->push_back(yNorm);
 
 	while (true) {
 		incrementIterNo();
 		fillPyPx();
-		//std::cout << *pypx << std::endl;
-		outputSpreadsheet();
+		//outputSpreadsheet();
 		solveEquations();
 		calcDXNormImproveRootCalcYNorm();
-		if (this->isConverged()) {
+		if (isConverged()) {
 			//std::cout << "iterNo = " << iterNo << std::endl;
 			break;
 		}
@@ -52,7 +51,7 @@ void MbD::AccICNewtonRaphson::iterate()
 
 bool AccICNewtonRaphson::isConverged()
 {
-	return this->isConvergedToNumericalLimit();
+	return isConvergedToNumericalLimit();
 }
 
 void AccICNewtonRaphson::preRun()

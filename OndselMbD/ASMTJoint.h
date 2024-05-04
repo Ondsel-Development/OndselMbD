@@ -22,6 +22,7 @@ namespace MbD {
 		void readJointSeries(std::vector<std::string>& lines);
 		void storeOnLevel(std::ofstream& os, size_t level) override;
 		void storeOnTimeSeries(std::ofstream& os) override;
+		bool isJoint() override;
 
 		std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueData>>> jointSeries;
 

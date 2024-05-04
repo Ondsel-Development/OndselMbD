@@ -42,7 +42,7 @@ std::shared_ptr<PartFrame> MbD::PartFrame::With(const char* str)
 void PartFrame::initialize()
 {
 	aGeu = EulerConstraint::With();
-	aGeu->owner = this;
+	aGeu->container = this;
 	aGabs = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
 	markerFrames = std::make_shared<std::vector<std::shared_ptr<MarkerFrame>>>();
 }
@@ -199,10 +199,10 @@ void PartFrame::constraintsReport()
 	if (aGeu->isRedundant()) redunCons->push_back(aGeu);
 	if (redunCons->size() > 0) {
 		std::string str = "MbD: " + part->classname() + std::string(" ") + part->name + " has the following constraint(s) removed: ";
-		this->logString(str);
+		logString(str);
 		std::for_each(redunCons->begin(), redunCons->end(), [&](auto& con) {
 			str = "MbD: " + std::string("    ") + std::string(typeid(*con).name());
-			this->logString(str);
+			logString(str);
 			});
 	}
 }
@@ -553,10 +553,10 @@ double PartFrame::suggestSmallerOrAcceptDynStepSize(double hnew)
 		htran = 1.0e99;
 	}
 	else {
-		htran = this->root()->translationLimit() / speed;
+		htran = root()->translationLimit() / speed;
 	}
 	if (hnew2 > htran) {
-		this->logString("MbD: Time step limited by translation limit per step.");
+		logString("MbD: Time step limited by translation limit per step.");
 		hnew2 = htran;
 	}
 	auto omegaMagnitude = qEdot->omeOpO()->length();
@@ -565,10 +565,10 @@ double PartFrame::suggestSmallerOrAcceptDynStepSize(double hnew)
 		hrot = 1.0e99;
 	}
 	else {
-		hrot = this->root()->rotationLimit() / omegaMagnitude;
+		hrot = root()->rotationLimit() / omegaMagnitude;
 	}
 	if (hnew2 > hrot) {
-		this->logString("MbD: Time step limited by rotation limit per step.");
+		logString("MbD: Time step limited by rotation limit per step.");
 		hnew2 = hrot;
 	}
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { hnew2 = markerFrame->suggestSmallerOrAcceptDynStepSize(hnew2); });
@@ -668,7 +668,7 @@ void PartFrame::asFixed()
 {
 	for (size_t i = 0; i < 6; i++) {
 		auto con = AbsConstraint::With(i);
-		con->owner = this;
+		con->container = this;
 		aGabs->push_back(con);
 	}
 }

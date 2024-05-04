@@ -12,11 +12,6 @@
 
 using namespace MbD;
 
-MbD::CylSphJoint::CylSphJoint(const char* str) : CompoundJoint(str)
-{
-	assert(false);
-}
-
 std::shared_ptr<CylSphJoint> MbD::CylSphJoint::With()
 {
 	auto inst = std::make_shared<CylSphJoint>();
@@ -35,10 +30,10 @@ void MbD::CylSphJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		auto distxyIJ = DistancexyConstraintIJ::With(frmI, frmJ);
+		auto distxyIJ = DistancexyConstraintIJ::With(efrmI, efrmJ);
 		distxyIJ->setConstant(distanceIJ);
 		addConstraint(distxyIJ);
-		this->root()->hasChanged = true;
+		root()->hasChanged = true;
 	}
 	else {
 		CompoundJoint::initializeGlobally();

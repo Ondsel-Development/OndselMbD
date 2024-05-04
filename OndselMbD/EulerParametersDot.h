@@ -110,7 +110,7 @@ namespace MbD {
 		aCdot->at(2)->at(1) = mE0dot;
 		aCdot->at(2)->at(2) = aE3dot;
 		aCdot->at(2)->at(3) = mE2dot;
-		aAdot = this->aB()->timesTransposeFullMatrix(aCdot)->times(2.0);
+		aAdot = aB()->timesTransposeFullMatrix(aCdot)->times(2.0);
 	}
 
 	template<typename T>
@@ -206,11 +206,11 @@ namespace MbD {
 	template<typename T>
 	inline FColDsptr EulerParametersDot<T>::omeOpO()
 	{
-		auto aaa = this->aB();
+		auto aaa = aB();
 		auto bbb = aaa->timesFullColumn(this);
 		auto ccc = bbb->times(2.0);
 		return ccc;
-		//return this->aB->timesFullColumn(this)->times(2.0);
+		//return aB->timesFullColumn(this)->times(2.0);
 	}
 
 	template<typename T>

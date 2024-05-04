@@ -18,7 +18,8 @@ namespace MbD {
 		ArcSine() = default;
 		ArcSine(Symsptr arg);
 		static std::shared_ptr<ArcSine> With();
-		
+		static std::shared_ptr<ArcSine> With(Symsptr arg);
+
 		double getValue() override;
 		Symsptr copyWith(Symsptr arg) override;
 

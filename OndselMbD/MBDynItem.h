@@ -37,7 +37,6 @@ namespace MbD {
 	{
 		//
 	public:
-		//virtual ~MBDynItem() {}
 		static std::shared_ptr<MBDynItem> With();
 		virtual void initialize();
 
@@ -68,11 +67,11 @@ namespace MbD {
 		void logString(std::string& str);
 		FRowDsptr readRowOfDoubles(std::string& line);
 		FColDsptr readColumnOfDoubles(std::string& line);
+		int readIntOffTop(std::vector<std::string>& args);
 		double readDoubleOffTop(std::vector<std::string>& args);
 		double readDouble(std::string& line);
 		size_t readInt(std::string& line);
 		bool readBool(std::string& line);
-		std::string readString(std::string& line);
 		std::string asmtFormula(std::string mbdynFormula);
 		std::string asmtFormulaIntegral(std::string mbdynFormula);
 
@@ -82,13 +81,14 @@ namespace MbD {
 		FMatDsptr readOrientation(std::vector<std::string>& args);
 		FMatDsptr readBasicOrientation(std::vector<std::string>& args);
 		std::string popOffTop(std::vector<std::string>& args);
-		std::string readStringOffTop(std::vector<std::string>& args);
+		std::string readStringNoSpacesOffTop(std::vector<std::string>& args);
+		std::string stringOffTopHas(std::vector<std::string>& args, std::string token);
 		void readLabel(std::vector<std::string>& args);
 		std::string readJointTypeOffTop(std::vector<std::string>& args);
 		std::string readToken(std::string& line);
 
 		std::string label;
-		MBDynItem* owner = nullptr;
+		MBDynItem* container = nullptr;
 		std::shared_ptr<ASMTItem> asmtItem;
 		std::vector<std::string> arguments;
 

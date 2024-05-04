@@ -16,7 +16,7 @@ namespace MbD {
 	{
 		//orbitIeJe orbitJeIe radiusI radiusJ 
 	public:
-		GearConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
+		GearConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj) {}
 		static std::shared_ptr<GearConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
 		void initialize() override;
 

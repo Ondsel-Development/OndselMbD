@@ -12,7 +12,7 @@ std::shared_ptr<MBDynControlData> MbD::MBDynControlData::With()
 
 void MbD::MBDynControlData::initialize()
 {
-	assert(false);
+	//Do nothing.
 }
 
 void MbD::MBDynControlData::parseMBDyn(std::vector<std::string>& lines)
@@ -110,8 +110,8 @@ void MbD::MBDynControlData::readOutputMeter(std::vector<std::string>& lines)
 	std::vector<std::string> tokens{ "output", "meter:" };
 	auto it = findLineWith(lines, tokens);
 	if (it != lines.end()) {
-		outputMeter = std::make_shared<MBDynOutputMeter>();
-		outputMeter->owner = this;
+		outputMeter = MBDynOutputMeter::With();
+		outputMeter->container = this;
 		outputMeter->parseMBDyn(*it);
 		lines.erase(it);
 	}

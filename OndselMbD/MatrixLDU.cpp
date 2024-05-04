@@ -25,8 +25,8 @@ FColDsptr MatrixLDU::forAndBackSubsaveOriginal(FColDsptr fullCol, bool saveOrigi
 	else {
 		rightHandSideB = fullCol;
 	}
-	this->applyRowOrderOnRightHandSideB();
-	this->forwardSubstituteIntoL();
-	this->backSubstituteIntoDU();
+	applyRowOrderOnRightHandSideB();
+	forwardSubstituteIntoL();
+	backSubstituteIntoDU();
 	return answerX;
 }

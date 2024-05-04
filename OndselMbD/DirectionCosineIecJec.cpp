@@ -23,8 +23,8 @@ std::shared_ptr<DirectionCosineIecJec> MbD::DirectionCosineIecJec::With(EndFrmsp
 
 void DirectionCosineIecJec::calcPostDynCorrectorIteration()
 {
-	aAjOIe = frmI->aAjOe(axisI);
-	aAjOJe = frmJ->aAjOe(axisJ);
+	aAjOIe = efrmI->aAjOe(axisI);
+	aAjOJe = efrmJ->aAjOe(axisJ);
 	aAijIeJe = aAjOIe->dot(aAjOJe);
 }
 

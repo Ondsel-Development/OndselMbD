@@ -8,11 +8,11 @@
  
 #pragma once
 
-#include "KinematicIeJe.h"
+#include "KinematicIJ.h"
 #include "DispCompIecJecIe.h"
 
 namespace MbD {
-	class DistxyIecJec : public KinematicIeJe
+	class DistxyIecJec : public KinematicIJ
 	{
 		//distxy xIeJeIe yIeJeIe
 	public:

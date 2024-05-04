@@ -16,8 +16,9 @@ namespace MbD {
 		//
 	public:
 		Reciprocal() = default;
-		Reciprocal(Symsptr arg);
+		Reciprocal(Symsptr arg) : FunctionX(arg) {}
 		static std::shared_ptr<Reciprocal> With();
+		static std::shared_ptr<Reciprocal> With(Symsptr arg);
 
 		double getValue() override;
 		Symsptr differentiateWRTx() override;

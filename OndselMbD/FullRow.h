@@ -144,7 +144,7 @@ namespace MbD {
 	inline FRowsptr<T> FullRow<T>::plusFullRow(FRowsptr<T> fullRow)
 	{
 		size_t n =  this->size();
-		auto answer = std::make_shared<FullRow<T>>(n);
+		auto answer = FullRow<T>::With(n);
 		for (size_t i = 0; i < n; i++) {
 			answer->at(i) = this->at(i) + fullRow->at(i);
 		}
@@ -155,7 +155,7 @@ namespace MbD {
 	inline FRowsptr<T> FullRow<T>::minusFullRow(FRowsptr<T> fullRow)
 	{
 		size_t n =  this->size();
-		auto answer = std::make_shared<FullRow<T>>(n);
+		auto answer = FullRow<T>::With(n);
 		for (size_t i = 0; i < n; i++) {
 			answer->at(i) = this->at(i) - fullRow->at(i);
 		}
@@ -247,7 +247,7 @@ namespace MbD {
 	template<typename T>
 	inline std::shared_ptr<FullRow<T>> FullRow<T>::clonesptr()
 	{
-		return std::make_shared<FullRow<T>>(*this);
+		return FullRow<T>::With(*this);
 	}
 
 	template<typename T>

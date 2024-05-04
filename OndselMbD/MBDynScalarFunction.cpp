@@ -15,7 +15,7 @@ void MbD::MBDynScalarFunction::parseMBDyn(std::string line)
 {
 	scalarFunctionString = line;
 	arguments = collectArgumentsFor("scalar function", line);
-	scalarFunctionName = readStringOffTop(arguments);
+	scalarFunctionName = readStringNoSpacesOffTop(arguments);
 	scalarFunctionName = std::regex_replace(scalarFunctionName, std::regex("\""), "");
 	readFunction(arguments);
 }
@@ -23,7 +23,7 @@ void MbD::MBDynScalarFunction::parseMBDyn(std::string line)
 void MbD::MBDynScalarFunction::readFunction(std::vector<std::string>& args)
 {
 	if (args.empty()) return;
-	std::string str = readStringOffTop(args);
+	std::string str = readStringNoSpacesOffTop(args);
 	if (str == "cubicspline") {
 		if (args[0].find("do not extrapolate") != std::string::npos) {
 			args.erase(args.begin());

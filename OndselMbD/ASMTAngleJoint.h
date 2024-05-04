@@ -20,10 +20,10 @@ namespace MbD {
 		static std::shared_ptr<ASMTAngleJoint> With();
 		static std::shared_ptr<ASMTAngleJoint> With(const char* str);
 
-		std::shared_ptr<Joint> mbdClassNew() override;
+		std::shared_ptr<JointIJ> mbdClassNew() override;
 		void parseASMT(std::vector<std::string>& lines) override;
 		void readTheIzJz(std::vector<std::string>& lines);
-		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+		void createMbD() override;
 		void storeOnLevel(std::ofstream& os, size_t level) override;
 
 		double theIzJz = 0.0;

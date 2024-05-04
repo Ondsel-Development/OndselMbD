@@ -15,7 +15,7 @@ namespace MbD {
 	{
 		//pGpXI pGpEI ppGpXIpXI ppGpXIpEI ppGpEIpEI iqXI iqEI 
 	public:
-		GearConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj);
+		GearConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : GearConstraintIJ(frmi, frmj) {}
 		static std::shared_ptr<GearConstraintIqcJc> With(EndFrmsptr frmi, EndFrmsptr frmj);
 
 		void addToJointForceI(FColDsptr col) override;

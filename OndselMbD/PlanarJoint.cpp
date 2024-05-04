@@ -11,11 +11,6 @@
 
 using namespace MbD;
 
-MbD::PlanarJoint::PlanarJoint(const char*)
-{
-	assert(false);
-}
-
 std::shared_ptr<PlanarJoint> MbD::PlanarJoint::With()
 {
 	auto inst = std::make_shared<PlanarJoint>();
@@ -34,12 +29,12 @@ void MbD::PlanarJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		this->createInPlaneConstraint();
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 0));
-		addConstraint(DirectionCosineConstraintIJ::With(frmI, frmJ, 2, 1));
-		this->root()->hasChanged = true;
+		createInPlaneConstraint();
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 0));
+		addConstraint(DirectionCosineConstraintIJ::With(efrmI, efrmJ, 2, 1));
+		root()->hasChanged = true;
 	}
 	else {
-		Joint::initializeGlobally();
+		JointIJ::initializeGlobally();
 	}
 }

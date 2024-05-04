@@ -19,7 +19,7 @@ std::shared_ptr<ASMTFixedJoint> MbD::ASMTFixedJoint::With()
 	return inst;
 }
 
-std::shared_ptr<Joint> MbD::ASMTFixedJoint::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTFixedJoint::mbdClassNew()
 {
 	return FixedJoint::With();
 }

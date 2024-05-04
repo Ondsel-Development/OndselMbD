@@ -16,6 +16,9 @@ namespace MbD {
 		//
 	public:
 		static std::shared_ptr<ASMTSymbolicFunction> With();
+		std::shared_ptr<Units> mbdUnits();
+		std::shared_ptr<Units> asmtUnits();
+		std::shared_ptr<System> mbdSys();
 
 	};
 }

@@ -9,6 +9,7 @@
 
 #include "ASMTCompoundJoint.h"
 #include "CompoundJoint.h"
+#include "Units.h"
 
 using namespace MbD;
 
@@ -37,11 +38,11 @@ void MbD::ASMTCompoundJoint::readDistanceIJ(std::vector<std::string>& lines)
 	}
 }
 
-void MbD::ASMTCompoundJoint::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+void MbD::ASMTCompoundJoint::createMbD()
 {
-	ASMTJoint::createMbD(mbdSys, mbdUnits);
+	ASMTJoint::createMbD();
 	auto compoundJoint = std::static_pointer_cast<CompoundJoint>(mbdObject);
-	compoundJoint->distanceIJ = distanceIJ;
+	compoundJoint->distanceIJ = distanceIJ * asmtUnits()->length;
 }
 
 void MbD::ASMTCompoundJoint::storeOnLevel(std::ofstream& os, size_t level)

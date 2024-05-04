@@ -9,9 +9,10 @@
 #include "ASMTConstraintSet.h"
 #include "ASMTAssembly.h"
 #include "ASMTMarker.h"
-#include "Joint.h"
+#include "JointIJ.h"
 #include "FullMatrix.h"
 #include "EndFrameqc.h"
+#include "Part.h"
 
 using namespace MbD;
 
@@ -22,24 +23,22 @@ std::shared_ptr<ASMTConstraintSet> MbD::ASMTConstraintSet::With()
 	return inst;
 }
 
-void MbD::ASMTConstraintSet::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units>)
+void MbD::ASMTConstraintSet::createMbD()
 {
-	//self dataSeries : OrderedCollection new.
-	//self discontinuities : OrderedCollection new.
-	auto mbdJt = this->mbdClassNew();
+	auto mbdJt = mbdClassNew();
 	mbdObject = mbdJt;
 	mbdJt->name = fullName("");
 	auto mrkI = std::static_pointer_cast<EndFramec>(markerI->mbdObject);
 	auto mrkJ = std::static_pointer_cast<EndFramec>(markerJ->mbdObject);
 	mbdJt->connectsItoJ(mrkI, mrkJ);
-	mbdSys->addJoint(mbdJt);
+	mbdSys()->addJoint(mbdJt);
 }
 
-std::shared_ptr<Joint> MbD::ASMTConstraintSet::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTConstraintSet::mbdClassNew()
 {
 	//Should not create abstract class.
 	assert(false);
-	return std::shared_ptr<Joint>();
+	return std::shared_ptr<JointIJ>();
 }
 
 void MbD::ASMTConstraintSet::updateFromMbD()
@@ -52,10 +51,10 @@ void MbD::ASMTConstraintSet::updateFromMbD()
 	//aTImO = aTIeO + (rImIeO cross : aFIeO).
 	//"
 	auto mbdUnts = mbdUnits();
-	auto mbdJoint = std::static_pointer_cast<Joint>(mbdObject);
+	auto mbdJoint = std::static_pointer_cast<JointIJ>(mbdObject);
 	auto aFIeO = mbdJoint->aFX()->times(mbdUnts->force);
 	auto aTIeO = mbdJoint->aTX()->times(mbdUnts->torque);
-	auto rImIeO = mbdJoint->frmI->rmeO()->times(mbdUnts->length);
+	auto rImIeO = mbdJoint->efrmI->rmeO()->times(mbdUnts->length);
 	auto aFIO = aFIeO;
 	auto aTIO = aTIeO->plusFullColumn(rImIeO->cross(aFIeO));
 	cFIO->push_back(aFIO);

@@ -19,7 +19,7 @@ std::shared_ptr<ASMTPlanarJoint> MbD::ASMTPlanarJoint::With()
 	return inst;
 }
 
-std::shared_ptr<Joint> MbD::ASMTPlanarJoint::mbdClassNew()
+std::shared_ptr<JointIJ> MbD::ASMTPlanarJoint::mbdClassNew()
 {
 	return PlanarJoint::With();
 }

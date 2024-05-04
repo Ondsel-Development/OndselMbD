@@ -37,8 +37,7 @@ void MbD::ASMTPart::parseASMT(std::vector<std::string>& lines)
 
 void MbD::ASMTPart::readFeatureOrder(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("FeatureOrder") != std::string::npos);
-	lines.erase(lines.begin());
+	assert(readStringNoSpacesOffTop(lines) == "FeatureOrder");
 	//featureOrder = std::make_shared<std::vector<std::shared_ptr<ASMTRefPoint>>>();
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
 		return s.find("PrincipalMassMarker") != std::string::npos;
@@ -61,10 +60,9 @@ void MbD::ASMTPart::readFeatureOrder(std::vector<std::string>& lines)
 
 void MbD::ASMTPart::readPrincipalMassMarker(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("PrincipalMassMarker") != std::string::npos);
-	lines.erase(lines.begin());
+	assert(readStringNoSpacesOffTop(lines) == "PrincipalMassMarker");
 	principalMassMarker = ASMTPrincipalMassMarker::With();
-	principalMassMarker->owner = this;
+	principalMassMarker->container = this;
 	principalMassMarker->parseASMT(lines);
 }
 
@@ -118,9 +116,9 @@ ASMTPart* MbD::ASMTPart::part()
 	return this;
 }
 
-void MbD::ASMTPart::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+void MbD::ASMTPart::createMbD()
 {
-	ASMTSpatialContainer::createMbD(mbdSys, mbdUnits);
+	ASMTSpatialContainer::createMbD();
 	if (isFixed) std::static_pointer_cast<Part>(mbdObject)->asFixed();
 }
 

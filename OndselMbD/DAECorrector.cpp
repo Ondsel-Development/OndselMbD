@@ -62,6 +62,11 @@ void MbD::DAECorrector::passRootToSystem()
 void MbD::DAECorrector::calcdxNorm()
 {
 	dxNorm = daeSystem->corErrorNormFromwrt(dx, x);
+	std::stringstream ss;
+	ss << std::setprecision(std::numeric_limits<double>::max_digits10);
+	ss << "MbD: Convergence = " << dxNorm;
+	auto str = ss.str();
+	daeSystem->logString(str);
 }
 
 void MbD::DAECorrector::basicSolveEquations()
@@ -139,7 +144,6 @@ void MbD::DAECorrector::reportStats()
 
 void MbD::DAECorrector::outputSpreadsheet()
 {
-	if (true) return;	//For debugging.
 	std::ofstream os("../testapp/spreadsheetcpp.csv");
 	os << std::setprecision(std::numeric_limits<double>::max_digits10);
 	for (size_t i = 0; i < pypx->nrow(); i++)

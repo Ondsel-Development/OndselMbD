@@ -15,6 +15,7 @@
 #include <iostream>	
 #include <fstream>	
 #include <filesystem>
+#include <string>
 
 #include "../OndselMbD/CADSystem.h"
 #include "../OndselMbD/GESpMatParPvPrecise.h"
@@ -27,8 +28,16 @@ void doublePrecisionTest();
 void runSpMat();
 void sharedptrTest();
 
-int main()
+int main(int argc, char* argv[])
 {
+	if (argc > 1) {
+		//For command line execution ./ondselmbd filename.mbd
+		MBDynSystem::runDynFile(argv[1]);
+		return 0;
+	}
+
+	//MBDynSystem::runDynFile("../testapp/MBDyn/Unicycle simulation attempt 1/MBDCase.mbd");	//Need to handle subassemblies
+	ASMTAssembly::runKineFile("../testapp/ASMT/piston.asmt");
 	ASMTAssembly::runDynFile("../testapp/ASMT/piston.asmt");
 	MBDynSystem::runDynFile("../testapp/MBDyn/SingleRigidPendulum07-02-2024/MBDCaseOndsel.mbd");
 	MBDynSystem::runDynFile("../testapp/MBDyn/markers.mbd");
@@ -53,16 +62,16 @@ int main()
 	MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCase9orig.mbd");	//SimulationStoppingError
 	MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCase8orig.mbd");	//Incompatible geometry at t=3.15
 	MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCase5orig.mbd");	//Test Product::integrateWRT
-	ASMTAssembly::readWriteFile("../testapp/ASMT/Gears.asmt");
-	ASMTAssembly::readWriteFile("../testapp/ASMT/anglejoint.asmt");
-	ASMTAssembly::readWriteFile("../testapp/ASMT/constvel.asmt");
-	ASMTAssembly::readWriteFile("../testapp/ASMT/rackscrew.asmt");
-	ASMTAssembly::readWriteFile("../testapp/ASMT/planarbug.asmt");
+	ASMTAssembly::readWriteKineFile("../testapp/ASMT/Gears.asmt");
+	ASMTAssembly::readWriteKineFile("../testapp/ASMT/anglejoint.asmt");
+	ASMTAssembly::readWriteKineFile("../testapp/ASMT/constvel.asmt");
+	ASMTAssembly::readWriteKineFile("../testapp/ASMT/rackscrew.asmt");
+	ASMTAssembly::readWriteKineFile("../testapp/ASMT/planarbug.asmt");
 	MBDynSystem::runDynFile("../testapp/MBDyn/InitialConditions.mbd");
 	MBDynSystem::runDynFile("../testapp/MBDyn/SphericalHinge.mbd");
 	ASMTAssembly::runDynFile("../testapp/ASMT/cirpendu2.asmt");	//Under constrained. Testing ICKine.
 	ASMTAssembly::runDynFile("../testapp/ASMT/quasikine.asmt");	//Under constrained. Testing ICKine.
-	ASMTAssembly::readWriteFile("../testapp/ASMT/piston.asmt");
+	ASMTAssembly::readWriteKineFile("../testapp/ASMT/piston.asmt");
 	//MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCaseDebug2.mbd");
 	//return 0;
 	MBDynSystem::runDynFile("../testapp/MBDyn/MBDynCase2.mbd");

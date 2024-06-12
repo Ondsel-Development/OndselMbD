@@ -250,7 +250,7 @@ namespace MbD {
 	{
 		std::ofstream os(filename);
 		os << to_CSV();
-		os.close();
+		os << std::endl;
 	}
 
 	template<typename T>
@@ -258,6 +258,6 @@ namespace MbD {
 	{
 		std::ofstream os(filename, std::ios_base::app);
 		os << to_CSV();
-		os.close();
+		os << std::endl;
 	}
 }

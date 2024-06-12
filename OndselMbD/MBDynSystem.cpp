@@ -196,7 +196,6 @@ void MbD::MBDynSystem::outputNodesFile()
 			node->outputLine(i, os);
 		}
 	}
-	os.close();
 }
 
 void MbD::MBDynSystem::outputJointsFile()
@@ -212,7 +211,6 @@ void MbD::MBDynSystem::outputJointsFile()
 			joint->outputLine(i, os);
 		}
 	}
-	os.close();
 }
 
 void MbD::MBDynSystem::setFilename(std::string str)

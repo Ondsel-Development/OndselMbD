@@ -91,7 +91,7 @@ void NewtonRaphson::iterate()
 void NewtonRaphson::incrementIterNo()
 {
 	iterNo++;
-	if (iterNo > iterMax) {
+	if (iterNo >= iterMax) {	//Use >= since iterNo uses index zero.
 		reportStats();
 		throw MaximumIterationError("");
 	}

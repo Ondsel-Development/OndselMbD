@@ -49,7 +49,7 @@ namespace MbD {
 		double modifiedArcCos(double val);
 
 
-		double m = 0.0;
+		double mass = 0.0;
 		FMatDsptr aJPP, aJoo, aAPo, aJcmP, aJcmPcopy, aAPp;
 		FColDsptr rPoP, rPcmP;
 		DiagMatDsptr aJpp;

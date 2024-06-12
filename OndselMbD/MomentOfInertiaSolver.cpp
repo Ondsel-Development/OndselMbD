@@ -138,9 +138,9 @@ void MbD::MomentOfInertiaSolver::doPivoting(size_t)
 	//Do nothing.
 }
 
-void MbD::MomentOfInertiaSolver::setm(double mass)
+void MbD::MomentOfInertiaSolver::setm(double _mass)
 {
-	m = mass;
+	mass = _mass;
 }
 
 void MbD::MomentOfInertiaSolver::setJPP(FMatDsptr mat)
@@ -199,7 +199,7 @@ void MbD::MomentOfInertiaSolver::calcJoo()
 	auto term21 = rPoPtilde->timesFullMatrix(rPoPtilde);
 	auto term22 = rPoPtilde->timesFullMatrix(rocmPtilde);
 	auto term23 = term22->transpose();
-	auto term2 = term21->plusFullMatrix(term22)->plusFullMatrix(term23)->times(m);
+	auto term2 = term21->plusFullMatrix(term22)->plusFullMatrix(term23)->times(mass);
 	aJoo = aAPo->transposeTimesFullMatrix(term1->plusFullMatrix(term2))->timesFullMatrix(aAPo);
 	aJoo->symLowerWithUpper();
 	aJoo->conditionSelfWithTol(aJoo->maxMagnitude() * 1.0e-6);
@@ -210,7 +210,7 @@ void MbD::MomentOfInertiaSolver::calcJpp()
 	//"aJcmP = aJPP + mass*(rPcmPTilde*rPcmPTilde)"
 
 	auto rPcmPtilde = FullMatrix<double>::tildeMatrix(rPcmP);
-	aJcmP = aJPP->plusFullMatrix(rPcmPtilde->timesFullMatrix(rPcmPtilde)->times(m));
+	aJcmP = aJPP->plusFullMatrix(rPcmPtilde->timesFullMatrix(rPcmPtilde)->times(mass));
 	aJcmP->symLowerWithUpper();
 	aJcmP->conditionSelfWithTol(aJcmP->maxMagnitude() * 1.0e-6);
 	if (aJcmP->isDiagonal()) {

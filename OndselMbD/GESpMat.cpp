@@ -24,12 +24,12 @@ FColDsptr GESpMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCo
 {
 	auto debug = false;
 	if (debug) {
-		spMat->outputCSV("../debug.csv");
-		fullCol->appendCSV("../debug.csv");
+		spMat->outputCSV("../debugcpp.csv");
+		fullCol->appendCSV("../debugcpp.csv");
 	}
 	preSolvewithsaveOriginal(spMat, fullCol, saveOriginal);
 	if (debug) {
-		matrixA->appendCSV("../debug.csv");
+		matrixA->appendCSV("../debugcpp.csv");
 	}
 	for (size_t p = 0; p < m; p++)
 	{
@@ -39,7 +39,7 @@ FColDsptr GESpMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCo
 	backSubstituteIntoDU();
 	postSolve();
 	if (debug) {
-		answerX->appendCSV("../debug.csv");
+		answerX->appendCSV("../debugcpp.csv");
 	}
 	return answerX;
 }

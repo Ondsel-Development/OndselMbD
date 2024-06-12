@@ -41,11 +41,11 @@ namespace MbD {
 		static void runSinglePendulumSimplified();
 		static void runSinglePendulum();
 		static std::shared_ptr<ASMTAssembly> assemblyFromFile(const char* chars);
-		static void runFile(const char* chars);
 		static void runDynFile(const char* chars);
+		static void runKineFile(const char* chars);
 		static void runDraggingTest();
 		static std::vector<std::string> linesFromFile(const char* chars);
-		static void readWriteFile(const char* chars);
+		static void readWriteKineFile(const char* chars);
 		static void readWriteDynFile(const char* chars);
 
 		ASMTAssembly* root() override;

@@ -417,41 +417,28 @@ std::shared_ptr<ASMTAssembly> MbD::ASMTAssembly::assemblyFromFile(const char* fi
 	return assembly;
 }
 
-void MbD::ASMTAssembly::runFile(const char* fileName)
-{
-	std::ifstream stream(fileName);
-	if (stream.fail()) {
-		throw std::invalid_argument("File not found.");
-	}
-	std::string line;
-	std::vector<std::string> lines;
-	while (std::getline(stream, line)) {
-		lines.push_back(line);
-	}
-	bool bool1 = lines[0] == "freeCAD: 3D CAD with Motion Simulation  by  askoh.com";
-	bool bool2 = lines[0] == "OndselSolver";
-	assert(bool1 || bool2);
-	lines.erase(lines.begin());
-
-	if (lines[0] == "Assembly") {
-		lines.erase(lines.begin());
-		auto assembly = ASMTAssembly::With();
-		assembly->setFilename(fileName);
-		assembly->parseASMT(lines);
-		assembly->runKINEMATIC();
-	}
-	else {
-		assert(false);
-	}
-}
-
 void MbD::ASMTAssembly::runDynFile(const char* fileName)
 {
 	auto lines = linesFromFile(fileName);
 	auto assembly = ASMTAssembly::With();
+	std::string str("\n\n\nStarting DYNAMIC simulation");
+	assembly->logString(str);
+	assembly->setFilename(fileName);
 	assert(assembly->readStringNoSpacesOffTop(lines) == "Assembly");
 	assembly->parseASMT(lines);
 	assembly->runDYNAMIC();
+}
+
+void MbD::ASMTAssembly::runKineFile(const char* fileName)
+{
+	auto lines = linesFromFile(fileName);
+	auto assembly = ASMTAssembly::With();
+	std::string str("\n\n\nStarting KINEMATIC simulation");
+	assembly->logString(str);
+	assembly->setFilename(fileName);
+	assert(assembly->readStringNoSpacesOffTop(lines) == "Assembly");
+	assembly->parseASMT(lines);
+	assembly->runKINEMATIC();
 }
 
 std::vector<std::string> MbD::ASMTAssembly::linesFromFile(const char* fileName)
@@ -472,7 +459,7 @@ std::vector<std::string> MbD::ASMTAssembly::linesFromFile(const char* fileName)
 	return lines;
 }
 
-void MbD::ASMTAssembly::readWriteFile(const char* fileName)
+void MbD::ASMTAssembly::readWriteKineFile(const char* fileName)
 {
 	std::ifstream stream(fileName);
 	if (stream.fail()) {
@@ -493,29 +480,9 @@ void MbD::ASMTAssembly::readWriteFile(const char* fileName)
 		auto assembly = ASMTAssembly::With();
 		assembly->parseASMT(lines);
 		assembly->runKINEMATIC();
-		//assembly->runDYNAMIC();
-		assembly->outputFile("assembly.asmt");
-		ASMTAssembly::runFile("assembly.asmt");
+		assembly->outputFile("assemblyKine.asmt");
+		ASMTAssembly::runKineFile("assemblyKine.asmt");
 	}
-}
-
-void MbD::ASMTAssembly::runDraggingTest()
-{
-	auto assembly = ASMTAssembly::assemblyFromFile("../testapp/dragCrankSlider.asmt");
-	auto& dragPart = assembly->parts->at(0);
-	auto dragParts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
-	dragParts->push_back(dragPart);
-	assembly->runPreDrag();	//Do this before first drag
-	FColDsptr pos3D, delta;
-	pos3D = dragPart->position3D;
-	delta = std::make_shared<FullColumn<double>>(ListD{ 0.1, 0.2, 0.3 });
-	dragPart->updateMbDFromPosition3D(pos3D->plusFullColumn(delta));
-	assembly->runDragStep(dragParts);
-	pos3D = dragPart->position3D;
-	delta = std::make_shared<FullColumn<double>>(ListD{ 0.3, 0.2, 0.1 });
-	dragPart->updateMbDFromPosition3D(pos3D->plusFullColumn(delta));
-	assembly->runDragStep(dragParts);
-	assembly->runPostDrag();	//Do this after last drag
 }
 
 void MbD::ASMTAssembly::readWriteDynFile(const char* fileName)
@@ -542,6 +509,25 @@ void MbD::ASMTAssembly::readWriteDynFile(const char* fileName)
 		assembly->outputFile("../testapp/tempAssembly.asmt");
 		ASMTAssembly::runDynFile("../testapp/tempAssembly.asmt");
 	}
+}
+
+void MbD::ASMTAssembly::runDraggingTest()
+{
+	auto assembly = ASMTAssembly::assemblyFromFile("../testapp/dragCrankSlider.asmt");
+	auto& dragPart = assembly->parts->at(0);
+	auto dragParts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
+	dragParts->push_back(dragPart);
+	assembly->runPreDrag();	//Do this before first drag
+	FColDsptr pos3D, delta;
+	pos3D = dragPart->position3D;
+	delta = std::make_shared<FullColumn<double>>(ListD{ 0.1, 0.2, 0.3 });
+	dragPart->updateMbDFromPosition3D(pos3D->plusFullColumn(delta));
+	assembly->runDragStep(dragParts);
+	pos3D = dragPart->position3D;
+	delta = std::make_shared<FullColumn<double>>(ListD{ 0.3, 0.2, 0.1 });
+	dragPart->updateMbDFromPosition3D(pos3D->plusFullColumn(delta));
+	assembly->runDragStep(dragParts);
+	assembly->runPostDrag();	//Do this after last drag
 }
 
 ASMTAssembly* MbD::ASMTAssembly::root()
@@ -1093,11 +1079,6 @@ void MbD::ASMTAssembly::outputFile(std::string filename)
 	//	try {
 	os << "OndselSolver" << std::endl;
 	storeOnLevel(os, 0);
-	os.close();
-	//	}
-	//	catch (...) {
-	//		os.close();
-	//	}
 }
 
 void MbD::ASMTAssembly::storeOnLevel(std::ofstream& os, size_t level)
@@ -1443,7 +1424,7 @@ void MbD::ASMTAssembly::storeOnTimeSeries(std::ofstream& os)
 void MbD::ASMTAssembly::setFilename(std::string str)
 {
 	std::stringstream ss;
-	ss << "FileName = " << str << std::endl;
+	ss << "FileName = " << str;
 	auto str2 = ss.str();
 	logString(str2);
 	filename = str;

@@ -37,8 +37,8 @@ double MbD::Reciprocal::getValue()
 
 Symsptr MbD::Reciprocal::differentiateWRTx()
 {
-	auto two = sptrConstant(2);
-	auto sq = std::make_shared<Power>(xx, two);
+	auto mtwo = sptrConstant(-2);
+	auto sq = std::make_shared<Power>(xx, mtwo);
 	return Negative::With(sq);
 }
 

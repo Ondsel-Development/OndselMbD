@@ -419,7 +419,7 @@ bool MbD::BasicDAEIntegrator::isConvergedForand(size_t iterNo, std::shared_ptr<s
 	auto smallEnough = dyNormIterNo < smallEnoughTol;
 	if (iterNo == 0) return smallEnough;
 	auto rho = dyNormIterNo / dyNorms->at(iterNo - 1);
-	return smallEnough || (rho < 1.0 && (rho * dyNormIterNo / (1.0 - rho) < 0.33));
+	return smallEnough || (dyNormIterNo < 1.0 && rho < 1.0 && (rho * dyNormIterNo / (1.0 - rho) < 0.33));
 }
 
 void MbD::BasicDAEIntegrator::postFirstStep()

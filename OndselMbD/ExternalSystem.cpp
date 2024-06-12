@@ -104,5 +104,8 @@ void MbD::ExternalSystem::useDynTrialStepStats(std::shared_ptr<SolverStatistics>
 
 void MbD::ExternalSystem::useKineTrialStepStats(std::shared_ptr<SolverStatistics> stats)
 {
-	useDynTrialStepStats(stats);
+	std::stringstream ss;
+	ss << stats->istep << " t=" << stats->t << " h=" << stats->h;
+	auto str = ss.str();
+	logString(str);
 }

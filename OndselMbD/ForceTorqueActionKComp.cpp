@@ -75,7 +75,7 @@ void MbD::ForceTorqueActionKComp::fillpFpypFTpfunctionfunction(SpMatDsptr mat, d
 {
 	auto block = [&](FRowDsptr pvaluepXi,
 		FRowDsptr pvaluepEi,
-		PartFrame* partFramei) -> void {
+		SpatialContainerFrame* partFramei) -> void {
 			if (pvaluepXi == nullptr || pvaluepXi->empty()) {
 				if (pvaluepEi == nullptr || pvaluepEi->empty()) {
 					//Do nothing.

@@ -55,9 +55,9 @@ namespace MbD {
 		FRowDsptr pvaluepEdotK();
 		FRowDsptr pvaluepXdotK();
 		SpRowDsptr pvalueplam();
-		PartFrame* partFrameI();
-		PartFrame* partFrameJ();
-		PartFrame* partFrameK();
+		SpatialContainerFrame* partFrameI();
+		SpatialContainerFrame* partFrameJ();
+		SpatialContainerFrame* partFrameK();
 
 		std::shared_ptr<Item> mbdObject;
 	};

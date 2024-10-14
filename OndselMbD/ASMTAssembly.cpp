@@ -1003,7 +1003,6 @@ void MbD::ASMTAssembly::preMbDrun(std::shared_ptr<System> mbdSys)
 {
 	deleteMbD();
 	createMbD();
-	std::static_pointer_cast<Part>(mbdObject)->asFixed();
 }
 
 void MbD::ASMTAssembly::postMbDrun()
@@ -1036,9 +1035,12 @@ void MbD::ASMTAssembly::deleteMbD()
 
 void MbD::ASMTAssembly::createMbD()
 {
-	ASMTSpatialContainer::createMbD();
+	mbdObject = mbdSystem;
 	constantGravity->createMbD();
 	asmtTime->createMbD();
+	for (auto& refPoint : *refPoints) { refPoint->createMbD(); }
+	for (auto& refCurve : *refCurves) { refCurve->createMbD(); }
+	for (auto& refSurface : *refSurfaces) { refSurface->createMbD(); }
 	std::sort(parts->begin(), parts->end(), [](std::shared_ptr<ASMTPart> a, std::shared_ptr<ASMTPart> b) { return a->name < b->name; });
 	auto jointsMotions = std::make_shared<std::vector<std::shared_ptr<ASMTConstraintSet>>>();
 	jointsMotions->insert(jointsMotions->end(), joints->begin(), joints->end());
@@ -1153,8 +1155,7 @@ void MbD::ASMTAssembly::runKINEMATIC()
 
 void MbD::ASMTAssembly::runDYNAMIC()
 {
-	auto mbdSys = System::With();
-	mbdSystem = mbdSys;
+	mbdSystem = System::With();
 	mbdSystem->externalSystem->asmtAssembly = this;
 	try {
 		mbdSystem->runDYNAMIC(mbdSystem);
@@ -1245,7 +1246,24 @@ std::shared_ptr<ASMTTime> MbD::ASMTAssembly::geoTime() const
 
 void MbD::ASMTAssembly::updateFromMbD()
 {
-	ASMTSpatialContainer::updateFromMbD();
+	xs->push_back(0.0);
+	ys->push_back(0.0);
+	zs->push_back(0.0);
+	bryxs->push_back(0.0);
+	bryys->push_back(0.0);
+	bryzs->push_back(0.0);
+	vxs->push_back(0.0);
+	vys->push_back(0.0);
+	vzs->push_back(0.0);
+	omexs->push_back(0.0);
+	omeys->push_back(0.0);
+	omezs->push_back(0.0);
+	axs->push_back(0.0);
+	ays->push_back(0.0);
+	azs->push_back(0.0);
+	alpxs->push_back(0.0);
+	alpys->push_back(0.0);
+	alpzs->push_back(0.0);
 	auto time = asmtTime->getValue();
 	times->push_back(time);
 	//std::cout << "Time = " << time << std::endl;

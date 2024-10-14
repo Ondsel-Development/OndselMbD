@@ -243,7 +243,6 @@ void Part::iqX(size_t eqnNo)
 void Part::iqE(size_t eqnNo)
 {
 	partFrame->iqE = eqnNo;
-
 }
 
 void Part::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)

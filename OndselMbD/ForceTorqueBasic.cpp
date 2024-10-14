@@ -1,6 +1,6 @@
 #include "ForceTorqueBasic.h"
 #include "EndFramec.h"
-#include "PartFrame.h"
+#include "SpatialContainerFrame.h"
 
 using namespace MbD;
 
@@ -31,22 +31,22 @@ void MbD::ForceTorqueBasic::fillpFpyaFTO(SpMatDsptr mat, FColDsptr aFTO)
 	assert(false);
 }
 
-void MbD::ForceTorqueBasic::fillpFpypFTOpEjpartj(SpMatDsptr mat, FMatDsptr pFTOpEj, PartFrame* partj)
+void MbD::ForceTorqueBasic::fillpFpypFTOpEjpartj(SpMatDsptr mat, FMatDsptr pFTOpEj, SpatialContainerFrame* partj)
 {
 	assert(false);
 }
 
-void MbD::ForceTorqueBasic::fillpFpypFTOpXjpartj(SpMatDsptr mat, FMatDsptr pFTOpXj, PartFrame* partj)
+void MbD::ForceTorqueBasic::fillpFpypFTOpXjpartj(SpMatDsptr mat, FMatDsptr pFTOpXj, SpatialContainerFrame* partj)
 {
 	assert(false);
 }
 
-void MbD::ForceTorqueBasic::fillpFpypFTOpXjpFTOpEjpartj(SpMatDsptr mat, FMatDsptr pFTOpXj, FMatDsptr pFTOpEj, PartFrame* partj)
+void MbD::ForceTorqueBasic::fillpFpypFTOpXjpFTOpEjpartj(SpMatDsptr mat, FMatDsptr pFTOpXj, FMatDsptr pFTOpEj, SpatialContainerFrame* partj)
 {
 	assert(false);
 }
 
-void MbD::ForceTorqueBasic::fillpFpydotpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpEdotj, PartFrame* partj)
+void MbD::ForceTorqueBasic::fillpFpydotpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpEdotj, SpatialContainerFrame* partj)
 {
 	assert(false);
 }
@@ -56,19 +56,19 @@ void MbD::ForceTorqueBasic::fillpFpydotpFTOpmudot(SpMatDsptr mat, SpMatDsptr pFT
 	assert(false);
 }
 
-void MbD::ForceTorqueBasic::fillpFpydotpFTOpXdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, PartFrame* partj)
+void MbD::ForceTorqueBasic::fillpFpydotpFTOpXdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, SpatialContainerFrame* partj)
 {
 	assert(false);
 }
 
-void MbD::ForceTorqueBasic::fillpFpydotpFTOpXdotjpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, FMatDsptr pFTOpEdotj, PartFrame* partj)
+void MbD::ForceTorqueBasic::fillpFpydotpFTOpXdotjpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, FMatDsptr pFTOpEdotj, SpatialContainerFrame* partj)
 {
 	assert(false);
 }
 
 void MbD::ForceTorqueBasic::useEquationNumbers()
 {
-	iqE = endFrame->getPartFrame()->iqE;
+	iqE = endFrame->getPartFrame()->iqE();
 }
 
 void MbD::ForceTorqueBasic::fillAccICIterErroraFTOi(FColDsptr col, double aFTOi)

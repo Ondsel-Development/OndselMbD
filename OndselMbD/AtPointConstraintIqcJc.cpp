@@ -107,9 +107,10 @@ void AtPointConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 {
 	auto cForceT = FullRow<double>::With(3, 0.0);
 	cForceT->atput(axis, -lam);
-	auto rIpIeIp = efrmI->rpep();
-	auto pAOIppEI = efrmI->pAOppE();
-	auto aBOIp = efrmI->aBOp();
+	auto efrmqc = std::static_pointer_cast<EndFrameqc>(efrmI);
+	auto rIpIeIp = efrmqc->rpep();
+	auto pAOIppEI = efrmqc->pAOppE();
+	auto aBOIp = efrmqc->aBOp();
 	auto fpAOIppEIrIpIeIp = std::make_shared<FullColumn<double>>(4, 0.0);
 	for (size_t i = 0; i < 4; i++)
 	{

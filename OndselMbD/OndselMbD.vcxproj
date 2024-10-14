@@ -222,6 +222,9 @@
     <ClCompile Include="ASMTvIJ.cpp" />
     <ClCompile Include="ASMTvIJKi.cpp" />
     <ClCompile Include="ASMTvrIJ.cpp" />
+    <ClCompile Include="AssemblyFrame.cpp" />
+    <ClCompile Include="AtPointConstraintIcJqc.cpp" />
+    <ClCompile Include="AtPointConstraintIctJqc.cpp" />
     <ClCompile Include="AtPointConstraintIJ.cpp" />
     <ClCompile Include="AtPointConstraintIqcJc.cpp" />
     <ClCompile Include="AtPointConstraintIqcJqc.cpp" />
@@ -259,11 +262,15 @@
     <ClCompile Include="DifferenceOperator.cpp" />
     <ClCompile Include="DifferentialAlgebraicEquationSolver.cpp" />
     <ClCompile Include="DifferentiatedGeneralSpline.cpp" />
+    <ClCompile Include="DirectionCosineConstraintIcJqc.cpp" />
+    <ClCompile Include="DirectionCosineConstraintIctJqc.cpp" />
     <ClCompile Include="DirectionCosineConstraintIJ.cpp" />
     <ClCompile Include="DirectionCosineConstraintIqcJc.cpp" />
     <ClCompile Include="DirectionCosineConstraintIqcJqc.cpp" />
     <ClCompile Include="DirectionCosineConstraintIqctJqc.cpp" />
     <ClCompile Include="DirectionCosineIecJec.cpp" />
+    <ClCompile Include="DirectionCosineIecJeqc.cpp" />
+    <ClCompile Include="DirectionCosineIectJeqc.cpp" />
     <ClCompile Include="DirectionCosineIeqcJec.cpp" />
     <ClCompile Include="DirectionCosineIeqcJeqc.cpp" />
     <ClCompile Include="DirectionCosineIeqctJeqc.cpp" />
@@ -272,6 +279,11 @@
     <ClCompile Include="DispCompIecJecKec.cpp" />
     <ClCompile Include="DispCompIecJecKeqc.cpp" />
     <ClCompile Include="DispCompIecJecO.cpp" />
+    <ClCompile Include="DispCompIecJeqcIe.cpp" />
+    <ClCompile Include="DispCompIecJeqcKec.cpp" />
+    <ClCompile Include="DispCompIecJeqcO.cpp" />
+    <ClCompile Include="DispCompIectJeqcIe.cpp" />
+    <ClCompile Include="DispCompIectJeqcO.cpp" />
     <ClCompile Include="DispCompIeqcJecIe.cpp" />
     <ClCompile Include="DispCompIeqcJecKeqc.cpp" />
     <ClCompile Include="DispCompIeqcJecO.cpp" />
@@ -300,6 +312,7 @@
     <ClCompile Include="DynIntegrator.cpp" />
     <ClCompile Include="EigenDecomposition.cpp" />
     <ClCompile Include="EndFramec.cpp" />
+    <ClCompile Include="EndFramect.cpp" />
     <ClCompile Include="EndFrameqc.cpp" />
     <ClCompile Include="EndFrameqccq.cpp" />
     <ClCompile Include="EndFrameqct.cpp" />
@@ -402,6 +415,8 @@
     <ClCompile Include="Log10.cpp" />
     <ClCompile Include="LogN.cpp" />
     <ClCompile Include="MarkerFrame.cpp" />
+    <ClCompile Include="MarkerFramec.cpp" />
+    <ClCompile Include="MarkerFrameqc.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="MatrixDecomposition.cpp" />
     <ClCompile Include="MatrixGaussElimination.cpp" />
@@ -518,6 +533,7 @@
     <ClCompile Include="SparseMatrix.cpp" />
     <ClCompile Include="SparseRow.cpp" />
     <ClCompile Include="SparseVector.cpp" />
+    <ClCompile Include="SpatialContainerFrame.cpp" />
     <ClCompile Include="SphericalJoint.cpp" />
     <ClCompile Include="SphSphJoint.cpp" />
     <ClCompile Include="StableBackwardDifference.cpp" />
@@ -542,6 +558,8 @@
     <ClCompile Include="Transitions.cpp" />
     <ClCompile Include="Translation.cpp" />
     <ClCompile Include="TranslationalJoint.cpp" />
+    <ClCompile Include="TranslationConstraintIcJqc.cpp" />
+    <ClCompile Include="TranslationConstraintIctJqc.cpp" />
     <ClCompile Include="TranslationConstraintIJ.cpp" />
     <ClCompile Include="TranslationConstraintIqcJc.cpp" />
     <ClCompile Include="TranslationConstraintIqcJqc.cpp" />
@@ -655,6 +673,9 @@
     <ClInclude Include="ASMTvIJ.h" />
     <ClInclude Include="ASMTvIJKi.h" />
     <ClInclude Include="ASMTvrIJ.h" />
+    <ClInclude Include="AssemblyFrame.h" />
+    <ClInclude Include="AtPointConstraintIcJqc.h" />
+    <ClInclude Include="AtPointConstraintIctJqc.h" />
     <ClInclude Include="AtPointConstraintIJ.h" />
     <ClInclude Include="AtPointConstraintIqcJc.h" />
     <ClInclude Include="AtPointConstraintIqcJqc.h" />
@@ -693,11 +714,15 @@
     <ClInclude Include="DifferenceOperator.h" />
     <ClInclude Include="DifferentialAlgebraicEquationSolver.h" />
     <ClInclude Include="DifferentiatedGeneralSpline.h" />
+    <ClInclude Include="DirectionCosineConstraintIcJqc.h" />
+    <ClInclude Include="DirectionCosineConstraintIctJqc.h" />
     <ClInclude Include="DirectionCosineConstraintIJ.h" />
     <ClInclude Include="DirectionCosineConstraintIqcJc.h" />
     <ClInclude Include="DirectionCosineConstraintIqcJqc.h" />
     <ClInclude Include="DirectionCosineConstraintIqctJqc.h" />
     <ClInclude Include="DirectionCosineIecJec.h" />
+    <ClInclude Include="DirectionCosineIecJeqc.h" />
+    <ClInclude Include="DirectionCosineIectJeqc.h" />
     <ClInclude Include="DirectionCosineIeqcJec.h" />
     <ClInclude Include="DirectionCosineIeqcJeqc.h" />
     <ClInclude Include="DirectionCosineIeqctJeqc.h" />
@@ -706,6 +731,11 @@
     <ClInclude Include="DispCompIecJecKec.h" />
     <ClInclude Include="DispCompIecJecKeqc.h" />
     <ClInclude Include="DispCompIecJecO.h" />
+    <ClInclude Include="DispCompIecJeqcIe.h" />
+    <ClInclude Include="DispCompIecJeqcKec.h" />
+    <ClInclude Include="DispCompIecJeqcO.h" />
+    <ClInclude Include="DispCompIectJeqcIe.h" />
+    <ClInclude Include="DispCompIectJeqcO.h" />
     <ClInclude Include="DispCompIeqcJecIe.h" />
     <ClInclude Include="DispCompIeqcJecKeqc.h" />
     <ClInclude Include="DispCompIeqcJecO.h" />
@@ -734,6 +764,7 @@
     <ClInclude Include="DynIntegrator.h" />
     <ClInclude Include="EigenDecomposition.h" />
     <ClInclude Include="EndFramec.h" />
+    <ClInclude Include="EndFramect.h" />
     <ClInclude Include="EndFrameqc.h" />
     <ClInclude Include="EndFrameqccq.h" />
     <ClInclude Include="EndFrameqct.h" />
@@ -837,6 +868,8 @@
     <ClInclude Include="Log10.h" />
     <ClInclude Include="LogN.h" />
     <ClInclude Include="MarkerFrame.h" />
+    <ClInclude Include="MarkerFramec.h" />
+    <ClInclude Include="MarkerFrameqc.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="MatrixDecomposition.h" />
     <ClInclude Include="MatrixGaussElimination.h" />
@@ -954,6 +987,7 @@
     <ClInclude Include="SparseMatrix.h" />
     <ClInclude Include="SparseRow.h" />
     <ClInclude Include="SparseVector.h" />
+    <ClInclude Include="SpatialContainerFrame.h" />
     <ClInclude Include="SphericalJoint.h" />
     <ClInclude Include="SphSphJoint.h" />
     <ClInclude Include="StableBackwardDifference.h" />
@@ -978,6 +1012,8 @@
     <ClInclude Include="Transitions.h" />
     <ClInclude Include="Translation.h" />
     <ClInclude Include="TranslationalJoint.h" />
+    <ClInclude Include="TranslationConstraintIcJqc.h" />
+    <ClInclude Include="TranslationConstraintIctJqc.h" />
     <ClInclude Include="TranslationConstraintIJ.h" />
     <ClInclude Include="TranslationConstraintIqcJc.h" />
     <ClInclude Include="TranslationConstraintIqcJqc.h" />

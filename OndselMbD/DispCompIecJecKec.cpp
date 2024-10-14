@@ -26,7 +26,7 @@ void MbD::DispCompIecJecKec::withFrmIfrmJfrmKaxis(EndFrmsptr frmi, EndFrmsptr fr
 	axisK = axis;
 }
 
-PartFrame* MbD::DispCompIecJecKec::partFrameK()
+SpatialContainerFrame* MbD::DispCompIecJecKec::partFrameK()
 {
 	return efrmK->getPartFrame();
 }

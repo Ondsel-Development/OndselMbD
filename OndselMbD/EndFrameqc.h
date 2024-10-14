@@ -41,9 +41,9 @@ namespace MbD {
 		std::shared_ptr<EulerParametersDot<double>> qEdot();
 		FColDsptr qXddot();
 		FColDsptr qEddot();
-		FColDsptr rpep() override;
-		FColFMatDsptr pAOppE() override;
-		FMatDsptr aBOp() override;
+		FColDsptr rpep();
+		FColFMatDsptr pAOppE();
+		FMatDsptr aBOp();
 		bool isEndFrameqc() override;
 		FMatDsptr pvOeOpE();
 		FColDsptr omeOeO();

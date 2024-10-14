@@ -8,7 +8,7 @@
  
 #include "KinematicIJ.h"
 #include "EndFramec.h"
-#include "PartFrame.h"
+#include "SpatialContainerFrame.h"
 
 using namespace MbD;
 
@@ -399,12 +399,12 @@ void MbD::KinematicIJ::withFrmIfrmJfrmKaxis(EndFrmsptr eFrmi, EndFrmsptr eFrmj, 
 {
 }
 
-PartFrame* MbD::KinematicIJ::partFrameI()
+SpatialContainerFrame* MbD::KinematicIJ::partFrameI()
 {
 	return efrmI->getPartFrame();
 }
 
-PartFrame* MbD::KinematicIJ::partFrameJ()
+SpatialContainerFrame* MbD::KinematicIJ::partFrameJ()
 {
 	return efrmJ->getPartFrame();
 }

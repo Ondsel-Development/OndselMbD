@@ -85,7 +85,8 @@ void DirectionCosineConstraintIqcJc::fillAccICIterError(FColDsptr col)
 
 void DirectionCosineConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 {
-	auto aBOIp = efrmI->aBOp();
+	auto efrmqc = std::static_pointer_cast<EndFrameqc>(efrmI);
+	auto aBOIp = efrmqc->aBOp();
 	auto lampGpE = pGpEI->transpose()->times(lam);
 	auto c2Torque = aBOIp->timesFullColumn(lampGpE);
 	jointTorque->equalSelfPlusFullColumntimes(c2Torque, 0.5);

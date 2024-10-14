@@ -104,7 +104,7 @@ void MbD::ForceTorqueActReactKComp::fillpFpypFTpfunctionfunction(SpMatDsptr mat,
 	auto aAjOKe = std::static_pointer_cast<ForceTorqueActionKComp>(forTorAction)->aAjOKe;
 	auto block = [&](FRowDsptr pvaluepXi,
 		FRowDsptr pvaluepEi,
-		PartFrame* partFramei) -> void {
+		SpatialContainerFrame* partFramei) -> void {
 			if (pvaluepXi == nullptr || pvaluepXi->empty()) {
 				if (pvaluepEi == nullptr || pvaluepEi->empty()) {
 					//Do nothing.

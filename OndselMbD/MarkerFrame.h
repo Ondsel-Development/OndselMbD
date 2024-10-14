@@ -18,7 +18,8 @@
 #include "EulerParametersDDot.h"
 
 namespace MbD {
-	class CartesianFrame;
+	//class CartesianFrame;
+	class SpatialContainerFrame;
 	class PartFrame;
 	class EndFramec;
 	using EndFrmsptr = std::shared_ptr<EndFramec>;
@@ -55,11 +56,8 @@ namespace MbD {
 		size_t iqE() const;
 		size_t iqX() const;
 		FColDsptr omeOmO() const;
-		FMatDsptr pAdotjOmpE(size_t j);
-		FMatDsptr pAdotjOmpET(size_t j);
-		FColFMatDsptr pAOppE();
-		PartFrame* getPartFrame() const;
-		void setPartFrame(PartFrame* partFrm);
+		SpatialContainerFrame* getPartFrame() const;
+		void setPartFrame(SpatialContainerFrame* partFrm);
 		FMatDsptr pomeOmOpE();
 		FMatDsptr pomeOmOpEdot();
 		void postDynCorrectorIteration() override;
@@ -75,14 +73,9 @@ namespace MbD {
 		void preDyn() override;
 		void preDynOutput() override;
 		void prePosIC() override;
+		void prePosKine() override;
 		void preStatic() override;
 		void preVelIC() override;
-		FMatDsptr pvOmOpE();
-		FColDsptr qEddot() const;
-		std::shared_ptr<EulerParametersDot<double>> qEdot() const;
-		FColDsptr qX() const;
-		FColDsptr qXddot() const;
-		FColDsptr qXdot() const;
 		FColDsptr rmemOFrOeO(FColDsptr rOeOCol) const;
 		FColDsptr rOeOOFrmem(FColDsptr rmemCol) const;
 		void setrpmp(FColDsptr x) const;
@@ -101,15 +94,11 @@ namespace MbD {
 		FColDsptr vOmO() const;
 		FColDsptr vOeO_of_rmem() const;
 
-		PartFrame* partFrame = nullptr; //Use raw pointer when pointing backwards.
+		SpatialContainerFrame* partFrame = nullptr; //Use raw pointer when pointing backwards.
 		FColDsptr rpmp = std::make_shared<FullColumn<double>>(3);
 		FMatDsptr aApm = FullMatrix<double>::identitysptr(3);
 		FColDsptr rOmO = std::make_shared<FullColumn<double>>(3);
 		FMatDsptr aAOm = FullMatrix<double>::identitysptr(3);
-		FMatDsptr prOmOpE;
-		FColFMatDsptr pAOmpE;
-		FMatFColDsptr pprOmOpEpE;
-		FMatFMatDsptr ppAOmpEpE;
 		std::shared_ptr<std::vector<EndFrmsptr>> endFrames;
 
 	};

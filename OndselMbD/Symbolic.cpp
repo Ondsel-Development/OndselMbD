@@ -226,8 +226,7 @@ void MbD::Symbolic::setIntegrationConstant(double integConstant)
 
 const std::string& MbD::Symbolic::getName() const
 {
-	assert(false);
-	return std::string("");
+	throw std::runtime_error("Subclass responsibility.");
 }
 
 void MbD::Symbolic::fillKineIJs(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> kineIJs)

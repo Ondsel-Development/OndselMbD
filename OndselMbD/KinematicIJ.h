@@ -11,7 +11,7 @@
 #include "ItemIJ.h"
 
 namespace MbD {
-	class PartFrame;
+	class SpatialContainerFrame;
 	class EndFramec;
 	using EndFrmsptr = std::shared_ptr<EndFramec>;
 
@@ -94,8 +94,8 @@ namespace MbD {
 		virtual FRowDsptr ppvaluepXKpt();
 		virtual FRowDsptr ppvaluepEKpt();
 		double value() override;
-		PartFrame* partFrameI();
-		PartFrame* partFrameJ();
+		SpatialContainerFrame* partFrameI();
+		SpatialContainerFrame* partFrameJ();
 
 	};
 }

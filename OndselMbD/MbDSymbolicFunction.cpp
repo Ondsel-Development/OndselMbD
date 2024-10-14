@@ -204,17 +204,17 @@ SpRowDsptr MbD::MbDSymbolicFunction::pvalueplam()
 	return SpRowDsptr();
 }
 
-PartFrame* MbD::MbDSymbolicFunction::partFrameI()
+SpatialContainerFrame* MbD::MbDSymbolicFunction::partFrameI()
 {
 	return std::static_pointer_cast<KinematicIJ>(mbdObject)->partFrameI();
 }
 
-PartFrame* MbD::MbDSymbolicFunction::partFrameJ()
+SpatialContainerFrame* MbD::MbDSymbolicFunction::partFrameJ()
 {
 	return std::static_pointer_cast<KinematicIJ>(mbdObject)->partFrameJ();
 }
 
-PartFrame* MbD::MbDSymbolicFunction::partFrameK()
+SpatialContainerFrame* MbD::MbDSymbolicFunction::partFrameK()
 {
 	auto frmIqc = std::dynamic_pointer_cast<DispCompIecJecKec>(mbdObject);
 	if (frmIqc) {

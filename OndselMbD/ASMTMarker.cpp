@@ -7,12 +7,17 @@
  ***************************************************************************/
 
 #include "ASMTMarker.h"
+#include "ASMTPart.h"
+#include "ASMTAssembly.h"
 #include "FullMatrix.h"
 #include "ASMTRefItem.h"
 #include "ASMTPart.h"
 #include "Part.h"
 #include "PartFrame.h"
+#include "AssemblyFrame.h"
 #include "MarkerFrame.h"
+#include "MarkerFramec.h"
+#include "MarkerFrameqc.h"
 #include "ASMTPrincipalMassMarker.h"
 #include "Units.h"
 
@@ -20,65 +25,103 @@ using namespace MbD;
 
 std::shared_ptr<ASMTMarker> MbD::ASMTMarker::With()
 {
-	auto inst = std::make_shared<ASMTMarker>();
-	inst->initialize();
-	return inst;
+    auto inst = std::make_shared<ASMTMarker>();
+    inst->initialize();
+    return inst;
 }
 
 void MbD::ASMTMarker::parseASMT(std::vector<std::string>& lines)
 {
-	readName(lines);
-	readPosition3D(lines);
-	readRotationMatrix(lines);
+    readName(lines);
+    readPosition3D(lines);
+    readRotationMatrix(lines);
 }
 
 FColDsptr MbD::ASMTMarker::rpmp()
 {
-	//p is cm
-	auto refItem = static_cast<ASMTRefItem*>(container);
-	auto& rPrefP = refItem->position3D;
-	auto& aAPref = refItem->rotationMatrix;
-	auto& rrefmref = position3D;
-	auto rPmP = rPrefP->plusFullColumn(aAPref->timesFullColumn(rrefmref));
-	auto& principalMassMarker = static_cast<ASMTPart*>(refItem->container)->principalMassMarker;
-	auto& rPcmP = principalMassMarker->position3D;
-	auto& aAPcm = principalMassMarker->rotationMatrix;
-	auto rpmp = aAPcm->transposeTimesFullColumn(rPmP->minusFullColumn(rPcmP));
-	return rpmp;
+    auto asmtPrt = dynamic_cast<ASMTPart*>(partOrAssembly());
+    auto asmtAsm = dynamic_cast<ASMTAssembly*>(partOrAssembly());
+    if (asmtPrt && !asmtAsm) {
+        //p is cm
+        auto refItem = static_cast<ASMTRefItem*>(container);
+        auto& rPrefP = refItem->position3D;
+        auto& aAPref = refItem->rotationMatrix;
+        auto& rrefmref = position3D;
+        auto rPmP = rPrefP->plusFullColumn(aAPref->timesFullColumn(rrefmref));
+        auto& principalMassMarker = static_cast<ASMTPart*>(refItem->container)->principalMassMarker;
+        auto& rPcmP = principalMassMarker->position3D;
+        auto& aAPcm = principalMassMarker->rotationMatrix;
+        auto rpmp = aAPcm->transposeTimesFullColumn(rPmP->minusFullColumn(rPcmP));
+        return rpmp;
+    }
+    else if (!asmtPrt && asmtAsm) {
+        auto refItem = static_cast<ASMTRefItem*>(container);
+        auto& rPrefP = refItem->position3D;
+        auto& aAPref = refItem->rotationMatrix;
+        auto& rrefmref = position3D;
+        auto rPmP = rPrefP->plusFullColumn(aAPref->timesFullColumn(rrefmref));
+        return rPmP;
+    }
 }
 
 FMatDsptr MbD::ASMTMarker::aApm()
 {
-	//p is cm
-	auto refItem = static_cast<ASMTRefItem*>(container);
-	auto& aAPref = refItem->rotationMatrix;
-	auto& aArefm = rotationMatrix;
-	auto& principalMassMarker = static_cast<ASMTPart*>(refItem->container)->principalMassMarker;
-	auto& aAPcm = principalMassMarker->rotationMatrix;
-	auto aApm = aAPcm->transposeTimesFullMatrix(aAPref->timesFullMatrix(aArefm));
-	return aApm;
+    auto asmtPrt = dynamic_cast<ASMTPart*>(partOrAssembly());
+    auto asmtAsm = dynamic_cast<ASMTAssembly*>(partOrAssembly());
+    if (asmtPrt && !asmtAsm) {
+        //p is cm
+        auto refItem = static_cast<ASMTRefItem*>(container);
+        auto& aAPref = refItem->rotationMatrix;
+        auto& aArefm = rotationMatrix;
+        auto& principalMassMarker = static_cast<ASMTPart*>(refItem->container)->principalMassMarker;
+        auto& aAPcm = principalMassMarker->rotationMatrix;
+        auto aApm = aAPcm->transposeTimesFullMatrix(aAPref->timesFullMatrix(aArefm));
+        return aApm;
+    }
+    else if (!asmtPrt && asmtAsm) {
+        auto refItem = static_cast<ASMTRefItem*>(container);
+        auto& aAPref = refItem->rotationMatrix;
+        auto& aArefm = rotationMatrix;
+        auto aAPm = aAPref->timesFullMatrix(aArefm);
+        return aAPm;
+    }
 }
 
 void ASMTMarker::createMbD()
 {
-	auto mkr = MarkerFrame::With(name.c_str());
-	auto prt = std::static_pointer_cast<Part>(partOrAssembly()->mbdObject);
-	prt->partFrame->addMarkerFrame(mkr);
-
-	mkr->rpmp = rpmp()->times(asmtUnits()->length);
-	mkr->aApm = aApm();
-	mbdObject = mkr->endFrames->at(0);
+    //ASMTMarker === MarkerFrame
+    //ASMTRefPoint is for CAD side and not MbD side
+    auto asmtPrt = dynamic_cast<ASMTPart*>(partOrAssembly());
+    auto asmtAsm = dynamic_cast<ASMTAssembly*>(partOrAssembly());
+    std::shared_ptr<MarkerFrame> mkr;
+    std::shared_ptr<EndFramec> efrm;
+    std::shared_ptr<SpatialContainerFrame> scfrm;
+    if (asmtPrt && !asmtAsm) {
+        scfrm = std::static_pointer_cast<Part>(asmtPrt->mbdObject)->partFrame;
+        mkr = MarkerFrameqc::With(name.c_str());
+        efrm = EndFrameqc::With();
+    }
+    else if (!asmtPrt && asmtAsm) {
+        scfrm = std::static_pointer_cast<System>(asmtAsm->mbdObject)->asmFrame;
+        mkr = MarkerFramec::With(name.c_str());
+        efrm = EndFramec::With();
+    }
+    scfrm->addMarkerFrame(mkr);
+    mkr->rpmp = rpmp()->times(asmtUnits()->length);
+    mkr->aApm = aApm();
+    mkr->addEndFrame(efrm);
+    mbdObject = efrm;
 }
 
 void MbD::ASMTMarker::storeOnLevel(std::ofstream& os, size_t level)
 {
-	storeOnLevelString(os, level, "Marker");
-	storeOnLevelString(os, level + 1, "Name");
-	storeOnLevelString(os, level + 2, name);
-	ASMTSpatialItem::storeOnLevel(os, level);
+    storeOnLevelString(os, level, "Marker");
+    storeOnLevelString(os, level + 1, "Name");
+    storeOnLevelString(os, level + 2, name);
+    ASMTSpatialItem::storeOnLevel(os, level);
 }
 
 void MbD::ASMTMarker::updateFromInputState()
 {
-	//Do nothing.
+    //Do nothing.
 }

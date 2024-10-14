@@ -20,7 +20,7 @@ namespace MbD {
 		static std::shared_ptr<DispCompIecJecKec> With(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
 		void withFrmIfrmJfrmKaxis(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axis) override;
 
-		PartFrame* partFrameK();
+		SpatialContainerFrame* partFrameK();
 		double value() override;
 
 		EndFrmsptr efrmK;

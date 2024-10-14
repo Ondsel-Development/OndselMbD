@@ -20,7 +20,7 @@
 
 using namespace MbD;
 
-PartFrame::PartFrame(const char* str) : CartesianFrame(str)
+PartFrame::PartFrame(const char* str) : SpatialContainerFrame(str)
 {
 	assert(false);
 }
@@ -41,10 +41,10 @@ std::shared_ptr<PartFrame> MbD::PartFrame::With(const char* str)
 
 void PartFrame::initialize()
 {
+	SpatialContainerFrame::initialize();
 	aGeu = EulerConstraint::With();
 	aGeu->container = this;
 	aGabs = std::make_shared<std::vector<std::shared_ptr<Constraint>>>();
-	markerFrames = std::make_shared<std::vector<std::shared_ptr<MarkerFrame>>>();
 }
 
 System* PartFrame::root()
@@ -54,14 +54,14 @@ System* PartFrame::root()
 
 void PartFrame::initializeLocally()
 {
-	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->initializeLocally(); });
+	SpatialContainerFrame::initializeLocally();
 	aGeu->initializeLocally();
 	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->initializeLocally(); });
 }
 
 void PartFrame::initializeGlobally()
 {
-	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->initializeGlobally(); });
+	SpatialContainerFrame::initializeGlobally();
 	aGeu->initializeGlobally();
 	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->initializeGlobally(); });
 }
@@ -136,12 +136,6 @@ Part* PartFrame::getPart() {
 	return part;
 }
 
-void PartFrame::addMarkerFrame(std::shared_ptr<MarkerFrame> markerFrame)
-{
-	markerFrame->setPartFrame(this);
-	markerFrames->push_back(markerFrame);
-}
-
 EndFrmsptr PartFrame::endFrame(std::string name)
 {
 	auto match = std::find_if(markerFrames->begin(), markerFrames->end(), [&](auto& mkr) {return mkr->name == name; });
@@ -211,8 +205,7 @@ void PartFrame::prePosIC()
 {
 	iqX = SIZE_MAX;
 	iqE = SIZE_MAX;
-	CartesianFrame::prePosIC();
-	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrm) { markerFrm->prePosIC(); });
+	SpatialContainerFrame::prePosIC();
 	aGeu->prePosIC();
 	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->prePosIC(); });
 }
@@ -221,8 +214,7 @@ void PartFrame::prePosKine()
 {
 	iqX = SIZE_MAX;
 	iqE = SIZE_MAX;
-	calcPostDynCorrectorIteration();
-	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrm) { markerFrm->prePosKine(); });
+	SpatialContainerFrame::prePosKine();
 	aGeu->prePosKine();
 	aGabsDo([](std::shared_ptr<Constraint> aGab) { aGab->prePosKine(); });
 }

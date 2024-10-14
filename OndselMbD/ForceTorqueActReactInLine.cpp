@@ -66,7 +66,7 @@ void MbD::ForceTorqueActReactInLine::fillpFpy(SpMatDsptr mat)
 	auto tension = forTorActionInLine->tension();
 	auto mforTor = -tension->forTor();
 	forTorBasicJ->fillpFpyaFTO(mat, aFTJeO);
-	auto block = [&](FMatDsptr puIeJeOpXi, FMatDsptr puIeJeOpEi, PartFrame* partFramei) -> void {
+	auto block = [&](FMatDsptr puIeJeOpXi, FMatDsptr puIeJeOpEi, SpatialContainerFrame* partFramei) -> void {
 		forTorBasicJ->fillpFpypFTOpXjpFTOpEjpartj(mat, puIeJeOpXi->times(mforTor), puIeJeOpEi->times(mforTor), partFramei); };
 	block(distIeJe->puIeJeOpXI(), distIeJe->puIeJeOpEI(), distIeJe->partFrameI());
 	block(distIeJe->puIeJeOpXJ(), distIeJe->puIeJeOpEJ(), distIeJe->partFrameJ());
@@ -87,7 +87,7 @@ void MbD::ForceTorqueActReactInLine::fillpFpypFTpfunctionfunction(SpMatDsptr mat
 	auto uIeJeO = std::static_pointer_cast<ForceTorqueActionInLine>(forTorAction)->uIeJeO();
 	auto block = [&](FRowDsptr pvaluepXi,
 		FRowDsptr pvaluepEi,
-		PartFrame* partFramei) -> void {
+		SpatialContainerFrame* partFramei) -> void {
 			if (pvaluepXi == nullptr || pvaluepXi->empty()) {
 				if (pvaluepEi == nullptr || pvaluepEi->empty()) {
 					//Do nothing.
@@ -138,7 +138,7 @@ void MbD::ForceTorqueActReactInLine::fillpFpydotpFTpfunctionfunction(SpMatDsptr 
 	auto uIeJeO = std::static_pointer_cast<ForceTorqueActionInLine>(forTorAction)->uIeJeO();
 	auto block = [&](FRowDsptr pvaluepXdoti,
 		FRowDsptr pvaluepEdoti,
-		PartFrame* partFramei) -> void {
+		SpatialContainerFrame* partFramei) -> void {
 			if (pvaluepXdoti == nullptr || pvaluepXdoti->empty()) {
 				if (pvaluepEdoti == nullptr || pvaluepEdoti->empty()) {
 					//Do nothing.

@@ -11,14 +11,16 @@
 #include <memory>
 
 #include "CartesianFrame.h"
+#include "MarkerFrame.h"
 #include "FullColumn.h"     //FColDsptr is defined
 #include "FullMatrix.h"     //FMatDsptr is defined
 
 namespace MbD {
-	class PartFrame;
-	class MarkerFrame;
+	class SpatialContainerFrame;
+	//class MarkerFrame;
 	class EndFrameqc;
 	class EndFramec;
+	class EndFramect;
 	using EndFrmsptr = std::shared_ptr<EndFramec>;
 
 	class EndFramec : public CartesianFrame
@@ -27,6 +29,7 @@ namespace MbD {
 	public:
 		EndFramec() {}
 		EndFramec(const char* str) : CartesianFrame(str) {}
+		static std::shared_ptr<EndFramec> With();
 		static std::shared_ptr<EndFramec> With(const char* str);
 		void initialize() override;
 		System* root() override;
@@ -35,7 +38,7 @@ namespace MbD {
 
 		FMatDsptr aAeO() const;
 		FColDsptr aAjOe(size_t j);
-		void aApm(FMatDsptr mat);
+		//void aApm(FMatDsptr mat);
 		void calcPostDynCorrectorIteration() override;
 		virtual void fillContactEndFrames(std::set<EndFramec*> efrms);
 		FColDsptr ieO();
@@ -45,21 +48,24 @@ namespace MbD {
 		void setMarkerFrame(MarkerFrame* markerFrm);
 		std::shared_ptr<EndFrameqc> newCopyEndFrameqc();
 		virtual std::shared_ptr<EndFrameqc> followEndFrame(EndFrmsptr frmi);
-		PartFrame* getPartFrame();
+		SpatialContainerFrame* getPartFrame();
 		std::shared_ptr<EulerParameters<double>> qEOe();
 		double riOeO(size_t i);
-		virtual FColDsptr rpmp();
+		//virtual FColDsptr rpmp();
 		virtual FColDsptr rmeO();
-		virtual FColDsptr rpep();
-		virtual FColFMatDsptr pAOppE();
-		virtual FMatDsptr aBOp();
+		//virtual FColDsptr rpep();
+		//virtual FColFMatDsptr pAOppE();
+		//virtual FMatDsptr aBOp();
 		virtual bool isEndFrameqc();
 		FColDsptr vOeO();
 		FColDsptr aOeO();
 
+		FColDsptr rmem = std::make_shared<FullColumn<double>>(3);
+		FMatDsptr aAme = FullMatrix<double>::identitysptr(3);
 		MarkerFrame* markerFrame = nullptr; //Use raw pointer when pointing backwards.
 		FColDsptr rOeO = std::make_shared<FullColumn<double>>(3);
 		FMatDsptr aAOe = FullMatrix<double>::identitysptr(3);
+		std::shared_ptr<EndFramect> endFramect;
 	};
 	//using EndFrmsptr = std::shared_ptr<EndFramec>;
 }

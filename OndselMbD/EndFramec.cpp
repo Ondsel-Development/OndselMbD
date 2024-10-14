@@ -10,11 +10,19 @@
 #include <memory>
 
 #include "EndFramec.h"
-#include "PartFrame.h"
+#include "SpatialContainerFrame.h"
 #include "MarkerFrame.h"
 #include "EndFrameqc.h"
+#include "EndFramect.h"
 
 using namespace MbD;
+
+std::shared_ptr<EndFramec> MbD::EndFramec::With()
+{
+	auto inst = std::make_shared<EndFramec>();
+	inst->initialize();
+	return inst;
+}
 
 std::shared_ptr<EndFramec> MbD::EndFramec::With(const char* str)
 {
@@ -25,7 +33,7 @@ std::shared_ptr<EndFramec> MbD::EndFramec::With(const char* str)
 
 void EndFramec::initialize()
 {
-	assert(false);
+	//Do nothing.
 }
 
 FMatDsptr MbD::EndFramec::aAeO() const
@@ -50,7 +58,8 @@ MarkerFrame* EndFramec::getMarkerFrame() const
 
 void EndFramec::initEndFrameqct()
 {
-	assert(false);
+	endFramect = EndFramect::With(name.data());
+	endFramect->setMarkerFrame(markerFrame);
 }
 
 void MbD::EndFramec::initEndFrameqct2()
@@ -60,8 +69,10 @@ void MbD::EndFramec::initEndFrameqct2()
 
 void EndFramec::calcPostDynCorrectorIteration()
 {
-	rOeO = markerFrame->rOmO;
-	aAOe = markerFrame->aAOm;
+	//rOeO = rOmO + aAOm*rmem
+	//aAOe = aAOm*aAme;
+	rOeO = markerFrame->rOmO->plusFullColumn(markerFrame->aAOm->timesFullColumn(rmem));
+	aAOe = markerFrame->aAOm->timesFullMatrix(aAme);
 }
 
 void MbD::EndFramec::fillContactEndFrames(std::set<EndFramec*> efrms)
@@ -88,40 +99,40 @@ FColDsptr EndFramec::aAjOe(size_t j)
 	return aAOe->column(j);
 }
 
-void MbD::EndFramec::aApm(FMatDsptr mat)
-{
-	markerFrame->aApm = mat;
-}
+//void MbD::EndFramec::aApm(FMatDsptr mat)
+//{
+//	markerFrame->aApm = mat;
+//}
 
 double EndFramec::riOeO(size_t i)
 {
 	return rOeO->at(i);
 }
 
-FColDsptr MbD::EndFramec::rpmp()
-{
-	return markerFrame->rpmp;
-}
+//FColDsptr MbD::EndFramec::rpmp()
+//{
+//	return FColDsptr();
+//}
 
 FColDsptr EndFramec::rmeO()
 {
-	return rOeO->minusFullColumn(markerFrame->rOmO);
+	return markerFrame->aAOm->timesFullColumn(rmem);
 }
 
-FColDsptr EndFramec::rpep()
-{
-	return FColDsptr();
-}
+//FColDsptr EndFramec::rpep()
+//{
+//	return FColDsptr();
+//}
 
-FColFMatDsptr EndFramec::pAOppE()
-{
-	return FColFMatDsptr();
-}
+//FColFMatDsptr EndFramec::pAOppE()
+//{
+//	return FColFMatDsptr();
+//}
 
-FMatDsptr EndFramec::aBOp()
-{
-	return FMatDsptr();
-}
+//FMatDsptr EndFramec::aBOp()
+//{
+//	return FMatDsptr();
+//}
 
 std::shared_ptr<EndFrameqc> MbD::EndFramec::newCopyEndFrameqc()
 {
@@ -141,7 +152,7 @@ bool MbD::EndFramec::isEndFrameqc()
 	return false;
 }
 
-PartFrame* MbD::EndFramec::getPartFrame()
+SpatialContainerFrame* MbD::EndFramec::getPartFrame()
 {
 	return markerFrame->getPartFrame();
 }

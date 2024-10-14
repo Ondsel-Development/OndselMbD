@@ -31,7 +31,7 @@ namespace MbD {
 		void forceOnFrmIwrtFrmKaxis(EndFrmsptr frmi, EndFrmsptr frmk, size_t axis);
 		void torqueOnFrmIwrtFrmKaxis(EndFrmsptr frmi, EndFrmsptr frmk, size_t axis);
 
-		PartFrame* pfrmK;
+		SpatialContainerFrame* pfrmK;
 		FColDsptr aFTIeO;
 		EndFrmsptr efrmK;
 		FColDsptr aAjOKe;

@@ -8,8 +8,12 @@
  
 //#include "DirectionCosineConstraintIJ.h"
 #include "DirectionCosineConstraintIqctJqc.h"
+#include "DirectionCosineConstraintIctJqc.h"
 #include "DirectionCosineIeqctJeqc.h"
 #include "EndFrameqct.h"
+#include "EndFrameqc.h"
+#include "EndFramect.h"
+#include "EndFramec.h"
 
 using namespace MbD;
 
@@ -17,11 +21,62 @@ std::shared_ptr<DirectionCosineConstraintIJ> MbD::DirectionCosineConstraintIJ::W
 {
 	std::shared_ptr<DirectionCosineConstraintIJ> inst;
 	if (std::dynamic_pointer_cast<EndFrameqct>(frmi)) {
-		inst = std::make_shared<DirectionCosineConstraintIqctJqc>(frmi, frmj, axisi, axisj);
+		if (std::dynamic_pointer_cast<EndFrameqct>(frmj)) {
+			assert(false);
+		}
+		else if (std::dynamic_pointer_cast<EndFrameqc>(frmj)) {
+			inst = std::make_shared<DirectionCosineConstraintIqctJqc>(frmi, frmj, axisi, axisj);
+		}
+		else if (std::dynamic_pointer_cast<EndFramect>(frmj)) {
+			assert(false);
+		}
+		else if (std::dynamic_pointer_cast<EndFramec>(frmj)) {
+			assert(false);
+		}
 	}
-	else {
-		inst = std::make_shared<DirectionCosineConstraintIqcJqc>(frmi, frmj, axisi, axisj);
+	else if (std::dynamic_pointer_cast<EndFrameqc>(frmi)) {
+		if (std::dynamic_pointer_cast<EndFrameqct>(frmj)) {
+			assert(false);
+		}
+		else if (std::dynamic_pointer_cast<EndFrameqc>(frmj)) {
+			inst = std::make_shared<DirectionCosineConstraintIqcJqc>(frmi, frmj, axisi, axisj);
+		}
+		else if (std::dynamic_pointer_cast<EndFramect>(frmj)) {
+			assert(false);
+		}
+		else if (std::dynamic_pointer_cast<EndFramec>(frmj)) {
+			inst = std::make_shared<DirectionCosineConstraintIqcJc>(frmi, frmj, axisi, axisj);
+		}
 	}
+	else if (std::dynamic_pointer_cast<EndFramect>(frmi)) {
+		if (std::dynamic_pointer_cast<EndFrameqct>(frmj)) {
+			assert(false);
+		}
+		else if (std::dynamic_pointer_cast<EndFrameqc>(frmj)) {
+			inst = std::make_shared<DirectionCosineConstraintIctJqc>(frmi, frmj, axisi, axisj);
+		}
+		else if (std::dynamic_pointer_cast<EndFramect>(frmj)) {
+			assert(false);
+		}
+		else if (std::dynamic_pointer_cast<EndFramec>(frmj)) {
+			assert(false);
+		}
+	}
+	else if (std::dynamic_pointer_cast<EndFramec>(frmi)) {
+		if (std::dynamic_pointer_cast<EndFrameqct>(frmj)) {
+			assert(false);
+		}
+		else if (std::dynamic_pointer_cast<EndFrameqc>(frmj)) {
+			inst = std::make_shared<DirectionCosineConstraintIcJqc>(frmi, frmj, axisi, axisj);
+		}
+		else if (std::dynamic_pointer_cast<EndFramect>(frmj)) {
+			assert(false);
+		}
+		else if (std::dynamic_pointer_cast<EndFramec>(frmj)) {
+			assert(false);
+		}
+	}
+	assert(inst);
 	inst->initialize();
 	return inst;
 }

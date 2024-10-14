@@ -5,65 +5,63 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
-#include "EndFrameqc.h"
-//#include "Symbolic.h"
+#include "EndFramect.h"
+#include "Symbolic.h"
+#include "EulerParametersDot.h"
+#include "EulerParametersDDot.h"
 
 namespace MbD {
-	class Time;
-	class Symbolic;
 
-	class EndFrameqct : public EndFrameqc
+	class EndFrameqct : public EndFramect
 	{
-		//time rmemBlks prmemptBlks pprmemptptBlks phiThePsiBlks pPhiThePsiptBlks ppPhiThePsiptptBlks 
-		//rmem prmempt pprmemptpt aAme pAmept ppAmeptpt prOeOpt pprOeOpEpt pprOeOptpt pAOept ppAOepEpt ppAOeptpt 
+		//prOeOpE pprOeOpEpE pAOepE ppAOepEpE
 	public:
 		EndFrameqct() {}
-		EndFrameqct(const char* str) : EndFrameqc(str) {}
+		EndFrameqct(const char* str) : EndFramect(str) {}
+		static std::shared_ptr<EndFrameqct> With();
 		static std::shared_ptr<EndFrameqct> With(const char* str);
 		void initialize() override;
-		
-		void initializeLocally() override;
+
 		void initializeGlobally() override;
+		FMatFColDsptr ppAjOepEpE(size_t j) const;
+		void calcPostDynCorrectorIteration() override;
+		FMatDsptr pAjOepE(size_t j) const;
+		FMatDsptr pAjOepET(size_t j) const;
+		FMatDsptr ppriOeOpEpE(size_t i) const;
+		size_t iqX();
+		size_t iqE();
+		FRowDsptr priOeOpE(size_t i) const;
+		FColDsptr qXdot();
+		std::shared_ptr<EulerParametersDot<double>> qEdot();
+		FColDsptr qXddot();
+		FColDsptr qEddot();
+		FColDsptr rpep();
+		FColFMatDsptr pAOppE();
+		FMatDsptr aBOp();
+		bool isEndFrameqc() override;
+		FMatDsptr pvOeOpE();
+		FColDsptr omeOeO();
+		FMatDsptr pomeOeOpE();
+		FMatDsptr pomeOeOpEdot();
+		void initializeLocally() override;
 		void initprmemptBlks();
 		void initpprmemptptBlks();
 		virtual void initpPhiThePsiptBlks();
 		virtual void initppPhiThePsiptptBlks();
 		void postInput() override;
-		void calcPostDynCorrectorIteration() override;
-		void prePosIC() override;
-		void evalrmem() const;
-		virtual void evalAme();
-		void preVelIC() override;
-		void postVelIC() override;
-		FColDsptr pAjOept(size_t j);
-		FMatDsptr ppAjOepETpt(size_t j);
-		FColDsptr ppAjOeptpt(size_t j);
 		double time = 0.0;
-		double priOeOpt(size_t i);
-		FRowDsptr ppriOeOpEpt(size_t i);
-		double ppriOeOptpt(size_t i);
-		void evalprmempt();
-		virtual void evalpAmept();
-		void evalpprmemptpt();
-		virtual void evalppAmeptpt();
-		FColDsptr rmeO() override;
-		FColDsptr rpep() override;
-		void preAccIC() override;
-		bool isEndFrameqc() override;
-		void postDynPredictor() override;
-		void preDynOutput() override;
-		void postDynOutput() override;
-		
-		std::shared_ptr<FullColumn<Symsptr>> rmemBlks, prmemptBlks, pprmemptptBlks;
-		std::shared_ptr<FullColumn<Symsptr>> phiThePsiBlks, pPhiThePsiptBlks, ppPhiThePsiptptBlks;
-		FColDsptr rmem, prmempt, pprmemptpt, prOeOpt, pprOeOptpt;
-		FMatDsptr aAme, pAmept, ppAmeptpt, pAOept, ppAOeptpt;
+		FRowDsptr ppriOeOpEpt(size_t i) const;
+		FMatDsptr ppAjOepETpt(size_t j) const;
+
+		FMatDsptr prOeOpE;
+		FMatFColDsptr pprOeOpEpE;
+		FColFMatDsptr pAOepE;
+		FMatFMatDsptr ppAOepEpE;
 		FMatDsptr pprOeOpEpt;
 		FColFMatDsptr ppAOepEpt;
-		
 	};
 }
 

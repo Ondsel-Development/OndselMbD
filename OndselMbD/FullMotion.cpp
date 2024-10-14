@@ -36,7 +36,7 @@ std::shared_ptr<FullMotion> MbD::FullMotion::With(const char* str)
 void MbD::FullMotion::connectsItoJ(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	JointIJ::connectsItoJ(frmi, frmj);
-	std::static_pointer_cast<EndFrameqc>(efrmI)->initEndFrameqct2();
+	efrmI->initEndFrameqct2();
 }
 
 void MbD::FullMotion::initializeGlobally()

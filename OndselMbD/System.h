@@ -27,6 +27,7 @@
 
 namespace MbD {
 	class Part;
+	class AssemblyFrame;
 	class JointIJ;
 	class SystemSolver;
 	class Time;
@@ -45,6 +46,8 @@ namespace MbD {
 		static std::shared_ptr<System> With();
 		static std::shared_ptr<System> With(const char* str);
 		void initialize() override;
+
+		void createAssemblyFrame();
 
 		System* root() override;
 		void initializeLocally() override;
@@ -85,6 +88,7 @@ namespace MbD {
 		void useDynTrialStepStats(std::shared_ptr<SolverStatistics> stats) const;
 
 		std::shared_ptr<ExternalSystem> externalSystem;
+		std::shared_ptr<AssemblyFrame> asmFrame;
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts;
 		std::shared_ptr<std::vector<std::shared_ptr<JointIJ>>> jointsMotions;
 		std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueIJ>>> forcesTorques;

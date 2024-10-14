@@ -14,6 +14,8 @@
 #include "Constraint.h"
 #include "EndFrameqc.h"
 #include "EndFrameqct.h"
+#include "EndFramec.h"
+#include "EndFramect.h"
 #include "RedundantConstraint.h"
 #include "MarkerFrame.h"
 #include "ForceTorqueData.h"
@@ -52,6 +54,14 @@ void JointIJ::initializeLocally()
 	if (frmIqc) {
 		if (frmIqc->endFrameqct) {
 			efrmI = frmIqc->endFrameqct;
+		}
+	}
+	else {
+		auto frmIc = std::dynamic_pointer_cast<EndFramec>(efrmI);
+		if (frmIc) {
+			if (frmIc->endFramect) {
+				efrmI = frmIc->endFramect;
+			}
 		}
 	}
 	constraintsDo([](std::shared_ptr<Constraint> constraint) { constraint->initializeLocally(); });

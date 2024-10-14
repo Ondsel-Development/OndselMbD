@@ -114,17 +114,18 @@ void TranslationConstraintIqcJc::addToJointForceI(FColDsptr col)
 
 void TranslationConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 {
-	auto cForceT = pGpXI->times(lam);
-		auto rIpIeIp = efrmI->rpep();
-		auto pAOIppEI = efrmI->pAOppE();
-		auto aBOIp = efrmI->aBOp();
-		auto fpAOIppEIrIpIeIp = std::make_shared<FullColumn<double>>(4, 0.0);
-		for (size_t i = 0; i < 4; i++)
-		{
-			auto dum = cForceT->timesFullColumn(pAOIppEI->at(i)->timesFullColumn(rIpIeIp));
-			fpAOIppEIrIpIeIp->atput(i, dum);
-		}
-		auto lampGpE = pGpEI->transpose()->times(lam);
-		auto c2Torque = aBOIp->timesFullColumn(lampGpE->minusFullColumn(fpAOIppEIrIpIeIp));
-		jointTorque->equalSelfPlusFullColumntimes(c2Torque, 0.5);
+    auto cForceT = pGpXI->times(lam);
+	auto efrmqc = std::static_pointer_cast<EndFrameqc>(efrmI);
+	auto rIpIeIp = efrmqc->rpep();
+    auto pAOIppEI = efrmqc->pAOppE();
+    auto aBOIp = efrmqc->aBOp();
+    auto fpAOIppEIrIpIeIp = std::make_shared<FullColumn<double>>(4, 0.0);
+    for (size_t i = 0; i < 4; i++)
+    {
+        auto dum = cForceT->timesFullColumn(pAOIppEI->at(i)->timesFullColumn(rIpIeIp));
+        fpAOIppEIrIpIeIp->atput(i, dum);
+    }
+    auto lampGpE = pGpEI->transpose()->times(lam);
+    auto c2Torque = aBOIp->timesFullColumn(lampGpE->minusFullColumn(fpAOIppEIrIpIeIp));
+    jointTorque->equalSelfPlusFullColumntimes(c2Torque, 0.5);
 }

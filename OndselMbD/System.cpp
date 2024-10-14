@@ -10,6 +10,9 @@
 
 #include "System.h"
 #include "Part.h"
+#include "AssemblyFrame.h"
+#include "EndFramec.h"
+#include "EndFrameqc.h"
 #include "JointIJ.h"
 #include "ForceTorqueIJ.h"
 #include "SystemSolver.h"
@@ -41,11 +44,18 @@ void System::initialize()
 {
 	externalSystem = std::make_shared<ExternalSystem>();
 	time = std::make_shared<Time>();
+	createAssemblyFrame();
 	parts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
 	jointsMotions = std::make_shared<std::vector<std::shared_ptr<JointIJ>>>();
 	forcesTorques = std::make_shared<std::vector<std::shared_ptr<ForceTorqueIJ>>>();
 	fields = std::make_shared<std::vector<std::shared_ptr<ConstantGravity>>>();
 	systemSolver = std::make_shared<SystemSolver>(this);
+}
+
+void MbD::System::createAssemblyFrame()
+{
+	asmFrame = AssemblyFrame::With();
+	asmFrame->setAssembly(this);
 }
 
 System* MbD::System::root()
@@ -118,10 +128,23 @@ double MbD::System::calcCharacteristicLength() const
 	auto lengths = std::make_shared<std::vector<double>>();
 	auto connectorList = this->connectorList();
 	for (auto& connector : *connectorList) {
-		auto& efrmI = connector->efrmI;
-		lengths->push_back(efrmI->rpmp()->length());
-		auto& efrmJ = connector->efrmJ;
-		lengths->push_back(efrmJ->rpmp()->length());
+		std::vector<EndFrmsptr> efrms = { connector->efrmI, connector->efrmJ };
+		for (const EndFrmsptr& efrm : efrms) {
+			auto xc = std::dynamic_pointer_cast<EndFramec>(efrm);
+			auto efrmqc = std::dynamic_pointer_cast<EndFrameqc>(efrm);
+			if (efrmqc) {
+				lengths->push_back(efrmqc->rpep()->length());
+			}
+			else {
+				auto efrmc = std::dynamic_pointer_cast<EndFramec>(efrm);
+				if (efrmc) {
+					lengths->push_back(efrmc->rOeO->length());
+				}
+				else {
+					assert(false);
+				}
+			}
+		}
 	}
 	auto n = lengths->size();
 	double sumOfSquares = std::accumulate(lengths->begin(), lengths->end(), 0.0, [](double sum, double l) { return sum + l * l; });
@@ -221,12 +244,14 @@ void System::jointsMotionsDo(const std::function<void(std::shared_ptr<JointIJ>)>
 
 void System::partsJointsMotionsDo(const std::function<void(std::shared_ptr<Item>)>& f) const
 {
+	f(asmFrame);
 	std::for_each(parts->begin(), parts->end(), f);
 	std::for_each(jointsMotions->begin(), jointsMotions->end(), f);
 }
 
 void System::partsJointsMotionsForcesTorquesDo(const std::function<void(std::shared_ptr<Item>)>& f) const
 {
+	f(asmFrame);
 	std::for_each(parts->begin(), parts->end(), f);
 	std::for_each(jointsMotions->begin(), jointsMotions->end(), f);
 	std::for_each(forcesTorques->begin(), forcesTorques->end(), f);

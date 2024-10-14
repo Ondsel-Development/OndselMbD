@@ -39,22 +39,22 @@ void MbD::ForceBasicqcComp::fillpFpyaFTO(SpMatDsptr mat, FColDsptr aFTO)
 	assert(false);
 }
 
-void MbD::ForceBasicqcComp::fillpFpypFTOpEjpartj(SpMatDsptr mat, FMatDsptr pFTOpEj, PartFrame* partj)
+void MbD::ForceBasicqcComp::fillpFpypFTOpEjpartj(SpMatDsptr mat, FMatDsptr pFTOpEj, SpatialContainerFrame* partj)
 {
 	assert(false);
 }
 
-void MbD::ForceBasicqcComp::fillpFpypFTOpXjpartj(SpMatDsptr mat, FMatDsptr pFTOpXj, PartFrame* partj)
+void MbD::ForceBasicqcComp::fillpFpypFTOpXjpartj(SpMatDsptr mat, FMatDsptr pFTOpXj, SpatialContainerFrame* partj)
 {
 	assert(false);
 }
 
-void MbD::ForceBasicqcComp::fillpFpypFTOpXjpFTOpEjpartj(SpMatDsptr mat, FMatDsptr pFTOpXj, FMatDsptr pFTOpEj, PartFrame* partj)
+void MbD::ForceBasicqcComp::fillpFpypFTOpXjpFTOpEjpartj(SpMatDsptr mat, FMatDsptr pFTOpXj, FMatDsptr pFTOpEj, SpatialContainerFrame* partj)
 {
 	assert(false);
 }
 
-void MbD::ForceBasicqcComp::fillpFpydotpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpEdotj, PartFrame* partj)
+void MbD::ForceBasicqcComp::fillpFpydotpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpEdotj, SpatialContainerFrame* partj)
 {
 	assert(false);
 }
@@ -64,12 +64,12 @@ void MbD::ForceBasicqcComp::fillpFpydotpFTOpmudot(SpMatDsptr mat, SpMatDsptr pFT
 	assert(false);
 }
 
-void MbD::ForceBasicqcComp::fillpFpydotpFTOpXdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, PartFrame* partj)
+void MbD::ForceBasicqcComp::fillpFpydotpFTOpXdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, SpatialContainerFrame* partj)
 {
 	assert(false);
 }
 
-void MbD::ForceBasicqcComp::fillpFpydotpFTOpXdotjpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, FMatDsptr pFTOpEdotj, PartFrame* partj)
+void MbD::ForceBasicqcComp::fillpFpydotpFTOpXdotjpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, FMatDsptr pFTOpEdotj, SpatialContainerFrame* partj)
 {
 	assert(false);
 }

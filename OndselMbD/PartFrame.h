@@ -12,7 +12,7 @@
 //#include <vector>
 //#include <functional>
 
-#include "CartesianFrame.h"
+#include "SpatialContainerFrame.h"
 #include "EndFrameqc.h"
 #include "FullColumn.h"
 #include "EulerParameters.h"
@@ -25,7 +25,7 @@ namespace MbD {
 	class EulerConstraint;
 	class AbsConstraint;
 
-	class PartFrame : public CartesianFrame
+	class PartFrame : public SpatialContainerFrame
 	{
 		//ToDo: part iqX iqE qX qE qXdot qEdot qXddot qEddot aGeu aGabs markerFrames 
 	public:
@@ -55,11 +55,10 @@ namespace MbD {
 		FColDsptr getqXddot();
 		void setqEddot(FColDsptr x);
 		FColDsptr getqEddot();
-		FColDsptr omeOpO();
+		FColDsptr omeOpO() override;
 
 		void setPart(Part* x);
 		Part* getPart();
-		void addMarkerFrame(std::shared_ptr<MarkerFrame> x);
 		EndFrmsptr endFrame(std::string name);
 		void aGabsDo(const std::function <void(std::shared_ptr<Constraint>)>& f);
 		void markerFramesDo(const std::function <void(std::shared_ptr<MarkerFrame>)>& f) const;
@@ -69,19 +68,20 @@ namespace MbD {
 
 		void prePosIC() override;
 		void prePosKine() override;
-		FColDsptr rOpO();
-		FMatDsptr aAOp();
-		FMatDsptr aC();
-		FMatDsptr aCdot();
-		FColDsptr alpOpO();
-		FColFMatDsptr pAOppE();
-		FColFMatDsptr pAdotOppE();
-		FMatDsptr pomeOpOpE();
-		FMatDsptr pomeOpOpEdot();
-		FColDsptr vOpO();
-		FMatDsptr aAdotOp();
-		FColDsptr aOpO();
-		FMatDsptr aAddotOp();
+		FColDsptr rOpO() override;
+		FMatDsptr aAOp() override;
+		FMatDsptr aC() override;
+		FMatDsptr aCdot() override;
+		FColDsptr alpOpO() override;
+		FColFMatDsptr pAOppE() override;
+		FColFMatDsptr pAdotOppE() override;
+		FMatDsptr pomeOpOpE() override;
+		FMatDsptr pomeOpOpEdot() override;
+		FColDsptr vOpO() override;
+		FMatDsptr aAdotOp() override;
+		FColDsptr aOpO() override;
+		FMatDsptr aAddotOp() override;
+		FMatDsptr aBOp() override;
 		void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
 		void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) override;
 		void fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints) override;
@@ -113,7 +113,6 @@ namespace MbD {
 		void preAccIC() override;
 		void fillAccICIterError(FColDsptr col) override;
 		void fillAccICIterJacob(SpMatDsptr mat) override;
-		FMatDsptr aBOp();
 		void fillPosKineJacob(SpMatDsptr mat) override;
 		double suggestSmallerOrAcceptDynStepSize(double hnew) override;
 		void postDynStep() override;
@@ -139,7 +138,6 @@ namespace MbD {
 		FColDsptr qEddot = std::make_shared<FullColumn<double>>(4);
 		std::shared_ptr<Constraint> aGeu;
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> aGabs;
-		std::shared_ptr<std::vector<std::shared_ptr<MarkerFrame>>> markerFrames;
 	};
 }
 

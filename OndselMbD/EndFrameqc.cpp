@@ -11,7 +11,7 @@
 #include "EndFrameqc.h"
 #include "EndFrameqct.h"
 #include "Variable.h"
-#include "MarkerFrame.h"
+#include "MarkerFrameqc.h"
 #include "EndFrameqct2.h"
 #include "EndFrameqccq.h"
 
@@ -41,8 +41,17 @@ void EndFrameqc::initialize()
 
 void EndFrameqc::initializeGlobally()
 {
-	pprOeOpEpE = markerFrame->pprOmOpEpE;
-	ppAOepEpE = markerFrame->ppAOmpEpE;
+	//rOeO = rOmO + aAOm*rmem
+	//aAOe = aAOm*aAme;
+	auto mkrFrmqc = static_cast<MarkerFrameqc*>(markerFrame);
+	for (size_t i = 0; i < 4; i++) {
+		for (size_t j = 0; j < 4; j++) {
+			auto pprOmOpEipEj = mkrFrmqc->pprOmOpEpE->at(i)->at(j);
+			auto ppAOmpEipEj = mkrFrmqc->ppAOmpEpE->at(i)->at(j);
+			pprOeOpEpE->atandput(i, j, pprOmOpEipEj->plusFullColumn(ppAOmpEipEj->timesFullColumn(rmem)));
+			ppAOepEpE->atandput(i, j, ppAOmpEipEj->timesFullMatrix(aAme));
+		}
+	}
 }
 
 void EndFrameqc::initEndFrameqct()
@@ -82,8 +91,15 @@ FMatFColDsptr EndFrameqc::ppAjOepEpE(size_t jj)
 void EndFrameqc::calcPostDynCorrectorIteration()
 {
 	EndFramec::calcPostDynCorrectorIteration();
-	prOeOpE = markerFrame->prOmOpE;
-	pAOepE = markerFrame->pAOmpE;
+	auto mkrFrmqc = static_cast<MarkerFrameqc*>(markerFrame);
+	//rOeO = rOmO + aAOm*rmem
+	//aAOe = aAOm*aAme;
+	for (size_t i = 0; i < 4; i++) {
+		auto prOmOpEi = mkrFrmqc->prOmOpE->column(i);
+		auto pAOmpEi = mkrFrmqc->pAOmpE->at(i);
+		prOeOpE->atandputFullColumn(0, i, prOmOpEi->plusFullColumn(pAOmpEi->timesFullColumn(rmem)));
+		pAOepE->atput(i, pAOmpEi->timesFullMatrix(aAme));
+	}
 }
 
 FMatDsptr MbD::EndFrameqc::pAjOepE(size_t jj)
@@ -147,32 +163,40 @@ FRowDsptr EndFrameqc::priOeOpE(size_t i)
 
 FColDsptr EndFrameqc::qXdot()
 {
-	return markerFrame->qXdot();
+	auto mkrFrmqc = static_cast<MarkerFrameqc*>(markerFrame);
+	return mkrFrmqc->qXdot();
 }
 
 std::shared_ptr<EulerParametersDot<double>> EndFrameqc::qEdot()
 {
-	return markerFrame->qEdot();
+	auto mkrFrmqc = static_cast<MarkerFrameqc*>(markerFrame);
+	return mkrFrmqc->qEdot();
 }
 
 FColDsptr EndFrameqc::qXddot()
 {
-	return markerFrame->qXddot();
+	auto mkrFrmqc = static_cast<MarkerFrameqc*>(markerFrame);
+	return mkrFrmqc->qXddot();
 }
 
 FColDsptr EndFrameqc::qEddot()
 {
-	return markerFrame->qEddot();
+	auto mkrFrmqc = static_cast<MarkerFrameqc*>(markerFrame);
+	return mkrFrmqc->qEddot();
 }
 
 FColDsptr EndFrameqc::rpep()
 {
-	return markerFrame->rpmp;
+	auto& rpmp = markerFrame->rpmp;
+	auto& aApm = markerFrame->aApm;
+	auto rpep = rpmp->plusFullColumn(aApm->timesFullColumn(rmem));
+	return rpep;
 }
 
 FColFMatDsptr EndFrameqc::pAOppE()
 {
-	return markerFrame->pAOppE();
+	auto mkrFrmqc = static_cast<MarkerFrameqc*>(markerFrame);
+	return mkrFrmqc->pAOppE();
 }
 
 FMatDsptr EndFrameqc::aBOp()
@@ -187,7 +211,8 @@ bool MbD::EndFrameqc::isEndFrameqc()
 
 FMatDsptr MbD::EndFrameqc::pvOeOpE()
 {
-	return markerFrame->pvOmOpE();
+	auto mkrFrmqc = static_cast<MarkerFrameqc*>(markerFrame);
+	return mkrFrmqc->pvOmOpE();
 }
 
 FColDsptr MbD::EndFrameqc::omeOeO()

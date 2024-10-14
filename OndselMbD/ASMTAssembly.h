@@ -141,7 +141,7 @@ namespace MbD {
 		std::shared_ptr<std::vector<double>> times = std::make_shared<std::vector<double>>();
 		std::shared_ptr<ASMTTime> asmtTime;
 		std::shared_ptr<Units> asmtUnits = Units::With();
-		std::shared_ptr<System> mbdSystem = System::With();
+		std::shared_ptr<System> mbdSystem = nullptr;
 		MBDynSystem* mbdynItem = nullptr;
 	};
 }

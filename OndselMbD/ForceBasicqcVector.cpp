@@ -1,5 +1,5 @@
 #include "ForceBasicqcVector.h"
-#include "PartFrame.h"
+#include "SpatialContainerFrame.h"
 
 using namespace MbD;
 
@@ -48,29 +48,29 @@ void MbD::ForceBasicqcVector::fillpFpyaFTO(SpMatDsptr mat, FColDsptr aFTO)
 	}
 }
 
-void MbD::ForceBasicqcVector::fillpFpypFTOpEjpartj(SpMatDsptr mat, FMatDsptr pFTOpEj, PartFrame* partj)
+void MbD::ForceBasicqcVector::fillpFpypFTOpEjpartj(SpMatDsptr mat, FMatDsptr pFTOpEj, SpatialContainerFrame* partj)
 {
-	auto iqEj = partj->iqE;
+	auto iqEj = partj->iqE();
 	mat->atandplusFullMatrix(iqX, iqEj, pFTOpEj);
 	mat->atandplusFullMatrix(iqE, iqEj, prOeOpET->timesFullMatrix(pFTOpEj));
 }
 
-void MbD::ForceBasicqcVector::fillpFpypFTOpXjpartj(SpMatDsptr mat, FMatDsptr pFTOpXj, PartFrame* partj)
+void MbD::ForceBasicqcVector::fillpFpypFTOpXjpartj(SpMatDsptr mat, FMatDsptr pFTOpXj, SpatialContainerFrame* partj)
 {
-	auto iqXj = partj->iqX;
+	auto iqXj = partj->iqX();
 	mat->atandplusFullMatrix(iqX, iqXj, pFTOpXj);
 	mat->atandplusFullMatrix(iqE, iqXj, prOeOpET->timesFullMatrix(pFTOpXj));
 }
 
-void MbD::ForceBasicqcVector::fillpFpypFTOpXjpFTOpEjpartj(SpMatDsptr mat, FMatDsptr pFTOpXj, FMatDsptr pFTOpEj, PartFrame* partj)
+void MbD::ForceBasicqcVector::fillpFpypFTOpXjpFTOpEjpartj(SpMatDsptr mat, FMatDsptr pFTOpXj, FMatDsptr pFTOpEj, SpatialContainerFrame* partj)
 {
 	fillpFpypFTOpXjpartj(mat, pFTOpXj, partj);
 	fillpFpypFTOpEjpartj(mat, pFTOpEj, partj);
 }
 
-void MbD::ForceBasicqcVector::fillpFpydotpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpEdotj, PartFrame* partj)
+void MbD::ForceBasicqcVector::fillpFpydotpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpEdotj, SpatialContainerFrame* partj)
 {
-	auto iqEj = partj->iqE;
+	auto iqEj = partj->iqE();
 	mat->atandplusFullMatrix(iqX, iqEj, pFTOpEdotj);
 	mat->atandplusFullMatrix(iqE, iqEj, prOeOpET->timesFullMatrix(pFTOpEdotj));
 }
@@ -80,14 +80,14 @@ void MbD::ForceBasicqcVector::fillpFpydotpFTOpmudot(SpMatDsptr mat, SpMatDsptr p
 	assert(false);
 }
 
-void MbD::ForceBasicqcVector::fillpFpydotpFTOpXdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, PartFrame* partj)
+void MbD::ForceBasicqcVector::fillpFpydotpFTOpXdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, SpatialContainerFrame* partj)
 {
-	auto iqXj = partj->iqX;
+	auto iqXj = partj->iqX();
 	mat->atandplusFullMatrix(iqX, iqXj, pFTOpXdotj);
 	mat->atandplusFullMatrix(iqE, iqXj, prOeOpET->timesFullMatrix(pFTOpXdotj));
 }
 
-void MbD::ForceBasicqcVector::fillpFpydotpFTOpXdotjpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, FMatDsptr pFTOpEdotj, PartFrame* partj)
+void MbD::ForceBasicqcVector::fillpFpydotpFTOpXdotjpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, FMatDsptr pFTOpEdotj, SpatialContainerFrame* partj)
 {
 	fillpFpydotpFTOpXdotjpartj(mat, pFTOpXdotj, partj);
 	fillpFpydotpFTOpEdotjpartj(mat, pFTOpEdotj, partj);

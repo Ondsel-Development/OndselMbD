@@ -9,7 +9,7 @@
 #pragma once
 
 #include "ForceTorqueAction.h"
-#include "DistIeqcJeqc.h"
+#include "DistIecJec.h"
 
 namespace MbD {
 	class ForceTorqueActionInLine : public ForceTorqueAction
@@ -17,7 +17,6 @@ namespace MbD {
 		//
 	public:
 		static std::shared_ptr<ForceTorqueActionInLine> With();
-		void initialize() override;
 
 		void calcPostDynCorrectorIteration() override;
 		void fillAccICIterError(FColDsptr col) override;
@@ -48,7 +47,7 @@ namespace MbD {
 		void useEquationNumbers() override;
 		FColDsptr getFTIeO() const override;
 
-		std::shared_ptr<DistIeqcJeqc> distIeJe;
+		std::shared_ptr<DistIecJec> distIeJe;
 		FColDsptr aFTIeO;
 	};
 }

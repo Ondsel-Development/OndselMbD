@@ -49,7 +49,7 @@ namespace MbD {
 		void useDAEStepStats(std::shared_ptr<SolverStatistics> stats) override;
 		void run() override;
 
-		size_t neqn, ncon;
+		size_t neqn = SIZE_MAX, ncon = SIZE_MAX;
 
 	};
 }

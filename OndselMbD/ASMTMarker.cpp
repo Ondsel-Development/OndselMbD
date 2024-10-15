@@ -62,6 +62,7 @@ FColDsptr MbD::ASMTMarker::rpmp()
         auto rPmP = rPrefP->plusFullColumn(aAPref->timesFullColumn(rrefmref));
         return rPmP;
     }
+    return FColDsptr();
 }
 
 FMatDsptr MbD::ASMTMarker::aApm()
@@ -85,6 +86,7 @@ FMatDsptr MbD::ASMTMarker::aApm()
         auto aAPm = aAPref->timesFullMatrix(aArefm);
         return aAPm;
     }
+    return FMatDsptr();
 }
 
 void ASMTMarker::createMbD()

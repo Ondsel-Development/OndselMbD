@@ -24,7 +24,7 @@ namespace MbD {
 		double value() override;
 
 		size_t axis = SIZE_MAX;
-		double riIeJeO;
+		double riIeJeO{ 0.0 };
 	};
 }
 

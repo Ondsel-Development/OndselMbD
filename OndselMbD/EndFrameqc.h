@@ -12,6 +12,8 @@
 #include "Symbolic.h"
 #include "EulerParametersDot.h"
 #include "EulerParametersDDot.h"
+#include "FullColumn.h"     //FColDsptr is defined
+#include "FullMatrix.h"     //FMatDsptr is defined
 
 namespace MbD {
 	class EndFrameqct;
@@ -29,19 +31,19 @@ namespace MbD {
 		void initializeGlobally() override;
 		void initEndFrameqct() override;
 		void initEndFrameqct2() override;
-		FMatFColDsptr ppAjOepEpE(size_t j);
+		FMatFColDsptr ppAjOepEpE(size_t j) const;
 		void calcPostDynCorrectorIteration() override;
-		FMatDsptr pAjOepE(size_t j);
-		FMatDsptr pAjOepET(size_t j);
-		FMatDsptr ppriOeOpEpE(size_t i);
+		FMatDsptr pAjOepE(size_t j) const;
+		FMatDsptr pAjOepET(size_t j) const;
+		FMatDsptr ppriOeOpEpE(size_t i) const;
 		size_t iqX();
 		size_t iqE();
-		FRowDsptr priOeOpE(size_t i);
+		FRowDsptr priOeOpE(size_t i) const;
 		FColDsptr qXdot();
 		std::shared_ptr<EulerParametersDot<double>> qEdot();
 		FColDsptr qXddot();
 		FColDsptr qEddot();
-		FColDsptr rpep();
+		FColDsptr rpep() override;
 		FColFMatDsptr pAOppE();
 		FMatDsptr aBOp();
 		bool isEndFrameqc() override;

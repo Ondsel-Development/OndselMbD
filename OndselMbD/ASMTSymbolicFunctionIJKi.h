@@ -22,7 +22,7 @@ namespace MbD {
 
 		std::string markerKSign;
 		std::shared_ptr<ASMTMarker> markerK;
-		size_t axisK;
+		size_t axisK = SIZE_MAX;
 	};
 }
 

@@ -68,7 +68,7 @@ void MbD::ForceTorqueBasic::fillpFpydotpFTOpXdotjpFTOpEdotjpartj(SpMatDsptr mat,
 
 void MbD::ForceTorqueBasic::useEquationNumbers()
 {
-	iqE = endFrame->getPartFrame()->iqE();
+	assert(false);
 }
 
 void MbD::ForceTorqueBasic::fillAccICIterErroraFTOi(FColDsptr col, double aFTOi)

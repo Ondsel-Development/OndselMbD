@@ -24,7 +24,7 @@ namespace MbD {
 		double value() override;
 		FColDsptr rIeJeIe();
 
-		double rIeJe;
+		double rIeJe{0.0};
 		FColDsptr rIeJeO, uIeJeO, muIeJeO;
 	};
 }

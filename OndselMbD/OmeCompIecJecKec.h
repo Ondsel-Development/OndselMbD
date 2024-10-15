@@ -16,8 +16,8 @@ namespace MbD {
 		void calcPostDynCorrectorIteration() override;
 
 		EndFrmsptr efrmK;
-		size_t axisK;
-		double omeiIeJeKe;
+		size_t axisK = SIZE_MAX;
+		double omeiIeJeKe{ 0.0 };
 		FColDsptr aAjOKe;
 		FColDsptr omeIeJeO;
 	};

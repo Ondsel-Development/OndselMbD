@@ -172,27 +172,27 @@ void EndFramect::preVelIC()
 	pAOept = aAOm->timesFullMatrix(pAmept);
 }
 
-FColDsptr EndFramect::pAjOept(size_t j)
+FColDsptr EndFramect::pAjOept(size_t j) const
 {
 	return pAOept->column(j);
 }
 
-FColDsptr EndFramect::ppAjOeptpt(size_t j)
+FColDsptr EndFramect::ppAjOeptpt(size_t j) const
 {
 	return ppAOeptpt->column(j);
 }
 
-double EndFramect::priOeOpt(size_t i)
+double EndFramect::priOeOpt(size_t i) const
 {
 	return prOeOpt->at(i);
 }
 
-double EndFramect::ppriOeOptpt(size_t i)
+double EndFramect::ppriOeOptpt(size_t i) const
 {
 	return pprOeOptpt->at(i);
 }
 
-void EndFramect::evalprmempt()
+void EndFramect::evalprmempt() const
 {
 	if (rmemBlks) {
 		for (size_t i = 0; i < 3; i++)
@@ -225,7 +225,7 @@ void EndFramect::evalpAmept()
 	}
 }
 
-void EndFramect::evalpprmemptpt()
+void EndFramect::evalpprmemptpt() const
 {
 	if (rmemBlks) {
 		for (size_t i = 0; i < 3; i++)

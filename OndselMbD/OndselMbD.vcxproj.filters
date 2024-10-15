@@ -1155,7 +1155,7 @@
     <ClCompile Include="TorqueBasicComp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TorqueBasicVector.cpp">
+    <ClCompile Include="TorqueBasiccVector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FunctionParser.cpp">
@@ -1360,6 +1360,27 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MarkerFrameqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistIecJeqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistIectJeqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VelRadIecJeqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VelRadIectJeqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ForceBasiccComp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ForceBasiccVector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TorqueBasicqcVector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2513,7 +2534,7 @@
     <ClInclude Include="TorqueBasicComp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TorqueBasicVector.h">
+    <ClInclude Include="TorqueBasiccVector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FunctionParser.h">
@@ -2718,6 +2739,27 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MarkerFrameqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistIecJeqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistIectJeqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VelRadIecJeqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VelRadIectJeqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ForceBasiccComp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ForceBasiccVector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TorqueBasicqcVector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

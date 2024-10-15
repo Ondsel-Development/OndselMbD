@@ -37,7 +37,7 @@ namespace MbD {
 		void postDynOutput() override;
 
 		std::shared_ptr<OrbitAngleZIecJec> orbitIeJe, orbitJeIe;
-		double radiusI, radiusJ;
+		double radiusI{ 0.0 }, radiusJ{ 0.0 };
 	};
 }
 

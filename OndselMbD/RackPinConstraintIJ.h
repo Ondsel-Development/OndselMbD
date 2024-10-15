@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "ConstraintIJ.h"
@@ -13,35 +13,35 @@
 #include "AngleZIecJec.h"
 
 namespace MbD {
-	class RackPinConstraintIJ : public ConstraintIJ
-	{
-		//xIeJeIe thezIeJe pitchRadius 
-	public:
-		RackPinConstraintIJ() {}
-		RackPinConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj) {}
-		static std::shared_ptr<RackPinConstraintIJ> With();
-		static std::shared_ptr<RackPinConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
-		void initialize() override;
+    class RackPinConstraintIJ : public ConstraintIJ
+    {
+        //xIeJeIe thezIeJe pitchRadius 
+    public:
+        RackPinConstraintIJ() {}
+        RackPinConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj) {}
+        static std::shared_ptr<RackPinConstraintIJ> With();
+        static std::shared_ptr<RackPinConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
+        void initialize() override;
 
-		void calcPostDynCorrectorIteration() override;
-		virtual void initxIeJeIe();
-		virtual void initthezIeJe();
-		void initializeGlobally() override;
-		void initializeLocally() override;
-		void postInput() override;
-		void postPosICIteration() override;
-		void preAccIC() override;
-		void prePosIC() override;
-		void preVelIC() override;
-		void simUpdateAll() override;
-		void postDynPredictor() override;
-		void postDynCorrectorIteration() override;
-		void preDynOutput() override;
-		void postDynOutput() override;
+        void calcPostDynCorrectorIteration() override;
+        virtual void initxIeJeIe();
+        virtual void initthezIeJe();
+        void initializeGlobally() override;
+        void initializeLocally() override;
+        void postInput() override;
+        void postPosICIteration() override;
+        void preAccIC() override;
+        void prePosIC() override;
+        void preVelIC() override;
+        void simUpdateAll() override;
+        void postDynPredictor() override;
+        void postDynCorrectorIteration() override;
+        void preDynOutput() override;
+        void postDynOutput() override;
 
-		std::shared_ptr<DispCompIecJecIe> xIeJeIe;
-		std::shared_ptr<AngleZIecJec> thezIeJe;
-		double pitchRadius;
-	};
+        std::shared_ptr<DispCompIecJecIe> xIeJeIe;
+        std::shared_ptr<AngleZIecJec> thezIeJe;
+        double pitchRadius{ 0.0 };
+    };
 }
 

@@ -127,7 +127,7 @@ namespace MbD {
 		void preDynOutput() override;
 		void postDynOutput() override;
 
-		System* system;	//Use raw pointer when pointing backwards.
+		System* system = nullptr;	//Use raw pointer when pointing backwards.
 		size_t ipX = SIZE_MAX; 
 		size_t ipE = SIZE_MAX; 
 		double m = 0.0; 

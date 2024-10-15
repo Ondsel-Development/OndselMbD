@@ -27,8 +27,8 @@ namespace MbD {
 		void preVelIC() override;
 		ConstraintType type() override;
 
-		double pGpt;
-		double ppGptpt;
+		double pGpt{0.0};
+		double ppGptpt{0.0};
 
 	};
 }

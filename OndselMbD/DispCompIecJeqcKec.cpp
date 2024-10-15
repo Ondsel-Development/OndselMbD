@@ -7,6 +7,7 @@
  ***************************************************************************/
 
 #include "DispCompIecJeqcKec.h"
+#include "EndFramec.h"
 #include "EndFrameqc.h"
 
 using namespace MbD;
@@ -28,8 +29,12 @@ void DispCompIecJeqcKec::initialize()
 
 void DispCompIecJeqcKec::calcPostDynCorrectorIteration()
 {
-	DispCompIecJecKec::calcPostDynCorrectorIteration();
+	auto frmIc = std::static_pointer_cast<EndFramec>(efrmI);
 	auto frmJqc = std::static_pointer_cast<EndFrameqc>(efrmJ);
+	auto efrmKc = std::static_pointer_cast<EndFramec>(efrmK);
+	aAjOKe = efrmKc->aAjOe(axisK);
+	rIeJeO = frmJqc->rOeO->minusFullColumn(frmIc->rOeO);
+	riIeJeKe = aAjOKe->dot(rIeJeO);
 	auto prIeJeOpEJT = frmJqc->prOeOpE->transpose();
 	auto& pprIeJeOpEJpEJ = frmJqc->pprOeOpEpE;
 	for (size_t i = 0; i < 3; i++)

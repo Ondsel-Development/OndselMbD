@@ -10,14 +10,14 @@
 
 #pragma once
 
-#include "ForceTorqueBasic.h"
+#include "TorqueBasiccVector.h"
 
 namespace MbD {
-	class TorqueBasicVector : public ForceTorqueBasic
+	class TorqueBasicqcVector : public TorqueBasiccVector
 	{
 		//
 	public:
-		static std::shared_ptr<TorqueBasicVector> With();
+		static std::shared_ptr<TorqueBasicqcVector> With();
 
 		void calcPostDynCorrectorIteration();
 		void fillAccICIterErroraFTO(FColDsptr col, FColDsptr aFTO) override;

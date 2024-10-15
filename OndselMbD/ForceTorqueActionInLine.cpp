@@ -1,7 +1,7 @@
 #include "ForceTorqueActionInLine.h"
 #include "ForceTorqueFunction.h"
 #include "ForceBasicqcVector.h"
-#include "TorqueBasicVector.h"
+#include "TorqueBasiccVector.h"
 
 using namespace MbD;
 
@@ -10,12 +10,6 @@ std::shared_ptr<ForceTorqueActionInLine> MbD::ForceTorqueActionInLine::With()
 	auto inst = std::make_shared<ForceTorqueActionInLine>();
 	inst->initialize();
 	return inst;
-}
-
-void MbD::ForceTorqueActionInLine::initialize()
-{
-	distIeJe = DistIeqcJeqc::With();
-	ForceTorqueAction::initialize();
 }
 
 void MbD::ForceTorqueActionInLine::calcPostDynCorrectorIteration()
@@ -141,10 +135,9 @@ void MbD::ForceTorqueActionInLine::fillpFpydotpFTpfunctionfunction(SpMatDsptr ma
 
 void MbD::ForceTorqueActionInLine::forceOnFrmIandFrmJ(EndFrmsptr eFrmI, EndFrmsptr eFrmJ)
 {
-	forTorBasicI = ForceBasicqcVector::With();
+	forTorBasicI = ForceBasiccVector::With(eFrmI);
 	forTorBasicI->parent = this;
-	forTorBasicI->endFrame = eFrmI;
-	distIeJe->withFrmIfrmJ(eFrmI, eFrmJ);
+	distIeJe = DistIecJec::With(eFrmI, eFrmJ);
 }
 
 void MbD::ForceTorqueActionInLine::initializeGlobally()
@@ -262,10 +255,10 @@ std::shared_ptr<ForceTorqueFunction> MbD::ForceTorqueActionInLine::tension()
 
 void MbD::ForceTorqueActionInLine::torqueOnFrmIandFrmJ(EndFrmsptr eFrmI, EndFrmsptr eFrmJ)
 {
-	forTorBasicI = TorqueBasicVector::With();
+	forTorBasicI = TorqueBasiccVector::With();
 	forTorBasicI->parent = this;
 	forTorBasicI->endFrame = eFrmI;
-	distIeJe->withFrmIfrmJ(eFrmI, eFrmJ);
+	distIeJe = DistIecJec::With(eFrmI, eFrmJ);
 }
 
 FColDsptr MbD::ForceTorqueActionInLine::uIeJeO()

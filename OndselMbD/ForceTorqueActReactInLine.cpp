@@ -2,7 +2,7 @@
 #include "MarkerFrame.h"
 #include "ForceTorqueActionInLine.h"
 #include "ForceBasicqcVector.h"
-#include "TorqueBasicVector.h"
+#include "TorqueBasiccVector.h"
 #include "ForceTorqueFunction.h"
 #include "Constant.h"
 
@@ -168,9 +168,8 @@ void MbD::ForceTorqueActReactInLine::fillpFpydotpFTpfunctionfunction(SpMatDsptr 
 void MbD::ForceTorqueActReactInLine::forceOnFrmIandFrmJ(EndFrmsptr eFrmI, EndFrmsptr eFrmJ)
 {
 	forTorAction->forceOnFrmIandFrmJ(eFrmI, eFrmJ);
-	forTorBasicJ = ForceBasicqcVector::With();
+	forTorBasicJ = ForceBasiccVector::With(eFrmJ);
 	forTorBasicJ->parent = this;
-	forTorBasicJ->endFrame = eFrmJ;
 }
 
 void MbD::ForceTorqueActReactInLine::initializeGlobally()
@@ -272,7 +271,7 @@ void MbD::ForceTorqueActReactInLine::simUpdateAll()
 void MbD::ForceTorqueActReactInLine::torqueOnFrmIandFrmJ(EndFrmsptr eFrmI, EndFrmsptr eFrmJ)
 {
 	forTorAction->torqueOnFrmIandFrmJ(eFrmI, eFrmJ);
-	forTorBasicJ = TorqueBasicVector::With();
+	forTorBasicJ = TorqueBasiccVector::With();
 	forTorBasicJ->parent = this;
 	forTorBasicJ->endFrame = eFrmJ;
 }

@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include "ForceTorqueBasic.h"
+#include "ForceBasiccComp.h"
 
 namespace MbD {
-	class ForceBasicqcComp : public ForceTorqueBasic
+	class ForceBasicqcComp : public ForceBasiccComp
 	{
 		//iqXaxis prOeOaxispET  
 	public:
@@ -32,7 +32,7 @@ namespace MbD {
 		void useEquationNumbers() override;
 		void fillAccICIterErroraFTOi(FColDsptr col, double aFTOi);
 
-		size_t iqXaxis;
+		size_t iqXaxis = SIZE_MAX;
 		FColDsptr prOeOaxispET;
 	};
 }

@@ -79,60 +79,60 @@ void MbD::EndFramec::fillContactEndFrames(std::set<EndFramec*> efrms)
 {
 }
 
-FColDsptr MbD::EndFramec::ieO()
+FColDsptr MbD::EndFramec::ieO() const
 {
 	return aAOe->column(0);
 }
 
-FColDsptr MbD::EndFramec::jeO()
+FColDsptr MbD::EndFramec::jeO() const
 {
 	return aAOe->column(1);
 }
 
-FColDsptr MbD::EndFramec::keO()
+FColDsptr MbD::EndFramec::keO() const
 {
 	return aAOe->column(2);
 }
 
-FColDsptr EndFramec::aAjOe(size_t j)
+FColDsptr EndFramec::aAjOe(size_t j) const
 {
 	return aAOe->column(j);
 }
 
-//void MbD::EndFramec::aApm(FMatDsptr mat)
-//{
-//	markerFrame->aApm = mat;
-//}
+void MbD::EndFramec::aApm(FMatDsptr mat)
+{
+	markerFrame->aApm = mat;
+}
 
-double EndFramec::riOeO(size_t i)
+double EndFramec::riOeO(size_t i) const
 {
 	return rOeO->at(i);
 }
 
-//FColDsptr MbD::EndFramec::rpmp()
-//{
-//	return FColDsptr();
-//}
+FColDsptr MbD::EndFramec::rpmp()
+{
+	return FColDsptr();
+}
 
 FColDsptr EndFramec::rmeO()
 {
 	return markerFrame->aAOm->timesFullColumn(rmem);
 }
 
-//FColDsptr EndFramec::rpep()
-//{
-//	return FColDsptr();
-//}
+FColDsptr EndFramec::rpep()
+{
+	return FColDsptr();
+}
 
-//FColFMatDsptr EndFramec::pAOppE()
-//{
-//	return FColFMatDsptr();
-//}
+FColFMatDsptr EndFramec::pAOppE()
+{
+	return FColFMatDsptr();
+}
 
-//FMatDsptr EndFramec::aBOp()
-//{
-//	return FMatDsptr();
-//}
+FMatDsptr EndFramec::aBOp()
+{
+	return FMatDsptr();
+}
 
 std::shared_ptr<EndFrameqc> MbD::EndFramec::newCopyEndFrameqc()
 {
@@ -152,22 +152,22 @@ bool MbD::EndFramec::isEndFrameqc()
 	return false;
 }
 
-SpatialContainerFrame* MbD::EndFramec::getPartFrame()
+SpatialContainerFrame* MbD::EndFramec::getPartFrame() const
 {
 	return markerFrame->getPartFrame();
 }
 
-std::shared_ptr<EulerParameters<double>> MbD::EndFramec::qEOe()
+std::shared_ptr<EulerParameters<double>> MbD::EndFramec::qEOe() const
 {
 	return aAOe->asEulerParameters();
 }
 
-FColDsptr MbD::EndFramec::vOeO()
+FColDsptr MbD::EndFramec::vOeO() const
 {
 	return markerFrame->vOmO();
 }
 
-FColDsptr MbD::EndFramec::aOeO()
+FColDsptr MbD::EndFramec::aOeO() const
 {
 	return markerFrame->aOmO();
 }

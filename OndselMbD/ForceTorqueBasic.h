@@ -37,8 +37,8 @@ namespace MbD {
 		virtual void fillpFpydotpFOpmudot(SpMatDsptr mat, SpMatDsptr pFOpmudot);
 		virtual void endFramefollowEndFrame(EndFrmsptr frmj, EndFrmsptr frmi);
 
-		ForceTorqueItem* parent;   //Use pointer to point backwards.
+		ForceTorqueItem* parent = nullptr;   //Use pointer to point backwards.
 		EndFrmsptr endFrame;
-		size_t iqE;
+		size_t iqE = SIZE_MAX;
 	};
 }

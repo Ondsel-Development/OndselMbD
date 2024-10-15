@@ -21,7 +21,7 @@ namespace MbD {
 		void fillVelICError(FColDsptr col) override;
 		ConstraintType type() override;
 
-		double pGpt, ppGptpt;
+		double pGpt{0.0}, ppGptpt{0.0};
 		FRowDsptr ppGpXIpt, ppGpEIpt, ppGpXJpt, ppGpEJpt;
 			
 	};

@@ -59,16 +59,14 @@ namespace MbD {
 
 		void setPart(Part* x);
 		Part* getPart();
-		EndFrmsptr endFrame(std::string name);
 		void aGabsDo(const std::function <void(std::shared_ptr<Constraint>)>& f);
-		void markerFramesDo(const std::function <void(std::shared_ptr<MarkerFrame>)>& f) const;
 		void removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos) override;
 		void reactivateRedundantConstraints() override;
 		void constraintsReport() override;
 
 		void prePosIC() override;
 		void prePosKine() override;
-		FColDsptr rOpO() override;
+		FColDsptr rOpO();
 		FMatDsptr aAOp() override;
 		FMatDsptr aC() override;
 		FMatDsptr aCdot() override;
@@ -81,7 +79,7 @@ namespace MbD {
 		FMatDsptr aAdotOp() override;
 		FColDsptr aOpO() override;
 		FMatDsptr aAddotOp() override;
-		FMatDsptr aBOp() override;
+		FMatDsptr aBOp();
 		void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
 		void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) override;
 		void fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints) override;

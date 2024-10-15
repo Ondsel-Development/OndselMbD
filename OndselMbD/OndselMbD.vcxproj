@@ -302,6 +302,8 @@
     <ClCompile Include="DistancexyConstraintIqcJc.cpp" />
     <ClCompile Include="DistancexyConstraintIqcJqc.cpp" />
     <ClCompile Include="DistIecJec.cpp" />
+    <ClCompile Include="DistIecJeqc.cpp" />
+    <ClCompile Include="DistIectJeqc.cpp" />
     <ClCompile Include="DistIeqcJec.cpp" />
     <ClCompile Include="DistIeqcJeqc.cpp" />
     <ClCompile Include="DistIeqctJeqc.cpp" />
@@ -333,6 +335,8 @@
     <ClCompile Include="ExternalSystem.cpp" />
     <ClCompile Include="Extrapolator.cpp" />
     <ClCompile Include="FixedJoint.cpp" />
+    <ClCompile Include="ForceBasiccComp.cpp" />
+    <ClCompile Include="ForceBasiccVector.cpp" />
     <ClCompile Include="ForceBasicqcComp.cpp" />
     <ClCompile Include="ForceBasicqccqComp.cpp" />
     <ClCompile Include="ForceBasicqccqVector.cpp" />
@@ -553,7 +557,8 @@
     <ClCompile Include="TooManyTriesError.cpp" />
     <ClCompile Include="TooSmallStepSizeError.cpp" />
     <ClCompile Include="TorqueBasicComp.cpp" />
-    <ClCompile Include="TorqueBasicVector.cpp" />
+    <ClCompile Include="TorqueBasiccVector.cpp" />
+    <ClCompile Include="TorqueBasicqcVector.cpp" />
     <ClCompile Include="TorqueVector.cpp" />
     <ClCompile Include="Transitions.cpp" />
     <ClCompile Include="Translation.cpp" />
@@ -573,6 +578,8 @@
     <ClCompile Include="VelICSolver.cpp" />
     <ClCompile Include="VelKineSolver.cpp" />
     <ClCompile Include="VelRadIecJec.cpp" />
+    <ClCompile Include="VelRadIecJeqc.cpp" />
+    <ClCompile Include="VelRadIectJeqc.cpp" />
     <ClCompile Include="VelRadIeqcJec.cpp" />
     <ClCompile Include="VelRadIeqcJeqc.cpp" />
     <ClCompile Include="VelRadIeqctJeqc.cpp" />
@@ -754,6 +761,8 @@
     <ClInclude Include="DistancexyConstraintIqcJc.h" />
     <ClInclude Include="DistancexyConstraintIqcJqc.h" />
     <ClInclude Include="DistIecJec.h" />
+    <ClInclude Include="DistIecJeqc.h" />
+    <ClInclude Include="DistIectJeqc.h" />
     <ClInclude Include="DistIeqcJec.h" />
     <ClInclude Include="DistIeqcJeqc.h" />
     <ClInclude Include="DistIeqctJeqc.h" />
@@ -786,6 +795,8 @@
     <ClInclude Include="ExternalSystem.h" />
     <ClInclude Include="Extrapolator.h" />
     <ClInclude Include="FixedJoint.h" />
+    <ClInclude Include="ForceBasiccComp.h" />
+    <ClInclude Include="ForceBasiccVector.h" />
     <ClInclude Include="ForceBasicqcComp.h" />
     <ClInclude Include="ForceBasicqccqComp.h" />
     <ClInclude Include="ForceBasicqccqVector.h" />
@@ -1007,7 +1018,8 @@
     <ClInclude Include="TooManyTriesError.h" />
     <ClInclude Include="TooSmallStepSizeError.h" />
     <ClInclude Include="TorqueBasicComp.h" />
-    <ClInclude Include="TorqueBasicVector.h" />
+    <ClInclude Include="TorqueBasiccVector.h" />
+    <ClInclude Include="TorqueBasicqcVector.h" />
     <ClInclude Include="TorqueVector.h" />
     <ClInclude Include="Transitions.h" />
     <ClInclude Include="Translation.h" />
@@ -1027,6 +1039,8 @@
     <ClInclude Include="VelICSolver.h" />
     <ClInclude Include="VelKineSolver.h" />
     <ClInclude Include="VelRadIecJec.h" />
+    <ClInclude Include="VelRadIecJeqc.h" />
+    <ClInclude Include="VelRadIectJeqc.h" />
     <ClInclude Include="VelRadIeqcJec.h" />
     <ClInclude Include="VelRadIeqcJeqc.h" />
     <ClInclude Include="VelRadIeqctJeqc.h" />

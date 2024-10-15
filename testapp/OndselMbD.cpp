@@ -37,12 +37,12 @@ int main(int argc, char* argv[])
 	}
 
 	//MBDynSystem::runDynFile("../testapp/MBDyn/Unicycle simulation attempt 1/MBDCase.mbd");	//Need to handle subassemblies
-	ASMTAssembly::runKineFile("../testapp/ASMT/piston.asmt");
-	ASMTAssembly::runDynFile("../testapp/ASMT/piston.asmt");
-	MBDynSystem::runDynFile("../testapp/MBDyn/SingleRigidPendulum07-02-2024/MBDCaseOndsel.mbd");
-	MBDynSystem::runDynFile("../testapp/MBDyn/markers.mbd");
-	MBDynSystem::runDynFile("../testapp/MBDyn/General force using Rod joint/Bungee/MBDCase.mbd");
-	ASMTAssembly::runDynFile("../testapp/ASMT/torsion.asmt");
+	//ASMTAssembly::runKineFile("../testapp/ASMT/piston.asmt");
+	//ASMTAssembly::runDynFile("../testapp/ASMT/piston.asmt");
+	//MBDynSystem::runDynFile("../testapp/MBDyn/SingleRigidPendulum07-02-2024/MBDCaseOndsel.mbd");
+	//MBDynSystem::runDynFile("../testapp/MBDyn/markers.mbd");
+	//MBDynSystem::runDynFile("../testapp/MBDyn/General force using Rod joint/Bungee/MBDCase.mbd");
+	//ASMTAssembly::runDynFile("../testapp/ASMT/torsion.asmt");
 	ASMTAssembly::runDynFile("../testapp/ASMT/springdamper.asmt");
 	MBDynSystem::runDynFile("../testapp/MBDyn/penduRod5deg2.mbd");
 	MBDynSystem::runDynFile("../testapp/MBDyn/penduBeam.mbd");

@@ -8,6 +8,7 @@
 
 #include "TranslationConstraintIcJqc.h"
 #include "DispCompIeqcJeqcKeqc.h"
+#include "DispCompIecJeqcKec.h"
 #include "EndFrameqc.h"
 
 using namespace MbD;
@@ -21,7 +22,7 @@ std::shared_ptr<TranslationConstraintIcJqc> MbD::TranslationConstraintIcJqc::Wit
 
 void TranslationConstraintIcJqc::initriIeJeIe()
 {
-	riIeJeIe = DispCompIeqcJeqcKeqc::With(efrmI, efrmJ, efrmI, axisI);
+	riIeJeIe = DispCompIecJeqcKec::With(efrmI, efrmJ, efrmI, axisI);
 }
 
 void TranslationConstraintIcJqc::calcPostDynCorrectorIteration()
@@ -29,8 +30,6 @@ void TranslationConstraintIcJqc::calcPostDynCorrectorIteration()
 	TranslationConstraintIJ::calcPostDynCorrectorIteration();
 	pGpXJ = riIeJeIe->pvaluepXJ();
 	pGpEJ = riIeJeIe->pvaluepEJ();
-	ppGpEIpXJ = riIeJeIe->ppvaluepXJpEK()->transpose();
-	ppGpEIpEJ = riIeJeIe->ppvaluepEJpEK()->transpose();
 	ppGpEJpEJ = riIeJeIe->ppvaluepEJpEJ();
 }
 

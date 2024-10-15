@@ -39,37 +39,12 @@ namespace MbD {
 		void initializeGlobally() override;
 		void postInput() override;
 		void calcPostDynCorrectorIteration() override;
-
-		void setaAap(FMatDsptr mat);
-		FColDsptr getqE();
 		void setAssembly(System* x);
 		System* getAssembly();
 
 		void setPart(Part* x);
-		Part* getPart();
-		EndFrmsptr endFrame(std::string name);
-		void aGabsDo(const std::function <void(std::shared_ptr<Constraint>)>& f);
-		void markerFramesDo(const std::function <void(std::shared_ptr<MarkerFrame>)>& f) const;
-		void removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos) override;
-		void reactivateRedundantConstraints() override;
-		void constraintsReport() override;
 
-		FColDsptr rOpO() override;
-		FMatDsptr aAOp() override;
-		FMatDsptr aC() override;
-		FMatDsptr aCdot() override;
-		FColDsptr alpOpO() override;
-		FColFMatDsptr pAOppE() override;
-		FColFMatDsptr pAdotOppE() override;
-		FMatDsptr pomeOpOpE() override;
-		FMatDsptr pomeOpOpEdot() override;
-		FColDsptr vOpO() override;
-		FMatDsptr aAdotOp() override;
-		FColDsptr aOpO() override;
-		FMatDsptr aAddotOp() override;
-		void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
-		void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) override;
-		void fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints) override;
+		//Needed because s may be used
 		void fillqsu(FColDsptr col) override;
 		void fillqsuWeights(DiagMatDsptr diagMat) override;
 		void fillqsuddotlam(FColDsptr col) override;
@@ -98,9 +73,7 @@ namespace MbD {
 		void preAccIC() override;
 		void fillAccICIterError(FColDsptr col) override;
 		void fillAccICIterJacob(SpMatDsptr mat) override;
-		FMatDsptr aBOp();
 		void fillPosKineJacob(SpMatDsptr mat) override;
-		double suggestSmallerOrAcceptDynStepSize(double hnew) override;
 		void postDynStep() override;
 		void setpqsumu(FColDsptr col) override;
 		void setpqsumudot(FColDsptr col) override;
@@ -112,7 +85,7 @@ namespace MbD {
 		void postDynCorrectorIteration() override;
 		void preDynOutput() override;
 		void postDynOutput() override;
-		FColDsptr omeOpO() override;
+		double suggestSmallerOrAcceptDynStepSize(double hnew) override;
 
 		System* assembly = nullptr; //Use raw pointer when pointing backwards.
 	};

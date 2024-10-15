@@ -8,11 +8,11 @@
 
 #pragma once
 
-#include "ForceTorqueBasic.h"
+#include "ForceBasiccVector.h"
 #include "Part.h"
 
 namespace MbD {
-	class ForceBasicqcVector : public ForceTorqueBasic
+	class ForceBasicqcVector : public ForceBasiccVector
 	{
 		//iqX prOeOpET 
 	public:
@@ -32,7 +32,7 @@ namespace MbD {
 		void fillpFpydotpFTOpXdotjpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, FMatDsptr pFTOpEdotj, SpatialContainerFrame* partj) override;
 		void useEquationNumbers() override;
 
-		size_t iqX;
+		size_t iqX = SIZE_MAX;
 		FMatDsptr prOeOpET;
 	};
 }

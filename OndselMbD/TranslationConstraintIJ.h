@@ -36,7 +36,7 @@ namespace MbD {
 		void preDynOutput() override;
 		void postDynOutput() override;
 
-		size_t axisI;
+		size_t axisI = SIZE_MAX;
 		std::shared_ptr<DispCompIecJecKec> riIeJeIe;
 		//ToDo: Use DispCompIecJecIe instead of DispCompIecJecKec
 	};

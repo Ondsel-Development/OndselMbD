@@ -16,7 +16,7 @@ namespace MbD {
 	{
 		//thez xIeJeIe yIeJeIe cosOverSSq sinOverSSq twoCosSinOverSSqSq dSqOverSSqSq 
 	public:
-		OrbitAngleZIecJec();
+		OrbitAngleZIecJec() {}
 		OrbitAngleZIecJec(EndFrmsptr frmi, EndFrmsptr frmj) : KinematicIJ(frmi, frmj) {}
 		static std::shared_ptr<OrbitAngleZIecJec> With(EndFrmsptr frmi, EndFrmsptr frmj);
 		void initialize() override;
@@ -38,7 +38,7 @@ namespace MbD {
 		void postDynOutput() override;
 
 		double thez = std::numeric_limits<double>::min();
-		double cosOverSSq, sinOverSSq, twoCosSinOverSSqSq, dSqOverSSqSq;
+		double cosOverSSq{ 0.0 }, sinOverSSq{ 0.0 }, twoCosSinOverSSqSq{ 0.0 }, dSqOverSSqSq{ 0.0 };
 		std::shared_ptr<DispCompIecJecIe> xIeJeIe, yIeJeIe;
 	};
 }

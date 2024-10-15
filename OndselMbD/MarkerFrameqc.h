@@ -97,7 +97,7 @@ namespace MbD {
 		void setqsulam(FColDsptr col) override;
 		void simUpdateAll() override;
 		void storeDynState() override;
-		FColDsptr vOmO() const;
+		FColDsptr vOmO() const override;
 		FColDsptr vOeO_of_rmem() const;
 
 		FMatDsptr prOmOpE;

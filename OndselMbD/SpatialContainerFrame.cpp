@@ -327,11 +327,6 @@ FColDsptr MbD::SpatialContainerFrame::qEddot()
 	return FColDsptr();
 }
 
-FColDsptr MbD::SpatialContainerFrame::rOpO()
-{
-	return FColDsptr();
-}
-
 FMatDsptr MbD::SpatialContainerFrame::aAOp()
 {
 	return FMatDsptr();
@@ -395,11 +390,6 @@ FMatDsptr MbD::SpatialContainerFrame::aAddotOp()
 FColDsptr MbD::SpatialContainerFrame::omeOpO()
 {
 	return FColDsptr();
-}
-
-FMatDsptr MbD::SpatialContainerFrame::aBOp()
-{
-	return FMatDsptr();
 }
 
 void SpatialContainerFrame::postInput()

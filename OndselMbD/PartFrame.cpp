@@ -100,7 +100,7 @@ void PartFrame::setomeOpO(FColDsptr omeOpO) {
 }
 
 FColDsptr PartFrame::getomeOpO() {
-	return qEdot->omeOpO();
+	return qEdot->omega();
 }
 
 void PartFrame::setqXddot(FColDsptr x)
@@ -125,7 +125,7 @@ FColDsptr PartFrame::getqEddot()
 
 FColDsptr PartFrame::omeOpO()
 {
-	return qEdot->omeOpO();
+	return qEdot->omega();
 }
 
 void PartFrame::setPart(Part* x) {
@@ -136,20 +136,9 @@ Part* PartFrame::getPart() {
 	return part;
 }
 
-EndFrmsptr PartFrame::endFrame(std::string name)
-{
-	auto match = std::find_if(markerFrames->begin(), markerFrames->end(), [&](auto& mkr) {return mkr->name == name; });
-	return (*match)->endFrames->at(0);
-}
-
 void PartFrame::aGabsDo(const std::function<void(std::shared_ptr<Constraint>)>& f)
 {
 	std::for_each(aGabs->begin(), aGabs->end(), f);
-}
-
-void PartFrame::markerFramesDo(const std::function<void(std::shared_ptr<MarkerFrame>)>& f) const
-{
-	std::for_each(markerFrames->begin(), markerFrames->end(), f);
 }
 
 void PartFrame::removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos)
@@ -258,12 +247,12 @@ FColFMatDsptr MbD::PartFrame::pAdotOppE()
 
 FMatDsptr MbD::PartFrame::pomeOpOpE()
 {
-	return qEdot->pomeOpOpE();
+	return qEdot->pomegapE();
 }
 
 FMatDsptr MbD::PartFrame::pomeOpOpEdot()
 {
-	return qEdot->pomeOpOpEdot();
+	return qEdot->pomegapEdot();
 }
 
 FColDsptr MbD::PartFrame::vOpO()
@@ -551,7 +540,7 @@ double PartFrame::suggestSmallerOrAcceptDynStepSize(double hnew)
 		logString("MbD: Time step limited by translation limit per step.");
 		hnew2 = htran;
 	}
-	auto omegaMagnitude = qEdot->omeOpO()->length();
+	auto omegaMagnitude = qEdot->omega()->length();
 	double hrot;
 	if (omegaMagnitude < 1.0e-15) {
 		hrot = 1.0e99;

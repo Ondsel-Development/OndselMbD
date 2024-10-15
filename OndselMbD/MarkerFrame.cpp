@@ -17,11 +17,6 @@
 
 using namespace MbD;
 
-MarkerFrame::MarkerFrame(const char* str) : CartesianFrame(str)
-{
-	//Do nothing.
-}
-
 std::shared_ptr<MarkerFrame> MbD::MarkerFrame::With(const char* str)
 {
 	auto inst = std::make_shared<MarkerFrame>(str);
@@ -57,13 +52,7 @@ void MarkerFrame::postInput()
 
 void MarkerFrame::calcPostDynCorrectorIteration()
 {
-	auto prtFrmPtr = dynamic_cast<PartFrame*>(partFrame);
-	if (prtFrmPtr) {
-		auto rOpO = prtFrmPtr->rOpO();
-		auto aAOp = prtFrmPtr->aAOp();
-		rOmO = rOpO->plusFullColumn(aAOp->timesFullColumn(rpmp));
-		aAOm = aAOp->timesFullMatrix(aApm);
-	}
+	assert(false);
 }
 
 void MarkerFrame::prePosIC()
@@ -86,24 +75,6 @@ void MbD::MarkerFrame::preStatic()
 FColDsptr MbD::MarkerFrame::omeOmO() const
 {
 	return partFrame->omeOpO();
-}
-
-size_t MarkerFrame::iqX() const
-{
-	PartFrame* prtFrmPtr = dynamic_cast<PartFrame*>(partFrame);
-	if (prtFrmPtr) {
-		return prtFrmPtr->iqX;
-	}
-	return SIZE_MAX;
-}
-
-size_t MarkerFrame::iqE() const
-{
-	PartFrame* prtFrmPtr = dynamic_cast<PartFrame*>(partFrame);
-	if (prtFrmPtr) {
-		return prtFrmPtr->iqE;
-	}
-	return SIZE_MAX;
 }
 
 void MarkerFrame::endFramesDo(const std::function<void(EndFrmsptr)>& f) const
@@ -261,15 +232,6 @@ void MarkerFrame::setqsuddotlam(FColDsptr col)
 	endFramesDo([&](const EndFrmsptr& endFrame) { endFrame->setqsuddotlam(col); });
 }
 
-FMatDsptr MarkerFrame::aBOp()
-{
-	PartFrame* prtFrmPtr = dynamic_cast<PartFrame*>(partFrame);
-	if (prtFrmPtr) {
-		return prtFrmPtr->aBOp();
-	}
-	return FMatDsptr();
-}
-
 void MarkerFrame::postDynStep()
 {
 	endFramesDo([](EndFrmsptr endFrame) { endFrame->postDynStep(); });
@@ -310,10 +272,7 @@ void MbD::MarkerFrame::postDynCorrectorIteration()
 
 FColDsptr MbD::MarkerFrame::vOmO() const
 {
-	PartFrame* prtFrmPtr = dynamic_cast<PartFrame*>(partFrame);
-	if (prtFrmPtr) {
-		return prtFrmPtr->vOpO()->plusFullColumn(partFrame->aAdotOp()->timesFullColumn(rpmp));
-	}
+	assert(false);
 	return FColDsptr();
 }
 

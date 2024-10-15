@@ -24,8 +24,8 @@ namespace MbD {
 		double value() override;
 
 		EndFrmsptr efrmK;
-		size_t axisK;
-		double riIeJeKe;
+		size_t axisK = SIZE_MAX;
+		double riIeJeKe{ 0.0 };
 		FColDsptr aAjOKe;
 		FColDsptr rIeJeO;
 	};

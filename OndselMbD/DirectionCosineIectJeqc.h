@@ -15,7 +15,7 @@ namespace MbD {
 	{
 		//pAijIeJept ppAijIeJepEIpt ppAijIeJepEJpt ppAijIeJeptpt 
 	public:
-		DirectionCosineIectJeqc();
+		DirectionCosineIectJeqc() {}
 		DirectionCosineIectJeqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj) : DirectionCosineIecJeqc(frmi, frmj, axisi, axisj) {}
 		static std::shared_ptr<DirectionCosineIectJeqc> With(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj);
 		void initialize() override;
@@ -29,7 +29,7 @@ namespace MbD {
 
 		double pAijIeJept;
 		FRowDsptr ppAijIeJepEJpt;
-		double ppAijIeJeptpt;
+		double ppAijIeJeptpt{0.0};
 	};
 }
 

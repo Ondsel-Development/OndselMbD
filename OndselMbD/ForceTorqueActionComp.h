@@ -17,6 +17,6 @@ namespace MbD {
 	public:
 		static std::shared_ptr<ForceTorqueActionComp> With();
 
-		size_t axis;
+		size_t axis = SIZE_MAX;
 	};
 }

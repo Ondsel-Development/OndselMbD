@@ -62,121 +62,7 @@ System* AssemblyFrame::getAssembly() {
 	return assembly;
 }
 
-FColDsptr MbD::AssemblyFrame::omeOpO()
-{
-	return std::make_shared<FullColumn<double>>(3, 0.0);
-}
-
 void MbD::AssemblyFrame::setPart(Part* x)
-{
-}
-
-Part* MbD::AssemblyFrame::getPart()
-{
-	return nullptr;
-}
-
-EndFrmsptr AssemblyFrame::endFrame(std::string name)
-{
-	auto match = std::find_if(markerFrames->begin(), markerFrames->end(), [&](auto& mkr) {return mkr->name == name; });
-	return (*match)->endFrames->at(0);
-}
-
-void MbD::AssemblyFrame::aGabsDo(const std::function<void(std::shared_ptr<Constraint>)>& f)
-{
-}
-
-void AssemblyFrame::markerFramesDo(const std::function<void(std::shared_ptr<MarkerFrame>)>& f) const
-{
-	std::for_each(markerFrames->begin(), markerFrames->end(), f);
-}
-
-void MbD::AssemblyFrame::removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos)
-{
-}
-
-void MbD::AssemblyFrame::reactivateRedundantConstraints()
-{
-}
-
-void MbD::AssemblyFrame::constraintsReport()
-{
-}
-
-FColDsptr AssemblyFrame::rOpO()
-{
-	return std::make_shared<FullColumn<double>>(3, 0.0);
-}
-
-FMatDsptr AssemblyFrame::aAOp()
-{
-	return FullMatrix<double>::identitysptr(3);
-}
-
-FMatDsptr AssemblyFrame::aC()
-{
-	return FMatDsptr();
-}
-
-FMatDsptr MbD::AssemblyFrame::aCdot()
-{
-	return FMatDsptr();
-}
-
-FColDsptr MbD::AssemblyFrame::alpOpO()
-{
-	return FColDsptr();
-}
-
-FColFMatDsptr MbD::AssemblyFrame::pAOppE()
-{
-	return FColFMatDsptr();
-}
-
-FColFMatDsptr MbD::AssemblyFrame::pAdotOppE()
-{
-	return FColFMatDsptr();
-}
-
-FMatDsptr MbD::AssemblyFrame::pomeOpOpE()
-{
-	return FMatDsptr();
-}
-
-FMatDsptr MbD::AssemblyFrame::pomeOpOpEdot()
-{
-	return FMatDsptr();
-}
-
-FColDsptr MbD::AssemblyFrame::vOpO()
-{
-	return FColDsptr();
-}
-
-FMatDsptr MbD::AssemblyFrame::aAdotOp()
-{
-	return FMatDsptr();
-}
-
-FColDsptr MbD::AssemblyFrame::aOpO()
-{
-	return FColDsptr();
-}
-
-FMatDsptr MbD::AssemblyFrame::aAddotOp()
-{
-	return FMatDsptr();
-}
-
-void MbD::AssemblyFrame::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
-{
-}
-
-void MbD::AssemblyFrame::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
-{
-}
-
-void MbD::AssemblyFrame::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
 {
 }
 
@@ -322,11 +208,6 @@ void AssemblyFrame::fillAccICIterJacob(SpMatDsptr mat)
 void AssemblyFrame::setqsuddotlam(FColDsptr col)
 {
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->setqsuddotlam(col); });
-}
-
-FMatDsptr AssemblyFrame::aBOp()
-{
-	return FMatDsptr();
 }
 
 void AssemblyFrame::fillPosKineJacob(SpMatDsptr mat)

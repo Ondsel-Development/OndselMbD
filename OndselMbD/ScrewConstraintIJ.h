@@ -39,7 +39,7 @@ namespace MbD {
 
 		std::shared_ptr<DispCompIecJecIe> zIeJeIe;
 		std::shared_ptr<AngleZIecJec> thezIeJe;
-		double pitch;
+		double pitch{ 0.0 };
 
 
 	};

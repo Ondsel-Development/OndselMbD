@@ -1,5 +1,6 @@
 #include "ForceBasicqcComp.h"
 #include "ForceTorqueActionComp.h"
+#include "SpatialContainerFrame.h"
 
 using namespace MbD;
 
@@ -76,7 +77,7 @@ void MbD::ForceBasicqcComp::fillpFpydotpFTOpXdotjpFTOpEdotjpartj(SpMatDsptr mat,
 
 void MbD::ForceBasicqcComp::useEquationNumbers()
 {
-	assert(false);
+	iqE = std::static_pointer_cast<EndFrameqc>(endFrame)->iqE();
 }
 
 void MbD::ForceBasicqcComp::fillAccICIterErroraFTOi(FColDsptr col, double aFTOi)

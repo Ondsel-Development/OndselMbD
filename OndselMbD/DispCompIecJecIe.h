@@ -24,8 +24,8 @@ namespace MbD {
 		void calcPostDynCorrectorIteration() override;
 		double value() override;
 
-		size_t axis;
-		double riIeJeIe;
+		size_t axis = SIZE_MAX;
+		double riIeJeIe{ 0.0 };
 		FColDsptr aAjOIe, rIeJeO;
 	};
 }

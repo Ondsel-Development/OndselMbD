@@ -3,11 +3,6 @@
 
 using namespace MbD;
 
-MbD::VelRadIecJec::VelRadIecJec(EndFrmsptr frmi, EndFrmsptr frmj) : KinematicDotIeJe(frmi, frmj)
-{
-	assert(false);
-}
-
 std::shared_ptr<VelRadIecJec> MbD::VelRadIecJec::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
 	auto inst = std::make_shared<VelRadIecJec>(frmi, frmj);

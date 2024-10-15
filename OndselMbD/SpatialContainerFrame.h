@@ -92,7 +92,6 @@ namespace MbD {
 		virtual std::shared_ptr<EulerParametersDot<double>> qEdot();
 		virtual FColDsptr qXddot();
 		virtual FColDsptr qEddot();
-		virtual FColDsptr rOpO();
 		virtual FMatDsptr aAOp();
 		virtual FMatDsptr aC();
 		virtual FMatDsptr aCdot();
@@ -106,7 +105,6 @@ namespace MbD {
 		virtual FColDsptr aOpO();
 		virtual FMatDsptr aAddotOp();
 		virtual FColDsptr omeOpO();
-		virtual FMatDsptr aBOp();
 
 		std::shared_ptr<std::vector<std::shared_ptr<MarkerFrame>>> markerFrames;
 	};

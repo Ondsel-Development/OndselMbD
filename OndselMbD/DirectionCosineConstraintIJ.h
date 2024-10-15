@@ -37,7 +37,7 @@ namespace MbD {
 		void preDynOutput() override;
 		void postDynOutput() override;
 
-		size_t axisI, axisJ;
+		size_t axisI = SIZE_MAX, axisJ = SIZE_MAX;
 		std::shared_ptr<DirectionCosineIecJec> aAijIeJe;
 	};
 }

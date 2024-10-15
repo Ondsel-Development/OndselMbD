@@ -2,7 +2,7 @@
 #include "ForceTorqueBasic.h"
 #include "ForceTorqueFunction.h"
 #include "ForceBasicqcVector.h"
-#include "TorqueBasicVector.h"
+#include "TorqueBasiccVector.h"
 
 using namespace MbD;
 
@@ -154,7 +154,7 @@ void MbD::ForceTorqueActionKComp::forceOnFrmIwrtFrmKaxis(EndFrmsptr frmi, EndFrm
 
 void MbD::ForceTorqueActionKComp::torqueOnFrmIwrtFrmKaxis(EndFrmsptr frmi, EndFrmsptr frmk, size_t _axis)
 {
-	forTorBasicI = TorqueBasicVector::With();
+	forTorBasicI = TorqueBasiccVector::With();
 	forTorBasicI->parent = this;
 	forTorBasicI->endFrame = frmi;
 	axis = _axis;

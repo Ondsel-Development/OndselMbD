@@ -1,7 +1,7 @@
 #include "ForceTorqueActReactKComp.h"
 #include "ForceBasicqccqVector.h"
 #include "ForceTorqueActionKComp.h"
-#include "TorqueBasicVector.h"
+#include "TorqueBasiccVector.h"
 #include "ForceTorqueFunction.h"
 
 using namespace MbD;
@@ -171,7 +171,7 @@ void MbD::ForceTorqueActReactKComp::forceOnFrmIandFrmJwrtFrmKaxis(EndFrmsptr frm
 void MbD::ForceTorqueActReactKComp::torqueOnFrmIandFrmJwrtFrmKaxis(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axis)
 {
 	forTorAction->torqueOnFrmIwrtFrmKaxis(frmi, frmk, axis);
-	forTorBasicJ = TorqueBasicVector::With();
+	forTorBasicJ = TorqueBasiccVector::With();
 	forTorBasicJ->parent = this;
 	forTorBasicJ->endFrame = frmj;
 }

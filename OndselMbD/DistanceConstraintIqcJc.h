@@ -33,7 +33,7 @@ namespace MbD {
 
 		FRowDsptr pGpXI, pGpEI;
 		FMatDsptr ppGpXIpXI, ppGpXIpEI, ppGpEIpEI;
-		size_t iqXI, iqEI;
+		size_t iqXI = SIZE_MAX, iqEI = SIZE_MAX;
 	};
 }
 

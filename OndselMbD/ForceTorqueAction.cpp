@@ -2,7 +2,7 @@
 #include "MarkerFrame.h"
 #include "ForceTorqueFunction.h"
 #include "ForceBasicqcVector.h"
-#include "TorqueBasicVector.h"
+#include "TorqueBasiccVector.h"
 
 using namespace MbD;
 

@@ -66,6 +66,30 @@ void MbD::AssemblyFrame::setPart(Part* x)
 {
 }
 
+void MbD::AssemblyFrame::removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos)
+{
+}
+
+void MbD::AssemblyFrame::reactivateRedundantConstraints()
+{
+}
+
+void MbD::AssemblyFrame::constraintsReport()
+{
+}
+
+void MbD::AssemblyFrame::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
+{
+}
+
+void MbD::AssemblyFrame::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
+{
+}
+
+void MbD::AssemblyFrame::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
+{
+}
+
 void AssemblyFrame::fillqsu(FColDsptr col)
 {
 	markerFramesDo([&](std::shared_ptr<MarkerFrame> markerFrame) { markerFrame->fillqsu(col); });

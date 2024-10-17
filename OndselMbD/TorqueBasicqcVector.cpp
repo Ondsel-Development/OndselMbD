@@ -70,3 +70,8 @@ void MbD::TorqueBasicqcVector::fillpFpydotpFTOpXdotjpFTOpEdotjpartj(SpMatDsptr m
 {
 	assert(false);
 }
+
+void MbD::TorqueBasicqcVector::useEquationNumbers()
+{
+	iqE = std::static_pointer_cast<EndFrameqc>(endFrame)->iqE();
+}

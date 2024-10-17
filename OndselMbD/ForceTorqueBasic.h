@@ -39,6 +39,7 @@ namespace MbD {
 
 		ForceTorqueItem* parent = nullptr;   //Use pointer to point backwards.
 		EndFrmsptr endFrame;
+		size_t iqX = SIZE_MAX;
 		size_t iqE = SIZE_MAX;
 	};
 }

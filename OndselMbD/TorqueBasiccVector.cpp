@@ -69,3 +69,8 @@ void MbD::TorqueBasiccVector::fillpFpydotpFTOpXdotjpFTOpEdotjpartj(SpMatDsptr ma
 {
 	assert(false);
 }
+
+void MbD::TorqueBasiccVector::useEquationNumbers()
+{
+	//Do nothing.
+}

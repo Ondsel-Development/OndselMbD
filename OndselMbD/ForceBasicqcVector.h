@@ -32,7 +32,6 @@ namespace MbD {
 		void fillpFpydotpFTOpXdotjpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, FMatDsptr pFTOpEdotj, SpatialContainerFrame* partj) override;
 		void useEquationNumbers() override;
 
-		size_t iqX = SIZE_MAX;
 		FMatDsptr prOeOpET;
 	};
 }

@@ -70,7 +70,7 @@ namespace MbD {
 		int readIntOffTop(std::vector<std::string>& args);
 		double readDoubleOffTop(std::vector<std::string>& args);
 		double readDouble(std::string& line);
-		size_t readInt(std::string& line);
+		int readInt(std::string& line);
 		bool readBool(std::string& line);
 		std::string asmtFormula(std::string mbdynFormula);
 		std::string asmtFormulaIntegral(std::string mbdynFormula);

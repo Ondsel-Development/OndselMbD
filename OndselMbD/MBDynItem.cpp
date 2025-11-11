@@ -535,10 +535,10 @@ double MbD::MBDynItem::readDouble(std::string& line)
 	return sym->getValue();
 }
 
-size_t MbD::MBDynItem::readInt(std::string& line)
+int MbD::MBDynItem::readInt(std::string& line)
 {
 	std::istringstream iss(line);
-	size_t i;
+	int i;
 	iss >> i;
 	return i;
 }

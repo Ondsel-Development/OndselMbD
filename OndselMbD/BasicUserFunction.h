@@ -26,7 +26,7 @@ namespace MbD {
 		
 			
 		std::string funcText;
-		double myUnit;
+		double myUnit = 1.0;
 		std::shared_ptr<Units> units;
 	};
 }

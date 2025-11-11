@@ -19,6 +19,7 @@
 #include "Sum.h"
 #include "Power.h"
 #include "MbDSymbolicFunction.h"
+#include "SimulationStoppingError.h"
 
 using namespace MbD;
 
@@ -226,8 +227,7 @@ void MbD::Symbolic::setIntegrationConstant(double integConstant)
 
 const std::string& MbD::Symbolic::getName() const
 {
-	assert(false);
-	return std::string("");
+	throw SimulationStoppingError("To be implemented.");
 }
 
 void MbD::Symbolic::fillKineIJs(std::shared_ptr<std::vector<std::shared_ptr<MbDSymbolicFunction>>> kineIJs)

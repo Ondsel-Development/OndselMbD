@@ -210,7 +210,7 @@ namespace MbD {
 	{
 		//Return shallow copy of *this wrapped in shared_ptr
 		assert(false);
-		return FullVector<T>>(*this);
+		return FullVector<T>(*this);
 	}
 
 	template<typename T>
